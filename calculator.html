@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>EKA Studio Pro - Ultimate Scientific</title>
+    <title>EKA Calc Pro</title>
     <style>
         :root {
             --sky-blue: #87CEEB;
@@ -12,6 +12,8 @@
             --glass-border: rgba(255, 255, 255, 0.45);
             --text-dark: #1a5f7a;
             --accent-white: rgba(255, 255, 255, 0.6);
+            --btn-shadow: 0 6px 0 rgba(0,0,0,0.12);
+            --btn-shadow-active: 0 2px 0 rgba(0,0,0,0.12);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -23,116 +25,260 @@
             font-family: 'Segoe UI', Roboto, sans-serif;
             overflow: hidden;
             color: var(--text-dark);
+            touch-action: manipulation;
         }
 
-        /* Responsive Container */
         #app-container {
-            width: 100%; max-width: 450px; height: 100%;
+            width: 100%; max-width: 480px; height: 100%;
             background: var(--glass);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 2px solid var(--glass-border);
+            border-radius: 24px;
             display: flex; flex-direction: column;
             position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
         }
 
-        /* 5-Option Navigation */
+        /* 3-Option Navigation */
         nav {
-            height: 70px;
-            background: rgba(255, 255, 255, 0.3);
+            height: 75px;
+            background: rgba(255, 255, 255, 0.35);
             display: flex; justify-content: space-around; align-items: center;
-            border-top: 1px solid var(--glass-border);
+            border-top: 2px solid var(--glass-border);
+            border-radius: 0 0 22px 22px;
         }
 
         .nav-item {
-            text-align: center; font-size: 10px; font-weight: bold;
-            opacity: 0.5; cursor: pointer; transition: 0.3s;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            opacity: 0.5;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            padding: 8px 12px;
+            border-radius: 16px;
         }
 
-        .nav-item.active { opacity: 1; transform: scale(1.1); color: #000; }
+        .nav-item:active { transform: scale(0.95); background: rgba(255,255,255,0.5); }
+        .nav-item.active {
+            opacity: 1;
+            transform: scale(1.05);
+            color: #000;
+            background: rgba(255,255,255,0.6);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .nav-icon { font-size: 1.8rem; display: block; margin-bottom: 2px; }
 
         /* Screen Setup */
         .screen {
-            flex: 1; padding: 15px; display: none; flex-direction: column;
-            animation: slideUp 0.3s ease;
+            flex: 1;
+            padding: 18px;
+            display: none;
+            flex-direction: column;
+            animation: slideUp 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .screen.active { display: flex; }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Displays */
-        .display-box {
-            height: 120px; background: var(--accent-white); border-radius: 20px;
-            margin-bottom: 15px; padding: 20px;
-            display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end;
-            border: 1px solid var(--glass-border); box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        #mini-view { font-size: 0.9rem; opacity: 0.6; }
-        #main-view { font-size: 2.2rem; font-weight: 300; }
+        /* 200% Bigger Displays */
+        .display-box {
+            height: 140px;
+            background: var(--accent-white);
+            border-radius: 28px;
+            margin-bottom: 20px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-end;
+            border: 2px solid var(--glass-border);
+            box-shadow: inset 0 4px 16px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .display-box:active { transform: scale(0.99); }
+
+        #mini-view {
+            font-size: 1.8rem; /* 200% bigger */
+            opacity: 0.7;
+            font-weight: 400;
+            text-align: right;
+            width: 100%;
+            word-wrap: break-word;
+        }
+
+        #main-view {
+            font-size: 4.4rem; /* 200% bigger - ultra clear! */
+            font-weight: 300;
+            line-height: 1.1;
+            text-align: right;
+            width: 100%;
+            word-wrap: break-word;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
 
         /* Grids */
-        .grid { display: grid; gap: 8px; flex: 1; }
+        .grid {
+            display: grid;
+            gap: 12px; /* More spacing for touch */
+            flex: 1;
+            padding-bottom: 10px;
+        }
+
         .grid-basic { grid-template-columns: repeat(4, 1fr); }
         .grid-sci { grid-template-columns: repeat(5, 1fr); }
 
-        /* 3D Glass Buttons */
+        /* 3D Glass Buttons - 200% Font */
         .btn {
-            background: var(--glass); border: 1px solid var(--glass-border);
-            border-radius: 12px; font-size: 1rem; font-weight: 600; color: var(--text-dark);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: 0.1s;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+            background: var(--glass);
+            border: 2px solid var(--glass-border);
+            border-radius: 20px;
+            font-size: 2rem; /* 200% bigger! */
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.12s ease;
+            box-shadow: var(--btn-shadow);
+            user-select: none;
+            -webkit-user-select: none;
+            min-height: 68px; /* Larger touch target */
         }
 
-        .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,0.1); background: #fff; }
-        .btn.op { background: rgba(152, 255, 152, 0.4); }
-        .btn.action { background: var(--text-dark); color: white; }
-        .btn.sci-key { font-size: 0.8rem; background: rgba(135, 206, 235, 0.4); }
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: var(--btn-shadow-active);
+            background: rgba(255,255,255,0.85);
+            filter: brightness(1.05);
+        }
 
-        /* Content List */
-        .list-item { background: var(--glass); padding: 12px; border-radius: 10px; margin-bottom: 8px; border: 1px solid var(--glass-border); }
+        .btn.op {
+            background: rgba(152, 255, 152, 0.5);
+            font-size: 2.2rem;
+        }
+
+        .btn.action {
+            background: linear-gradient(135deg, var(--text-dark), #2a7f9a);
+            color: white;
+            font-size: 2.4rem;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+        }
+
+        .btn.action:active {
+            box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, #154d62, #20667a);
+        }
+
+        .btn.sci-key {
+            font-size: 1.6rem; /* Slightly smaller for sci keys but still big */
+            background: rgba(135, 206, 235, 0.5);
+            font-weight: 600;
+        }
+
+        /* History List */
+        #scr-hist h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .list-item {
+            background: var(--glass);
+            padding: 18px 20px;
+            border-radius: 18px;
+            margin-bottom: 12px;
+            border: 2px solid var(--glass-border);
+            font-size: 1.7rem; /* 200% bigger */
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.15s;
+        }
+
+        .list-item:active { transform: scale(0.98); }
+
+        .hist-expr { opacity: 0.8; font-size: 1.4rem; }
+        .hist-res { font-weight: 700; color: var(--text-dark); }
+
+        /* Clear History Button */
+        #clear-hist {
+            background: rgba(255, 100, 100, 0.3);
+            color: var(--text-dark);
+            font-size: 1.4rem;
+            padding: 12px;
+            border-radius: 16px;
+            border: 2px solid var(--glass-border);
+            margin: 10px 0;
+            font-weight: 600;
+        }
+
+        #clear-hist:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.1);
+        }
+
+        /* Responsive tweaks for very small screens */
+        @media (max-height: 700px) {
+            #main-view { font-size: 3.8rem; }
+            .btn { font-size: 1.8rem; min-height: 62px; }
+            .display-box { height: 120px; padding: 18px; }
+        }
     </style>
 </head>
 <body>
 
 <div id="app-container">
 
-    <div id="scr-home" class="screen active">
-        <div style="margin: auto; text-align: center;">
-            <div style="width:80px; height:80px; background:#fff; border-radius:20px; margin:0 auto 15px; display:flex; align-items:center; justify-content:center; font-size:2.5rem; box-shadow: 10px 10px 20px rgba(0,0,0,0.05);">E</div>
-            <h2>EKA STUDIO PRO</h2>
-            <p>Engineer Khurram Ali</p>
+    <!-- ✅ CALCULATOR SCREEN (Basic) -->
+    <div id="scr-norm" class="screen active">
+        <div class="display-box">
+            <div id="n-mini"></div>
+            <div id="n-main">0</div>
         </div>
-    </div>
-
-    <div id="scr-norm" class="screen">
-        <div class="display-box"><div id="n-mini"></div><div id="n-main">0</div></div>
         <div class="grid grid-basic">
             <button class="btn op" onclick="cls()">AC</button>
             <button class="btn op" onclick="inp('/')">÷</button>
             <button class="btn op" onclick="inp('*')">×</button>
             <button class="btn op" onclick="del()">⌫</button>
+
             <button class="btn" onclick="inp('7')">7</button>
             <button class="btn" onclick="inp('8')">8</button>
             <button class="btn" onclick="inp('9')">9</button>
-            <button class="btn op" onclick="inp('-')">-</button>
+            <button class="btn op" onclick="inp('-')">−</button>
+
             <button class="btn" onclick="inp('4')">4</button>
             <button class="btn" onclick="inp('5')">5</button>
             <button class="btn" onclick="inp('6')">6</button>
             <button class="btn op" onclick="inp('+')">+</button>
+
             <button class="btn" onclick="inp('1')">1</button>
             <button class="btn" onclick="inp('2')">2</button>
             <button class="btn" onclick="inp('3')">3</button>
             <button class="btn action" style="grid-row: span 2;" onclick="run()">=</button>
+
             <button class="btn" style="grid-column: span 2;" onclick="inp('0')">0</button>
             <button class="btn" onclick="inp('.')">.</button>
         </div>
     </div>
 
+    <!-- ✅ SCIENTIFIC CALCULATOR SCREEN -->
     <div id="scr-sci" class="screen">
-        <div class="display-box"><div id="s-mini"></div><div id="s-main" style="font-size: 1.8rem;">0</div></div>
+        <div class="display-box">
+            <div id="s-mini"></div>
+            <div id="s-main" style="font-size: 4rem;">0</div>
+        </div>
         <div class="grid grid-sci">
             <button class="btn sci-key" onclick="sciFn('sin')">sin</button>
             <button class="btn sci-key" onclick="sciFn('cos')">cos</button>
@@ -162,7 +308,7 @@
             <button class="btn" onclick="inp('2')">2</button>
             <button class="btn" onclick="inp('3')">3</button>
             <button class="btn op" onclick="inp('+')">+</button>
-            <button class="btn op" onclick="inp('-')">-</button>
+            <button class="btn op" onclick="inp('-')">−</button>
 
             <button class="btn" onclick="inp('0')">0</button>
             <button class="btn" onclick="inp('.')">.</button>
@@ -171,91 +317,218 @@
         </div>
     </div>
 
+    <!-- ✅ HISTORY SCREEN -->
     <div id="scr-hist" class="screen">
-        <h3>Log History</h3>
-        <div id="hist-content" style="overflow-y:auto; margin-top:10px;"></div>
+        <h3>📜 Calculation History</h3>
+        <button id="clear-hist" onclick="clearHistory()">🗑️ Clear All</button>
+        <div id="hist-content" style="overflow-y:auto; margin-top:8px; padding-bottom:20px;"></div>
     </div>
 
-    <div id="scr-sett" class="screen">
-        <h3>Settings</h3>
-        <div class="list-item">Precision: 4 Decimals</div>
-        <div class="list-item">Vibration: On</div>
-        <div class="list-item">App Version: 2.1.0</div>
-    </div>
-
+    <!-- ✅ 3-ITEM NAVIGATION (No Home/Settings) -->
     <nav>
-        <div class="nav-item active" onclick="nav('home', this)">🏠<br>Home</div>
-        <div class="nav-item" onclick="nav('norm', this)">🔢<br>Calc</div>
-        <div class="nav-item" onclick="nav('sci', this)">🧪<br>Sci</div>
-        <div class="nav-item" onclick="nav('hist', this)">📜<br>History</div>
-        <div class="nav-item" onclick="nav('sett', this)">⚙️<br>Settings</div>
+        <div class="nav-item active" onclick="nav('norm', this)">
+            <span class="nav-icon">🔢</span>Calc
+        </div>
+        <div class="nav-item" onclick="nav('sci', this)">
+            <span class="nav-icon">🧪</span>Sci
+        </div>
+        <div class="nav-item" onclick="nav('hist', this)">
+            <span class="nav-icon">📜</span>History
+        </div>
     </nav>
 </div>
 
 <script>
     let exp = "0";
     let history = [];
+    const MAX_HISTORY = 50; // Limit history items
 
+    // ✅ Navigation with smooth transitions
     function nav(id, el) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById('scr-' + id).classList.add('active');
+        document.querySelectorAll('.screen').forEach(s => {
+            s.classList.remove('active');
+            s.style.opacity = '0';
+        });
+
+        setTimeout(() => {
+            document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+            document.getElementById('scr-' + id).style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('scr-' + id).classList.add('active');
+                document.getElementById('scr-' + id).style.opacity = '1';
+            }, 10);
+        }, 300);
+
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         el.classList.add('active');
+
+        // Refresh history view if opening history tab
+        if(id === 'hist') updateHistory();
     }
 
+    // ✅ Input handling with visual feedback
     function inp(v) {
-        if (exp === "0" && v !== '.') exp = v;
-        else exp += v;
+        if (exp === "0" && v !== '.' && !['+','-','*','/','**','Math.'].includes(v)) {
+            exp = v;
+        } else if (exp === "Error") {
+            exp = v;
+        } else {
+            exp += v;
+        }
         render();
+        hapticFeedback();
     }
 
-    function cls() { exp = "0"; render(); }
+    function cls() {
+        exp = "0";
+        render();
+        hapticFeedback();
+    }
 
     function del() {
+        if(exp === "Error") { cls(); return; }
         exp = exp.length > 1 ? exp.slice(0, -1) : "0";
         render();
+        hapticFeedback();
     }
 
+    // ✅ Render with 200% bigger fonts
     function render() {
-        // Update both displays
-        const clean = exp.replace(/Math\./g, '');
+        const clean = exp.replace(/Math\./g, '').replace(/\*\*/g, '^');
         document.getElementById('n-main').innerText = clean;
         document.getElementById('s-main').innerText = clean;
+        document.getElementById('n-mini').innerText = exp.length > 20 ? exp.slice(-20) : exp;
+        document.getElementById('s-mini').innerText = exp.length > 20 ? exp.slice(-20) : exp;
     }
 
+    // ✅ Scientific functions
     function sciFn(type) {
-        let val = eval(exp);
-        let res = 0;
-        switch(type) {
-            case 'sin': res = Math.sin(val * Math.PI / 180); break;
-            case 'cos': res = Math.cos(val * Math.PI / 180); break;
-            case 'tan': res = Math.tan(val * Math.PI / 180); break;
-            case 'log': res = Math.log10(val); break;
-            case 'ln': res = Math.log(val); break;
-            case 'sqrt': res = Math.sqrt(val); break;
-            case 'fact':
-                res = (function f(n){return n<2?1:n*f(n-1)})(Math.floor(val));
-                break;
+        try {
+            let val = eval(exp);
+            if(isNaN(val) || !isFinite(val)) throw "Invalid";
+
+            let res = 0;
+            switch(type) {
+                case 'sin': res = Math.sin(val * Math.PI / 180); break;
+                case 'cos': res = Math.cos(val * Math.PI / 180); break;
+                case 'tan': res = Math.tan(val * Math.PI / 180); break;
+                case 'log':
+                    if(val <= 0) throw "Domain Error";
+                    res = Math.log10(val);
+                    break;
+                case 'ln':
+                    if(val <= 0) throw "Domain Error";
+                    res = Math.log(val);
+                    break;
+                case 'sqrt':
+                    if(val < 0) throw "Domain Error";
+                    res = Math.sqrt(val);
+                    break;
+                case 'fact':
+                    if(val < 0 || !Number.isInteger(val)) throw "Invalid Input";
+                    res = (function f(n){return n<2?1:n*f(n-1)})(val);
+                    break;
+                default: return;
+            }
+
+            // Format result nicely
+            exp = (Number.isInteger(res) && Math.abs(res) < 1e10) ? res.toString() : res.toPrecision(8).replace(/\.?0+$/,"");
+            render();
+            hapticFeedback();
+        } catch(e) {
+            exp = "Error";
+            render();
+            setTimeout(cls, 1200);
         }
-        exp = res.toFixed(4).toString();
-        render();
     }
 
+    // ✅ Execute calculation
     function run() {
         try {
-            let res = eval(exp);
-            history.unshift(`${exp} = ${res}`);
-            exp = res.toString();
+            if(exp === "Error") { cls(); return; }
+
+            // Safe evaluation with Math context
+            let res = Function('"use strict"; return (' + exp.replace(/Math\./g, 'Math.') + ')')();
+
+            if(!isFinite(res) || isNaN(res)) throw "Invalid Result";
+
+            // Format result
+            let formatted = (Number.isInteger(res) && Math.abs(res) < 1e10) ? res.toString() : res.toPrecision(8).replace(/\.?0+$/,"");
+
+            // Add to history
+            const cleanExp = exp.replace(/Math\./g, '').replace(/\*\*/g, '^');
+            history.unshift({ expr: cleanExp, result: formatted });
+            if(history.length > MAX_HISTORY) history.pop();
+
+            exp = formatted;
             render();
             updateHistory();
-        } catch(e) { exp = "Error"; render(); setTimeout(cls, 1000); }
+            hapticFeedback(50); // Stronger feedback for result
+        } catch(e) {
+            exp = "Error";
+            render();
+            setTimeout(cls, 1200);
+        }
     }
 
+    // ✅ Update history display with big fonts
     function updateHistory() {
-        document.getElementById('hist-content').innerHTML = history.map(h => `
-            <div class="list-item">${h}</div>
+        const container = document.getElementById('hist-content');
+        if(history.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:30px; font-size:1.6rem; opacity:0.7">No calculations yet</div>';
+            return;
+        }
+
+        container.innerHTML = history.map((item, i) => `
+            <div class="list-item" onclick="loadFromHistory('${item.expr.replace(/'/g, "\\'")}')">
+                <span class="hist-expr">${item.expr}</span>
+                <span class="hist-res">= ${item.result}</span>
+            </div>
         `).join('');
     }
+
+    // ✅ Load expression from history
+    function loadFromHistory(expr) {
+        exp = expr.replace(/\^/g, '**');
+        render();
+        nav('norm', document.querySelector('.nav-item:nth-child(1)'));
+        hapticFeedback();
+    }
+
+    // ✅ Clear history
+    function clearHistory() {
+        if(confirm('Clear all history?')) {
+            history = [];
+            updateHistory();
+            hapticFeedback();
+        }
+    }
+
+    // ✅ Subtle haptic feedback (works on supported devices)
+    function hapticFeedback(ms = 10) {
+        if(navigator.vibrate) navigator.vibrate(ms);
+    }
+
+    // ✅ Keyboard support for desktop testing
+    document.addEventListener('keydown', (e) => {
+        if(document.getElementById('scr-norm').classList.contains('active') ||
+           document.getElementById('scr-sci').classList.contains('active')) {
+
+            const key = e.key;
+            if(/[0-9.+\-*/()]/.test(key)) { inp(key); }
+            else if(key === 'Enter' || key === '=') { run(); e.preventDefault(); }
+            else if(key === 'Backspace') { del(); e.preventDefault(); }
+            else if(key === 'Escape' || key === 'c' || key === 'C') { cls(); }
+        }
+    });
+
+    // ✅ Initialize
+    window.addEventListener('load', () => {
+        render();
+        // Pre-load with a welcome message in mini display
+        document.getElementById('n-mini').innerText = 'EKA Calc Pro';
+        setTimeout(() => { document.getElementById('n-mini').innerText = ''; }, 2000);
+    });
 </script>
 </body>
 </html>
