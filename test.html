@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Notes Studio - EKA SIR</title>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-heavy: rgba(255, 255, 255, 0.4);
+            --sky-blue: #87CEEB;
+            --mint-green: #98FF98;
+            --text-dark: #1a5f7a;
+            --border: rgba(255, 255, 255, 0.5);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 3D Ice Cube Glass Panel */
+        .main-container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), inset 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .home-nav {
+            display: flex;
+            align-items: center;
+            background: var(--glass-heavy);
+            padding: 12px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: bold;
+            margin-bottom: 25px;
+            border: 1px solid var(--border);
+            transition: 0.3s;
+            align-self: flex-start;
+        }
+
+        .home-nav:active { transform: scale(0.95); }
+
+        h1 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Class Selector Grid */
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .class-btn {
+            background: var(--glass-heavy);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 800;
+            color: var(--text-dark);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .class-btn:hover, .class-btn.active {
+            background: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Subjects Display Area */
+        .subject-section {
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .subject-section.active { display: block; }
+
+        .note-card {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .note-card:active { background: #fff; }
+
+        .tag {
+            font-size: 0.7rem;
+            background: var(--text-dark);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<a href="index.html" class="home-nav">🏠 Dashboard</a>
+
+<div class="main-container">
+    <h1>TEST AND ASSESSMENTS</h1>
+
+    <div class="class-grid">
+        <div class="class-btn active" onclick="showClass(1, this)">Class 1</div>
+        <div class="class-btn" onclick="showClass(2, this)">Class 2</div>
+        <div class="class-btn" onclick="showClass(3, this)">Class 3</div>
+        <div class="class-btn" onclick="showClass(4, this)">Class 4</div>
+        <div class="class-btn" onclick="showClass(5, this)">Class 5</div>
+        <div class="class-btn" onclick="showClass(6, this)">Class 6</div>
+        <div class="class-btn" onclick="showClass(7, this)">Class 7</div>
+        <div class="class-btn" onclick="showClass(8, this)">Class 8</div>
+        <div class="class-btn" onclick="showClass(9, this)">Class 9</div>
+        <div class="class-btn" onclick="showClass(10, this)">Class 10</div>
+    </div>
+
+    <hr style="border: 0; height: 1px; background: var(--border); margin-bottom: 20px;">
+
+    <div id="class1" class="subject-section active">
+        <h3>📝 Class 1 TEST</h3>
+        <a href="notes1.html" class="note-card">Maths Level 1 <span class="tag">START</span></a>
+        <a href="notes1.html" class="note-card">Science Level 1 <span class="tag">START</span></a>
+    </div>
+
+    <div id="class9" class="subject-section">
+        <h3>📝 Class 9 TEST</h3>
+        <a href="notes9.html" class="note-card">Maths (Linear Eq) <span class="tag">CH-06</span></a>
+        <a href="notes9.html" class="note-card">Physics <span class="tag">SINDH BOARD</span></a>
+    </div>
+
+    <div id="class10" class="subject-section">
+        <h3>📝 Class 10 TEST</h3>
+        <a href="notes10.html" class="note-card">Physics MCQs <span class="tag">UNIT 1</span></a>
+        <a href="mcq_test.html" class="note-card">Chemistry <span class="tag">FULL</span></a>
+    </div>
+
+    <div id="generic" class="subject-section">
+        <p style="text-align: center; font-style: italic; opacity: 0.7;">Content being uploaded for this grade...</p>
+    </div>
+</div>
+
+<script>
+    function showClass(num, btn) {
+        // Update Buttons
+        document.querySelectorAll('.class-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Hide all sections
+        document.querySelectorAll('.subject-section').forEach(s => s.classList.remove('active'));
+
+        // Show selected or generic
+        const target = document.getElementById('class' + num);
+        if (target) {
+            target.classList.add('active');
+        } else {
+            document.getElementById('generic').classList.add('active');
+        }
+    }
+</script>
+
+</body>
+</html>

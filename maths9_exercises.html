@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Maths Class 9 Exercises - EKA SIR</title>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-heavy: rgba(255, 255, 255, 0.4);
+            --sky-blue: #87CEEB;
+            --mint-green: #98FF98;
+            --text-dark: #1a5f7a;
+            --border: rgba(255, 255, 255, 0.5);
+            --accent: #ff6b6b;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), inset 0 0 15px rgba(255, 255, 255, 0.3);
+            box-sizing: border-box;
+        }
+
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .back-btn {
+            background: var(--glass-heavy);
+            padding: 10px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: bold;
+            border: 1px solid var(--border);
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .back-btn:active { transform: scale(0.9); }
+
+        h1 {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .chapter-title {
+            background: var(--text-dark);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 10px;
+            margin: 20px 0 10px 0;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .ex-btn {
+            background: var(--glass-heavy);
+            border: 1px solid var(--border);
+            padding: 12px 5px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .ex-btn:active {
+            background: #fff;
+            transform: scale(0.95);
+        }
+
+        .ex-btn span {
+            font-size: 0.65rem;
+            opacity: 0.8;
+        }
+
+        /* YouTube Icon styling */
+        .ex-btn::after {
+            content: "▶";
+            font-size: 0.7rem;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="nav-header">
+        <a href="notes.html" class="back-btn">⬅ Back</a>
+        <h1>Maths Class 9</h1>
+    </div>
+
+    <p style="text-align:center; font-size: 0.8rem; margin-bottom: 20px; font-weight: 600;">Sindh Text Book Board (Video Solutions)</p>
+
+    <!-- Chapter 1 -->
+    <div class="chapter-title">Chapter 1: Real and Complex Numbers</div>
+    <div class="exercise-grid" id="ch1-grid"></div>
+
+    <!-- Chapter 2 -->
+    <div class="chapter-title">Chapter 2: Logarithms</div>
+    <div class="exercise-grid" id="ch2-grid"></div>
+
+    <!-- Chapter 3 -->
+    <div class="chapter-title">Chapter 3: Algebraic Expressions</div>
+    <div class="exercise-grid" id="ch3-grid"></div>
+
+    <!-- Chapter 4 -->
+    <div class="chapter-title">Chapter 4: Algebraic Factorization</div>
+    <div class="exercise-grid" id="ch4-grid"></div>
+
+    <!-- Chapter 5 -->
+    <div class="chapter-title">Chapter 5: Algebraic Manipulation</div>
+    <div class="exercise-grid" id="ch5-grid"></div>
+
+    <!-- Chapter 6 -->
+    <div class="chapter-title">Chapter 6: Linear Equations</div>
+    <div class="exercise-grid" id="ch6-grid"></div>
+
+    <!-- Chapter 7 -->
+    <div class="chapter-title">Chapter 7: Linear Graphs</div>
+    <div class="exercise-grid" id="ch7-grid"></div>
+
+    <!-- Chapter 8 -->
+    <div class="chapter-title">Chapter 8: Quadratic Equations</div>
+    <div class="exercise-grid" id="ch8-grid"></div>
+
+    <!-- Chapter 9 -->
+    <div class="chapter-title">Chapter 9: Congruent Triangles</div>
+    <div class="exercise-grid" id="ch9-grid"></div>
+
+    <!-- Chapter 10 -->
+    <div class="chapter-title">Chapter 10: Parallelograms & Triangles</div>
+    <div class="exercise-grid" id="ch10-grid"></div>
+
+    <!-- Chapter 11 -->
+    <div class="chapter-title">Chapter 11: Line Bisectors</div>
+    <div class="exercise-grid" id="ch11-grid"></div>
+
+    <!-- Chapter 12 -->
+    <div class="chapter-title">Chapter 12: Sides & Angles of Triangle</div>
+    <div class="exercise-grid" id="ch12-grid"></div>
+
+    <!-- Chapter 13 -->
+    <div class="chapter-title">Chapter 13: Practical Geometry</div>
+    <div class="exercise-grid" id="ch13-grid"></div>
+
+    <!-- Chapter 14 -->
+    <div class="chapter-title">Chapter 14: Theorems on Area</div>
+    <div class="exercise-grid" id="ch14-grid"></div>
+
+    <!-- Chapter 15 -->
+    <div class="chapter-title">Chapter 15: Projection of a Side</div>
+    <div class="exercise-grid" id="ch15-grid"></div>
+
+    <!-- Chapter 16 -->
+    <div class="chapter-title">Chapter 16: Analytical Geometry</div>
+    <div class="exercise-grid" id="ch16-grid"></div>
+
+</div>
+
+<script>
+    // Configuration for exercises per chapter
+    // Updated structure for all 16 chapters
+    const structure = [
+        { ch: 1, count: 7 },  // 1.1 to 1.6
+        { ch: 2, count: 7 },  // 2.1 to 2.6
+        { ch: 3, count: 5 },  // 3.1 to 3.6
+        { ch: 4, count: 9 }, // 4.1 to 4.10
+        { ch: 5, count: 4 },  // 5.1 to 5.4
+        { ch: 6, count: 4 },  // 6.1 to 6.3
+        { ch: 7, count: 3 },  // 7.1 to 7.3
+        { ch: 8, count: 4 },  // 8.1 to 8.4
+        { ch: 9, count: 2 },  // 9.1 to 9.2
+        { ch: 10, count: 2 }, // 10.1 to 10.2
+        { ch: 11, count: 2 }, // 11.1 to 11.2
+        { ch: 12, count: 2 }, // 12.1 to 12.2
+        { ch: 13, count: 3 }, // 13.1 to 13.3
+        { ch: 14, count: 2 }, // 14.1 to 14.2
+        { ch: 15, count: 2 }, // 15.1 to 15.2
+        { ch: 16, count: 2 }  // 16.1 to 16.2
+    ];
+
+    // YouTube links - Added #engineerkhurramali link for Ex#1.1
+const videoLinks = {
+    // Unit 01: Real and Complex Numbers
+    "1.1": "https://youtube.com/shorts/CxSNokE7tAc",
+    "1.2": "https://youtube.com/shorts/_Lv72nQ9JOs",
+    "1.3": "https://youtube.com/shorts/q5M5nrFtS6k",
+    "1.4": "https://youtube.com/shorts/bSGJm5QP9Yo",
+    "1.5": "https://youtube.com/shorts/BZZS7tltaXs",
+    "1.6": "https://youtube.com/shorts/See95fwlAJc",
+    "1.7": "https://youtube.com/shorts/oYwaco_1gzQ",
+
+
+    // Unit 02: Logarithms
+    "2.1": "https://youtube.com/shorts/IAjOl-ximlw",
+    "2.2": "https://youtube.com/shorts/4WKgYWlbPw8",
+    "2.3": "https://youtube.com/shorts/wnOFd0b6GXo",
+    "2.4": "https://youtube.com/shorts/KyTVx1PN4Nc",
+    "2.5": "https://youtube.com/shorts/mMzNnHV1D0Q",
+    "2.6": "https://youtube.com/shorts/ZKgKFUv7PKo",
+    "2.7": "https://youtube.com/shorts/BefBWfsOajw",
+
+    // Unit 03: Algebraic Expressions
+    "3.1": "https://youtube.com/shorts/toOzjt1Hd1U",
+    "3.2": "https://youtube.com/shorts/FQdvS5J45KI",
+     "3.3": "https://youtube.com/shorts/Kre0AmWgWNU",
+    "3.4": "https://youtube.com/shorts/mxzKt7C1E5E",
+     "3.5": "https://youtube.com/shorts/UiK8tSDTpNg",
+
+    // Unit 04: Factorization and Algebraic Manipulation
+    "4.1": "https://youtube.com/shorts/V5btkKCTWHY",
+    "4.2": "https://youtube.com/shorts/YYmiKv3tGmM",
+  "4.3": "https://youtube.com/shorts/cfbZdpBgPQc",
+    "4.4": "https://youtube.com/shorts/0X1E85I47fU",
+      "4.5": "https://youtube.com/shorts/WczCEbj2aDU",
+        "4.6": "https://youtube.com/shorts/FxFlYQs8c48",
+        "4.7": "https://youtube.com/shorts/TF5NlYhJCV4",
+         "4.8": "https://youtube.com/shorts/6ADkCPRqyc4",
+           "4.9": "https://youtube.com/shorts/WI2_JJDpTpc",
+
+
+    // Unit 05: Linear Equations and Inequalities
+    "5.1": "https://youtube.com/shorts/FBcbSndAXH4",
+    "5.2": "https://youtube.com/shorts/ycVJ20JILnM",
+    "5.3": "https://youtube.com/shorts/QYj8kZLPOC4",
+    "5.4": "https://youtube.com/shorts/kVGoyWBlsXM",
+
+    // Unit 06: Linear Graphs & Applications
+    "6.1": "https://youtube.com/shorts/ntDAuSFfBck",
+    "6.2": "https://youtube.com/shorts/Ar4BNjKompE",
+    "6.3": "https://youtube.com/shorts/GWFxZufqqbg",
+    "6.4": "https://youtube.com/shorts/v8DprYICcFU",
+
+    // Unit 07: Properties of Triangles
+    "7.1": "https://youtube.com/shorts/fXx2465yV54",
+ "7.2": "https://youtube.com/shorts/mgnT3cd1jyE",
+ "7.3": "https://youtube.com/shorts/jurUhVObras",
+ "7.4": "https://youtube.com/shorts/jPnDl0QMVY8",
+
+    // Unit 08: Practical Geometry
+    "8.1": "https://youtube.com/shorts/zMGu8P5zuGY",
+    "8.2": "https://youtube.com/shorts/Ng7K0lxyDE0",
+    "8.3": "https://youtube.com/shorts/Ng7K0lxyDE0",
+    "8.4": "https://youtube.com/shorts/Ng7K0lxyDE0",
+
+    // Unit 09
+    "9.1": "https://youtube.com/shorts/Ng7K0lxyDE0",
+    "9.2": "https://youtube.com/shorts/Ng7K0lxyDE0",
+
+    // Unit 10
+    "10.1": "https://youtube.com/shorts/Ng7K0lxyDE0",
+    "10.2": "https://youtube.com/shorts/Ng7K0lxyDE0",
+
+    // Unit 11
+    "11.1": "https://youtube.com/shorts/Ng7K0lxyDE0",
+    "11.2": "https://youtube.com/shorts/Ng7K0lxyDE0",
+
+    // Unit 12
+    "12.1": "https://youtube.com/shorts/Ng7K0lxyDE0",
+    "12.2": "https://youtube.com/shorts/Ng7K0lxyDE0",
+
+    // Unit 13
+    "13.1": "https://youtube.com/shorts/Ng7K0lxyDE0",
+    "13.2": "https://youtube.com/shorts/Ng7K0lxyDE0",
+    "13.3": "https://youtube.com/shorts/Ng7K0lxyDE0",
+
+    // Unit 14
+    "14.1": "https://youtube.com/shorts/Ng7K0lxyDE0",
+    "14.2": "https://youtube.com/shorts/Ng7K0lxyDE0",
+
+    // Unit 15
+    "15.1": "https://youtube.com/shorts/Ng7K0lxyDE0",
+    "15.2": "https://youtube.com/shorts/Ng7K0lxyDE0",
+
+    // Unit 16
+    "16.1": "https://youtube.com/shorts/Ng7K0lxyDE0",
+    "16.2": "https://youtube.com/shorts/Ng7K0lxyDE0"
+};
+
+    function generateButtons() {
+        structure.forEach(item => {
+            const grid = document.getElementById(`ch${item.ch}-grid`);
+            if (!grid) return;
+
+            for (let i = 1; i <= item.count; i++) {
+                const exNum = `${item.ch}.${i}`;
+                const link = videoLinks[exNum] || "https://www.youtube.com/@engineerkhurramali"; // Default to channel
+
+                const btn = document.createElement('a');
+                btn.className = 'ex-btn';
+                btn.href = link;
+                btn.target = "_blank";
+                btn.innerHTML = `<span>Exercise</span>Ex#${exNum}`;
+                grid.appendChild(btn);
+            }
+        });
+    }
+
+    generateButtons();
+</script>
+
+</body>
+</html>

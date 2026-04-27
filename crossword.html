@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#a8edea">
+    <title>Ice-Cube Crossword — 9×9</title>
+    <style>
+        :root {
+          --bg-grad: linear-gradient(135deg, #a8edea 0%, #b5f0e0 50%, #88d8c0 100%);
+          --glass-bg: rgba(255, 255, 255, 0.32);
+          --glass-border: rgba(255, 255, 255, 0.65);
+          --glass-shadow: 0 8px 32px rgba(0, 70, 60, 0.12);
+          --text-main: #004d40;
+          --text-sub: #00695c;
+          --accent: #00897b;
+          --accent-light: #4db6ac;
+          --danger: #e57373;
+          --success: #66bb6a;
+          --found-bg: rgba(255, 249, 196, 0.85);
+          --found-border: #d32f2f;
+          --cell-bg: rgba(255,255,255,0.55);
+          --radius: 16px;
+          --nav-h: 62px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body {
+          font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+          background: var(--bg-grad);
+          background-size: 100% 200%;
+          animation: bgFloat 20s ease infinite;
+          color: var(--text-main);
+          height: 100vh; height: 100dvh;
+          width: 100vw;
+          display: flex; justify-content: center; align-items: center;
+          overflow: hidden; touch-action: manipulation;
+          padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
+        }
+
+        @keyframes bgFloat {
+          0% { background-position: 0% 0%; }
+          50% { background-position: 0% 100%; }
+          100% { background-position: 0% 0%; }
+        }
+
+        /* === 9:16 PORTRAIT CONTAINER (EXACT SPEC) === */
+        .app-container {
+          width: 100vw; max-width: 450px;
+          height: 100vh; height: 100dvh;
+          aspect-ratio: 9 / 16;
+          margin: 0 auto;
+          overflow: hidden; display: flex; flex-direction: column;
+          background: rgba(255,255,255,0.12);
+          backdrop-filter: blur(14px);
+          border-radius: var(--radius);
+          box-shadow: 0 12px 35px rgba(0,0,0,0.18);
+          border: 1px solid var(--glass-border);
+        }
+        @media (min-width: 768px) {
+          .app-container { height: 92vh; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.22); }
+        }
+
+        /* Header */
+        header {
+          padding: 10px 16px 6px; text-align: center; flex-shrink: 0;
+          background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+        }
+        header h1 { font-size: clamp(1.1rem, 4.5vw, 1.4rem); font-weight: 800; letter-spacing: 0.5px; }
+        .stats-row {
+          display: flex; justify-content: space-between; align-items: center;
+          margin-top: 6px; font-size: 0.9rem; font-weight: 700; color: var(--text-sub);
+        }
+        .stat-badge { background: var(--glass-bg); padding: 4px 10px; border-radius: 20px; }
+
+        /* Screens & Navigation */
+        .screens-wrapper { flex: 1; position: relative; overflow: hidden; display: flex; }
+        .screen {
+          position: absolute; inset: 0; padding: 12px 14px;
+          display: flex; flex-direction: column; gap: 10px;
+          opacity: 0; transform: translateX(40px) scale(0.98);
+          transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.35s;
+          pointer-events: none; overflow-y: auto;
+        }
+        .screen.active {
+          opacity: 1; transform: translateX(0) scale(1); pointer-events: auto; position: relative;
+        }
+        .screen.exit { transform: translateX(-40px) scale(0.96); }
+
+        /* Bottom Nav */
+        .bottom-nav {
+          height: var(--nav-h); display: flex; justify-content: space-around; align-items: center;
+          background: rgba(255,255,255,0.65); backdrop-filter: blur(12px);
+          border-top: 1px solid var(--glass-border); flex-shrink: 0;
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+        .nav-btn {
+          flex: 1; background: none; border: none; padding: 8px 4px;
+          font-size: 0.8rem; font-weight: 700; color: var(--text-sub);
+          cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px;
+          transition: color 0.2s, transform 0.1s;
+        }
+        .nav-btn:active { transform: scale(0.92); }
+        .nav-btn.active { color: var(--accent); }
+
+        /* Touch-Friendly Components (>= 44x44px) */
+        .glass-card {
+          background: var(--glass-bg); border: 1px solid var(--glass-border);
+          border-radius: var(--radius); padding: 14px;
+          box-shadow: var(--glass-shadow);
+          display: flex; flex-direction: column; align-items: center; gap: 10px;
+        }
+        .btn {
+          min-height: 48px; min-width: 48px; padding: 0 16px;
+          font-size: 0.9rem; font-weight: 700; border: none; border-radius: 12px;
+          background: var(--cell-bg); color: var(--text-main);
+          cursor: pointer; transition: transform 0.1s, background 0.15s, box-shadow 0.2s;
+          display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+          box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+        .btn.primary { background: var(--accent); color: white; }
+        .btn.danger { background: var(--danger); color: white; }
+        .btn:active { transform: scale(0.96); box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
+        .btn-group { display: flex; gap: 8px; width: 100%; }
+        .btn-group .btn { flex: 1; }
+
+        /* 9×9 Grid */
+        .grid-wrapper {
+          flex: 1; display: flex; justify-content: center; align-items: center;
+          padding: 8px; min-height: 0;
+        }
+        #grid {
+          display: grid;
+          grid-template-columns: repeat(9, 1fr);
+          grid-template-rows: repeat(9, 1fr);
+          aspect-ratio: 1 / 1;
+          width: min(92vw, 88dvh);
+          max-width: 420px;
+          background: var(--glass-bg);
+          border-radius: 14px;
+          box-shadow: var(--glass-shadow);
+          padding: 5px;
+          gap: 2px;
+          border: 1px solid var(--glass-border);
+        }
+        .cell {
+          display: flex; justify-content: center; align-items: center;
+          font-size: clamp(11px, 3.8vw, 18px); font-weight: 800;
+          background: var(--cell-bg); border-radius: 6px;
+          cursor: pointer; user-select: none;
+          border: 2px solid transparent;
+          transition: background 0.15s, border-color 0.15s, transform 0.1s;
+        }
+        .cell:active { transform: scale(0.94); }
+        .cell.selected { background: rgba(0, 150, 136, 0.25); border-color: var(--accent); }
+        .cell.found { background: var(--found-bg); border-color: var(--found-border); color: #b71c1c; }
+
+        /* Modal */
+        .modal-overlay {
+          position: absolute; inset: 0; background: rgba(0,0,0,0.55);
+          display: none; justify-content: center; align-items: center;
+          z-index: 50; backdrop-filter: blur(5px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+          background: var(--glass-bg); padding: 22px; border-radius: var(--radius);
+          text-align: center; max-width: 85%; box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+          transform: translateY(20px); opacity: 0; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        .modal-overlay.active .modal-box { transform: translateY(0); opacity: 1; }
+        .modal-title { font-size: 1.5rem; font-weight: 900; margin-bottom: 8px; color: var(--accent); }
+        .modal-msg { margin-bottom: 16px; color: var(--text-sub); font-size: 0.95rem; }
+
+        /* Word List */
+        .word-list { text-align: left; width: 100%; max-height: 50dvh; overflow-y: auto; padding-right: 4px; }
+        .word-item {
+          padding: 8px 10px; border-bottom: 1px dashed rgba(0,0,0,0.12);
+          font-weight: 600; cursor: pointer; border-radius: 6px;
+        }
+        .word-item:active { background: rgba(0,150,136,0.15); }
+        .word-item.found { text-decoration: line-through; color: #888; pointer-events: none; }
+
+        /* Utility */
+        h2 { margin: 4px 0 8px; font-size: 1.15rem; font-weight: 800; }
+        p { line-height: 1.45; color: var(--text-sub); font-size: 0.9rem; }
+        .hint-text { font-size: 0.85rem; color: var(--text-sub); text-align: center; margin-top: 4px; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <header>
+        <h1>Ice-Cube Crossword — 9×9</h1>
+        <div class="stats-row">
+            <span class="stat-badge" id="disp-timer">⏱️ 02:00</span>
+            <span class="stat-badge" id="disp-progress">Found: 0 / 0</span>
+        </div>
+    </header>
+
+    <div class="screens-wrapper">
+        <!-- GAME SCREEN -->
+        <section id="screen-game" class="screen active">
+            <div class="glass-card">
+                    <div class="btn-group">
+                    <button id="btn-new" class="btn primary">🆕 New Game</button>
+                    <button id="btn-hint" class="btn">💡 Hint</button>
+                </div>
+                <div class="btn-group">
+                    <button id="btn-pause" class="btn">⏸️ Pause</button>
+                    <button id="btn-words" class="btn danger">📖 Words: 0</button>
+                </div>
+            </div>
+            <div class="grid-wrapper">
+                <div id="grid"></div>
+            </div>
+        </section>
+
+        <!-- HELP SCREEN -->
+        <section id="screen-help" class="screen">
+            <div class="glass-card" style="align-items:flex-start;">
+                <h2>📖 How to Play</h2>
+                <p>1. Find 13-15 hidden words in the 9×9 grid.</p>
+                <p>2. Tap a <strong>start cell</strong>, then an <strong>end cell</strong> in a straight line.</p>
+                <p>3. Correct words turn <strong>yellow with red border</strong>.</p>
+                <p>4. Beat the <strong>2-minute</strong> clock to win!</p>
+                <p style="margin-top:8px; font-weight:600;">💡 Words run horizontally (→) or vertically (↓) only.</p>
+                <button class="btn primary" style="width:100%; margin-top:12px;" onclick="navTo('screen-game')">Back to Game</button>
+            </div>
+        </section>
+
+        <!-- DICTIONARY SCREEN -->
+        <section id="screen-dict" class="screen">
+            <div class="glass-card" style="align-items:flex-start; width:100%;">
+                <h2>📚 Words to Find</h2>
+                <p>Tap any word to highlight it on the grid:</p>
+                <div class="word-list" id="word-list"></div>
+                <button class="btn" style="width:100%; margin-top:10px;" onclick="navTo('screen-game')">Close</button>
+            </div>
+        </section>
+    </div>
+
+    <nav class="bottom-nav">
+        <button class="nav-btn active" data-target="screen-game">🎮 Play</button>
+        <button class="nav-btn" data-target="screen-help">📖 Guide</button>
+        <button class="nav-btn" data-target="screen-dict">📚 Words</button>
+    </nav>
+
+    <!-- END MODAL -->
+    <div class="modal-overlay" id="modal-end">
+        <div class="modal-box">
+            <div class="modal-title" id="modal-title">You Win!</div>
+            <div class="modal-msg" id="modal-msg">Nice — you found all the words.</div>
+            <button class="btn primary" style="width:100%;" id="btn-play-again">Play Again</button>
+        </div>
+    </div>
+</div>
+
+<script src="dict101.js"></script>
+<script>
+    // === HARDWARE-OPTIMIZED DOM CACHE ===
+    const UI = {
+      timer: document.getElementById('disp-timer'),
+      progress: document.getElementById('disp-progress'),
+      grid: document.getElementById('grid'),
+      msg: document.getElementById('game-msg'),
+      btnNew: document.getElementById('btn-new'),
+      btnHint: document.getElementById('btn-hint'),
+      btnPause: document.getElementById('btn-pause'),
+      btnWords: document.getElementById('btn-words'),
+      btnAgain: document.getElementById('btn-play-again'),
+      modal: document.getElementById('modal-end'),
+      mTitle: document.getElementById('modal-title'),
+      mMsg: document.getElementById('modal-msg'),
+      wordList: document.getElementById('word-list')
+    };
+
+    // === GAME CONFIG ===
+    const ROWS = 9, COLS = 9, TIME_LIMIT = 120, MIN_WORDS = 9, MAX_WORDS = 12;
+
+    // === STATE ===
+    let grid = [], placedWords = [], foundWords = new Set(), startCell = null;
+    let timer = TIME_LIMIT, timerInterval = null, isPaused = false, isGameOver = false;
+
+    // === INIT ===
+    function init() {
+      clearInterval(timerInterval);
+      grid = Array(ROWS).fill(null).map(() => Array(COLS).fill(''));
+      placedWords = []; foundWords.clear(); startCell = null;
+      timer = TIME_LIMIT; isPaused = false; isGameOver = false;
+
+      placeWordsSmart(); // Non-overlapping placement
+      fillRandom();
+      renderGrid();
+      renderWordList();
+      updateUI();
+      startTimer();
+      UI.modal.classList.remove('active');
+    }
+
+    // === SMART WORD PLACEMENT (MINIMIZE OVERLAPS) ===
+    function placeWordsSmart() {
+      const shuffled = [...dict101].sort(() => 0.5 - Math.random());
+      let placed = 0, target = Math.floor(Math.random() * (MAX_WORDS - MIN_WORDS + 1)) + MIN_WORDS;
+
+      for (let word of shuffled) {
+        if (placed >= target) break;
+        if (word.length > 9) continue; // Skip words too long for 9x9
+
+        let best = null, bestScore = -1;
+        // Try 150 placement attempts per word
+        for (let att = 0; att < 150; att++) {
+          const dir = Math.random() > 0.5 ? 'H' : 'V';
+          const maxR = dir === 'H' ? ROWS : ROWS - word.length + 1;
+          const maxC = dir === 'V' ? COLS : COLS - word.length + 1;
+          if (maxR <= 0 || maxC <= 0) continue;
+
+          const r = Math.floor(Math.random() * maxR);
+          const c = Math.floor(Math.random() * maxC);
+          if (!canPlace(word, r, c, dir)) continue;
+
+          // Score: prefer placements with fewer overlaps with already-placed words
+          const overlap = countOverlaps(word, r, c, dir);
+          if (overlap > bestScore) { bestScore = overlap; best = { word, r, c, dir, overlap }; }
+        }
+
+        if (best) {
+          place(best.word, best.r, best.c, best.dir);
+          placedWords.push({ word: best.word, r: best.r, c: best.c, dir: best.dir });
+          placed++;
+        }
+      }
+
+      // Fallback: ensure minimum words placed
+      if (placedWords.length < MIN_WORDS) {
+        placedWords = placedWords.slice(0, MIN_WORDS);
+        grid = Array(ROWS).fill(null).map(() => Array(COLS).fill(''));
+        placedWords.forEach(pw => place(pw.word, pw.r, pw.c, pw.dir));
+      }
+    }
+
+    function countOverlaps(word, r, c, dir) {
+      let overlaps = 0;
+      for (let i = 0; i < word.length; i++) {
+        const cr = dir === 'H' ? r : r + i;
+        const cc = dir === 'H' ? c + i : c;
+        if (grid[cr][cc]) overlaps++;
+      }
+      return overlaps; // Lower = better (prefer empty cells)
+    }
+
+    function canPlace(word, r, c, dir) {
+      for (let i = 0; i < word.length; i++) {
+        const cr = dir === 'H' ? r : r + i;
+        const cc = dir === 'H' ? c + i : c;
+        if (grid[cr][cc] && grid[cr][cc] !== word[i]) return false;
+      }
+      return true;
+    }
+
+    function place(word, r, c, dir) {
+      for (let i = 0; i < word.length; i++) {
+        const cr = dir === 'H' ? r : r + i;
+        const cc = dir === 'H' ? c + i : c;
+        grid[cr][cc] = word[i];
+      }
+    }
+
+    function fillRandom() {
+      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          if (!grid[r][c]) grid[r][c] = letters[Math.floor(Math.random() * letters.length)];
+        }
+      }
+    }
+
+    // === RENDERING ===
+    function renderGrid() {
+      UI.grid.innerHTML = '';
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          const cell = document.createElement('div');
+          cell.className = 'cell';
+          cell.dataset.r = r; cell.dataset.c = c;
+          cell.textContent = grid[r][c];
+          cell.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            handleCellTap(r, c);
+          });
+          UI.grid.appendChild(cell);
+        }
+      }
+    }
+
+    function renderWordList() {
+      UI.wordList.innerHTML = placedWords.map(pw =>
+        `<div class="word-item ${foundWords.has(pw.word)?'found':''}" data-word="${pw.word}">${pw.word}</div>`
+      ).join('');
+      UI.wordList.querySelectorAll('.word-item').forEach(item => {
+        item.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          highlightWordOnGrid(placedWords.find(p => p.word === item.dataset.word));
+        });
+      });
+      UI.btnWords.textContent = `📖 Words: ${placedWords.length}`;
+    }
+
+    // === GAME LOGIC ===
+    function handleCellTap(r, c) {
+      if (isPaused || isGameOver) return;
+      if (!startCell) {
+        startCell = { r, c };
+        highlightSelection(r, c);
+        UI.msg.textContent = "Now tap end cell (same row/col)";
+      } else {
+        validateAndMark(startCell.r, startCell.c, r, c);
+        startCell = null;
+        clearHighlights();
+        UI.msg.textContent = foundWords.size === placedWords.length ? "🎉 All found!" : "Select start cell";
+      }
+    }
+
+    function highlightSelection(r, c) {
+      clearHighlights();
+      getCellEl(r, c)?.classList.add('selected');
+    }
+
+    function clearHighlights() {
+      document.querySelectorAll('.cell.selected').forEach(c => c.classList.remove('selected'));
+    }
+
+    function getCellEl(r, c) {
+      return UI.grid.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
+    }
+
+    function validateAndMark(r1, c1, r2, c2) {
+      if (r1 === r2 && c1 === c2) return;
+      if (r1 !== r2 && c1 !== c2) return; // Straight lines only
+
+      const dir = r1 === r2 ? 'H' : 'V';
+      const len = dir === 'H' ? Math.abs(c2 - c1) + 1 : Math.abs(r2 - r1) + 1;
+      const startR = dir === 'H' ? r1 : Math.min(r1, r2);
+      const startC = dir === 'H' ? Math.min(c1, c2) : c1;
+
+      let word = '';
+      const cells = [];
+      for (let i = 0; i < len; i++) {
+        const cr = dir === 'H' ? startR : startR + i;
+        const cc = dir === 'H' ? startC + i : startC;
+        word += grid[cr][cc];
+        cells.push({ r: cr, c: cc });
+      }
+
+      const rev = word.split('').reverse().join('');
+      const match = placedWords.find(pw =>
+        !foundWords.has(pw.word) && (pw.word === word || pw.word === rev)
+      );
+
+      if (match) {
+        foundWords.add(match.word);
+        cells.forEach(({ r, c }) => getCellEl(r, c)?.classList.add('found'));
+        renderWordList();
+        updateUI();
+        if (foundWords.size === placedWords.length) endGame(true);
+      }
+    }
+
+    // === TIMER & UI ===
+    function startTimer() {
+      clearInterval(timerInterval);
+      updateTimerDisplay();
+      timerInterval = setInterval(() => {
+        if (!isPaused) {
+          timer--;
+          updateTimerDisplay();
+          if (timer <= 0) endGame(false);
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const m = Math.floor(timer / 60).toString().padStart(2, '0');
+      const s = (timer % 60).toString().padStart(2, '0');
+      UI.timer.textContent = `⏱️ ${m}:${s}`;
+      UI.timer.style.color = timer < 15 ? 'var(--danger)' : 'var(--text-main)';
+    }
+
+    function updateUI() {
+      UI.progress.textContent = `Found: ${foundWords.size} / ${placedWords.length}`;
+    }
+
+    function endGame(won) {
+      isGameOver = true;
+      clearInterval(timerInterval);
+      UI.mTitle.textContent = won ? '🎉 You Win!' : '⏰ Time\'s Up!';
+      UI.mMsg.textContent = won
+        ? `Found all ${placedWords.length} words!`
+        : `Found ${foundWords.size}/${placedWords.length}. Words: ${placedWords.map(p=>p.word).join(', ')}`;
+      UI.modal.classList.add('active');
+    }
+
+    // === CONTROLS ===
+    function setupControls() {
+      UI.btnNew.addEventListener('pointerdown', e => { e.preventDefault(); init(); });
+      UI.btnPause.addEventListener('pointerdown', e => {
+        e.preventDefault();
+        isPaused = !isPaused;
+        UI.btnPause.textContent = isPaused ? '▶️ Resume' : '⏸️ Pause';
+      });
+      UI.btnHint.addEventListener('pointerdown', e => {
+        e.preventDefault();
+        if (isPaused || isGameOver) return;
+        const unfound = placedWords.find(p => !foundWords.has(p.word));
+        if (unfound) {
+          alert(`💡 "${unfound.word}" starts at row ${unfound.r+1}, col ${unfound.c+1} (${unfound.dir==='H'?'→':'↓'})`);
+        }
+      });
+      UI.btnAgain.addEventListener('pointerdown', e => { e.preventDefault(); UI.modal.classList.remove('active'); init(); });
+    }
+
+    // === NAVIGATION ===
+    function navTo(id) {
+      document.querySelectorAll('.screen').forEach(s => {
+        if (s.id === id) { s.classList.add('active'); s.classList.remove('exit'); }
+        else { s.classList.remove('active'); s.classList.add('exit'); }
+      });
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.target === id));
+    }
+
+    function highlightWordOnGrid(pw) {
+      if (!pw) return;
+      clearHighlights();
+      for (let i = 0; i < pw.word.length; i++) {
+        const cr = pw.dir === 'H' ? pw.r : pw.r + i;
+        const cc = pw.dir === 'H' ? pw.c + i : pw.c;
+        getCellEl(cr, cc)?.classList.add('selected');
+      }
+      setTimeout(clearHighlights, 1200);
+      navTo('screen-game');
+    }
+
+    // === BOOT ===
+    document.addEventListener('DOMContentLoaded', () => {
+      // Navigation events
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('pointerdown', e => {
+        e.preventDefault(); navTo(btn.dataset.target);
+      }));
+      setupControls();
+      init();
+    });
+
+    // === TOUCH OPTIMIZATIONS ===
+    document.addEventListener('touchstart', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+    document.addEventListener('gesturestart', e => e.preventDefault());
+</script>
+</body>
+</html>

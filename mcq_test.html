@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EKA CBT QUIZ | MATHS 9 | UNIT - 01</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="quiz_data.js"></script>
+
+    <style>
+        /* ==================== 1. THEME VARIABLES ==================== */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a, #1e3a8a, #064e3b, #0284c7);
+            --glass-bg: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25);
+            --accent-blue: #4facfe;
+            --accent-cyan: #00f2fe;
+            --text-light: #ffffff;
+            --correct: #2ecc71;
+            --wrong: #e74c3c;
+            --font-main: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        /* Pastel Beige Theme */
+        [data-theme="pastel-beige"] {
+            --bg-gradient: linear-gradient(135deg, #f8f4e6, #e6d9b8, #fff9ec);
+            --glass-bg: rgba(255, 249, 236, 0.85);
+            --glass-border: #e6d9b8;
+            --glass-shadow: 0 8px 32px 0 rgba(201, 162, 39, 0.15);
+            --accent-blue: #c9a227;
+            --accent-cyan: #b88a1e;
+            --text-light: #3e2723;
+            --correct: #4caf50;
+            --wrong: #f44336;
+        }
+
+        /* Vanilla Yellow Theme */
+        [data-theme="vanilla-yellow"] {
+            --bg-gradient: linear-gradient(135deg, #fff8e1, #ffe082, #fff176);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: #ffe082;
+            --glass-shadow: 0 8px 32px 0 rgba(251, 192, 45, 0.2);
+            --accent-blue: #fbc02d;
+            --accent-cyan: #f9a825;
+            --text-light: #3e2723;
+            --correct: #4caf50;
+            --wrong: #f44336;
+        }
+
+        /* Soft Lavender Theme */
+        [data-theme="soft-lavender"] {
+            --bg-gradient: linear-gradient(135deg, #f3e5f5, #e1bee7, #d1c4e9);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: #e1bee7;
+            --glass-shadow: 0 8px 32px 0 rgba(126, 87, 194, 0.2);
+            --accent-blue: #7e57c2;
+            --accent-cyan: #6a1b9a;
+            --text-light: #311b92;
+            --correct: #4caf50;
+            --wrong: #f44336;
+        }
+
+        /* Mint Fresh Theme */
+        [data-theme="mint-fresh"] {
+            --bg-gradient: linear-gradient(135deg, #e0f2f1, #80cbc4, #b2dfdb);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: #80cbc4;
+            --glass-shadow: 0 8px 32px 0 rgba(38, 166, 154, 0.2);
+            --accent-blue: #26a69a;
+            --accent-cyan: #00897b;
+            --text-light: #004d40;
+            --correct: #4caf50;
+            --wrong: #f44336;
+        }
+
+        /* ==================== 2. GLOBAL STYLES ==================== */
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+        body {
+            font-family: var(--font-main);
+            background: var(--bg-gradient);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ==================== 3. RESPONSIVE CONTAINER ==================== */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: var(--glass-shadow);
+            padding: 20px;
+
+            /* Responsive Dimensions */
+            width: 95vw !important;
+            height: 90vh !important;
+            max-width: 500px;
+            max-height: 850px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.5s ease;
+            z-index: 10;
+        }
+
+        @media (min-width: 768px) {
+            .glass-panel {
+                width: 75vw !important;
+                height: 75vh !important;
+                padding: 30px;
+            }
+        }
+
+        .screen { display: none; flex-direction: column; align-items: center; gap: 20px; text-align: center; width: 100%; }
+        .screen.active { display: flex; }
+
+        h1, h2, h3 { font-weight: 700; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { font-size: 1.8rem; background: linear-gradient(to right, var(--accent-cyan), var(--accent-blue)); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 10px; }
+
+        /* Inputs */
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0,0,0,0.1);
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+        input:focus, textarea:focus { background: rgba(0,0,0,0.15); border-color: var(--accent-cyan); }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3);
+        }
+        .btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 25px rgba(0, 198, 255, 0.5); }
+        .btn:active { transform: translateY(1px) scale(0.98); }
+        .btn-secondary { background: rgba(255,255,255,0.15); box-shadow: none; color: var(--text-light); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.25); }
+
+        /* ==================== 4. ADAPTIVE FONTS & LAYOUT ==================== */
+        #questionText {
+            font-size: 1.4rem !important;
+            line-height: 1.3;
+            margin: 15px 0;
+            font-weight: 700;
+            color: var(--text-light);
+            text-align: left;
+            width: 100%;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            margin-top: 10px;
+            flex-grow: 1;
+        }
+
+        .option-card {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid var(--glass-border);
+            padding: 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.05rem !important;
+            font-weight: 500;
+            color: var(--text-light);
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+        .option-card:hover:not(.locked) { background: rgba(0,0,0,0.1); transform: translateY(-2px) scale(1.02); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .option-card:active:not(.locked) { transform: scale(0.96); }
+        .option-card.correct { background: rgba(46, 204, 113, 0.3) !important; border-color: var(--correct) !important; }
+        .option-card.wrong { background: rgba(231, 76, 60, 0.3) !important; border-color: var(--wrong) !important; }
+
+        /* Timer & Status */
+        .timer-bar-container { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin-bottom: 15px; }
+        .timer-bar { height: 100%; width: 100%; background: var(--accent-cyan); transition: width 1s linear, background 0.3s; border-radius: 10px; }
+        .timer-bar.danger { background: var(--wrong); }
+
+        .status-bar { display: flex; justify-content: space-between; width: 100%; margin-bottom: 10px; font-weight: 500; background: rgba(0,0,0,0.1); padding: 10px; border-radius: 8px; font-size: 1.1rem; }
+        .score-box { color: var(--accent-cyan); font-size: 1.2rem; }
+
+        /* ==================== 5. THEME SELECTOR ==================== */
+        .theme-selector {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .theme-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 2px solid var(--glass-border);
+            background: rgba(0,0,0,0.1);
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .theme-btn:hover { background: rgba(0,0,0,0.2); }
+        .theme-btn.active {
+            background: var(--accent-blue);
+            color: white;
+            border-color: var(--accent-blue);
+        }
+
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 100; }
+        .modal-content { background: rgba(20, 30, 50, 0.95); border: 1px solid var(--glass-border); padding: 25px; border-radius: 15px; width: 90%; max-width: 600px; transform-style: preserve-3d; color: white; }
+        textarea#tsvInput { height: 200px; resize: vertical; font-family: monospace; font-size: 0.9rem; margin-bottom: 15px; background: rgba(0,0,0,0.5); color: white; }
+
+        /* Certificate Overlay */
+        #certificate-wrapper {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+        .cert-box {
+            width: 7in;
+            height: 4in;
+            padding: 40px;
+            background: #ffffff;
+            color: #111;
+            border: 4px double #2c3e50;
+            position: relative;
+            font-family: 'Georgia', serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-shrink: 0;
+            transform: scale(0.9); /* Slight scale for mobile view */
+        }
+
+        /* Responsive scaling for small screens */
+        @media (max-width: 700px) {
+            .cert-box { transform: scale(0.5); margin: -80px 0; }
+        }
+        @media (max-width: 400px) {
+            .cert-box { transform: scale(0.4); margin: -120px 0; }
+        }
+
+        .cert-box::before { content: ''; position: absolute; inset: 8px; border: 2px solid #bdc3c7; pointer-events: none; }
+        .cert-logo { font-size: 2.5rem; margin-bottom: 5px; }
+        .cert-title { font-size: 1.8rem; color: #2c3e50; margin: 10px 0 5px; letter-spacing: 2px; }
+        .cert-name { font-size: 1.6rem; font-weight: bold; color: #3498db; border-bottom: 2px solid #bdc3c7; padding-bottom: 5px; margin-bottom: 15px; }
+        .cert-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 15px 0; font-size: 0.85rem; width: 90%; }
+        .cert-stat-item { background: #f8f9fa; padding: 5px; border-radius: 6px; border: 1px solid #e0e0e0; }
+        .cert-sign { display: flex; justify-content: space-between; width: 90%; margin-top: 25px; font-size: 0.9rem; }
+        .cert-sign div { border-top: 1px solid #333; padding-top: 5px; width: 30%; text-align: center; }
+
+        /* Emoji Popup */
+        .emoji-popup { position: fixed; pointer-events: none; animation: floatUp 1.2s forwards; font-size: 2.5rem; z-index: 50; }
+        @keyframes floatUp { 0% { transform: translateY(0) scale(0.5); opacity: 0; } 50% { transform: translateY(-30px) scale(1.2); opacity: 1; } 100% { transform: translateY(-60px) scale(1); opacity: 0; } }
+
+        @media print {
+            @page { size: 7in 4in landscape; margin: 0; }
+            body * { visibility: hidden; }
+            #certificate-wrapper, #certificate-wrapper * { visibility: visible; }
+            #certificate-wrapper { position: absolute; left: 0; top: 0; }
+            .action-bar { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <!-- Start Screen -->
+    <div id="startScreen" class="screen active">
+        <div class="glass-panel">
+            <h1 id="startTitle">🎓 EKA CBT QUIZ 🎓</h1><br>
+            <h1 id="startSubtitle">🎓 MATHS 9 | UNIT - 01</h1><br>
+            <p style="margin-bottom: 15px; opacity: 0.8;">Real & Complex Numbers Assessment</p>
+            <input type="text" id="studentName" placeholder="Enter Student Name" autocomplete="off">
+
+            <div class="theme-selector">
+                <button class="theme-btn active" onclick="App.setTheme('blue-green')" data-theme="blue-green">Blue-Green</button>
+                <button class="theme-btn" onclick="App.setTheme('pastel-beige')" data-theme="pastel-beige">Beige</button>
+                <button class="theme-btn" onclick="App.setTheme('vanilla-yellow')" data-theme="vanilla-yellow">Vanilla</button>
+                <button class="theme-btn" onclick="App.setTheme('soft-lavender')" data-theme="soft-lavender">Lavender</button>
+                <button class="theme-btn" onclick="App.setTheme('mint-fresh')" data-theme="mint-fresh">Mint</button>
+            </div>
+
+            <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
+                <button class="btn" onclick="App.startQuiz()">▶ START</button>
+                <button class="btn btn-secondary" onclick="App.openModal()"> Load Quiz Data</button>
+                <button class="btn btn-secondary" onclick="App.saveCSV()"> Download Scores (CSV)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quizScreen" class="screen">
+        <div class="glass-panel" style="padding: 20px;">
+            <div class="timer-bar-container"><div id="timerBar" class="timer-bar"></div></div>
+            <div class="status-bar">
+                <span>Q: <span id="qNum">1</span>/15</span>
+                <span class="score-box">Score: <span id="liveScore">0</span></span>
+                <span>Time: <span id="timeLeft">00:00</span></span>
+            </div>
+            <h2 id="questionText">Loading...</h2>
+            <div id="optionsGrid" class="options-grid"></div>
+            <div style="display: flex; justify-content: flex-end; margin-top: 15px; width: 100%;">
+                <button class="btn btn-secondary" id="skipBtn" onclick="App.skipQuestion()">⏭ SKIP / NEXT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="resultScreen" class="screen">
+        <div class="glass-panel">
+            <h1>🏆 Assessment Complete!</h1>
+            <h2 id="finalScoreText">Score: 0 / 15</h2>
+            <p id="finalPercentage">Percentage: 0%</p>
+            <p id="finalRemark" style="margin: 10px 0; font-weight: bold; color: var(--accent-cyan);"></p>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
+                <button class="btn" onclick="App.showCertificate()"> SEE RESULT</button>
+                <button class="btn btn-secondary" onclick="App.saveCSV()"> Download Scores (CSV)</button>
+                <button class="btn btn-secondary" onclick="location.reload()"> Restart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Certificate DOM -->
+    <div id="certificate-wrapper">
+        <div class="cert-box" id="certContent">
+            <div class="cert-logo">🏛️</div>
+            <div class="cert-title">THE FUTURE ACADEMY</div>
+            <div style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">Mathematics Assessment - Grade 9, Unit 01</div>
+            <div style="font-size: 0.95rem; margin-bottom: 5px;">This is to certify that</div>
+            <div class="cert-name" id="certName">Student Name</div>
+            <div style="font-size: 0.95rem;">has successfully completed the quiz with</div>
+            <div class="cert-stats" id="certStats">
+                <div class="cert-stat-item">Questions: <span id="cTotal">15</span></div>
+                <div class="cert-stat-item">Correct: <span id="cCorrect">0</span></div>
+                <div class="cert-stat-item">Wrong: <span id="cWrong">0</span></div>
+                <div class="cert-stat-item">Skipped: <span id="cSkipped">0</span></div>
+                <div class="cert-stat-item">Percentage: <span id="cPercent">0%</span></div>
+                <div class="cert-stat-item">Grade: <span id="cGrade">-</span></div>
+            </div>
+            <div id="certRemark" style="font-style: italic; color: #2c3e50; margin: 10px 0;"></div>
+            <div class="cert-sign">
+                <div>Principal</div>
+                <div>Math Teacher</div>
+                <div id="certDate">Date</div>
+            </div>
+            <div style="margin-top: 20px;" class="action-bar" data-html2canvas-ignore="true">
+                <button class="btn" onclick="App.saveJPG()">🖼️ Save JPG</button>
+                <button class="btn btn-secondary" onclick="App.copyCSV()">📋 Copy Text</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('certificate-wrapper').style.display='none'">❌ Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="dataModal">
+    <div class="modal-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3>Paste Quiz Data (TSV Format)</h3>
+            <button style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;" onclick="App.closeModal()">×</button>
+        </div>
+        <textarea id="tsvInput" placeholder="Paste TSV here..."></textarea>
+        <div style="display: flex; gap: 10px;">
+            <button class="btn" onclick="App.parseAndSaveTSV()">💾 Parse & Save</button>
+            <button class="btn btn-secondary" onclick="App.clearTSV()">🗑️ Clear</button>
+        </div>
+    </div>
+</div>
+
+<script>
+;(function() {
+    'use strict';
+
+    const CONFIG = {
+        maxQuestionsPerQuiz: 5,
+        timerDurationSec: 100,
+        autoAdvanceDelay: 500,
+        points: { correct: 1, wrong: 0 },
+        passingThreshold: 80
+    };
+
+    const state = {
+        questions: [],
+        currentQIndex: 0,
+        score: 0,
+        correctCount: 0,
+        wrongCount: 0,
+        skippedCount: 0,
+        timeLeft: CONFIG.timerDurationSec,
+        timerInterval: null,
+        isLocked: false,
+        studentName: ''
+    };
+
+    const DOM = {
+        screens: { start: document.getElementById('startScreen'), quiz: document.getElementById('quizScreen'), result: document.getElementById('resultScreen') },
+        nameInput: document.getElementById('studentName'),
+        timerBar: document.getElementById('timerBar'),
+        qNum: document.getElementById('qNum'),
+        liveScore: document.getElementById('liveScore'),
+        timeLeft: document.getElementById('timeLeft'),
+        qText: document.getElementById('questionText'),
+        optGrid: document.getElementById('optionsGrid'),
+        finalScore: document.getElementById('finalScoreText'),
+        finalPercent: document.getElementById('finalPercentage'),
+        finalRemark: document.getElementById('finalRemark'),
+        modal: document.getElementById('dataModal'),
+        tsvInput: document.getElementById('tsvInput'),
+        certContent: document.getElementById('certContent')
+    };
+
+    const DEFAULT_TSV = `What is the value of √16?	4	8	-4	Both A & C	A
+Which of the following is an irrational number?	√2	0.5	3/4	-5	A
+Simplify: i²	-1	1	i	-i	A
+What is the conjugate of 3 + 4i?	3 - 4i	-3 + 4i	4 + 3i	3 + 4i	A
+Evaluate: 2⁰ + 3¹	4	3	1	5	A
+If x² = -9, what are the values of x?	±3	±3i	9	-9	B
+Which set contains only rational numbers?	{1.2, 0, -3}	{π, √2, 1}	{e, 2, 0.5}	{√3, -1, 2}	A
+Simplify: (2i)(3i)	-6	6	6i	-6i	A
+What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both B & C	C
+√(9×4) = ?	6	36	12	18	A`;
+
+    function init() {
+        const params = new URLSearchParams(window.location.search);
+        const quizKey = params.get('quiz') || 'maths9_u1';
+        const activeQuiz = QUIZ_DATA[quizKey] || QUIZ_DATA['maths9_u1'];
+
+        document.getElementById('startTitle').innerText = `🎓 ${activeQuiz.title} 🎓`;
+        document.getElementById('startSubtitle').innerText = activeQuiz.subtitle;
+
+        parseTSV(activeQuiz.tsv);
+        document.getElementById('certDate').innerText = new Date().toLocaleDateString();
+    }
+
+    function parseTSV(data) {
+        state.questions = [];
+        const lines = data.trim().split('\n');
+        lines.forEach(line => {
+            const cols = line.split('\t');
+            if (cols.length >= 6) {
+                state.questions.push({
+                    q: cols[0].trim(),
+                    opts: [cols[1].trim(), cols[2].trim(), cols[3].trim(), cols[4].trim()],
+                    ans: cols[5].trim().toUpperCase()
+                });
+            }
+        });
+    }
+
+    function shuffleArray(arr) {
+        let a = [...arr];
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+    function showScreen(name) {
+        Object.values(DOM.screens).forEach(s => s.classList.remove('active'));
+        DOM.screens[name].classList.add('active');
+    }
+
+    function startQuiz() {
+        const name = DOM.nameInput.value.trim();
+        if (!name) return alert('Please enter your name.');
+        state.studentName = name;
+        state.questions = shuffleArray(state.questions).slice(0, CONFIG.maxQuestionsPerQuiz);
+        state.currentQIndex = 0;
+        state.score = 0;
+        state.correctCount = 0;
+        state.wrongCount = 0;
+        state.skippedCount = 0;
+        state.timeLeft = CONFIG.timerDurationSec;
+
+        showScreen('quiz');
+        startTimer();
+        renderQuestion();
+    }
+
+    function renderQuestion() {
+        if (state.currentQIndex >= state.questions.length) return endQuiz();
+        const q = state.questions[state.currentQIndex];
+        DOM.qNum.innerText = state.currentQIndex + 1;
+        DOM.qText.innerText = q.q;
+        DOM.optGrid.innerHTML = '';
+        state.isLocked = false;
+
+        q.opts.forEach((opt, idx) => {
+            const btn = document.createElement('div');
+            btn.className = 'option-card';
+            btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
+            btn.onclick = (e) => handleAnswer(idx, btn, e);
+            DOM.optGrid.appendChild(btn);
+        });
+    }
+
+    function handleAnswer(idx, el, event) {
+        if (state.isLocked) return;
+        state.isLocked = true;
+        const q = state.questions[state.currentQIndex];
+        const correctIdx = q.ans.charCodeAt(0) - 65;
+        const isCorrect = idx === correctIdx;
+
+        if (isCorrect) {
+            state.score++;
+            state.correctCount++;
+            el.classList.add('correct');
+        } else {
+            state.wrongCount++;
+            el.classList.add('wrong');
+            DOM.optGrid.children[correctIdx].classList.add('correct');
+        }
+        DOM.liveScore.innerText = state.score;
+        setTimeout(() => {
+            state.currentQIndex++;
+            renderQuestion();
+        }, CONFIG.autoAdvanceDelay);
+    }
+
+    function skipQuestion() {
+        if (state.isLocked) return;
+        state.skippedCount++;
+        state.currentQIndex++;
+        renderQuestion();
+    }
+
+    function startTimer() {
+        clearInterval(state.timerInterval);
+        state.timerInterval = setInterval(() => {
+            state.timeLeft--;
+            updateTimerUI();
+            if (state.timeLeft <= 0) endQuiz();
+        }, 1000);
+    }
+
+    function updateTimerUI() {
+        const mins = Math.floor(state.timeLeft / 60).toString().padStart(2, '0');
+        const secs = (state.timeLeft % 60).toString().padStart(2, '0');
+        DOM.timeLeft.innerText = `${mins}:${secs}`;
+        DOM.timerBar.style.width = `${(state.timeLeft / CONFIG.timerDurationSec) * 100}%`;
+    }
+
+    function endQuiz() {
+        clearInterval(state.timerInterval);
+        showScreen('result');
+        const percent = Math.round((state.score / state.questions.length) * 100);
+        DOM.finalScore.innerText = `Score: ${state.score} / ${state.questions.length}`;
+        DOM.finalPercent.innerText = `Percentage: ${percent}%`;
+    }
+
+    function showCertificate() {
+        document.getElementById('certName').innerText = state.studentName;
+        document.getElementById('cTotal').innerText = state.questions.length;
+        document.getElementById('cCorrect').innerText = state.correctCount;
+        document.getElementById('cWrong').innerText = state.wrongCount;
+        document.getElementById('cSkipped').innerText = state.skippedCount;
+        const pct = Math.round((state.score / state.questions.length) * 100);
+        document.getElementById('cPercent').innerText = `${pct}%`;
+        document.getElementById('cGrade').innerText = pct >= 90 ? 'A+' : pct >= 70 ? 'A' : 'B';
+        document.getElementById('certificate-wrapper').style.display = 'flex';
+    }
+
+    function copyCSV() {
+        const percent = Math.round((state.score / state.questions.length) * 100);
+        const summary = `🏆 EKA QUIZ RESULT 🏆\n` +
+                        `Name: ${state.studentName}\n` +
+                        `Questions: ${state.questions.length}\n` +
+                        `Score: ${state.score}\n` +
+                        `Percentage: ${percent}%\n` +
+                        `Date: ${new Date().toLocaleDateString()}`;
+
+        navigator.clipboard.writeText(summary).then(() => {
+            alert("Quiz result copied to clipboard!");
+        }).catch(err => {
+            // Fallback for some older WebViews
+            const textArea = document.createElement("textarea");
+            textArea.value = summary;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            alert("Quiz result copied to clipboard!");
+        });
+    }
+
+    async function saveJPG() {
+        try {
+            console.log("Starting JPG Save...");
+            const canvas = await html2canvas(DOM.certContent, {
+                scale: 2,
+                useCORS: true,
+                logging: true,
+                backgroundColor: "#ffffff"
+            });
+
+            // Using DataURL for better WebView compatibility
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+            const link = document.createElement('a');
+            link.download = `EKA_Result_${state.studentName.replace(/\s+/g, '_')}.jpg`;
+            link.href = dataUrl;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            alert("Image generated! Check your downloads or gallery.");
+        } catch (e) {
+            alert("Error saving image. Error: " + e.message);
+            console.error(e);
+        }
+    }
+
+    function openModal() { DOM.modal.style.display = 'flex'; }
+    function closeModal() { DOM.modal.style.display = 'none'; }
+    function parseAndSaveTSV() { parseTSV(DOM.tsvInput.value); alert('Loaded!'); closeModal(); }
+
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.theme === theme));
+    }
+
+    window.App = { startQuiz, skipQuestion, showCertificate, saveJPG, copyCSV, openModal, closeModal, parseAndSaveTSV, setTheme };
+    init();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Physics Class 9 Exercises - EKA SIR</title>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-heavy: rgba(255, 255, 255, 0.4);
+            --sky-blue: #87CEEB;
+            --mint-green: #98FF98;
+            --text-dark: #1a5f7a;
+            --border: rgba(255, 255, 255, 0.5);
+            --accent: #ff6b6b;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), inset 0 0 15px rgba(255, 255, 255, 0.3);
+            box-sizing: border-box;
+        }
+
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .back-btn {
+            background: var(--glass-heavy);
+            padding: 10px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: bold;
+            border: 1px solid var(--border);
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .back-btn:active { transform: scale(0.9); }
+
+        h1 {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .chapter-title {
+            background: var(--text-dark);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 10px;
+            margin: 20px 0 10px 0;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .ex-btn {
+            background: var(--glass-heavy);
+            border: 1px solid var(--border);
+            padding: 12px 5px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .ex-btn:active {
+            background: #fff;
+            transform: scale(0.95);
+        }
+
+        .ex-btn span {
+            font-size: 0.65rem;
+            opacity: 0.8;
+        }
+
+        /* YouTube Icon styling */
+        .ex-btn::after {
+            content: "▶";
+            font-size: 0.7rem;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="nav-header">
+        <a href="notes.html" class="back-btn">⬅ Back</a>
+        <h1>Physics Class 9</h1>
+    </div>
+
+    <p style="text-align:center; font-size: 0.8rem; margin-bottom: 20px; font-weight: 600;">Sindh Text Book Board (Video Solutions)</p>
+
+    <div class="chapter-title">Chapter 1: Physical Quantities & Measurement</div>
+    <div class="exercise-grid" id="ch1-grid"></div>
+
+    <div class="chapter-title">Chapter 2: Kinematics</div>
+    <div class="exercise-grid" id="ch2-grid"></div>
+
+    <div class="chapter-title">Chapter 3: Dynamics</div>
+    <div class="exercise-grid" id="ch3-grid"></div>
+
+    <div class="chapter-title">Chapter 4: Turning Effect of Forces</div>
+    <div class="exercise-grid" id="ch4-grid"></div>
+
+    <div class="chapter-title">Chapter 5: Forces and Matter</div>
+    <div class="exercise-grid" id="ch5-grid"></div>
+
+    <div class="chapter-title">Chapter 6: Gravitation</div>
+    <div class="exercise-grid" id="ch6-grid"></div>
+
+    <div class="chapter-title">Chapter 7: Properties of Matter</div>
+    <div class="exercise-grid" id="ch7-grid"></div>
+
+    <div class="chapter-title">Chapter 8: Thermal Properties of Matter</div>
+    <div class="exercise-grid" id="ch8-grid"></div>
+
+    <div class="chapter-title">Chapter 9: Transfer of Heat</div>
+    <div class="exercise-grid" id="ch9-grid"></div>
+
+</div>
+
+<script>
+    const structure = [
+        { ch: 1, count: 3 },
+        { ch: 2, count: 4 },
+        { ch: 3, count: 3 },
+        { ch: 4, count: 3 },
+        { ch: 5, count: 3 },
+        { ch: 6, count: 2 },
+        { ch: 7, count: 3 },
+        { ch: 8, count: 3 },
+        { ch: 9, count: 2 }
+    ];
+
+    const placeholderLink = "https://youtube.com/shorts/Ng7K0lxyDE0";
+
+    function generateButtons() {
+        structure.forEach(item => {
+            const grid = document.getElementById(`ch${item.ch}-grid`);
+            if (!grid) return;
+
+            for (let i = 1; i <= item.count; i++) {
+                const exNum = `${item.ch}.${i}`;
+                const btn = document.createElement('a');
+                btn.className = 'ex-btn';
+                btn.href = placeholderLink;
+                btn.target = "_blank";
+                btn.innerHTML = `<span>Exercise</span>Ex#${exNum}`;
+                grid.appendChild(btn);
+            }
+        });
+    }
+
+    generateButtons();
+</script>
+
+</body>
+</html>

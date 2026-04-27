@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EKA UNIT PRO MOBILE</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Ice Cube / Glassmorphism Theme (Default) */
+            --bg: linear-gradient(135deg, #0f172a, #1e293b);
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --plate: rgba(255, 255, 255, 0.05);
+            --plate-border: rgba(255, 255, 255, 0.1);
+            --text: #f8fafc;
+            --accent: #38bdf8;
+            --border: rgba(255, 255, 255, 0.1);
+            --safe-top: env(safe-area-inset-top, 20px);
+            --safe-bottom: env(safe-area-inset-bottom, 20px);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* 9:16 Mobile Header */
+        header {
+            padding: var(--safe-top) 20px 15px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .brand { font-weight: 900; font-size: 1.1rem; letter-spacing: 2px; color: var(--accent); }
+
+        /* Scrollable Main Area */
+        main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            scroll-behavior: smooth;
+        }
+
+        .unit-list { display: flex; flex-direction: column; gap: 12px; }
+
+        /* Professional Mobile Input Cards */
+        .unit-card {
+            background: var(--plate);
+            border: 1px solid var(--plate-border);
+            border-radius: 16px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .unit-card:focus-within {
+            border-color: var(--accent);
+            background: rgba(56, 189, 248, 0.05);
+            transform: scale(1.02);
+        }
+
+        .unit-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--accent);
+            width: 35%;
+        }
+
+        .input-wrapper { width: 65%; text-align: right; }
+
+        input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.4rem;
+            text-align: right;
+            outline: none;
+        }
+
+        /* Bottom Category Navigation */
+        .category-bar {
+            background: var(--card-bg);
+            backdrop-filter: blur(25px);
+            border-top: 1px solid var(--border);
+            padding: 10px 10px var(--safe-bottom);
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            gap: 10px;
+        }
+
+        .category-bar::-webkit-scrollbar { display: none; }
+
+        .cat-btn {
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .cat-btn.active {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="brand">EKA UNIT PRO</div>
+</header>
+
+<main id="app">
+    <div class="unit-list" id="unitList">
+    </div>
+</main>
+
+<nav class="category-bar" id="catBar">
+</nav>
+
+<script>
+    const conversionData = {
+        Length: { m: 1, km: 0.001, cm: 100, mm: 1000, inch: 39.3701, ft: 3.28084, yard: 1.09361, mile: 0.000621371 },
+        Weight: { kg: 1, g: 1000, mg: 1000000, lb: 2.20462, oz: 35.274, ton: 0.001 },
+        Pressure: { pa: 1, bar: 0.00001, psi: 0.000145038, atm: 0.0000098692, mmhg: 0.00750062 },
+        Temperature: { celsius: 1, kelvin: 1, fahrenheit: 1, rankine: 1 }
+    };
+
+    let activeCat = 'Length';
+
+    function fmt(n) {
+        if (n === 0) return "0";
+        let absN = Math.abs(n);
+        if (absN >= 1e9 || (absN < 0.0001 && absN > 0)) return n.toExponential(4);
+        return parseFloat(n.toFixed(6)).toString();
+    }
+
+    function syncAll(srcId, value) {
+        const num = parseFloat(value);
+        if (isNaN(num)) return;
+
+        const units = conversionData[activeCat];
+        let base;
+
+        // Normalization to Base
+        if (activeCat === 'Temperature') {
+            if (srcId === 'celsius') base = num;
+            else if (srcId === 'kelvin') base = num - 273.15;
+            else if (srcId === 'fahrenheit') base = (num - 32) * 5/9;
+            else base = (num - 491.67) * 5/9;
+        } else {
+            base = num / units[srcId];
+        }
+
+        // Update All Fields
+        Object.keys(units).forEach(key => {
+            if (key === srcId) return;
+            let res;
+            if (activeCat === 'Temperature') {
+                if (key === 'celsius') res = base;
+                else if (key === 'kelvin') res = base + 273.15;
+                else if (key === 'fahrenheit') res = (base * 9/5) + 32;
+                else res = (base + 273.15) * 9/5;
+            } else {
+                res = base * units[key];
+            }
+            document.getElementById(key).value = fmt(res);
+        });
+    }
+
+    function render() {
+        const list = document.getElementById('unitList');
+        list.innerHTML = '';
+
+        Object.keys(conversionData[activeCat]).forEach(key => {
+            const card = document.createElement('div');
+            card.className = 'unit-card';
+            card.innerHTML = `
+                <div class="unit-label">${key}</div>
+                <div class="input-wrapper">
+                    <input type="number" inputmode="decimal" id="${key}" placeholder="0"
+                        oninput="syncAll('${key}', this.value)">
+                </div>
+            `;
+            list.appendChild(card);
+        });
+
+        // Render Categories
+        const bar = document.getElementById('catBar');
+        bar.innerHTML = '';
+        Object.keys(conversionData).forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = `cat-btn ${cat === activeCat ? 'active' : ''}`;
+            btn.innerText = cat;
+            btn.onclick = () => { activeCat = cat; render(); };
+            bar.appendChild(btn);
+        });
+    }
+
+    render();
+</script>
+</body>
+</html>

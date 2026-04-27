@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>EKA Studio Pro - Ultimate Scientific</title>
+    <style>
+        :root {
+            --sky-blue: #87CEEB;
+            --mint-green: #98FF98;
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.45);
+            --text-dark: #1a5f7a;
+            --accent-white: rgba(255, 255, 255, 0.6);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
+            height: 100vh; width: 100vw;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            overflow: hidden;
+            color: var(--text-dark);
+        }
+
+        /* Responsive Container */
+        #app-container {
+            width: 100%; max-width: 450px; height: 100%;
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            display: flex; flex-direction: column;
+            position: relative;
+        }
+
+        /* 5-Option Navigation */
+        nav {
+            height: 70px;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex; justify-content: space-around; align-items: center;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .nav-item {
+            text-align: center; font-size: 10px; font-weight: bold;
+            opacity: 0.5; cursor: pointer; transition: 0.3s;
+        }
+
+        .nav-item.active { opacity: 1; transform: scale(1.1); color: #000; }
+
+        /* Screen Setup */
+        .screen {
+            flex: 1; padding: 15px; display: none; flex-direction: column;
+            animation: slideUp 0.3s ease;
+        }
+
+        .screen.active { display: flex; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Displays */
+        .display-box {
+            height: 120px; background: var(--accent-white); border-radius: 20px;
+            margin-bottom: 15px; padding: 20px;
+            display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end;
+            border: 1px solid var(--glass-border); box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        #mini-view { font-size: 0.9rem; opacity: 0.6; }
+        #main-view { font-size: 2.2rem; font-weight: 300; }
+
+        /* Grids */
+        .grid { display: grid; gap: 8px; flex: 1; }
+        .grid-basic { grid-template-columns: repeat(4, 1fr); }
+        .grid-sci { grid-template-columns: repeat(5, 1fr); }
+
+        /* 3D Glass Buttons */
+        .btn {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            border-radius: 12px; font-size: 1rem; font-weight: 600; color: var(--text-dark);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.1s;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+        }
+
+        .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,0.1); background: #fff; }
+        .btn.op { background: rgba(152, 255, 152, 0.4); }
+        .btn.action { background: var(--text-dark); color: white; }
+        .btn.sci-key { font-size: 0.8rem; background: rgba(135, 206, 235, 0.4); }
+
+        /* Content List */
+        .list-item { background: var(--glass); padding: 12px; border-radius: 10px; margin-bottom: 8px; border: 1px solid var(--glass-border); }
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+
+    <div id="scr-home" class="screen active">
+        <div style="margin: auto; text-align: center;">
+            <div style="width:80px; height:80px; background:#fff; border-radius:20px; margin:0 auto 15px; display:flex; align-items:center; justify-content:center; font-size:2.5rem; box-shadow: 10px 10px 20px rgba(0,0,0,0.05);">E</div>
+            <h2>EKA STUDIO PRO</h2>
+            <p>Engineer Khurram Ali</p>
+        </div>
+    </div>
+
+    <div id="scr-norm" class="screen">
+        <div class="display-box"><div id="n-mini"></div><div id="n-main">0</div></div>
+        <div class="grid grid-basic">
+            <button class="btn op" onclick="cls()">AC</button>
+            <button class="btn op" onclick="inp('/')">÷</button>
+            <button class="btn op" onclick="inp('*')">×</button>
+            <button class="btn op" onclick="del()">⌫</button>
+            <button class="btn" onclick="inp('7')">7</button>
+            <button class="btn" onclick="inp('8')">8</button>
+            <button class="btn" onclick="inp('9')">9</button>
+            <button class="btn op" onclick="inp('-')">-</button>
+            <button class="btn" onclick="inp('4')">4</button>
+            <button class="btn" onclick="inp('5')">5</button>
+            <button class="btn" onclick="inp('6')">6</button>
+            <button class="btn op" onclick="inp('+')">+</button>
+            <button class="btn" onclick="inp('1')">1</button>
+            <button class="btn" onclick="inp('2')">2</button>
+            <button class="btn" onclick="inp('3')">3</button>
+            <button class="btn action" style="grid-row: span 2;" onclick="run()">=</button>
+            <button class="btn" style="grid-column: span 2;" onclick="inp('0')">0</button>
+            <button class="btn" onclick="inp('.')">.</button>
+        </div>
+    </div>
+
+    <div id="scr-sci" class="screen">
+        <div class="display-box"><div id="s-mini"></div><div id="s-main" style="font-size: 1.8rem;">0</div></div>
+        <div class="grid grid-sci">
+            <button class="btn sci-key" onclick="sciFn('sin')">sin</button>
+            <button class="btn sci-key" onclick="sciFn('cos')">cos</button>
+            <button class="btn sci-key" onclick="sciFn('tan')">tan</button>
+            <button class="btn sci-key" onclick="sciFn('log')">log</button>
+            <button class="btn sci-key" onclick="sciFn('ln')">ln</button>
+
+            <button class="btn sci-key" onclick="inp('Math.PI')">π</button>
+            <button class="btn sci-key" onclick="inp('Math.E')">e</button>
+            <button class="btn sci-key" onclick="sciFn('sqrt')">√</button>
+            <button class="btn sci-key" onclick="inp('**')">xʸ</button>
+            <button class="btn sci-key" onclick="sciFn('fact')">n!</button>
+
+            <button class="btn" onclick="inp('7')">7</button>
+            <button class="btn" onclick="inp('8')">8</button>
+            <button class="btn" onclick="inp('9')">9</button>
+            <button class="btn op" onclick="inp('(')">(</button>
+            <button class="btn op" onclick="inp(')')">)</button>
+
+            <button class="btn" onclick="inp('4')">4</button>
+            <button class="btn" onclick="inp('5')">5</button>
+            <button class="btn" onclick="inp('6')">6</button>
+            <button class="btn op" onclick="inp('*')">×</button>
+            <button class="btn op" onclick="inp('/')">÷</button>
+
+            <button class="btn" onclick="inp('1')">1</button>
+            <button class="btn" onclick="inp('2')">2</button>
+            <button class="btn" onclick="inp('3')">3</button>
+            <button class="btn op" onclick="inp('+')">+</button>
+            <button class="btn op" onclick="inp('-')">-</button>
+
+            <button class="btn" onclick="inp('0')">0</button>
+            <button class="btn" onclick="inp('.')">.</button>
+            <button class="btn op" onclick="cls()">AC</button>
+            <button class="btn action" style="grid-column: span 2;" onclick="run()">EXE</button>
+        </div>
+    </div>
+
+    <div id="scr-hist" class="screen">
+        <h3>Log History</h3>
+        <div id="hist-content" style="overflow-y:auto; margin-top:10px;"></div>
+    </div>
+
+    <div id="scr-sett" class="screen">
+        <h3>Settings</h3>
+        <div class="list-item">Precision: 4 Decimals</div>
+        <div class="list-item">Vibration: On</div>
+        <div class="list-item">App Version: 2.1.0</div>
+    </div>
+
+    <nav>
+        <div class="nav-item active" onclick="nav('home', this)">🏠<br>Home</div>
+        <div class="nav-item" onclick="nav('norm', this)">🔢<br>Calc</div>
+        <div class="nav-item" onclick="nav('sci', this)">🧪<br>Sci</div>
+        <div class="nav-item" onclick="nav('hist', this)">📜<br>History</div>
+        <div class="nav-item" onclick="nav('sett', this)">⚙️<br>Settings</div>
+    </nav>
+</div>
+
+<script>
+    let exp = "0";
+    let history = [];
+
+    function nav(id, el) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById('scr-' + id).classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    function inp(v) {
+        if (exp === "0" && v !== '.') exp = v;
+        else exp += v;
+        render();
+    }
+
+    function cls() { exp = "0"; render(); }
+
+    function del() {
+        exp = exp.length > 1 ? exp.slice(0, -1) : "0";
+        render();
+    }
+
+    function render() {
+        // Update both displays
+        const clean = exp.replace(/Math\./g, '');
+        document.getElementById('n-main').innerText = clean;
+        document.getElementById('s-main').innerText = clean;
+    }
+
+    function sciFn(type) {
+        let val = eval(exp);
+        let res = 0;
+        switch(type) {
+            case 'sin': res = Math.sin(val * Math.PI / 180); break;
+            case 'cos': res = Math.cos(val * Math.PI / 180); break;
+            case 'tan': res = Math.tan(val * Math.PI / 180); break;
+            case 'log': res = Math.log10(val); break;
+            case 'ln': res = Math.log(val); break;
+            case 'sqrt': res = Math.sqrt(val); break;
+            case 'fact':
+                res = (function f(n){return n<2?1:n*f(n-1)})(Math.floor(val));
+                break;
+        }
+        exp = res.toFixed(4).toString();
+        render();
+    }
+
+    function run() {
+        try {
+            let res = eval(exp);
+            history.unshift(`${exp} = ${res}`);
+            exp = res.toString();
+            render();
+            updateHistory();
+        } catch(e) { exp = "Error"; render(); setTimeout(cls, 1000); }
+    }
+
+    function updateHistory() {
+        document.getElementById('hist-content').innerHTML = history.map(h => `
+            <div class="list-item">${h}</div>
+        `).join('');
+    }
+</script>
+</body>
+</html>

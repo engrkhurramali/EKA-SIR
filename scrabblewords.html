@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#a8edea">
+    <title>EKA Word Scramble</title>
+    <style>
+        :root {
+          --bg-grad: linear-gradient(135deg, #a8edea 0%, #b5f0e0 50%, #88d8c0 100%);
+          --glass-bg: rgba(255, 255, 255, 0.32);
+          --glass-border: rgba(255, 255, 255, 0.65);
+          --glass-shadow: 0 8px 32px rgba(0, 70, 60, 0.12);
+          --text-main: #004d40;
+          --text-sub: #00695c;
+          --accent: #00897b;
+          --accent-light: #4db6ac;
+          --success: #66bb6a;
+          --danger: #e57373;
+          --warning: #ffb74d;
+          --radius: 16px;
+          --nav-h: 62px;
+          --cube-size: 48px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body {
+          font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+          background: var(--bg-grad);
+          background-size: 100% 200%;
+          animation: bgFloat 20s ease infinite;
+          color: var(--text-main);
+          height: 100vh; height: 100dvh;
+          width: 100vw;
+          display: flex; justify-content: center; align-items: center;
+          overflow: hidden; touch-action: manipulation;
+          padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
+        }
+
+        @keyframes bgFloat {
+          0% { background-position: 0% 0%; }
+          50% { background-position: 0% 100%; }
+          100% { background-position: 0% 0%; }
+        }
+
+        /* === 9:16 PORTRAIT CONTAINER (EXACT SPEC) === */
+        .app-container {
+          width: 100vw; max-width: 450px;
+          height: 100vh; height: 100dvh;
+          aspect-ratio: 9 / 16;
+          margin: 0 auto;
+          overflow: hidden; display: flex; flex-direction: column;
+          background: rgba(255,255,255,0.12);
+          backdrop-filter: blur(14px);
+          border-radius: var(--radius);
+          box-shadow: 0 12px 35px rgba(0,0,0,0.18);
+          border: 1px solid var(--glass-border);
+        }
+        @media (min-width: 768px) {
+          .app-container { height: 92vh; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.22); }
+        }
+
+        /* Header */
+        header {
+          padding: 10px 16px 6px; text-align: center; flex-shrink: 0;
+          background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+        }
+        header h1 { font-size: clamp(1rem, 4vw, 1.3rem); font-weight: 800; letter-spacing: 0.5px; }
+        .stats-row {
+          display: flex; justify-content: space-between; align-items: center;
+          margin-top: 6px; font-size: 0.85rem; font-weight: 700; color: var(--text-sub);
+        }
+        .stat-badge { background: var(--glass-bg); padding: 4px 10px; border-radius: 20px; border: 1px solid var(--glass-border); }
+
+        /* Screens & Navigation */
+        .screens-wrapper { flex: 1; position: relative; overflow: hidden; display: flex; }
+        .screen {
+          position: absolute; inset: 0; padding: 14px;
+          display: flex; flex-direction: column; gap: 12px;
+          opacity: 0; transform: translateX(40px) scale(0.98);
+          transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.35s;
+          pointer-events: none; overflow-y: auto;
+        }
+        .screen.active {
+          opacity: 1; transform: translateX(0) scale(1); pointer-events: auto; position: relative;
+        }
+        .screen.exit { transform: translateX(-40px) scale(0.96); }
+
+        /* Bottom Nav */
+        .bottom-nav {
+          height: var(--nav-h); display: flex; justify-content: space-around; align-items: center;
+          background: rgba(255,255,255,0.65); backdrop-filter: blur(12px);
+          border-top: 1px solid var(--glass-border); flex-shrink: 0;
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+        .nav-btn {
+          flex: 1; background: none; border: none; padding: 6px 4px;
+          font-size: 0.75rem; font-weight: 700; color: var(--text-sub);
+          cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px;
+          transition: color 0.2s, transform 0.1s;
+        }
+        .nav-btn:active { transform: scale(0.92); }
+        .nav-btn.active { color: var(--accent); }
+
+        /* Touch-Friendly Components */
+        .glass-card {
+          background: var(--glass-bg); border: 1px solid var(--glass-border);
+          border-radius: var(--radius); padding: 16px;
+          box-shadow: var(--glass-shadow);
+          display: flex; flex-direction: column; align-items: center; gap: 14px;
+        }
+        .btn {
+          min-height: 52px; min-width: 48px; padding: 0 18px;
+          font-size: 0.95rem; font-weight: 700; border: none; border-radius: 12px;
+          background: var(--glass-bg); color: var(--text-main);
+          cursor: pointer; transition: transform 0.1s, background 0.15s, box-shadow 0.2s;
+          display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+          box-shadow: 0 3px 8px rgba(0,0,0,0.1); width: 100%;
+        }
+        .btn.primary { background: var(--accent); color: white; }
+        .btn.danger { background: var(--danger); color: white; }
+        .btn:active { transform: scale(0.96); box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Tile & Slot UI */
+        .slots-row {
+          display: flex; justify-content: center; gap: 8px; min-height: var(--cube-size); flex-wrap: wrap; width: 100%;
+        }
+        .slot {
+          width: var(--cube-size); height: var(--cube-size);
+          background: rgba(0,0,0,0.05); border: 2px dashed var(--text-sub);
+          border-radius: 10px; display: flex; align-items: center; justify-content: center;
+          transition: all 0.2s ease;
+        }
+        .slot.filled { border-style: solid; border-color: var(--accent); background: rgba(0, 137, 123, 0.15); }
+        .slot.shake { animation: shake 0.4s ease; }
+
+        .tiles-pool {
+          display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; min-height: 60px; width: 100%; padding: 8px 0;
+        }
+        .tile {
+          width: var(--cube-size); height: var(--cube-size);
+          background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+          border: 1px solid var(--glass-border); border-radius: 10px;
+          display: flex; align-items: center; justify-content: center;
+          font-size: 1.4rem; font-weight: 800; color: var(--accent);
+          box-shadow: 0 4px 10px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8);
+          cursor: pointer; user-select: none;
+          transition: transform 0.1s, box-shadow 0.2s;
+        }
+        .tile:active { transform: scale(0.92); box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+        .tile.correct { background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%); color: #1b5e20; }
+        .tile.wrong { background: linear-gradient(135deg, #ffcdd2 0%, #ef9a9a 100%); color: #b71c1c; }
+
+        /* Level Grid */
+        .level-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
+        .level-chip {
+          min-height: 52px; border-radius: 12px; background: rgba(255,255,255,0.4);
+          font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center;
+          border: 2px solid transparent; transition: transform 0.1s, border-color 0.2s, background 0.2s;
+        }
+        .level-chip.selected { border-color: var(--accent); background: rgba(0, 137, 123, 0.2); }
+        .level-chip:active { transform: scale(0.96); }
+
+        /* Modal */
+        .modal-overlay {
+          position: absolute; inset: 0; background: rgba(0,0,0,0.55);
+          display: none; justify-content: center; align-items: center;
+          z-index: 50; backdrop-filter: blur(5px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+          background: var(--glass-bg); padding: 22px; border-radius: var(--radius);
+          text-align: center; max-width: 85%; box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+          transform: translateY(20px); opacity: 0; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        .modal-overlay.active .modal-box { transform: translateY(0); opacity: 1; }
+        .modal-title { font-size: 1.5rem; font-weight: 900; margin-bottom: 8px; color: var(--accent); }
+        .modal-msg { margin-bottom: 14px; color: var(--text-sub); font-size: 0.95rem; }
+
+        /* Utility */
+        h2 { margin: 4px 0 8px; font-size: 1.15rem; font-weight: 800; }
+        p { line-height: 1.45; color: var(--text-sub); font-size: 0.9rem; text-align: center; }
+        .hint { font-size: 0.85rem; color: var(--text-sub); margin-top: 4px; }
+        .status-msg { font-size: 1rem; font-weight: 700; min-height: 1.5em; color: var(--accent); }
+
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-5px); }
+          75% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <header>
+        <h1>EKA Word Scramble</h1>
+        <div class="stats-row">
+            <span class="stat-badge" id="disp-time">⏱️ 01:00</span>
+            <span class="stat-badge" id="disp-score">🏆 0</span>
+        </div>
+    </header>
+
+    <div class="screens-wrapper">
+        <!-- LEVEL SELECTION SCREEN -->
+        <section id="screen-levels" class="screen active">
+            <div class="glass-card" style="align-items:flex-start; width:100%;">
+                <h2>Select Difficulty</h2>
+                <p>Choose word length to begin</p>
+                <div class="level-grid" id="level-grid">
+                    <div class="level-chip" data-lv="1">Level 1: 3 Letters</div>
+                    <div class="level-chip" data-lv="2">Level 2: 4 Letters</div>
+                    <div class="level-chip" data-lv="3">Level 3: 5 Letters</div>
+                    <div class="level-chip" data-lv="4">Level 4: 3-5 Letters</div>
+                    <div class="level-chip" data-lv="5">Level 5: Up to 6</div>
+                    <div class="level-chip" data-lv="6">Level 6: Up to 10</div>
+                </div>
+                <button id="btn-start" class="btn primary" disabled>🚀 Start Game</button>
+            </div>
+        </section>
+
+        <!-- GAME SCREEN -->
+        <section id="screen-game" class="screen">
+            <div class="glass-card">
+                <div class="status-msg" id="status-msg">Arrange tiles to form the word</div>
+                <div class="slots-row" id="slots-row"></div>
+                <div class="tiles-pool" id="tiles-pool"></div>
+                <button id="btn-clear" class="btn danger">🗑️ Clear Slots</button>
+            </div>
+        </section>
+    </div>
+
+    <nav class="bottom-nav">
+        <button class="nav-btn" data-target="screen-levels">⚙️ Levels</button>
+        <button class="nav-btn active" data-target="screen-game">🎮 Play</button>
+        <button class="nav-btn" onclick="window.open('https://example.com/help','_blank')">📖 Guide</button>
+    </nav>
+
+    <!-- END MODAL -->
+    <div class="modal-overlay" id="modal-end">
+        <div class="modal-box">
+            <div class="modal-title" id="modal-title">Time's Up!</div>
+            <div class="modal-msg" id="modal-msg">Final Score: 0</div>
+            <button class="btn primary" style="width:100%;" id="btn-play-again">🔄 Play Again</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // === HARDWARE-OPTIMIZED DOM CACHE ===
+    const UI = {
+      time: document.getElementById('disp-time'),
+      score: document.getElementById('disp-score'),
+      slots: document.getElementById('slots-row'),
+      pool: document.getElementById('tiles-pool'),
+      msg: document.getElementById('status-msg'),
+      btnClear: document.getElementById('btn-clear'),
+      btnStart: document.getElementById('btn-start'),
+      modal: document.getElementById('modal-end'),
+      mTitle: document.getElementById('modal-title'),
+      mMsg: document.getElementById('modal-msg'),
+      btnAgain: document.getElementById('btn-play-again'),
+      levelChips: document.querySelectorAll('.level-chip')
+    };
+
+    // === WORD BANK ===
+    const WORDS = {
+      3: ["CAT","DOG","RUN","SKY","ICE","CUP","PEN","SUN","BAT","JET","HAT","BUS","KEY","BOX","MAP"],
+      4: ["FROST","COOL","BLUE","WIND","BIRD","FISH","LION","DEEP","GOLD","MINT","PLAY","GAME","READ","WALK","STAR"],
+      5: ["WATER","LIGHT","SOUND","DREAM","CLOUD","STONE","BRAIN","EARTH","OCEAN","SPACE","MUSIC","POWER","BRAVE","SMILE","GHOST"],
+      6: ["FROZEN","BRIDGE","CASTLE","PLANET","SUNSET","PURPLE","ORANGE","YELLOW","VIOLET","SILVER","ROCKET","MARBLE","GARDEN","CANYON"],
+      7: ["GLACIER","DIAMOND","RAINBOW","HARMONY","MUSEUM","PANTHER","QUANTUM","RHYTHM","SCHOLAR","JUNGLES","VOLCANO","LIBERTY","DYNAMICS"],
+      8: ["AVENGER","DYNAMICS","ELEPHANT","FEATHERS","GHOSTS","HARMONIC","INDUSTRY","JOURNEYS","MAGNETIC","OCTOPUS","BRILLIANT","CAMPFIRE","DIAMONDS"],
+      9: ["ADVENTURE","BEAUTIFUL","COMPANION","ELEVATION","FANTASTIC","GIGANTIC","HURRICANE","JUBILATION","MYSTERIOUS","NAVIGATION","ORCHESTRA","PENTHOUSE","QUARTZITE"],
+      10: ["BREATHTAKING","COMMUNICATE","ELECTRONICS","GEOGRAPHICAL","INTELLIGENCE","LANDSCAPING","METAMORPHOSIS","OPPORTUNITY","PERFECTIONIST","TELESCOPES","UNDERSTAND","WONDERLAND","ZENITHPOINT"]
+    };
+
+    // === GAME STATE ===
+    let state = {
+      level: 1, score: 0, time: 60, interval: null,
+      currentWord: "", tiles: [], placed: [], isPlaying: false, isChecking: false
+    };
+
+    // === INIT ===
+    function init() {
+      setupEvents();
+      renderLevelGrid();
+    }
+
+    function renderLevelGrid() {
+      UI.levelChips[0].classList.add('selected');
+      state.level = 1;
+    }
+
+    function setupEvents() {
+      // Navigation
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('pointerdown', e => {
+        e.preventDefault(); navTo(btn.dataset.target);
+      }));
+
+      // Level Selection
+      UI.levelChips.forEach(chip => chip.addEventListener('pointerdown', e => {
+        e.preventDefault();
+        UI.levelChips.forEach(c => c.classList.remove('selected'));
+        chip.classList.add('selected');
+        state.level = parseInt(chip.dataset.lv);
+        UI.btnStart.disabled = false;
+      }));
+
+      UI.btnStart.addEventListener('pointerdown', e => { e.preventDefault(); startGame(); });
+      UI.btnClear.addEventListener('pointerdown', e => { e.preventDefault(); clearSlots(); });
+      UI.btnAgain.addEventListener('pointerdown', e => { e.preventDefault(); UI.modal.classList.remove('active'); startGame(); });
+
+      // Tile Pool Delegation
+      UI.pool.addEventListener('pointerdown', e => {
+        const tile = e.target.closest('.tile');
+        if (tile && state.isPlaying && !state.isChecking) placeTile(tile);
+      });
+
+      // Slots Delegation (tap placed tile to return)
+      UI.slots.addEventListener('pointerdown', e => {
+        const slot = e.target.closest('.slot');
+        if (slot && slot.classList.contains('filled') && state.isPlaying && !state.isChecking) returnTile(slot);
+      });
+
+      window.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && state.isPlaying) clearSlots();
+      });
+    }
+
+    // === NAVIGATION ===
+    function navTo(id) {
+      document.querySelectorAll('.screen').forEach(s => {
+        if (s.id === id) { s.classList.add('active'); s.classList.remove('exit'); }
+        else { s.classList.remove('active'); s.classList.add('exit'); }
+      });
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.target === id));
+    }
+
+    // === GAME LOGIC ===
+    function getWordForLevel(lv) {
+      let pool = [];
+      if (lv <= 3) pool = WORDS[lv];
+      else if (lv === 4) pool = [...WORDS[3], ...WORDS[4], ...WORDS[5]];
+      else if (lv === 5) pool = [...WORDS[3], ...WORDS[4], ...WORDS[5], ...WORDS[6]];
+      else pool = [...WORDS[3], ...WORDS[4], ...WORDS[5], ...WORDS[6], ...WORDS[7], ...WORDS[8], ...WORDS[9], ...WORDS[10]];
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function scramble(word) {
+      let arr = word.split(''), s = word;
+      while (s === word) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        s = arr.join('');
+      }
+      return s;
+    }
+
+    function startGame() {
+      clearInterval(state.interval);
+      state.score = 0; state.time = 60; state.isPlaying = true; state.isChecking = false;
+      updateUI();
+      navTo('screen-game');
+      nextWord();
+      startTimer();
+    }
+
+    function nextWord() {
+      state.currentWord = getWordForLevel(state.level);
+      state.placed = []; state.isChecking = false;
+      UI.msg.textContent = "Tap tiles to arrange!";
+      UI.msg.style.color = "var(--accent)";
+      renderTiles(scramble(state.currentWord));
+    }
+
+    function renderTiles(scrambled) {
+      // Clear containers
+      UI.slots.innerHTML = ''; UI.pool.innerHTML = '';
+      state.tiles = [];
+
+      // Create slots
+      for (let i = 0; i < state.currentWord.length; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'slot'; slot.dataset.idx = i;
+        UI.slots.appendChild(slot);
+      }
+
+      // Create tiles
+      scrambled.split('').forEach((char, i) => {
+        const tile = document.createElement('div');
+        tile.className = 'tile'; tile.textContent = char; tile.dataset.char = char; tile.dataset.id = i;
+        state.tiles.push(tile);
+        UI.pool.appendChild(tile);
+      });
+    }
+
+    function placeTile(tile) {
+      // Find first empty slot
+      const emptySlot = Array.from(UI.slots.children).find(s => !s.classList.contains('filled'));
+      if (!emptySlot) return;
+
+      // Move tile DOM to slot
+      emptySlot.appendChild(tile);
+      emptySlot.classList.add('filled');
+      tile.style.transform = 'scale(0.9)';
+      setTimeout(() => tile.style.transform = '', 100);
+
+      // Update state
+      const idx = parseInt(emptySlot.dataset.idx);
+      state.placed[idx] = tile;
+
+      // Auto-check if all slots filled
+      if (state.placed.every(t => t !== undefined)) {
+        checkWord();
+      }
+    }
+
+    function returnTile(slot) {
+      const tile = slot.querySelector('.tile');
+      if (!tile) return;
+
+      UI.pool.appendChild(tile);
+      slot.classList.remove('filled');
+      slot.innerHTML = '';
+      const idx = parseInt(slot.dataset.idx);
+      state.placed[idx] = undefined;
+    }
+
+    function clearSlots() {
+      if (!state.isPlaying || state.isChecking) return;
+      state.placed.forEach((t, i) => {
+        if (t) {
+          UI.pool.appendChild(t);
+          state.placed[i] = undefined;
+        }
+      });
+      UI.slots.querySelectorAll('.slot').forEach(s => {
+        s.classList.remove('filled');
+        s.innerHTML = '';
+      });
+    }
+
+    function checkWord() {
+      state.isChecking = true;
+      const formed = state.placed.map(t => t.dataset.char).join('');
+
+      if (formed === state.currentWord) {
+        // SUCCESS
+        state.score += state.currentWord.length * 10;
+        playSound('win');
+        state.placed.forEach(t => t.classList.add('correct'));
+        UI.msg.textContent = "✅ Perfect! +"+(state.currentWord.length*10);
+        UI.msg.style.color = "var(--success)";
+        updateUI();
+        setTimeout(nextWord, 700);
+      } else {
+        // FAIL
+        playSound('miss');
+        state.placed.forEach(t => t.classList.add('wrong'));
+        UI.msg.textContent = "❌ Incorrect! Try again.";
+        UI.msg.style.color = "var(--danger)";
+        UI.slots.classList.add('shake');
+        setTimeout(() => {
+          UI.slots.classList.remove('shake');
+          clearSlots();
+        }, 600);
+      }
+    }
+
+    function startTimer() {
+      clearInterval(state.interval);
+      updateTimerUI();
+      state.interval = setInterval(() => {
+        state.time--;
+        updateTimerUI();
+        if (state.time <= 0) {
+          clearInterval(state.interval);
+          state.isPlaying = false;
+          endGame();
+        }
+      }, 1000);
+    }
+
+    function updateTimerUI() {
+      const m = Math.floor(state.time / 60).toString().padStart(2, '0');
+      const s = (state.time % 60).toString().padStart(2, '0');
+      UI.time.textContent = `⏱️ ${m}:${s}`;
+      UI.time.style.color = state.time < 10 ? 'var(--danger)' : 'var(--text-main)';
+    }
+
+    function updateUI() {
+      UI.score.textContent = `🏆 ${state.score}`;
+    }
+
+    function endGame() {
+      UI.mTitle.textContent = state.score >= 100 ? '🎉 Excellent!' : '⏰ Time\'s Up!';
+      UI.mMsg.textContent = `Final Score: ${state.score} points`;
+      UI.modal.classList.add('active');
+    }
+
+    function playSound(type) {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator(); const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        const now = ctx.currentTime;
+        if (type === 'win') { [523, 659, 784].forEach((f,i) => osc.frequency.setValueAtTime(f, now+i*0.1)); }
+        else { osc.frequency.setValueAtTime(200, now); osc.frequency.exponentialRampToValueAtTime(100, now+0.2); }
+        gain.gain.setValueAtTime(0.15, now); gain.gain.exponentialRampToValueAtTime(0.001, now+0.3);
+        osc.start(now); osc.stop(now+0.3);
+      } catch(e) {}
+    }
+
+    // === BOOT ===
+    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('touchstart', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+</script>
+</body>
+</html>

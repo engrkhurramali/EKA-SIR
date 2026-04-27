@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>EKA Snap Mobile Final</title>
+    <style id="theme-styles"></style>
+    <style>
+        :root {
+            --primary: #00d2ff; --secondary: #3a7bd5; --bg: #0f172a;
+            --glass: rgba(255, 255, 255, 0.12); --vh: 1vh;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+
+        body {
+            margin: 0; padding: 0;
+            background: var(--bg); color: #fff;
+            height: calc(var(--vh) * 100); width: 100vw;
+            overflow: hidden; font-family: sans-serif;
+            display: flex; flex-direction: column;
+        }
+
+        .screen {
+            display: none; position: absolute; inset: 0;
+            width: 100%; height: 100%; flex-direction: column;
+            padding: 15px; z-index: 10; background: inherit;
+        }
+        .active { display: flex; z-index: 100; }
+
+        .glass-panel {
+            background: var(--glass); backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px; padding: 15px;
+        }
+
+        /* GRID FIX: Ensures 3x3 visibility */
+        #shapesGrid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr); gap: 8px;
+            flex: 1; min-height: 0; margin: 10px 0;
+        }
+
+        .icecube {
+            background: rgba(255,255,255,0.05); border-radius: 12px;
+            display: flex; justify-content: center; align-items: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Responsive Shape Sizes */
+        .circle { width: 50%; height: 50%; border-radius: 50%; }
+        .square { width: 50%; height: 50%; }
+        .triangle { width: 0; height: 0; border-left: 22px solid transparent; border-right: 22px solid transparent; border-bottom: 44px solid; }
+        .star { width: 55%; height: 55%; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+        .hexagon { width: 55%; height: 55%; clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%); }
+
+        #timer-container { width: 100%; height: 8px; background: rgba(0,0,0,0.3); border-radius: 4px; overflow: hidden; }
+        #timer-bar { width: 100%; height: 100%; background: var(--primary); transition: width 1s linear; }
+
+        button, input, select { width: 100%; padding: 14px; border-radius: 10px; border: none; font-weight: bold; margin-top: 10px; }
+        button { background: var(--secondary); color: white; font-size: 1.1rem; }
+    </style>
+</head>
+<body>
+
+<div id="screen-start" class="screen active">
+    <h2 style="text-align:center">EKA MOBILE SNAP</h2>
+    <div class="glass-panel" style="margin-top: auto; margin-bottom: 20px;">
+        <input type="text" id="playerName" placeholder="Player Name" maxlength="10">
+        <select id="themeDropdown"></select>
+        <button id="startBtn" style="background: #10b981;">START ADVENTURE</button>
+    </div>
+</div>
+
+<div id="screen-game" class="screen">
+    <div id="timer-container"><div id="timer-bar"></div></div>
+    <div style="display:flex; justify-content:space-between; margin: 10px 0;">
+        <span>SCORE: <b id="score">0</b></span>
+        <span>TIME: <b id="timerText">60</b>s</span>
+    </div>
+    <div id="prompt-card" class="glass-panel" style="text-align:center; min-height: 60px;">
+        <span id="prompt" style="font-size: 1.2rem;">Get Ready...</span>
+    </div>
+    <div id="shapesGrid"></div>
+</div>
+
+<div id="screen-result" class="screen">
+    <div class="glass-panel" style="margin: auto 0; text-align: center;">
+        <h2>TIME UP!</h2>
+        <div style="font-size: 2rem; margin-bottom: 20px;">Score: <b id="finalScore">0</b></div>
+        <button id="restartBtn">PLAY AGAIN</button>
+        <button onclick="location.reload()" style="background:#475569">HOME</button>
+    </div>
+</div>
+
+<script>
+    // Adjust for mobile address bar
+    const resize = () => document.documentElement.style.setProperty('--vh', `${window.innerHeight/100}px`);
+    window.addEventListener('resize', resize); resize();
+
+    const themes = {
+        icecube: { bg: 'linear-gradient(135deg, #020617, #0f172a)', primary: '#00d2ff', secondary: '#0ea5e9' },
+        sunset: { bg: 'linear-gradient(135deg, #431407, #7c2d12)', primary: '#fbbf24', secondary: '#ea580c' }
+    };
+
+    let score = 0, timeLeft = 60, isGameActive = false, timerInterval;
+    const synth = window.speechSynthesis;
+    const colors = ['red', 'blue', 'green', 'orange', 'purple', 'yellow', 'white'];
+    const shapes = ['circle', 'square', 'triangle', 'star', 'hexagon'];
+
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function speak(text) {
+        synth.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.rate = 1.2;
+        synth.speak(utter);
+    }
+
+    const handleStart = () => {
+        // Priority 1: Change screen immediately
+        showScreen('screen-game');
+        isGameActive = true;
+        score = 0; timeLeft = 60;
+        document.getElementById('score').textContent = "0";
+
+        // Priority 2: Unlock Sound
+        speak("Ready");
+
+        // Priority 3: Start logic
+        nextPrompt();
+        if(timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            document.getElementById('timerText').textContent = timeLeft;
+            document.getElementById('timer-bar').style.width = (timeLeft/60)*100 + "%";
+            if(timeLeft <= 0) endGame();
+        }, 1000);
+    };
+
+    function nextPrompt() {
+        const c = colors[Math.floor(Math.random() * colors.length)];
+        const s = shapes[Math.floor(Math.random() * shapes.length)];
+        document.getElementById('prompt').innerHTML = `Find: <b style="color:${c}">${c.toUpperCase()} ${s.toUpperCase()}</b>`;
+        speak(`${c} ${s}`);
+        renderGrid(c, s);
+    }
+
+    function renderGrid(targetC, targetS) {
+        const grid = document.getElementById('shapesGrid');
+        grid.innerHTML = '';
+        let pool = [{ color: targetC, shape: targetS }];
+        while(pool.length < 9) {
+            let rc = colors[Math.floor(Math.random() * colors.length)], rs = shapes[Math.floor(Math.random() * shapes.length)];
+            if(!pool.find(p => p.color === rc && p.shape === rs)) pool.push({color: rc, shape: rs});
+        }
+        pool.sort(() => Math.random() - 0.5).forEach(item => {
+            const cube = document.createElement('div');
+            cube.className = 'icecube';
+            const shp = document.createElement('div');
+            shp.className = item.shape;
+            if(item.shape === 'triangle') shp.style.borderBottomColor = item.color;
+            else shp.style.backgroundColor = item.color;
+
+            // Using click with passive:false for fastest mobile response
+            cube.onclick = (e) => {
+                if(!isGameActive) return;
+                if(item.color === targetC && item.shape === targetS) {
+                    score += 10;
+                    if(navigator.vibrate) navigator.vibrate(40);
+                } else {
+                    score = Math.max(0, score - 5);
+                }
+                document.getElementById('score').textContent = score;
+                nextPrompt();
+            };
+            cube.appendChild(shp);
+            grid.appendChild(cube);
+        });
+    }
+
+    function endGame() {
+        isGameActive = false;
+        clearInterval(timerInterval);
+        document.getElementById('finalScore').textContent = score;
+        showScreen('screen-result');
+    }
+
+    // Attach listeners directly to avoid mobile lag
+    document.getElementById('startBtn').onclick = handleStart;
+    document.getElementById('restartBtn').onclick = handleStart;
+
+    window.onload = () => {
+        const drop = document.getElementById('themeDropdown');
+        for(let k in themes) drop.add(new Option(k.toUpperCase(), k));
+        drop.onchange = (e) => {
+            const t = themes[e.target.value];
+            document.getElementById('theme-styles').innerHTML = `:root { --primary:${t.primary}; --secondary:${t.secondary}; --bg:${t.bg}; } body { background:${t.bg}; }`;
+        };
+        drop.dispatchEvent(new Event('change'));
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f172a">
+    <title>EKA MCQ's - PHYSICS 10</title>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <style>
+        :root {
+          --bg: #f8fafc; --surface: #ffffff; --text: #0f172a; --text-muted: #64748b;
+          --primary: #3b82f6; --primary-hover: #2563eb; --correct: #22c55e; --wrong: #ef4444;
+          --border: #e2e8f0; --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); --radius: 12px;
+          --font: system-ui, -apple-system, sans-serif; --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        [data-theme="3d-glass"] { --bg: #e0e7ff; --surface: rgba(255,255,255,0.65); --border: rgba(255,255,255,0.4); --shadow: 0 8px 32px rgba(31,38,135,0.15); backdrop-filter: blur(12px); }
+        [data-theme="neumorphic-soft"] { --bg: #e0e0e0; --surface: #e0e0e0; --text: #4a4a4a; --border: transparent; --shadow: 8px 8px 16px #bebebe, -8px -8px 16px #ffffff; --radius: 16px; }
+        [data-theme="neumorphic-pressed"] { --bg: #e0e0e0; --surface: #e0e0e0; --shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff; --radius: 12px; }
+        [data-theme="modern-2x2"] { --bg: #0f172a; --surface: #1e293b; --text: #f1f5f9; --primary: #06b6d4; --radius: 8px; }
+        [data-theme="vibrant-gradient"] { --bg: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #feada6 100%); --surface: #fff; --primary: #ff4757; --radius: 20px; }
+        [data-theme="industrial-steel"] { --bg: #1e293b; --surface: #334155; --text: #e2e8f0; --primary: #3b82f6; --border: #475569; --radius: 4px; }
+        [data-theme="dark-neon"] { --bg: #0a0a0a; --surface: #111; --text: #00ff9d; --primary: #00ff9d; --border: #00ff9d; --shadow: 0 0 15px #00ff9d44; }
+        [data-theme="paper-sketch"] { --bg: #fdfbf7; --surface: #fff; --text: #333; --border: #333; --radius: 2px; --font: 'Courier New', monospace; --shadow: 2px 3px 0 #333; }
+        [data-theme="royal-gold"] { --bg: #0f172a; --surface: #1e1b4b; --text: #fde047; --primary: #f59e0b; --border: #fbbf24; }
+        [data-theme="retro-8bit"] { --bg: #21252b; --surface: #3a3f4b; --text: #abb2bf; --primary: #98c379; --border: #5c6370; --radius: 0; --font: monospace; }
+        [data-theme="hacker-terminal"] { --bg: #000; --surface: #000; --text: #00ff00; --primary: #00ff00; --border: #00ff00; --font: monospace; }
+        [data-theme="pastel-dream"] { --bg: #fff0f5; --surface: #ffe4e1; --text: #5c5470; --primary: #b8a9c9; --border: #d8bfd8; }
+        [data-theme="minimalist-mono"] { --bg: #fff; --surface: #fff; --text: #000; --primary: #000; --border: #000; --radius: 0; }
+        [data-theme="translucent-frosted"] { --bg: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%); --surface: rgba(255,255,255,0.8); --border: rgba(255,255,255,0.5); --shadow: 0 10px 30px rgba(0,0,0,0.2); backdrop-filter: blur(10px); }
+        [data-theme="sky-high"] { --bg: linear-gradient(to bottom, #87ceeb, #ffffff); --surface: rgba(255,255,255,0.9); --primary: #0077b6; --radius: 18px; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+          font-family: var(--font); background: var(--bg); color: var(--text);
+          min-height: 100vh; padding: 10px; transition: background var(--transition);
+          display: flex; flex-direction: column; gap: 10px;
+        }
+        header {
+          background: var(--surface); padding: 10px; border-radius: var(--radius);
+          box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100;
+          display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between;
+        }
+        .header-left { display: flex; flex-direction: column; gap: 2px; }
+        h1 { font-size: 1.1rem; font-weight: 700; }
+        .subtitle { font-size: 0.8rem; color: var(--text-muted); }
+        .mode-badge { font-size: 0.75rem; padding: 2px 6px; background: var(--primary); color: #fff; border-radius: 4px; display: inline-block; margin-top: 2px; }
+        .header-controls { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; flex: 1; justify-content: flex-end; }
+        #search-box {
+          padding: 8px 12px; border: 2px solid var(--border); border-radius: var(--radius);
+          background: var(--bg); color: var(--text); font-size: 0.9rem; min-width: 140px; flex: 1;
+          transition: border-color 0.2s;
+        }
+        #search-box:focus { outline: none; border-color: var(--primary); }
+        select, button, .upload-label {
+          padding: 8px 10px; border: 2px solid var(--border); background: var(--surface);
+          color: var(--text); border-radius: var(--radius); font-size: 0.85rem; cursor: pointer;
+          transition: all var(--transition); touch-action: manipulation; text-align: center;
+        }
+        button:active { transform: scale(0.98); }
+        button.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+        button.primary:hover { background: var(--primary-hover); }
+        .upload-label { display: inline-block; background: #f1f5f9; }
+        .upload-label:hover { background: #e2e8f0; }
+        #mcq-container {
+          background: var(--surface); border-radius: var(--radius); padding: 14px;
+          box-shadow: var(--shadow); flex: 1; display: flex; flex-direction: column; gap: 12px;
+          transition: background var(--transition), box-shadow var(--transition);
+        }
+        .question-card { border-bottom: 1px dashed var(--border); padding-bottom: 12px; margin-bottom: 12px; transition: opacity 0.2s; }
+        .question-card.hidden { display: none; }
+        .q-text { font-weight: 600; margin-bottom: 10px; line-height: 1.4; font-size: 0.95rem; }
+        .options { display: grid; gap: 6px; }
+        .option {
+          display: flex; align-items: center; gap: 8px; padding: 10px;
+          border: 2px solid var(--border); border-radius: var(--radius); cursor: pointer;
+          transition: all 0.2s; background: var(--surface); font-size: 0.9rem;
+        }
+        .option:hover { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 8%, transparent); }
+        .option.selected { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 12%, transparent); }
+        .option.correct { border-color: var(--correct); background: color-mix(in srgb, var(--correct) 15%, transparent); }
+        .option.wrong { border-color: var(--wrong); background: color-mix(in srgb, var(--wrong) 12%, transparent); opacity: 0.8; }
+        .option input { display: none; }
+        .radio-dot {
+          width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border);
+          position: relative; transition: all 0.2s; flex-shrink: 0;
+        }
+        .option.selected .radio-dot { border-color: var(--primary); }
+        .option.selected .radio-dot::after { content: ''; position: absolute; inset: 2px; background: var(--primary); border-radius: 50%; }
+        .option.correct .radio-dot::after { background: var(--correct); border-color: var(--correct); }
+        .option.wrong .radio-dot::after { background: var(--wrong); border-color: var(--wrong); }
+        .option-label { font-weight: 600; margin-right: 4px; color: var(--primary); }
+        .loading, .no-results { text-align: center; padding: 20px 0; color: var(--text-muted); font-style: italic; }
+        .no-results { display: none; }
+        footer { display: flex; gap: 8px; flex-wrap: wrap; padding: 8px 0; position: sticky; bottom: 0; background: var(--bg); }
+        footer button { flex: 1; min-width: 100px; }
+        #excel-upload { display: none; }
+        @media (max-width: 480px) {
+          body { padding: 8px; }
+          header { padding: 8px; gap: 6px; }
+          h1 { font-size: 1rem; }
+          #search-box { min-width: 100px; }
+          .option { padding: 12px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body data-theme="modern-2x2">
+<header>
+    <div class="header-left">
+        <h1>EKA MCQ's - PHYSICS 10</h1>
+        <div class="subtitle">Quick Exam Revision</div>
+        <span id="mode-indicator" class="mode-badge">📚 Default Mode</span>
+    </div>
+    <div class="header-controls">
+        <input type="search" id="search-box" placeholder="🔍 Search Q/A/B/C/D..." aria-label="Search questions">
+        <select id="theme-selector" aria-label="Select UI Theme">
+            <option value="3d-glass">3D Glass</option>
+            <option value="neumorphic-soft">Neumorphic Soft</option>
+            <option value="neumorphic-pressed">Neumorphic Pressed</option>
+            <option value="modern-2x2" selected>Modern 2x2</option>
+            <option value="vibrant-gradient">Vibrant Gradient</option>
+            <option value="industrial-steel">Industrial Steel</option>
+            <option value="dark-neon">Dark Neon</option>
+            <option value="paper-sketch">Paper Sketch</option>
+            <option value="royal-gold">Royal Gold</option>
+            <option value="retro-8bit">Retro 8-Bit</option>
+            <option value="hacker-terminal">Hacker Terminal</option>
+            <option value="pastel-dream">Pastel Dream</option>
+            <option value="minimalist-mono">Minimalist</option>
+            <option value="translucent-frosted">Frosted Vivid</option>
+            <option value="sky-high">Sky High</option>
+        </select>
+        <label for="excel-upload" class="upload-label" title="Upload Excel (.xlsx)">📁 Excel</label>
+        <input type="file" id="excel-upload" accept=".xlsx,.xls">
+        <button id="toggle-answers" class="primary small">Hide Answers</button>
+        <button id="load-default" class="small">Default</button>
+    </div>
+</header>
+
+<main id="mcq-container">
+    <div class="loading">Loading MCQs...</div>
+    <div id="no-results" class="no-results">No questions match your search 🔍</div>
+</main>
+
+<footer>
+    <button id="reset-quiz">Reset Progress</button>
+    <button id="export-btn">Export Answers</button>
+</footer>
+
+<script>
+
+    const defaultMCQs = [
+        {
+            "Question": "A girl throws a small stone into a lake. Waves spread out from where the stone hits the water and travel to the bank of the lake. She notices that ten waves reach the side of the pond in a time of 5.0s. What is the frequency of the waves?",
+            "A": "0.50 Hz",
+            "B": "15 Hz",
+            "C": "2.0 Hz",
+            "D": "50 Hz",
+            "Correct Answer": "2.0 Hz"
+        },
+        {
+            "Question": "Water waves can be used to show reflection, refraction, and diffraction. For each of these, which row shows whether or not the speed of the water waves changes?",
+            "A": "Yes, Yes, Yes",
+            "B": "Yes, No, Yes",
+            "C": "No, Yes, No",
+            "D": "No, No, No",
+            "Correct Answer": "No, Yes, No"
+        },
+        {
+            "Question": "The diagrams show water waves that move more slowly after passing into shallow water. Which diagram shows what happens to the waves?",
+            "A": "Option A",
+            "B": "Option B",
+            "C": "Option C",
+            "D": "Option D",
+            "Correct Answer": "See diagram"
+        },
+        {
+            "Question": "The wave reaches point P after passing through a barrier with a gap. What is the name of the effect that causes the wave to reach point P?",
+            "A": "Diffraction",
+            "B": "Dispersion",
+            "C": "Reflection",
+            "D": "Refraction",
+            "Correct Answer": "Diffraction"
+        },
+        {
+            "Question": "Water waves pass from deep into the shallow region then refracted. The characteristic of the wave which remains constant is:",
+            "A": "Direction",
+            "B": "Frequency",
+            "C": "Speed",
+            "D": "Wavelength",
+            "Correct Answer": "Frequency"
+        },
+        {
+            "Question": "Which is not a characteristic of a wave?",
+            "A": "Amplitude",
+            "B": "Period",
+            "C": "Mass",
+            "D": "Velocity",
+            "Correct Answer": "Mass"
+        },
+        {
+            "Question": "When an oscillating object is in simple harmonic motion, its maximum speed occurs when the object is at its:",
+            "A": "Highest point",
+            "B": "Lowest point",
+            "C": "Equilibrium point",
+            "D": "Extreme point",
+            "Correct Answer": "Equilibrium point"
+        },
+        {
+            "Question": "In an oscillating pendulum, the bob accelerates from its extreme position due to",
+            "A": "Inertia",
+            "B": "Tension in the string",
+            "C": "Wind",
+            "D": "Gravitational force",
+            "Correct Answer": "Gravitational force"
+        },
+        {
+            "Question": "In the ball and bowl system, the mean position is at",
+            "A": "The earth",
+            "B": "Floor of the bowl",
+            "C": "Center of bowl",
+            "D": "Extreme position",
+            "Correct Answer": "Center of bowl"
+        },
+        {
+            "Question": "Oscillations are damped due to the presence of",
+            "A": "Linear motion",
+            "B": "Restoring force",
+            "C": "Frictional force",
+            "D": "Mechanical force",
+            "Correct Answer": "Frictional force"
+        },
+        {
+            "Question": "Sound is a form of:",
+            "A": "Electrical energy",
+            "B": "Mechanical energy",
+            "C": "Thermal energy",
+            "D": "Chemical energy",
+            "Correct Answer": "Mechanical energy"
+        },
+        {
+            "Question": "Audible frequencies range that a normal human ear can detect is:",
+            "A": "10 Hz and 10 kHz",
+            "B": "20 Hz and 20 kHz",
+            "C": "25 Hz and 25 kHz",
+            "D": "30 Hz and 30 kHz",
+            "Correct Answer": "20 Hz and 20 kHz"
+        },
+        {
+            "Question": "The approximate value of the speed of sound in air at 0°C temperature is:",
+            "A": "332 m/s",
+            "B": "34 m/s",
+            "C": "17 m/s",
+            "D": "680 m/s",
+            "Correct Answer": "332 m/s"
+        },
+        {
+            "Question": "Sound travels faster in solids as compared to gases because of:",
+            "A": "Gas molecules are packed loosely",
+            "B": "Sound does not travel faster through a solid than a gas",
+            "C": "Solid molecules are packed tightly",
+            "D": "Gas molecules move faster",
+            "Correct Answer": "Solid molecules are packed tightly"
+        },
+        {
+            "Question": "The two factors that affect the speed of sound in air are:",
+            "A": "Humidity and volume of the air",
+            "B": "Temperature and mass of the air",
+            "C": "Volume and mass of the air",
+            "D": "Temperature and humidity of the air",
+            "Correct Answer": "Temperature and humidity of the air"
+        },
+        {
+            "Question": "The separation between two consecutive compressions of the sound wave is called:",
+            "A": "Time period",
+            "B": "Amplitude",
+            "C": "Frequency",
+            "D": "Wavelength",
+            "Correct Answer": "Wavelength"
+        },
+        {
+            "Question": "The order of speed of the sound in different mediums from fastest to slowest is:",
+            "A": "Gas → Liquid → Solid",
+            "B": "Liquid → Solid → Gas",
+            "C": "Solid → Liquid → Gas",
+            "D": "Gas → Solid → Liquid",
+            "Correct Answer": "Solid → Liquid → Gas"
+        },
+        {
+            "Question": "Which one has use of ultrasound?",
+            "A": "Absorption",
+            "B": "Pre-natal scanning",
+            "C": "Dispersion",
+            "D": "Measuring humidity of air",
+            "Correct Answer": "Pre-natal scanning"
+        },
+        {
+            "Question": "The cause of the echo is:",
+            "A": "Absorption",
+            "B": "Dispersion",
+            "C": "Reflection",
+            "D": "Refraction",
+            "Correct Answer": "Reflection"
+        },
+        {
+            "Question": "Which type of wave cannot travel through vaccum?",
+            "A": "Sound Waves",
+            "B": "Infrared",
+            "C": "Microwaves",
+            "D": "X-rays",
+            "Correct Answer": "Sound Waves"
+        },
+        {
+            "Question": "The waves that have maximum penetrating power to treat tumors are:",
+            "A": "Ultraviolet radiation",
+            "B": "Microwaves",
+            "C": "Gamma-rays",
+            "D": "Radio waves",
+            "Correct Answer": "Gamma-rays"
+        },
+        {
+            "Question": "The electromagnetic rays used in radiotherapy to destroy cancer cells are:",
+            "A": "Infrared rays",
+            "B": "Visible rays",
+            "C": "X-rays",
+            "D": "Ultraviolet rays",
+            "Correct Answer": "X-rays"
+        },
+        {
+            "Question": "The velocity of light in a diamond (n = 2.5) is:",
+            "A": "1.2 × 10⁸ m/s",
+            "B": "5 × 10⁸ m/s",
+            "C": "1.2 × 10¹⁰ m/s",
+            "D": "2.5 × 10⁸ m/s",
+            "Correct Answer": "1.2 × 10⁸ m/s"
+        },
+        {
+            "Question": "The group containing only electromagnetic waves is:",
+            "A": "Light waves, Radio waves, Microwaves",
+            "B": "Light waves, Radio waves, Sound waves",
+            "C": "Light waves, Sound waves, Microwaves",
+            "D": "Radio waves, Sound waves, Microwaves",
+            "Correct Answer": "Light waves, Radio waves, Microwaves"
+        },
+        {
+            "Question": "The list that shows electromagnetic waves in order of increasing wavelength is:",
+            "A": "Microwaves, X-rays, Gamma-rays",
+            "B": "Microwaves, Gamma-rays, X-rays",
+            "C": "X-rays, Gamma-rays, Microwaves",
+            "D": "Gamma-rays, X-rays, Microwaves",
+            "Correct Answer": "Gamma-rays, X-rays, Microwaves"
+        },
+        {
+            "Question": "The type of electromagnetic wave used in security scanners at night is:",
+            "A": "Infra-red",
+            "B": "Microwaves",
+            "C": "Radio waves",
+            "D": "X-ray",
+            "Correct Answer": "Infra-red"
+        },
+        {
+            "Question": "A narrow beam of white light passes from air into glass and is refracted. The wave characteristic that remains unchanged is:",
+            "A": "Direction",
+            "B": "Frequency",
+            "C": "Speed",
+            "D": "Wavelength",
+            "Correct Answer": "Frequency"
+        },
+        {
+            "Question": "The type of waves that are used in television remote controllers is:",
+            "A": "Radio waves",
+            "B": "Infra-red waves",
+            "C": "Ultra-violet waves",
+            "D": "Visible light",
+            "Correct Answer": "Infra-red waves"
+        },
+        {
+            "Question": "In a concave mirror, the image size depends upon:",
+            "A": "Size of the object",
+            "B": "Position of the object",
+            "C": "Area covered by the object",
+            "D": "The shape of the object",
+            "Correct Answer": "Position of the object"
+        },
+        {
+            "Question": "In the normal human eye, the image is formed:",
+            "A": "In front of the retina",
+            "B": "Behind the retina",
+            "C": "On the retina",
+            "D": "Between lens and retina",
+            "Correct Answer": "On the retina"
+        },
+        {
+            "Question": "When a light ray enters from a denser medium to a rarer medium, it bends:",
+            "A": "Perpendicular to normal",
+            "B": "Parallel to normal",
+            "C": "Toward normal",
+            "D": "Away from normal",
+            "Correct Answer": "Away from normal"
+        },
+        {
+            "Question": "In a compound microscope, as compared to an objective, the eyepiece lens has a focal length:",
+            "A": "Zero",
+            "B": "Negative",
+            "C": "Small",
+            "D": "Large",
+            "Correct Answer": "Large"
+        },
+        {
+            "Question": "When the angle of refraction is 90° and the refractive index for water is 1.33, the critical angle is:",
+            "A": "48.8°",
+            "B": "49.1°",
+            "C": "50.0°",
+            "D": "51.0°",
+            "Correct Answer": "48.8°"
+        },
+        {
+            "Question": "To view dim stars, we use",
+            "A": "Compound microscope",
+            "B": "Simple microscope",
+            "C": "Endoscope",
+            "D": "Telescope",
+            "Correct Answer": "Telescope"
+        },
+        {
+            "Question": "The human eye acts like a",
+            "A": "Camera",
+            "B": "Projector",
+            "C": "Telescope",
+            "D": "Microscope",
+            "Correct Answer": "Camera"
+        },
+        {
+            "Question": "A magnifying glass forms an enlarged",
+            "A": "Real and upright image",
+            "B": "Real and inverted",
+            "C": "Virtual and upright image",
+            "D": "Virtual and inverted image",
+            "Correct Answer": "Virtual and upright image"
+        },
+        {
+            "Question": "The entire light is reflected into the same denser medium, which is called total",
+            "A": "External reflection",
+            "B": "Internal reflection",
+            "C": "External refraction",
+            "D": "Internal refraction",
+            "Correct Answer": "Internal reflection"
+        },
+        {
+            "Question": "In the optic fiber, the core is made of glass or plastic of relatively",
+            "A": "Zero refractive index",
+            "B": "High refractive index",
+            "C": "Low refractive index",
+            "D": "No refractive index",
+            "Correct Answer": "High refractive index"
+        },
+        {
+            "Question": "A magnifying glass is also called",
+            "A": "Endoscope",
+            "B": "Compound microscope",
+            "C": "Simple microscope",
+            "D": "Telescope",
+            "Correct Answer": "Simple microscope"
+        },
+        {
+            "Question": "The defect in which the image is formed beyond the retina is called",
+            "A": "Long-sightedness",
+            "B": "Short-sightedness",
+            "C": "Blind spotting",
+            "D": "Image defect",
+            "Correct Answer": "Long-sightedness"
+        },
+        {
+            "Question": "The short-sightedness can be corrected by using",
+            "A": "Convex glasses",
+            "B": "Convex mirror",
+            "C": "Concave mirror",
+            "D": "Convex lenses",
+            "Correct Answer": "Concave mirror"
+        },
+        {
+            "Question": "Lenses form images through",
+            "A": "Dispersion",
+            "B": "Refraction",
+            "C": "Diffraction",
+            "D": "Reflection",
+            "Correct Answer": "Refraction"
+        },
+        {
+            "Question": "To illuminate the inaccessible places in the tooth, dentists use",
+            "A": "Concave mirror",
+            "B": "Convex mirror",
+            "C": "Convex lens",
+            "D": "Concave lens",
+            "Correct Answer": "Concave mirror"
+        },
+        {
+            "Question": "Branch of physics which deals with the charges at rest is called:",
+            "A": "Electricity",
+            "B": "Electrostatics",
+            "C": "Quantum",
+            "D": "Magnetism",
+            "Correct Answer": "Electrostatics"
+        },
+        {
+            "Question": "The magnitude of force between two unit positive charges when the distance between them is 1m would be:",
+            "A": "0 N",
+            "B": "1 N",
+            "C": "2 N",
+            "D": "3 N",
+            "Correct Answer": "1 N"
+        },
+        {
+            "Question": "Coulomb's law most closely resembles:",
+            "A": "Law of conservation of energy",
+            "B": "Newton's law of gravitation",
+            "C": "Newton's 2nd law of motion",
+            "D": "Faraday's law",
+            "Correct Answer": "Newton's law of gravitation"
+        },
+        {
+            "Question": "If the electrostatic force between two electrons is F Newton, then the force between two protons at the same distance is:",
+            "A": "0 N",
+            "B": "2F",
+            "C": "2/3 F",
+            "D": "F",
+            "Correct Answer": "F"
+        },
+        {
+            "Question": "The direction of electric force and electric field intensity is:",
+            "A": "Parallel to each other",
+            "B": "Perpendicular to each other",
+            "C": "Opposite to each other",
+            "D": "In any direction",
+            "Correct Answer": "Parallel to each other"
+        },
+        {
+            "Question": "The work done on a unit charge against electric field intensity is called:",
+            "A": "Electric field",
+            "B": "Electric current",
+            "C": "Electric potential",
+            "D": "Electric force",
+            "Correct Answer": "Electric potential"
+        },
+        {
+            "Question": "The capacitance of capacitors increases when they are connected in:",
+            "A": "Parallel",
+            "B": "Series",
+            "C": "Both",
+            "D": "None of them",
+            "Correct Answer": "Parallel"
+        },
+        {
+            "Question": "Two capacitors of 8pF are connected in series then the equivalent capacitance is:",
+            "A": "4 pF",
+            "B": "2 pF",
+            "C": "3 pF",
+            "D": "6 pF",
+            "Correct Answer": "4 pF"
+        },
+        {
+            "Question": "With the presence of a dielectric between the plates of a capacitor, the capacitance:",
+            "A": "Increases",
+            "B": "Decreases",
+            "C": "Remains constant",
+            "D": "Remains uncharged",
+            "Correct Answer": "Increases"
+        },
+        {
+            "Question": "If the area of the parallel plate capacitor is doubled then the capacitance will:",
+            "A": "Remain unchanged",
+            "B": "Half",
+            "C": "Double",
+            "D": "Increase two times",
+            "Correct Answer": "Double"
+        },
+        {
+            "Question": "In an electric circuit, when electrons move from low to high potential they will:",
+            "A": "Gain energy",
+            "B": "Lose their identity",
+            "C": "Lose energy",
+            "D": "Gain potential",
+            "Correct Answer": "Gain energy"
+        },
+        {
+            "Question": "In an electric circuit, an ammeter is always connected in:",
+            "A": "Series",
+            "B": "Parallel",
+            "C": "Mixed",
+            "D": "None of the above",
+            "Correct Answer": "Series"
+        },
+        {
+            "Question": "Resistance of a conductor does not depend on:",
+            "A": "Length of the conductor",
+            "B": "Area of cross-section",
+            "C": "Density",
+            "D": "Resistivity",
+            "Correct Answer": "Density"
+        },
+        {
+            "Question": "Ohm's law states that:",
+            "A": "Resistance increases as current increases",
+            "B": "Resistance decreases as current increases",
+            "C": "Resistance increases as voltage increases",
+            "D": "Current increases as voltage increases",
+            "Correct Answer": "Current increases as voltage increases"
+        },
+        {
+            "Question": "The condition when the resistance of a circuit is zero is known as:",
+            "A": "Closed circuit",
+            "B": "Open circuit",
+            "C": "Short circuit",
+            "D": "Zero circuit",
+            "Correct Answer": "Short circuit"
+        },
+        {
+            "Question": "The condition for the validity of Ohm's law is that:",
+            "A": "Temperature should remain constant",
+            "B": "Current should be proportional to voltage",
+            "C": "Resistance must be wire wound type",
+            "D": "All of the above",
+            "Correct Answer": "All of the above"
+        },
+        {
+            "Question": "Ohm's law is not applicable to:",
+            "A": "Semiconductors",
+            "B": "D.C. circuits",
+            "C": "Small resistors",
+            "D": "High currents",
+            "Correct Answer": "Semiconductors"
+        },
+        {
+            "Question": "Two resistances of 6Ω and 12Ω are connected in parallel. Their net resistance is:",
+            "A": "7Ω",
+            "B": "6Ω",
+            "C": "4Ω",
+            "D": "5Ω",
+            "Correct Answer": "4Ω"
+        },
+        {
+            "Question": "The property of a body to oppose the flow of electric charge is called:",
+            "A": "Capacitance",
+            "B": "Potential",
+            "C": "Resistance",
+            "D": "Conductance",
+            "Correct Answer": "Resistance"
+        },
+        {
+            "Question": "What is the purpose of connecting a battery in an electric circuit?",
+            "A": "To maintain resistance across the conductor",
+            "B": "To vary resistance across the conductor",
+            "C": "To maintain constant potential difference",
+            "D": "To maintain varying potential difference",
+            "Correct Answer": "To maintain constant potential difference"
+        },
+        {
+            "Question": "Which statement is true about the magnetic poles?",
+            "A": "Unlike poles repel",
+            "B": "Like poles attract",
+            "C": "Magnetic poles do not affect each other",
+            "D": "A single magnetic pole does not exist",
+            "Correct Answer": "A single magnetic pole does not exist"
+        },
+        {
+            "Question": "What is the direction of the magnetic field lines inside a bar magnet?",
+            "A": "From north pole to south pole",
+            "B": "From south pole to north pole",
+            "C": "From side to side",
+            "D": "There are no magnetic field lines",
+            "Correct Answer": "From south pole to north pole"
+        },
+        {
+            "Question": "The presence of a magnetic field can be detected by a:",
+            "A": "Small mass",
+            "B": "Stationary positive charge",
+            "C": "Stationary negative charge",
+            "D": "Magnetic compass",
+            "Correct Answer": "Magnetic compass"
+        },
+        {
+            "Question": "If the current in a wire placed perpendicular to a magnetic field increases, the force on the wire:",
+            "A": "Increases",
+            "B": "Decreases",
+            "C": "Remains the same",
+            "D": "Will be zero",
+            "Correct Answer": "Increases"
+        },
+        {
+            "Question": "A D.C. motor converts:",
+            "A": "Mechanical energy into electrical energy",
+            "B": "Mechanical energy into chemical energy",
+            "C": "Electrical energy into mechanical energy",
+            "D": "Electrical energy into chemical energy",
+            "Correct Answer": "Electrical energy into mechanical energy"
+        },
+        {
+            "Question": "Which part of a D.C. motor reverses the direction of current every half-cycle?",
+            "A": "The armature",
+            "B": "The commutator",
+            "C": "The brushes",
+            "D": "The slip rings",
+            "Correct Answer": "The commutator"
+        },
+        {
+            "Question": "The direction of induced e.m.f. in a circuit follows conservation of:",
+            "A": "Mass",
+            "B": "Charge",
+            "C": "Momentum",
+            "D": "Energy",
+            "Correct Answer": "Energy"
+        },
+        {
+            "Question": "A step-up transformer:",
+            "A": "Increases the input current",
+            "B": "Increases the input voltage",
+            "C": "Has more turns in the primary",
+            "D": "Has less turns in the secondary coil",
+            "Correct Answer": "Increases the input voltage"
+        },
+        {
+            "Question": "The turn ratio of a transformer is 10. It means:",
+            "A": "Is = 10 Ip",
+            "B": "Ns = 10 Np",
+            "C": "Vp = 10 Vs",
+            "D": "Ip = 10 Is",
+            "Correct Answer": "Ns = 10 Np"
+        },
+        {
+            "Question": "Metals are good conductors of electricity because they have free:",
+            "A": "Electrons",
+            "B": "Protons",
+            "C": "Neutrons",
+            "D": "Photons",
+            "Correct Answer": "Electrons"
+        },
+        {
+            "Question": "The continuous flow of electrons is made possible by a device called:",
+            "A": "Cathode",
+            "B": "Electron gun",
+            "C": "Anode",
+            "D": "Filament",
+            "Correct Answer": "Electron gun"
+        },
+        {
+            "Question": "The electric field can be detected by:",
+            "A": "Photon",
+            "B": "Neutron",
+            "C": "Proton",
+            "D": "Electron",
+            "Correct Answer": "Electron"
+        },
+        {
+            "Question": "If the direction of magnetic field is reversed, the direction of force is:",
+            "A": "Reversed",
+            "B": "Not reversed",
+            "C": "May or may not reversed",
+            "D": "None of these",
+            "Correct Answer": "Reversed"
+        },
+        {
+            "Question": "The process of emission of electrons from the hot metal surfaces is called:",
+            "A": "Plastic emission",
+            "B": "Thermionic emission",
+            "C": "Static emission",
+            "D": "Current emission",
+            "Correct Answer": "Thermionic emission"
+        },
+        {
+            "Question": "If input of a NOT gate is \"1\" then its output is:",
+            "A": "1",
+            "B": "0",
+            "C": "May be 1 or may be 0",
+            "D": "None of these",
+            "Correct Answer": "0"
+        },
+        {
+            "Question": "The Boolean expression of an AND gate is:",
+            "A": "A . B",
+            "B": "A + B",
+            "C": "A × B",
+            "D": "None of these",
+            "Correct Answer": "A . B"
+        },
+        {
+            "Question": "Electronics comprises the:",
+            "A": "Physics",
+            "B": "Engineering",
+            "C": "Technology",
+            "D": "All of these",
+            "Correct Answer": "All of these"
+        },
+        {
+            "Question": "The Boolean expression of an OR gate is:",
+            "A": "A . B",
+            "B": "A + B",
+            "C": "A × B",
+            "D": "None of these",
+            "Correct Answer": "A + B"
+        },
+        {
+            "Question": "The cathode ray carries:",
+            "A": "Positive charge",
+            "B": "Neutral",
+            "C": "Negative charge",
+            "D": "Positrons",
+            "Correct Answer": "Negative charge"
+        },
+        {
+            "Question": "Another name for a supercomputer is a:",
+            "A": "High-performance computer",
+            "B": "Maxi computer",
+            "C": "Mainframe computer",
+            "D": "None",
+            "Correct Answer": "High-performance computer"
+        },
+        {
+            "Question": "Input, processing, output, and storage are collectively referred to as:",
+            "A": "Information processing cycle",
+            "B": "Software life cycle",
+            "C": "Hardware life cycle",
+            "D": "Information technology",
+            "Correct Answer": "Information processing cycle"
+        },
+        {
+            "Question": "_____ is the output from a computer that results from processing input data.",
+            "A": "Data",
+            "B": "Information",
+            "C": "Computer",
+            "D": "Mouse",
+            "Correct Answer": "Information"
+        },
+        {
+            "Question": "Which one of the following is not considered as a system software?",
+            "A": "Assembler",
+            "B": "Interpreter",
+            "C": "Compiler",
+            "D": "Tally",
+            "Correct Answer": "Tally"
+        },
+        {
+            "Question": "Which of the following is suitable for connecting different computers in an organized manner within an office building?",
+            "A": "MAN",
+            "B": "WAN",
+            "C": "ANN",
+            "D": "LAN",
+            "Correct Answer": "LAN"
+        },
+        {
+            "Question": "A computer program that translates one program instruction at a time into machine language is called:",
+            "A": "Interpreter",
+            "B": "CPU",
+            "C": "Compiler",
+            "D": "Simulator",
+            "Correct Answer": "Interpreter"
+        },
+        {
+            "Question": "The name given to a sequence of instructions in a computer language to get the desired result is:",
+            "A": "Program",
+            "B": "Decision table",
+            "C": "Pseudo code",
+            "D": "Algorithm",
+            "Correct Answer": "Program"
+        },
+        {
+            "Question": "USB stands for:",
+            "A": "Ultra Serial Bus",
+            "B": "Unlimited Structured Bit",
+            "C": "Universal Serial Bus",
+            "D": "Unified Status Bus",
+            "Correct Answer": "Universal Serial Bus"
+        },
+        {
+            "Question": "Which is the extension not suitable for an MS Word file?",
+            "A": ".doc",
+            "B": ".docx",
+            "C": ".rtf",
+            "D": ".jpeg",
+            "Correct Answer": ".jpeg"
+        },
+        {
+            "Question": "ICT stands for:",
+            "A": "Information and Communications Technology",
+            "B": "Integrated Circular Technology",
+            "C": "Intensive Computer Techniques",
+            "D": "Interfacing Computer Theories",
+            "Correct Answer": "Information and Communications Technology"
+        },
+        {
+            "Question": "¹H and ³H are:",
+            "A": "Isotopes",
+            "B": "Isobars",
+            "C": "Isotones",
+            "D": "Isochores",
+            "Correct Answer": "Isotopes"
+        },
+        {
+            "Question": "The neutral atoms of all of the isotopes of the same element have:",
+            "A": "Different numbers of protons",
+            "B": "Exact numbers of neutrons",
+            "C": "An exact number of protons",
+            "D": "An exact number of nucleons",
+            "Correct Answer": "An exact number of protons"
+        },
+        {
+            "Question": "The species ₆C¹³ and ₆C¹⁴ have:",
+            "A": "The exact number of nucleons",
+            "B": "The exact number of protons",
+            "C": "The exact number of neutrons",
+            "D": "The exact mass number",
+            "Correct Answer": "The exact number of protons"
+        },
+        {
+            "Question": "Atomic mass of an element is equal to:",
+            "A": "Mass of protons and neutrons",
+            "B": "Mass of protons and electrons",
+            "C": "Mass of electrons and neutrons",
+            "D": "Mass of protons only",
+            "Correct Answer": "Mass of protons and neutrons"
+        },
+        {
+            "Question": "The maximum mass of an atom is concentrated in:",
+            "A": "Nucleus",
+            "B": "Neutrons",
+            "C": "Protons",
+            "D": "Electrons",
+            "Correct Answer": "Nucleus"
+        },
+        {
+            "Question": "Consider isotope ₉₂U²³⁷ of uranium. The number of neutrons in it is:",
+            "A": "92",
+            "B": "237",
+            "C": "145",
+            "D": "329",
+            "Correct Answer": "145"
+        },
+        {
+            "Question": "The symbol that denotes the proton number is:",
+            "A": "P",
+            "B": "A",
+            "C": "N",
+            "D": "Z",
+            "Correct Answer": "Z"
+        },
+        {
+            "Question": "The number of neutron(s) in Protium is:",
+            "A": "No",
+            "B": "One",
+            "C": "Two",
+            "D": "Three",
+            "Correct Answer": "No"
+        },
+        {
+            "Question": "In an atom, the nucleus when compared to the extra-nuclear part is:",
+            "A": "More significant in volume and heavier in mass",
+            "B": "Smaller in volume but heavier in mass",
+            "C": "More significant in volume but lighter in mass",
+            "D": "Smaller in volume and lighter in mass",
+            "Correct Answer": "Smaller in volume but heavier in mass"
+        },
+        {
+            "Question": "If an element B has five protons and six neutrons, what will be the symbol of element B?",
+            "A": "¹¹⁶B",
+            "B": "¹¹B",
+            "C": "¹¹⁵B",
+            "D": "₅¹¹B",
+            "Correct Answer": "₅¹¹B"
+        },
+        {
+            "Question": "The α-radiation is",
+            "A": "A stream of fast-moving electrons",
+            "B": "A form of electromagnetic radiation",
+            "C": "Highly ionizing than γ-radiation",
+            "D": "More penetrating than β-radiation",
+            "Correct Answer": "Highly ionizing than γ-radiation"
+        },
+        {
+            "Question": "A radioactive nuclide emits a β-particle. The atomic number of the nucleus",
+            "A": "Stays the same",
+            "B": "Increases by 1",
+            "C": "Decreases by 2",
+            "D": "Decreases by 4",
+            "Correct Answer": "Increases by 1"
+        },
+        {
+            "Question": "A radioactive element emits a particle from its nucleus comprising two protons and two neutrons. This process is called",
+            "A": "α-emission",
+            "B": "β-emission",
+            "C": "γ-emission",
+            "D": "Nuclear fission",
+            "Correct Answer": "α-emission"
+        },
+        {
+            "Question": "The decay 91Pa²³³ → 92U²³³ + ? emits which particle?",
+            "A": "Gamma-ray",
+            "B": "Proton",
+            "C": "α-particle",
+            "D": "β-particle",
+            "Correct Answer": "β-particle"
+        },
+        {
+            "Question": "Radiation that travels in a straight line across an electric field is",
+            "A": "Proton",
+            "B": "Electron",
+            "C": "Alpha particle",
+            "D": "Gamma-ray",
+            "Correct Answer": "Gamma-ray"
+        },
+        {
+            "Question": "A powder has 100mg of radioactive material (α-emitter) with a half-life of 5 days. Remaining after 10 days is",
+            "A": "0mg",
+            "B": "25mg",
+            "C": "50mg",
+            "D": "75mg",
+            "Correct Answer": "25mg"
+        },
+        {
+            "Question": "Main source of energy in stars is",
+            "A": "Chemical reaction",
+            "B": "Nuclear fission",
+            "C": "Nuclear fusion",
+            "D": "Mechanical energy",
+            "Correct Answer": "Nuclear fusion"
+        },
+        {
+            "Question": "Splitting of a heavy nucleus into smaller nuclei is called",
+            "A": "Fusion",
+            "B": "Fission",
+            "C": "Half-life",
+            "D": "Gamma decay",
+            "Correct Answer": "Fission"
+        },
+        {
+            "Question": "Combination of two light nuclei to form a heavier nucleus is",
+            "A": "Nuclear fusion",
+            "B": "Nuclear fission",
+            "C": "Beta-decay",
+            "D": "Alpha-decay",
+            "Correct Answer": "Nuclear fusion"
+        },
+        {
+            "Question": "Which row shows the nature and penetrating ability of α-particles?",
+            "A": "Helium nucleus, a few mm of aluminum",
+            "B": "Helium nucleus, a thin sheet of paper",
+            "C": "Electron, a few mm of aluminum",
+            "D": "Electron, a thin sheet of paper",
+            "Correct Answer": "Helium nucleus, a thin sheet of paper"
+        },
+        {
+            "Question": "Compared with α-particles and β-particles, γ-rays:",
+            "A": "Are a type of radiation to carry a charge",
+            "B": "Have the most significant ionizing effect",
+            "C": "Have the most significant penetrating effect",
+            "D": "Have the most negligible mass",
+            "Correct Answer": "Have the most significant penetrating effect"
+        },
+        {
+            "Question": "The severe health hazards caused by radioactive emissions is/are:",
+            "A": "Cancer",
+            "B": "Genetic change",
+            "C": "Deep-sited burns",
+            "D": "All of these",
+            "Correct Answer": "All of these"
+        },
+        {
+            "Question": "Which safety measure does not reduce the risk of using radioactive material?",
+            "A": "Keeping the material a long distance",
+            "B": "Keeping the material at a low temperature",
+            "C": "Using lead screening",
+            "D": "Using the material for a short time",
+            "Correct Answer": "Keeping the material at a low temperature"
+        },
+        {
+            "Question": "A scientist is working with a sealed β-particle source (range ≈ 30 cm in air). Which precaution is most effective?",
+            "A": "Handling the source with long tongs",
+            "B": "Keeping the temperature of the source low",
+            "C": "Opening all windows in the laboratory",
+            "D": "Washing hands before leaving",
+            "Correct Answer": "Handling the source with long tongs"
+        },
+        {
+            "Question": "The safest way to dispose of a large quantity of radioactive waste is:",
+            "A": "Burying it in a dry rock deep underground",
+            "B": "Washing it in the drain",
+            "C": "Burning it on a fire",
+            "D": "Draining it into the sea",
+            "Correct Answer": "Burying it in a dry rock deep underground"
+        }
+    ];
+
+        let mcqData = [...defaultMCQs];
+        let userAnswers = {};
+        let answersRevealed = true; // Default ON as requested
+
+        const container = document.getElementById('mcq-container');
+        const noResults = document.getElementById('no-results');
+        const themeSelector = document.getElementById('theme-selector');
+        const toggleAnswersBtn = document.getElementById('toggle-answers');
+        const resetBtn = document.getElementById('reset-quiz');
+        const exportBtn = document.getElementById('export-btn');
+        const searchBox = document.getElementById('search-box');
+        const excelUpload = document.getElementById('excel-upload');
+        const loadDefaultBtn = document.getElementById('load-default');
+        const modeIndicator = document.getElementById('mode-indicator');
+
+        themeSelector.addEventListener('change', (e) => {
+          document.body.setAttribute('data-theme', e.target.value);
+          localStorage.setItem('eka-theme', e.target.value);
+        });
+        const savedTheme = localStorage.getItem('eka-theme');
+        if (savedTheme && themeSelector.querySelector(`option[value="${savedTheme}"]`)) {
+          themeSelector.value = savedTheme;
+          document.body.setAttribute('data-theme', savedTheme);
+        }
+
+        searchBox.addEventListener('input', (e) => {
+          const term = e.target.value.toLowerCase().trim();
+          let visibleCount = 0;
+          document.querySelectorAll('.question-card').forEach(card => {
+            const idx = parseInt(card.dataset.index);
+            const q = mcqData[idx];
+            const searchable = [q.Question, q.A, q.B, q.C, q.D].join(' ').toLowerCase();
+            if (term === '' || searchable.includes(term)) {
+              card.classList.remove('hidden');
+              visibleCount++;
+            } else {
+              card.classList.add('hidden');
+            }
+          });
+          noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+        });
+
+        function renderMCQs() {
+          container.innerHTML = '';
+          if (mcqData.length === 0) {
+            container.innerHTML = '<div class="loading">No questions loaded.</div>';
+            return;
+          }
+          mcqData.forEach((item, idx) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.dataset.index = idx;
+            card.innerHTML = `<div class="q-text">${idx + 1}. ${item.Question}</div><div class="options"></div>`;
+            const optsDiv = card.querySelector('.options');
+            ['A', 'B', 'C', 'D'].forEach(optLetter => {
+              const label = document.createElement('label');
+              label.className = 'option';
+              label.dataset.option = optLetter;
+              label.innerHTML = `<input type="radio" name="q${idx}" value="${optLetter}"><span class="radio-dot"></span><span><span class="option-label">${optLetter}:</span> ${item[optLetter]}</span>`;
+              label.addEventListener('click', (e) => { e.preventDefault(); handleOptionSelect(idx, optLetter, label); });
+              optsDiv.appendChild(label);
+            });
+            container.appendChild(card);
+          });
+          applyAnswerHighlights();
+          restoreAnswers();
+        }
+
+        function handleOptionSelect(qIdx, selectedOpt, label) {
+          if (answersRevealed) return;
+          const opts = label.closest('.options').querySelectorAll('.option');
+          opts.forEach(o => o.classList.remove('selected'));
+          label.classList.add('selected');
+          label.querySelector('input').checked = true;
+          userAnswers[qIdx] = selectedOpt;
+          localStorage.setItem('eka-answers', JSON.stringify(userAnswers));
+        }
+
+        // 🔧 FIXED: Properly toggles highlights ON/OFF
+        function applyAnswerHighlights() {
+          document.querySelectorAll('.question-card').forEach(card => {
+            if (card.classList.contains('hidden')) return;
+            const qIdx = parseInt(card.dataset.index);
+            const correctAnswer = mcqData[qIdx]["Correct Answer"];
+
+            card.querySelectorAll('.option').forEach(opt => {
+              opt.classList.remove('correct', 'wrong'); // ALWAYS reset first
+              if (answersRevealed) {
+                const optLetter = opt.dataset.option;
+                const optText = mcqData[qIdx][optLetter];
+                if (optText === correctAnswer) opt.classList.add('correct');
+                else if (userAnswers[qIdx] === optLetter) opt.classList.add('wrong');
+              }
+            });
+          });
+        }
+
+        toggleAnswersBtn.addEventListener('click', () => {
+          answersRevealed = !answersRevealed;
+          toggleAnswersBtn.textContent = answersRevealed ? 'Hide Answers' : 'Show Answers';
+          toggleAnswersBtn.classList.toggle('primary');
+          applyAnswerHighlights(); // Triggers correct toggle behavior
+        });
+
+        function restoreAnswers() {
+          Object.entries(userAnswers).forEach(([idx, optLetter]) => {
+            const card = document.querySelector(`.question-card[data-index="${idx}"]`);
+            if (card) {
+              const target = card.querySelector(`.option[data-option="${optLetter}"]`);
+              if (target) { target.classList.add('selected'); target.querySelector('input').checked = true; }
+            }
+          });
+        }
+
+        resetBtn.addEventListener('click', () => {
+          if (!confirm('Reset all selected answers for this dataset?')) return;
+          userAnswers = {};
+          localStorage.removeItem('eka-answers');
+          document.querySelectorAll('.option').forEach(opt => { opt.classList.remove('selected', 'correct', 'wrong'); opt.querySelector('input').checked = false; });
+          answersRevealed = true;
+          toggleAnswersBtn.textContent = 'Hide Answers';
+          toggleAnswersBtn.classList.remove('primary');
+          applyAnswerHighlights();
+        });
+
+        exportBtn.addEventListener('click', () => {
+          const results = mcqData.map((q, idx) => ({ question: q.Question, yourAnswer: userAnswers[idx] || 'Not answered', correctAnswer: q["Correct Answer"], isCorrect: userAnswers[idx] === q["Correct Answer"] || null }));
+          const blob = new Blob([JSON.stringify(results, null, 2)], {type: 'application/json'});
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a'); a.href = url; a.download = 'eka-results.json'; a.click(); URL.revokeObjectURL(url);
+        });
+
+        excelUpload.addEventListener('change', (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          container.innerHTML = '<div class="loading">Parsing Excel file...</div>';
+          const reader = new FileReader();
+          reader.onload = (evt) => {
+            try {
+              const wb = XLSX.read(evt.target.result, {type: 'array'});
+              const ws = wb.Sheets[wb.SheetNames[0]];
+              let rawData = XLSX.utils.sheet_to_json(ws);
+              if (rawData.length === 0) throw new Error('Empty spreadsheet.');
+              rawData = rawData.filter(row => Object.values(row).some(v => v !== null && v !== undefined && v !== ''));
+              const keys = Object.keys(rawData[0]).map(k => k.toLowerCase().trim());
+              const required = ['question', 'a', 'b', 'c', 'd', 'correct answer'];
+              const missing = required.filter(r => !keys.includes(r));
+              if (missing.length > 0) throw new Error(`Missing columns: ${missing.join(', ')}`);
+
+              mcqData = rawData.map(row => {
+                const norm = {};
+                for (let key in row) {
+                  const lower = key.toLowerCase().trim();
+                  if (lower === 'question') norm.Question = String(row[key]).trim();
+                  else if (lower === 'a') norm.A = String(row[key]).trim();
+                  else if (lower === 'b') norm.B = String(row[key]).trim();
+                  else if (lower === 'c') norm.C = String(row[key]).trim();
+                  else if (lower === 'd') norm.D = String(row[key]).trim();
+                  else if (lower === 'correct answer') norm["Correct Answer"] = String(row[key]).trim();
+                }
+                return norm;
+              });
+
+              userAnswers = {}; localStorage.removeItem('eka-answers');
+              answersRevealed = true; toggleAnswersBtn.textContent = 'Hide Answers'; toggleAnswersBtn.classList.remove('primary');
+              modeIndicator.textContent = `📊 Excel Mode (${mcqData.length} Qs)`;
+              searchBox.value = '';
+              renderMCQs();
+              alert(`✅ Loaded ${mcqData.length} questions from Excel.`);
+            } catch (err) {
+              container.innerHTML = '<div class="loading" style="color:var(--wrong)">Error: ' + err.message + '</div>';
+              setTimeout(renderMCQs, 2000);
+            }
+          };
+          reader.readAsArrayBuffer(file);
+        });
+
+        loadDefaultBtn.addEventListener('click', () => {
+          mcqData = [...defaultMCQs];
+          userAnswers = {}; localStorage.removeItem('eka-answers');
+          answersRevealed = true; toggleAnswersBtn.textContent = 'Hide Answers'; toggleAnswersBtn.classList.remove('primary');
+          modeIndicator.textContent = '📚 Default Mode';
+          searchBox.value = '';
+          renderMCQs();
+        });
+
+        setTimeout(() => {
+          const saved = localStorage.getItem('eka-answers');
+          if (saved) userAnswers = JSON.parse(saved);
+          // Ensure initial button state matches answersRevealed = true
+          toggleAnswersBtn.textContent = 'Hide Answers';
+          toggleAnswersBtn.classList.remove('primary');
+          renderMCQs();
+        }, 500);
+</script>
+</body>
+</html>
