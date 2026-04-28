@@ -396,6 +396,11 @@
                 <button class="theme-btn" onclick="App.setTheme('pastel-beige')" data-theme="pastel-beige">Beige</button>
             </div>
 
+            <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; color: white; font-size: 0.9rem;">
+                <label>Qs: <input type="number" id="quizLimit" value="25" min="5" max="200" style="width: 50px; border-radius: 5px; border: none; padding: 3px;"></label>
+                <label>Time (s): <input type="number" id="quizTimer" value="275" min="10" max="1800" style="width: 60px; border-radius: 5px; border: none; padding: 3px;"></label>
+            </div>
+
             <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
                 <button class="btn" onclick="App.startQuiz()">▶ START</button>
                 <button class="btn btn-secondary" onclick="App.openModal()"> Load Quiz Data</button>
@@ -490,20 +495,24 @@
 
     const CONFIG = {
         maxQuestionsPerQuiz: 25,
-        timerDurationSec: 260,
-        autoAdvanceDelay: 350,
+        timerDurationSec: 275,
+        autoAdvanceDelay: 400,
         points: { correct: 1, wrong: 0 },
         passingThreshold: 75
     };
 
     const state = {
+        pool: [],
         questions: [],
         currentQIndex: 0,
         score: 0,
         correctCount: 0,
         wrongCount: 0,
         skippedCount: 0,
-        timeLeft: CONFIG.timerDurationSec,
+        answeredCount: 0,
+        quizLimit: 25,
+        timeLeft: 50,
+        timerDuration: 50,
         timerInterval: null,
         isLocked: false,
         studentName: '',
@@ -513,6 +522,8 @@
     const DOM = {
         screens: { start: document.getElementById('startScreen'), quiz: document.getElementById('quizScreen'), result: document.getElementById('resultScreen') },
         nameInput: document.getElementById('studentName'),
+        limitInput: document.getElementById('quizLimit'),
+        timerInput: document.getElementById('quizTimer'),
         timerBar: document.getElementById('timerBar'),
         qNum: document.getElementById('qNum'),
         qTotal: document.getElementById('qTotal'),
@@ -553,18 +564,19 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
     }
 
     function parseTSV(data) {
-        state.questions = [];
+        state.pool = [];
         const lines = data.trim().split('\n');
         lines.forEach(line => {
             const cols = line.split('\t');
             if (cols.length >= 6) {
-                state.questions.push({
+                state.pool.push({
                     q: cols[0].trim(),
                     opts: [cols[1].trim(), cols[2].trim(), cols[3].trim(), cols[4].trim()],
                     ans: cols[5].trim().toUpperCase()
                 });
             }
         });
+        state.questions = [...state.pool];
     }
 
     function shuffleArray(arr) {
@@ -585,24 +597,38 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
         const name = DOM.nameInput.value.trim();
         if (!name) return alert('Please enter your name.');
         state.studentName = name;
-        state.questions = shuffleArray(state.questions).slice(0, CONFIG.maxQuestionsPerQuiz);
+
+        const limit = parseInt(DOM.limitInput.value) || 25;
+        const duration = parseInt(DOM.timerInput.value) || 275;
+
+        state.questions = shuffleArray(state.pool);
+        state.quizLimit = Math.min(limit, state.questions.length);
+
         state.currentQIndex = 0;
         state.score = 0;
         state.correctCount = 0;
         state.wrongCount = 0;
         state.skippedCount = 0;
-        state.timeLeft = CONFIG.timerDurationSec;
+        state.answeredCount = 0;
+        state.timeLeft = duration;
+        state.timerDuration = duration;
 
-        DOM.qTotal.innerText = state.questions.length;
+        DOM.qTotal.innerText = state.quizLimit;
         showScreen('quiz');
         startTimer();
         renderQuestion();
     }
 
     function renderQuestion() {
-        if (state.currentQIndex >= state.questions.length) return endQuiz();
+        if (state.answeredCount >= state.quizLimit || state.questions.length === 0) return endQuiz();
+
+        if (state.currentQIndex >= state.questions.length) {
+            state.currentQIndex = 0;
+        }
+
         const q = state.questions[state.currentQIndex];
-        DOM.qNum.innerText = state.currentQIndex + 1;
+        DOM.qNum.innerText = state.answeredCount + 1;
+        DOM.qTotal.innerText = state.quizLimit;
         DOM.qText.innerText = q.q;
         DOM.optGrid.innerHTML = '';
         state.isLocked = false;
@@ -634,7 +660,8 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
         }
         DOM.liveScore.innerText = state.score;
         setTimeout(() => {
-            state.currentQIndex++;
+            state.questions.splice(state.currentQIndex, 1);
+            state.answeredCount++;
             renderQuestion();
         }, CONFIG.autoAdvanceDelay);
     }
@@ -659,14 +686,16 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
         const mins = Math.floor(state.timeLeft / 60).toString().padStart(2, '0');
         const secs = (state.timeLeft % 60).toString().padStart(2, '0');
         DOM.timeLeft.innerText = `${mins}:${secs}`;
-        DOM.timerBar.style.width = `${(state.timeLeft / CONFIG.timerDurationSec) * 100}%`;
+        DOM.timerBar.style.width = `${(state.timeLeft / state.timerDuration) * 100}%`;
     }
 
     function endQuiz() {
         clearInterval(state.timerInterval);
         showScreen('result');
-        const percent = Math.round((state.score / state.questions.length) * 100);
-        DOM.finalScore.innerText = `Score: ${state.score} / ${state.questions.length}`;
+        const attempted = state.correctCount + state.wrongCount;
+        const percent = attempted > 0 ? Math.round((state.score / attempted) * 100) : 0;
+
+        DOM.finalScore.innerText = `Score: ${state.score} / ${attempted}`;
         DOM.finalPercent.innerText = `Percentage: ${percent}%`;
 
         let remark = "";
@@ -682,21 +711,24 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
     function showCertificate() {
         document.getElementById('certName').innerText = state.studentName;
         document.getElementById('certQuizSubtitle').innerText = `${state.activeQuiz.title} - ${state.activeQuiz.subtitle}`;
-        document.getElementById('cTotal').innerText = state.questions.length;
+        const attempted = state.correctCount + state.wrongCount;
+        document.getElementById('cTotal').innerText = attempted;
         document.getElementById('cCorrect').innerText = state.correctCount;
         document.getElementById('cWrong').innerText = state.wrongCount;
         document.getElementById('cSkipped').innerText = state.skippedCount;
-        const pct = Math.round((state.score / state.questions.length) * 100);
+        const pct = attempted > 0 ? Math.round((state.score / attempted) * 100) : 0;
         document.getElementById('cPercent').innerText = `${pct}%`;
         document.getElementById('cGrade').innerText = pct >= 90 ? 'A+' : pct >= 70 ? 'A' : 'B';
         document.getElementById('certificate-wrapper').style.display = 'flex';
     }
 
     function copyCSV() {
-        const percent = Math.round((state.score / state.questions.length) * 100);
+        const attempted = state.correctCount + state.wrongCount;
+        const percent = attempted > 0 ? Math.round((state.score / attempted) * 100) : 0;
         const summary = `🏆 EKA QUIZ RESULT 🏆\n` +
                         `Name: ${state.studentName}\n` +
-                        `Questions: ${state.questions.length}\n` +
+                        `Attempted Questions: ${attempted}\n` +
+                        `Total Questions: ${state.questions.length}\n` +
                         `Score: ${state.score}\n` +
                         `Percentage: ${percent}%\n` +
                         `Date: ${new Date().toLocaleDateString()}`;
@@ -746,10 +778,11 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
             alert("No results to save yet.");
             return;
         }
-        const percent = Math.round((state.score / state.questions.length) * 100);
+        const attempted = state.correctCount + state.wrongCount;
+        const percent = attempted > 0 ? Math.round((state.score / attempted) * 100) : 0;
         const csvContent = [
-            "Student Name,Quiz,Date,Total Questions,Correct,Wrong,Skipped,Score,Percentage",
-            `"${state.studentName}","${state.activeQuiz.title} - ${state.activeQuiz.subtitle}",${new Date().toLocaleDateString()},${state.questions.length},${state.correctCount},${state.wrongCount},${state.skippedCount},${state.score},${percent}%`
+            "Student Name,Quiz,Date,Total Questions,Attempted,Correct,Wrong,Skipped,Score,Percentage",
+            `"${state.studentName}","${state.activeQuiz.title} - ${state.activeQuiz.subtitle}",${new Date().toLocaleDateString()},${state.questions.length},${attempted},${state.correctCount},${state.wrongCount},${state.skippedCount},${state.score},${percent}%`
         ].join("\n");
 
         // Convert to Base64 for WebView DownloadListener compatibility
