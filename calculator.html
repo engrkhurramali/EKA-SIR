@@ -11,9 +11,11 @@
             --glass: rgba(255, 255, 255, 0.25);
             --glass-border: rgba(255, 255, 255, 0.45);
             --text-dark: #1a5f7a;
-            --accent-white: rgba(255, 255, 255, 0.6);
-            --btn-shadow: 0 6px 0 rgba(0,0,0,0.12);
-            --btn-shadow-active: 0 2px 0 rgba(0,0,0,0.12);
+            --casio-body: #4a4a4a;
+            --casio-dark: #2d2d2d;
+            --casio-light: #5a5a5a;
+            --casio-green: #9acd32;
+            --casio-green-dark: #7fb52a;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -40,9 +42,8 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.2);
         }
 
-        /* 3-Option Navigation */
         nav {
-            height: 75px;
+            height: 70px;
             background: rgba(255, 255, 255, 0.35);
             display: flex; justify-content: space-around; align-items: center;
             border-top: 2px solid var(--glass-border);
@@ -50,190 +51,248 @@
         }
 
         .nav-item {
-            text-align: center;
-            font-size: 13px;
+            text-align: center; 
+            font-size: 12px; 
             font-weight: 700;
-            opacity: 0.5;
-            cursor: pointer;
+            opacity: 0.5; 
+            cursor: pointer; 
             transition: all 0.25s ease;
-            padding: 8px 12px;
-            border-radius: 16px;
+            padding: 6px 10px;
+            border-radius: 14px;
         }
 
         .nav-item:active { transform: scale(0.95); background: rgba(255,255,255,0.5); }
-        .nav-item.active {
-            opacity: 1;
-            transform: scale(1.05);
-            color: #000;
+        .nav-item.active { 
+            opacity: 1; 
+            transform: scale(1.05); 
+            color: #000; 
             background: rgba(255,255,255,0.6);
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .nav-icon { font-size: 1.8rem; display: block; margin-bottom: 2px; }
+        .nav-icon { font-size: 1.6rem; display: block; margin-bottom: 2px; }
 
-        /* Screen Setup */
         .screen {
-            flex: 1;
-            padding: 18px;
-            display: none;
+            flex: 1; 
+            padding: 12px; 
+            display: none; 
             flex-direction: column;
-            animation: slideUp 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: slideUp 0.35s ease;
         }
 
         .screen.active { display: flex; }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px) scale(0.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
         }
 
-        /* 200% Bigger Displays */
-        .display-box {
-            height: 140px;
-            background: var(--accent-white);
-            border-radius: 28px;
-            margin-bottom: 20px;
-            padding: 24px;
+        /* SCIENTIFIC CALCULATOR STYLES */
+        .sci-calc {
+            background: linear-gradient(145deg, var(--casio-body), var(--casio-dark));
+            border-radius: 18px;
+            padding: 14px 12px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.1);
+            border: 3px solid #2a2a2a;
+            flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
-            align-items: flex-end;
-            border: 2px solid var(--glass-border);
-            box-shadow: inset 0 4px 16px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
+            gap: 8px;
         }
 
-        .display-box:active { transform: scale(0.99); }
-
-        #mini-view {
-            font-size: 1.8rem; /* 200% bigger */
-            opacity: 0.7;
-            font-weight: 400;
-            text-align: right;
-            width: 100%;
-            word-wrap: break-word;
-        }
-
-        #main-view {
-            font-size: 4.4rem; /* 200% bigger - ultra clear! */
-            font-weight: 300;
-            line-height: 1.1;
-            text-align: right;
-            width: 100%;
-            word-wrap: break-word;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        /* Grids */
-        .grid {
-            display: grid;
-            gap: 12px; /* More spacing for touch */
-            flex: 1;
-            padding-bottom: 10px;
-        }
-
-        .grid-basic { grid-template-columns: repeat(4, 1fr); }
-        .grid-sci { grid-template-columns: repeat(5, 1fr); }
-
-        /* 3D Glass Buttons - 200% Font */
-        .btn {
-            background: var(--glass);
-            border: 2px solid var(--glass-border);
-            border-radius: 20px;
-            font-size: 2rem; /* 200% bigger! */
+        .sci-brand {
+            text-align: center;
+            color: #fff;
+            font-size: 1.2rem;
             font-weight: 700;
-            color: var(--text-dark);
+            letter-spacing: 3px;
+            margin-bottom: 2px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .sci-display {
+            background: linear-gradient(180deg, #d0e0d0, #c0d0c0);
+            border-radius: 8px;
+            padding: 12px 10px;
+            margin-bottom: 8px;
+            box-shadow: inset 0 3px 8px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.3);
+            border: 2px solid #555;
+            min-height: 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .sci-indicators {
+            position: absolute;
+            top: 3px;
+            left: 6px;
+            right: 6px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.65rem;
+            color: #444;
+            font-weight: 600;
+        }
+
+        #sci-input {
+            font-family: 'Courier New', monospace;
+            font-size: 1.3rem;
+            color: #222;
+            text-align: right;
+            min-height: 26px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 500;
+            margin-top: 12px;
+        }
+
+        #sci-result {
+            font-family: 'Courier New', monospace;
+            font-size: 2.2rem;
+            color: #111;
+            text-align: right;
+            font-weight: 700;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+            min-height: 34px;
+        }
+
+        .sci-keypad {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+            flex: 1;
+        }
+
+        .sc-btn {
+            border: none;
+            border-radius: 7px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.1s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.12s ease;
-            box-shadow: var(--btn-shadow);
+            box-shadow: 0 3px 0 rgba(0,0,0,0.4), 0 4px 6px rgba(0,0,0,0.25);
+            min-height: 40px;
             user-select: none;
-            -webkit-user-select: none;
-            min-height: 68px; /* Larger touch target */
+            position: relative;
         }
 
-        .btn:active {
-            transform: translateY(4px);
-            box-shadow: var(--btn-shadow-active);
-            background: rgba(255,255,255,0.85);
-            filter: brightness(1.05);
+        .sc-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 rgba(0,0,0,0.4), 0 2px 3px rgba(0,0,0,0.25);
         }
 
-        .btn.op {
-            background: rgba(152, 255, 152, 0.5);
-            font-size: 2.2rem;
+        .sc-btn.top-row {
+            background: linear-gradient(180deg, #555, #3a3a3a);
+            color: #fff;
+            font-size: 0.75rem;
+            min-height: 36px;
         }
 
-        .btn.action {
-            background: linear-gradient(135deg, var(--text-dark), #2a7f9a);
-            color: white;
-            font-size: 2.4rem;
-            box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+        .sc-btn.sci-fn {
+            background: linear-gradient(180deg, #5a5a5a, #3d3d3d);
+            color: #fff;
+            font-size: 0.8rem;
         }
 
-        .btn.action:active {
-            box-shadow: 0 2px 0 rgba(0,0,0,0.2);
-            background: linear-gradient(135deg, #154d62, #20667a);
-        }
-
-        .btn.sci-key {
-            font-size: 1.6rem; /* Slightly smaller for sci keys but still big */
-            background: rgba(135, 206, 235, 0.5);
-            font-weight: 600;
-        }
-
-        /* History List */
-        #scr-hist h3 {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            text-align: center;
+        .sc-btn.num {
+            background: linear-gradient(180deg, #8a8a8a, #6a6a6a);
+            color: #fff;
+            font-size: 1.15rem;
             font-weight: 700;
         }
 
-        .list-item {
-            background: var(--glass);
-            padding: 18px 20px;
-            border-radius: 18px;
-            margin-bottom: 12px;
-            border: 2px solid var(--glass-border);
-            font-size: 1.7rem; /* 200% bigger */
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.15s;
+        .sc-btn.sci-op {
+            background: linear-gradient(180deg, #7a7a7a, #5a5a5a);
+            color: #fff;
+            font-size: 1.05rem;
         }
 
-        .list-item:active { transform: scale(0.98); }
+        .sc-btn.green {
+            background: linear-gradient(180deg, var(--casio-green), var(--casio-green-dark));
+            color: #fff;
+            font-weight: 700;
+        }
 
-        .hist-expr { opacity: 0.8; font-size: 1.4rem; }
-        .hist-res { font-weight: 700; color: var(--text-dark); }
+        .sc-btn.equals {
+            background: linear-gradient(180deg, var(--casio-green), var(--casio-green-dark));
+            color: #fff;
+            font-size: 1.3rem;
+            font-weight: 700;
+            grid-row: span 2;
+            min-height: 86px;
+        }
 
-        /* Clear History Button */
-        #clear-hist {
-            background: rgba(255, 100, 100, 0.3);
-            color: var(--text-dark);
-            font-size: 1.4rem;
-            padding: 12px;
-            border-radius: 16px;
-            border: 2px solid var(--glass-border);
-            margin: 10px 0;
+        .sc-btn.zero {
+            grid-column: span 2;
+        }
+
+        .btn-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1px;
+        }
+
+        .btn-shift {
+            font-size: 0.55rem;
+            color: #ffd700;
             font-weight: 600;
         }
 
-        #clear-hist:active {
-            transform: translateY(3px);
-            box-shadow: 0 2px 0 rgba(0,0,0,0.1);
+        .btn-alpha {
+            font-size: 0.55rem;
+            color: #ff6b9d;
+            font-weight: 600;
         }
 
-        /* Responsive tweaks for very small screens */
-        @media (max-height: 700px) {
-            #main-view { font-size: 3.8rem; }
-            .btn { font-size: 1.8rem; min-height: 62px; }
-            .display-box { height: 120px; padding: 18px; }
+        .btn-main {
+            font-size: 0.95rem;
+        }
+
+        /* HISTORY STYLES */
+        #scr-hist h3 {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        .list-item { 
+            background: var(--glass); 
+            padding: 14px 16px; 
+            border-radius: 14px; 
+            margin-bottom: 10px; 
+            border: 2px solid var(--glass-border);
+            font-size: 1.4rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        #clear-hist {
+            background: rgba(255, 100, 100, 0.3);
+            color: var(--text-dark);
+            font-size: 1.3rem;
+            padding: 10px;
+            border-radius: 14px;
+            border: 2px solid var(--glass-border);
+            margin: 8px 0;
+            font-weight: 600;
+        }
+
+        @media (max-height: 720px) {
+            .sc-btn { min-height: 36px; }
+            .sci-display { min-height: 80px; }
+        }
+
+        @media (max-height: 650px) {
+            .sc-btn { min-height: 32px; font-size: 0.75rem; }
+            .sci-display { min-height: 70px; }
+            #sci-result { font-size: 1.9rem; }
+            #sci-input { font-size: 1.1rem; }
         }
     </style>
 </head>
@@ -241,294 +300,586 @@
 
 <div id="app-container">
 
-    <!-- ✅ CALCULATOR SCREEN (Basic) -->
-    <div id="scr-norm" class="screen active">
-        <div class="display-box">
-            <div id="n-mini"></div>
-            <div id="n-main">0</div>
-        </div>
-        <div class="grid grid-basic">
-            <button class="btn op" onclick="cls()">AC</button>
-            <button class="btn op" onclick="inp('/')">÷</button>
-            <button class="btn op" onclick="inp('*')">×</button>
-            <button class="btn op" onclick="del()">⌫</button>
+    <!-- ==================== -->
+    <!-- SCIENTIFIC CALCULATOR-->
+    <!-- ==================== -->
+    <div id="scr-sci" class="screen active">
+        <div class="sci-calc">
+            <div class="sci-brand">CASIO</div>
+            
+            <!-- Two-row display: Input + Result -->
+            <div class="sci-display">
+                <div class="sci-indicators">
+                    <span id="sd-mode">MATH</span>
+                    <span id="sd-angle">DEG</span>
+                    <span id="sd-shift" style="color:#444">SHIFT</span>
+                </div>
+                <div id="sci-input">0</div>
+                <div id="sci-result">0</div>
+            </div>
 
-            <button class="btn" onclick="inp('7')">7</button>
-            <button class="btn" onclick="inp('8')">8</button>
-            <button class="btn" onclick="inp('9')">9</button>
-            <button class="btn op" onclick="inp('-')">−</button>
+            <!-- Scientific Keypad -->
+            <div class="sci-keypad">
+                <!-- Row 1: Top functions -->
+                <button class="sc-btn top-row" onclick="toggleShift()">SHIFT</button>
+                <button class="sc-btn top-row" onclick="toggleAlpha()">ALPHA</button>
+                <button class="sc-btn top-row" onclick="toggleMode()">MODE</button>
+                <button class="sc-btn top-row" onclick="toggleAngle()">DRG►</button>
+                <button class="sc-btn top-row" onclick="powerOn()">ON</button>
 
-            <button class="btn" onclick="inp('4')">4</button>
-            <button class="btn" onclick="inp('5')">5</button>
-            <button class="btn" onclick="inp('6')">6</button>
-            <button class="btn op" onclick="inp('+')">+</button>
+                <!-- Row 2: x³, ∛, xʸ, 10ˣ, log -->
+                <button class="sc-btn sci-fn" id="btn-pow3" onclick="handlePow3()">
+                    <div class="btn-label"><span class="btn-shift">x!</span><span class="btn-main">x³</span></div>
+                </button>
+                <button class="sc-btn sci-fn" id="btn-root3" onclick="handleRoot3()">
+                    <div class="btn-label"><span class="btn-shift">ˣ√</span><span class="btn-main">∛</span></div>
+                </button>
+                <button class="sc-btn sci-fn" id="btn-pow" onclick="handlePow()">
+                    <div class="btn-label"><span class="btn-shift">ˣ√</span><span class="btn-main">xʸ</span></div>
+                </button>
+                <button class="sc-btn sci-fn" id="btn-pow10" onclick="handlePow10()">
+                    <div class="btn-label"><span class="btn-shift">eˣ</span><span class="btn-main">10ˣ</span></div>
+                </button>
+                <button class="sc-btn sci-fn" id="btn-log" onclick="handleLog()">
+                    <div class="btn-label"><span class="btn-shift">10ˣ</span><span class="btn-main">log</span></div>
+                </button>
 
-            <button class="btn" onclick="inp('1')">1</button>
-            <button class="btn" onclick="inp('2')">2</button>
-            <button class="btn" onclick="inp('3')">3</button>
-            <button class="btn action" style="grid-row: span 2;" onclick="run()">=</button>
+                <!-- Row 3: sin, cos, tan, (, ) -->
+                <button class="sc-btn sci-fn" id="btn-sin" onclick="handleSin()">
+                    <div class="btn-label"><span class="btn-shift">sin⁻¹</span><span class="btn-main">sin</span></div>
+                </button>
+                <button class="sc-btn sci-fn" id="btn-cos" onclick="handleCos()">
+                    <div class="btn-label"><span class="btn-shift">cos⁻¹</span><span class="btn-main">cos</span></div>
+                </button>
+                <button class="sc-btn sci-fn" id="btn-tan" onclick="handleTan()">
+                    <div class="btn-label"><span class="btn-shift">tan⁻¹</span><span class="btn-main">tan</span></div>
+                </button>
+                <button class="sc-btn sci-fn" onclick="inp('(')">(</button>
+                <button class="sc-btn sci-fn" onclick="inp(')')">)</button>
 
-            <button class="btn" style="grid-column: span 2;" onclick="inp('0')">0</button>
-            <button class="btn" onclick="inp('.')">.</button>
+                <!-- Row 4: , π, e, DEL, AC -->
+                <button class="sc-btn sci-fn" onclick="inp(',')">,</button>
+                <button class="sc-btn sci-fn" id="btn-pi" onclick="handlePi()">
+                    <div class="btn-label"><span class="btn-alpha">A</span><span class="btn-main">π</span></div>
+                </button>
+                <button class="sc-btn sci-fn" id="btn-e" onclick="handleE()">
+                    <div class="btn-label"><span class="btn-alpha">B</span><span class="btn-main">e</span></div>
+                </button>
+                <button class="sc-btn green" onclick="del()">DEL</button>
+                <button class="sc-btn green" onclick="cls()">AC</button>
+
+                <!-- Row 5: 7, 8, 9, ÷, × -->
+                <button class="sc-btn num" onclick="inp('7')">7</button>
+                <button class="sc-btn num" onclick="inp('8')">8</button>
+                <button class="sc-btn num" onclick="inp('9')">9</button>
+                <button class="sc-btn sci-fn" onclick="inp('/')"><span class="btn-main">÷</span></button>
+                <button class="sc-btn sci-fn" onclick="inp('*')"><span class="btn-main">×</span></button>
+       
+                <!-- Row 6: 4, 5, 6, +, − -->
+                <button class="sc-btn num" onclick="inp('4')">4</button>
+                <button class="sc-btn num" onclick="inp('5')">5</button>
+                <button class="sc-btn num" onclick="inp('6')">6</button> 
+                <button class="sc-btn sci-fn" onclick="inp('+')"><span class="btn-main">+</span></button>
+                <button class="sc-btn sci-fn" onclick="inp('-')"><span class="btn-main">−</span></button>
+ 
+
+                <!-- Row 7: 1, 2, 3, ln, √ -->
+                <button class="sc-btn num" onclick="inp('1')">1</button>
+                <button class="sc-btn num" onclick="inp('2')">2</button>
+                <button class="sc-btn num" onclick="inp('3')">3</button>
+                <button class="sc-btn sci-fn" id="btn-ln" onclick="handleLn()">
+                    <div class="btn-label"><span class="btn-shift">eˣ</span><span class="btn-main">ln</span></div>
+                </button>
+                <button class="sc-btn sci-fn" id="btn-sqrt" onclick="handleSqrt()">
+                    <div class="btn-label"><span class="btn-shift">³√</span><span class="btn-main">√</span></div>
+                </button>
+                
+                <!-- Row 8: 0, ., x², = -->
+                <button class="sc-btn num zero" onclick="inp('0')">0</button>
+                <button class="sc-btn num" onclick="inp('.')">.</button>
+                <button class="sc-btn sci-fn" id="btn-sq" onclick="handleSq()">
+                    <div class="btn-label"><span class="btn-shift">ˣ√</span><span class="btn-main">x²</span></div>
+                </button>
+                <button class="sc-btn green" onclick="s_run()">=</button>
+            </div>
         </div>
     </div>
 
-    <!-- ✅ SCIENTIFIC CALCULATOR SCREEN -->
-    <div id="scr-sci" class="screen">
-        <div class="display-box">
-            <div id="s-mini"></div>
-            <div id="s-main" style="font-size: 4rem;">0</div>
-        </div>
-        <div class="grid grid-sci">
-            <button class="btn sci-key" onclick="sciFn('sin')">sin</button>
-            <button class="btn sci-key" onclick="sciFn('cos')">cos</button>
-            <button class="btn sci-key" onclick="sciFn('tan')">tan</button>
-            <button class="btn sci-key" onclick="sciFn('log')">log</button>
-            <button class="btn sci-key" onclick="sciFn('ln')">ln</button>
-
-            <button class="btn sci-key" onclick="inp('Math.PI')">π</button>
-            <button class="btn sci-key" onclick="inp('Math.E')">e</button>
-            <button class="btn sci-key" onclick="sciFn('sqrt')">√</button>
-            <button class="btn sci-key" onclick="inp('**')">xʸ</button>
-            <button class="btn sci-key" onclick="sciFn('fact')">n!</button>
-
-            <button class="btn" onclick="inp('7')">7</button>
-            <button class="btn" onclick="inp('8')">8</button>
-            <button class="btn" onclick="inp('9')">9</button>
-            <button class="btn op" onclick="inp('(')">(</button>
-            <button class="btn op" onclick="inp(')')">)</button>
-
-            <button class="btn" onclick="inp('4')">4</button>
-            <button class="btn" onclick="inp('5')">5</button>
-            <button class="btn" onclick="inp('6')">6</button>
-            <button class="btn op" onclick="inp('*')">×</button>
-            <button class="btn op" onclick="inp('/')">÷</button>
-
-            <button class="btn" onclick="inp('1')">1</button>
-            <button class="btn" onclick="inp('2')">2</button>
-            <button class="btn" onclick="inp('3')">3</button>
-            <button class="btn op" onclick="inp('+')">+</button>
-            <button class="btn op" onclick="inp('-')">−</button>
-
-            <button class="btn" onclick="inp('0')">0</button>
-            <button class="btn" onclick="inp('.')">.</button>
-            <button class="btn op" onclick="cls()">AC</button>
-            <button class="btn action" style="grid-column: span 2;" onclick="run()">EXE</button>
-        </div>
-    </div>
-
-    <!-- ✅ HISTORY SCREEN -->
+    <!-- HISTORY SCREEN -->
     <div id="scr-hist" class="screen">
-        <h3>📜 Calculation History</h3>
-        <button id="clear-hist" onclick="clearHistory()">🗑️ Clear All</button>
-        <div id="hist-content" style="overflow-y:auto; margin-top:8px; padding-bottom:20px;"></div>
+        <h3>📜 History</h3>
+        <button id="clear-hist" onclick="HistoryManager.clear()">🗑️ Clear All</button>
+        <div id="hist-content" style="overflow-y:auto; flex:1;"></div>
     </div>
 
-    <!-- ✅ 3-ITEM NAVIGATION (No Home/Settings) -->
+    <!-- Navigation -->
     <nav>
-        <div class="nav-item active" onclick="nav('norm', this)">
-            <span class="nav-icon">🔢</span>Calc
-        </div>
-        <div class="nav-item" onclick="nav('sci', this)">
-            <span class="nav-icon">🧪</span>Sci
-        </div>
-        <div class="nav-item" onclick="nav('hist', this)">
-            <span class="nav-icon">📜</span>History
-        </div>
+        <div class="nav-item active" onclick="Navigation.go('sci', this)"><span class="nav-icon">🧪</span>Scientific</div>
+        <div class="nav-item" onclick="Navigation.go('hist', this)"><span class="nav-icon">📜</span>History</div>
     </nav>
 </div>
 
 <script>
-    let exp = "0";
-    let history = [];
-    const MAX_HISTORY = 50; // Limit history items
+/**
+ * ==========================================
+ * SCIENTIFIC CALCULATOR - IIFE MODULE
+ * ==========================================
+ */
+const SciCalc = (function() {
+    let expression = "0";
+    let shiftMode = false;
+    let alphaMode = false;
+    let mode = 'MATH';
+    let angleMode = 'DEG';
 
-    // ✅ Navigation with smooth transitions
-    function nav(id, el) {
-        document.querySelectorAll('.screen').forEach(s => {
-            s.classList.remove('active');
-            s.style.opacity = '0';
-        });
-
-        setTimeout(() => {
-            document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
-            document.getElementById('scr-' + id).style.display = 'flex';
-            setTimeout(() => {
-                document.getElementById('scr-' + id).classList.add('active');
-                document.getElementById('scr-' + id).style.opacity = '1';
-            }, 10);
-        }, 300);
-
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        el.classList.add('active');
-
-        // Refresh history view if opening history tab
-        if(id === 'hist') updateHistory();
-    }
-
-    // ✅ Input handling with visual feedback
-    function inp(v) {
-        if (exp === "0" && v !== '.' && !['+','-','*','/','**','Math.'].includes(v)) {
-            exp = v;
-        } else if (exp === "Error") {
-            exp = v;
-        } else {
-            exp += v;
-        }
-        render();
-        hapticFeedback();
-    }
-
-    function cls() {
-        exp = "0";
-        render();
-        hapticFeedback();
-    }
-
-    function del() {
-        if(exp === "Error") { cls(); return; }
-        exp = exp.length > 1 ? exp.slice(0, -1) : "0";
-        render();
-        hapticFeedback();
-    }
-
-    // ✅ Render with 200% bigger fonts
-    function render() {
-        const clean = exp.replace(/Math\./g, '').replace(/\*\*/g, '^');
-        document.getElementById('n-main').innerText = clean;
-        document.getElementById('s-main').innerText = clean;
-        document.getElementById('n-mini').innerText = exp.length > 20 ? exp.slice(-20) : exp;
-        document.getElementById('s-mini').innerText = exp.length > 20 ? exp.slice(-20) : exp;
-    }
-
-    // ✅ Scientific functions
-    function sciFn(type) {
-        try {
-            let val = eval(exp);
-            if(isNaN(val) || !isFinite(val)) throw "Invalid";
-
-            let res = 0;
-            switch(type) {
-                case 'sin': res = Math.sin(val * Math.PI / 180); break;
-                case 'cos': res = Math.cos(val * Math.PI / 180); break;
-                case 'tan': res = Math.tan(val * Math.PI / 180); break;
-                case 'log':
-                    if(val <= 0) throw "Domain Error";
-                    res = Math.log10(val);
-                    break;
-                case 'ln':
-                    if(val <= 0) throw "Domain Error";
-                    res = Math.log(val);
-                    break;
-                case 'sqrt':
-                    if(val < 0) throw "Domain Error";
-                    res = Math.sqrt(val);
-                    break;
-                case 'fact':
-                    if(val < 0 || !Number.isInteger(val)) throw "Invalid Input";
-                    res = (function f(n){return n<2?1:n*f(n-1)})(val);
-                    break;
-                default: return;
+    function updateDisplay() {
+        const clean = expression.replace(/Math\./g, '').replace(/\*\*/g, '^');
+        document.getElementById('sci-input').innerText = clean === '0' ? '0' : clean;
+        
+        if (expression !== "0" && !['+','-','*','/','**','Math.'].some(op => expression.endsWith(op))) {
+            try {
+                let res = Function('"use strict"; return (' + expression + ')')();
+                if (isFinite(res) && !isNaN(res)) {
+                    document.getElementById('sci-result').innerText = formatResult(res);
+                } else {
+                    document.getElementById('sci-result').innerText = '';
+                }
+            } catch(e) {
+                document.getElementById('sci-result').innerText = '';
             }
-
-            // Format result nicely
-            exp = (Number.isInteger(res) && Math.abs(res) < 1e10) ? res.toString() : res.toPrecision(8).replace(/\.?0+$/,"");
-            render();
-            hapticFeedback();
-        } catch(e) {
-            exp = "Error";
-            render();
-            setTimeout(cls, 1200);
+        } else {
+            document.getElementById('sci-result').innerText = '0';
         }
+
+        document.getElementById('sd-mode').innerText = mode;
+        document.getElementById('sd-angle').innerText = angleMode;
+        document.getElementById('sd-shift').style.color = shiftMode ? '#ffd700' : '#444';
     }
 
-    // ✅ Execute calculation
-    function run() {
+    function formatResult(val) {
+        if (typeof val === 'string') return val;
+        if (!isFinite(val)) return 'Error';
+        if (Number.isInteger(val) && Math.abs(val) < 1e12) return val.toString();
+        return parseFloat(val.toPrecision(10)).toString();
+    }
+
+    function getAngle(val) {
+        if (angleMode === 'RAD') return val;
+        if (angleMode === 'GRAD') return val * Math.PI / 200;
+        return val * Math.PI / 180;
+    }
+
+    function fromAngle(val) {
+        if (angleMode === 'RAD') return val;
+        if (angleMode === 'GRAD') return val * 200 / Math.PI;
+        return val * 180 / Math.PI;
+    }
+
+    function applyFunction(fn) {
         try {
-            if(exp === "Error") { cls(); return; }
-
-            // Safe evaluation with Math context
-            let res = Function('"use strict"; return (' + exp.replace(/Math\./g, 'Math.') + ')')();
-
-            if(!isFinite(res) || isNaN(res)) throw "Invalid Result";
-
-            // Format result
-            let formatted = (Number.isInteger(res) && Math.abs(res) < 1e10) ? res.toString() : res.toPrecision(8).replace(/\.?0+$/,"");
-
-            // Add to history
-            const cleanExp = exp.replace(/Math\./g, '').replace(/\*\*/g, '^');
-            history.unshift({ expr: cleanExp, result: formatted });
-            if(history.length > MAX_HISTORY) history.pop();
-
-            exp = formatted;
-            render();
-            updateHistory();
-            hapticFeedback(50); // Stronger feedback for result
+            let val = Function('"use strict"; return (' + expression + ')')();
+            if (isNaN(val) || !isFinite(val)) throw "Invalid";
+            
+            let res = fn(val);
+            if (!isFinite(res)) throw "Domain Error";
+            
+            expression = formatResult(res);
+            updateDisplay();
+            haptic(20);
         } catch(e) {
-            exp = "Error";
-            render();
-            setTimeout(cls, 1200);
+            expression = "Error";
+            updateDisplay();
+            setTimeout(clear, 1500);
         }
     }
 
-    // ✅ Update history display with big fonts
-    function updateHistory() {
+    function haptic(ms = 10) {
+        if (navigator.vibrate) navigator.vibrate(ms);
+    }
+
+    return {
+        input: function(value) {
+            if (expression === "0" && value !== '.' && !['+','-','*','/','**','Math.'].includes(value)) {
+                expression = value;
+            } else if (expression === "Error") {
+                expression = value;
+            } else {
+                expression += value;
+            }
+            updateDisplay();
+            haptic();
+        },
+
+        clear: function() {
+            expression = "0";
+            updateDisplay();
+            haptic();
+        },
+
+        del: function() {
+            if (expression === "Error") { 
+                this.clear(); 
+                return; 
+            }
+            expression = expression.length > 1 ? expression.slice(0, -1) : "0";
+            updateDisplay();
+            haptic();
+        },
+
+        calculate: function() {
+            try {
+                if (expression === "Error") { 
+                    this.clear(); 
+                    return; 
+                }
+                
+                let res = Function('"use strict"; return (' + expression.replace(/Math\./g, 'Math.') + ')')();
+                if (!isFinite(res) || isNaN(res)) throw "Invalid";
+                
+                let formatted = formatResult(res);
+                const cleanExpr = expression.replace(/Math\./g, '').replace(/\*\*/g, '^');
+                HistoryManager.add(cleanExpr, formatted);
+                
+                expression = formatted;
+                updateDisplay();
+                haptic(40);
+            } catch(e) {
+                expression = "Error";
+                updateDisplay();
+                setTimeout(() => this.clear(), 1500);
+            }
+        },
+
+        toggleShift: function() {
+            shiftMode = !shiftMode;
+            alphaMode = false;
+            haptic(15);
+            updateDisplay();
+        },
+
+        toggleAlpha: function() {
+            alphaMode = !alphaMode;
+            shiftMode = false;
+            haptic(15);
+            updateDisplay();
+        },
+
+        toggleMode: function() {
+            const modes = ['MATH', 'COMP', 'STAT'];
+            mode = modes[(modes.indexOf(mode) + 1) % modes.length];
+            haptic(15);
+            updateDisplay();
+        },
+
+        toggleAngle: function() {
+            const angles = ['DEG', 'RAD', 'GRAD'];
+            angleMode = angles[(angles.indexOf(angleMode) + 1) % angles.length];
+            haptic(15);
+            updateDisplay();
+        },
+
+        powerOn: function() {
+            this.clear();
+            haptic(30);
+        },
+
+        handleSin: function() {
+            if (shiftMode) {
+                applyFunction(v => fromAngle(Math.asin(v)));
+                shiftMode = false;
+            } else {
+                applyFunction(v => Math.sin(getAngle(v)));
+            }
+            updateDisplay();
+        },
+
+        handleCos: function() {
+            if (shiftMode) {
+                applyFunction(v => fromAngle(Math.acos(v)));
+                shiftMode = false;
+            } else {
+                applyFunction(v => Math.cos(getAngle(v)));
+            }
+            updateDisplay();
+        },
+
+        handleTan: function() {
+            if (shiftMode) {
+                applyFunction(v => fromAngle(Math.atan(v)));
+                shiftMode = false;
+            } else {
+                applyFunction(v => Math.tan(getAngle(v)));
+            }
+            updateDisplay();
+        },
+
+        handleLog: function() {
+            if (shiftMode) {
+                applyFunction(v => Math.pow(10, v));
+                shiftMode = false;
+            } else {
+                applyFunction(v => {
+                    if (v <= 0) throw "Domain Error";
+                    return Math.log10(v);
+                });
+            }
+            updateDisplay();
+        },
+
+        handleLn: function() {
+            if (shiftMode) {
+                applyFunction(v => Math.exp(v));
+                shiftMode = false;
+            } else {
+                applyFunction(v => {
+                    if (v <= 0) throw "Domain Error";
+                    return Math.log(v);
+                });
+            }
+            updateDisplay();
+        },
+
+        handleSqrt: function() {
+            if (shiftMode) {
+                applyFunction(v => Math.cbrt(v));
+                shiftMode = false;
+            } else {
+                applyFunction(v => {
+                    if (v < 0) throw "Domain Error";
+                    return Math.sqrt(v);
+                });
+            }
+            updateDisplay();
+        },
+
+        handleSq: function() {
+            if (shiftMode) {
+                this.input('**(1/');
+                shiftMode = false;
+            } else {
+                applyFunction(v => v * v);
+            }
+            updateDisplay();
+        },
+
+        handlePow3: function() {
+            if (shiftMode) {
+                applyFunction(v => {
+                    if (v < 0 || !Number.isInteger(v) || v > 170) throw "Invalid";
+                    let f = 1;
+                    for (let i = 2; i <= v; i++) f *= i;
+                    return f;
+                });
+                shiftMode = false;
+            } else {
+                applyFunction(v => v * v * v);
+            }
+            updateDisplay();
+        },
+
+        handleRoot3: function() {
+            if (shiftMode) {
+                this.input('**(1/');
+                shiftMode = false;
+            } else {
+                applyFunction(v => Math.cbrt(v));
+            }
+            updateDisplay();
+        },
+
+        handlePow: function() {
+            if (shiftMode) {
+                this.input('**(1/');
+                shiftMode = false;
+            } else {
+                this.input('**');
+            }
+            updateDisplay();
+        },
+
+        handlePow10: function() {
+            if (shiftMode) {
+                applyFunction(v => Math.exp(v));
+                shiftMode = false;
+            } else {
+                applyFunction(v => Math.pow(10, v));
+            }
+            updateDisplay();
+        },
+
+        handlePi: function() {
+            if (alphaMode) {
+                this.input('A');
+                alphaMode = false;
+            } else {
+                this.input('Math.PI');
+            }
+            updateDisplay();
+        },
+
+        handleE: function() {
+            if (alphaMode) {
+                this.input('B');
+                alphaMode = false;
+            } else {
+                this.input('Math.E');
+            }
+            updateDisplay();
+        },
+
+        getExpression: function() { return expression; },
+        setExpression: function(val) { expression = val; updateDisplay(); }
+    };
+})();
+
+/**
+ * ==========================================
+ * GLOBAL WRAPPER FUNCTIONS (for HTML onclick)
+ * ==========================================
+ */
+function inp(v) { SciCalc.input(v); }
+function cls() { SciCalc.clear(); }
+function del() { SciCalc.del(); }
+function s_run() { SciCalc.calculate(); }
+function toggleShift() { SciCalc.toggleShift(); }
+function toggleAlpha() { SciCalc.toggleAlpha(); }
+function toggleMode() { SciCalc.toggleMode(); }
+function toggleAngle() { SciCalc.toggleAngle(); }
+function powerOn() { SciCalc.powerOn(); }
+function handleSin() { SciCalc.handleSin(); }
+function handleCos() { SciCalc.handleCos(); }
+function handleTan() { SciCalc.handleTan(); }
+function handleLog() { SciCalc.handleLog(); }
+function handleLn() { SciCalc.handleLn(); }
+function handleSqrt() { SciCalc.handleSqrt(); }
+function handleSq() { SciCalc.handleSq(); }
+function handlePow3() { SciCalc.handlePow3(); }
+function handleRoot3() { SciCalc.handleRoot3(); }
+function handlePow() { SciCalc.handlePow(); }
+function handlePow10() { SciCalc.handlePow10(); }
+function handlePi() { SciCalc.handlePi(); }
+function handleE() { SciCalc.handleE(); }
+
+/**
+ * ==========================================
+ * HISTORY MANAGER - IIFE MODULE
+ * ==========================================
+ */
+const HistoryManager = (function() {
+    let history = [];
+    const MAX_HISTORY = 50;
+
+    function render() {
         const container = document.getElementById('hist-content');
-        if(history.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:30px; font-size:1.6rem; opacity:0.7">No calculations yet</div>';
+        if (history.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:30px; font-size:1.4rem; opacity:0.7">No calculations yet</div>';
             return;
         }
-
-        container.innerHTML = history.map((item, i) => `
-            <div class="list-item" onclick="loadFromHistory('${item.expr.replace(/'/g, "\\'")}')">
-                <span class="hist-expr">${item.expr}</span>
-                <span class="hist-res">= ${item.result}</span>
+        
+        container.innerHTML = history.map(item => `
+            <div class="list-item" onclick="loadHistoryItem('${item.expr.replace(/'/g, "\\'")}')">
+                <span style="opacity:0.8;">${item.expr}</span> = <b>${item.result}</b>
             </div>
         `).join('');
     }
 
-    // ✅ Load expression from history
-    function loadFromHistory(expr) {
-        exp = expr.replace(/\^/g, '**');
-        render();
-        nav('norm', document.querySelector('.nav-item:nth-child(1)'));
-        hapticFeedback();
-    }
+    return {
+        add: function(expression, result) {
+            history.unshift({ expr: expression, result: result });
+            if (history.length > MAX_HISTORY) history.pop();
+            render();
+        },
 
-    // ✅ Clear history
-    function clearHistory() {
-        if(confirm('Clear all history?')) {
-            history = [];
-            updateHistory();
-            hapticFeedback();
+        clear: function() {
+            if (confirm('Clear history?')) {
+                history = [];
+                render();
+                if (navigator.vibrate) navigator.vibrate(10);
+            }
+        },
+
+        load: function(expr) {
+            return expr.replace(/\^/g, '**');
+        },
+
+        init: function() {
+            render();
+        }
+    };
+})();
+
+/**
+ * ==========================================
+ * NAVIGATION - IIFE MODULE
+ * ==========================================
+ */
+const Navigation = (function() {
+    return {
+        go: function(screenId, element) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('scr-' + screenId).classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            element.classList.add('active');
+            
+            if (screenId === 'hist') {
+                HistoryManager.init();
+            }
+        }
+    };
+})();
+
+/**
+ * ==========================================
+ * GLOBAL HELPER FUNCTIONS
+ * ==========================================
+ */
+function loadHistoryItem(expr) {
+    const processed = HistoryManager.load(expr);
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('scr-sci').classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.nav-item')[0].classList.add('active');
+    SciCalc.setExpression(processed);
+}
+
+function haptic(ms = 10) {
+    if (navigator.vibrate) navigator.vibrate(ms);
+}
+
+/**
+ * ==========================================
+ * KEYBOARD SUPPORT
+ * ==========================================
+ */
+document.addEventListener('keydown', function(e) {
+    const activeSci = document.getElementById('scr-sci').classList.contains('active');
+    
+    if (activeSci) {
+        const key = e.key;
+        if (/[0-9.]/.test(key)) {
+            SciCalc.input(key);
+        } else if (['+', '-', '*', '/'].includes(key)) {
+            SciCalc.input(key);
+        } else if (key === 'Enter' || key === '=') {
+            SciCalc.calculate();
+            e.preventDefault();
+        } else if (key === 'Backspace') {
+            SciCalc.del();
+        } else if (key === 'Escape') {
+            SciCalc.clear();
         }
     }
+});
 
-    // ✅ Subtle haptic feedback (works on supported devices)
-    function hapticFeedback(ms = 10) {
-        if(navigator.vibrate) navigator.vibrate(ms);
-    }
-
-    // ✅ Keyboard support for desktop testing
-    document.addEventListener('keydown', (e) => {
-        if(document.getElementById('scr-norm').classList.contains('active') ||
-           document.getElementById('scr-sci').classList.contains('active')) {
-
-            const key = e.key;
-            if(/[0-9.+\-*/()]/.test(key)) { inp(key); }
-            else if(key === 'Enter' || key === '=') { run(); e.preventDefault(); }
-            else if(key === 'Backspace') { del(); e.preventDefault(); }
-            else if(key === 'Escape' || key === 'c' || key === 'C') { cls(); }
-        }
-    });
-
-    // ✅ Initialize
-    window.addEventListener('load', () => {
-        render();
-        // Pre-load with a welcome message in mini display
-        document.getElementById('n-mini').innerText = 'EKA Calc Pro';
-        setTimeout(() => { document.getElementById('n-mini').innerText = ''; }, 2000);
-    });
+/**
+ * ==========================================
+ * INITIALIZATION
+ * ==========================================
+ */
+window.addEventListener('load', function() {
+    HistoryManager.init();
+});
 </script>
 </body>
 </html>
