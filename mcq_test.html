@@ -11,6 +11,20 @@
     <style>
         /* ==================== 1. THEME VARIABLES ==================== */
         :root {
+            --bg-gradient: linear-gradient(135deg, #e0f2f1, #80cbc4, #b2dfdb);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: #80cbc4;
+            --glass-shadow: 0 8px 32px 0 rgba(38, 166, 154, 0.2);
+            --accent-blue: #26a69a;
+            --accent-cyan: #00897b;
+            --text-light: #004d40;
+            --correct: #4caf50;
+            --wrong: #f44336;
+            --font-main: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        /* Ice Blue (Old Default) Theme */
+        [data-theme="ice-blue"] {
             --bg-gradient: linear-gradient(135deg, #0f172a, #1e3a8a, #064e3b, #0284c7);
             --glass-bg: rgba(255, 255, 255, 0.12);
             --glass-border: rgba(255, 255, 255, 0.3);
@@ -20,7 +34,6 @@
             --text-light: #ffffff;
             --correct: #2ecc71;
             --wrong: #e74c3c;
-            --font-main: 'Segoe UI', system-ui, sans-serif;
         }
 
         /* Pastel Beige Theme */
@@ -73,6 +86,58 @@
             --text-light: #004d40;
             --correct: #4caf50;
             --wrong: #f44336;
+        }
+
+        /* Educational Theme */
+        [data-theme="educational"] {
+            --bg-gradient: linear-gradient(135deg, #f0f4f8, #d9e2ec, #bcccdc);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: #9fb3c8;
+            --glass-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --accent-blue: #102a43;
+            --accent-cyan: #334e68;
+            --text-light: #102a43;
+            --correct: #27ab5d;
+            --wrong: #cf1124;
+        }
+
+        /* Crystal Theme */
+        [data-theme="crystal"] {
+            --bg-gradient: linear-gradient(45deg, #00dbde 0%, #fc00ff 100%);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            --accent-blue: #00dbde;
+            --accent-cyan: #fc00ff;
+            --text-light: #ffffff;
+            --correct: #00ff88;
+            --wrong: #ff0055;
+        }
+
+        /* Cubic 3D Theme */
+        [data-theme="cubic-3d"] {
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: #e0e0e0;
+            --glass-border: #bebebe;
+            --glass-shadow: 10px 10px 20px #bebebe, -10px -10px 20px #ffffff;
+            --accent-blue: #764ba2;
+            --accent-cyan: #667eea;
+            --text-light: #444444;
+            --correct: #4caf50;
+            --wrong: #f44336;
+        }
+
+        /* Dark Code Theme */
+        [data-theme="dark-code"] {
+            --bg-gradient: linear-gradient(135deg, #1e1e1e, #2d2d2d, #000000);
+            --glass-bg: rgba(30, 30, 30, 0.9);
+            --glass-border: #444;
+            --glass-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+            --accent-blue: #00ff00;
+            --accent-cyan: #008800;
+            --text-light: #00ff00;
+            --correct: #00ff00;
+            --wrong: #ff0000;
         }
 
         /* ==================== 2. GLOBAL STYLES ==================== */
@@ -217,21 +282,23 @@
 
         /* ==================== 5. THEME SELECTOR ==================== */
         .theme-selector {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
             margin: 15px 0;
-            flex-wrap: wrap;
+            width: 100%;
         }
         .theme-btn {
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 10px 2px;
+            border-radius: 10px;
             border: 2px solid var(--glass-border);
             background: rgba(0,0,0,0.1);
             color: var(--text-light);
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
+            font-weight: bold;
             transition: 0.3s;
+            text-align: center;
         }
         .theme-btn:hover { background: rgba(0,0,0,0.2); }
         .theme-btn.active {
@@ -316,21 +383,23 @@
         <div class="glass-panel">
             <h1 id="startTitle">🎓 EKA CBT QUIZ 🎓</h1><br>
             <h1 id="startSubtitle">🎓 MATHS 9 | UNIT - 01</h1><br>
-            <p style="margin-bottom: 15px; opacity: 0.8;">Real & Complex Numbers Assessment</p>
-            <input type="text" id="studentName" placeholder="Enter Student Name" autocomplete="off">
+            <input type="text" id="studentName" placeholder="Enter Student Name" autocomplete="off" aria-label="Student Name">
 
             <div class="theme-selector">
-                <button class="theme-btn active" onclick="App.setTheme('blue-green')" data-theme="blue-green">Blue-Green</button>
-                <button class="theme-btn" onclick="App.setTheme('pastel-beige')" data-theme="pastel-beige">Beige</button>
-                <button class="theme-btn" onclick="App.setTheme('vanilla-yellow')" data-theme="vanilla-yellow">Vanilla</button>
+                <button class="theme-btn active" onclick="App.setTheme('mint-fresh')" data-theme="mint-fresh">Mint</button>
+                <button class="theme-btn" onclick="App.setTheme('educational')" data-theme="educational">Edu</button>
+                <button class="theme-btn" onclick="App.setTheme('crystal')" data-theme="crystal">Crystal</button>
+                <button class="theme-btn" onclick="App.setTheme('cubic-3d')" data-theme="cubic-3d">3D Cubic</button>
+                <button class="theme-btn" onclick="App.setTheme('dark-code')" data-theme="dark-code">Code</button>
                 <button class="theme-btn" onclick="App.setTheme('soft-lavender')" data-theme="soft-lavender">Lavender</button>
-                <button class="theme-btn" onclick="App.setTheme('mint-fresh')" data-theme="mint-fresh">Mint</button>
+                <button class="theme-btn" onclick="App.setTheme('ice-blue')" data-theme="ice-blue">Ice Blue</button>
+                <button class="theme-btn" onclick="App.setTheme('pastel-beige')" data-theme="pastel-beige">Beige</button>
             </div>
 
-            <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
+            <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
                 <button class="btn" onclick="App.startQuiz()">▶ START</button>
                 <button class="btn btn-secondary" onclick="App.openModal()"> Load Quiz Data</button>
-                <button class="btn btn-secondary" onclick="App.saveCSV()"> Download Scores (CSV)</button>
+                <button class="btn btn-secondary" onclick="location.href='test.html'">🏠 Menu</button>
             </div>
         </div>
     </div>
@@ -340,7 +409,7 @@
         <div class="glass-panel" style="padding: 20px;">
             <div class="timer-bar-container"><div id="timerBar" class="timer-bar"></div></div>
             <div class="status-bar">
-                <span>Q: <span id="qNum">1</span>/15</span>
+                <span>Q: <span id="qNum">1</span>/<span id="qTotal">...</span></span>
                 <span class="score-box">Score: <span id="liveScore">0</span></span>
                 <span>Time: <span id="timeLeft">00:00</span></span>
             </div>
@@ -356,13 +425,14 @@
     <div id="resultScreen" class="screen">
         <div class="glass-panel">
             <h1>🏆 Assessment Complete!</h1>
-            <h2 id="finalScoreText">Score: 0 / 15</h2>
+            <h2 id="finalScoreText">Score: 0 / ...</h2>
             <p id="finalPercentage">Percentage: 0%</p>
             <p id="finalRemark" style="margin: 10px 0; font-weight: bold; color: var(--accent-cyan);"></p>
             <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
                 <button class="btn" onclick="App.showCertificate()"> SEE RESULT</button>
                 <button class="btn btn-secondary" onclick="App.saveCSV()"> Download Scores (CSV)</button>
                 <button class="btn btn-secondary" onclick="location.reload()"> Restart</button>
+                <button class="btn btn-secondary" onclick="location.href='test.html'">🏠 Menu</button>
             </div>
         </div>
     </div>
@@ -372,12 +442,12 @@
         <div class="cert-box" id="certContent">
             <div class="cert-logo">🏛️</div>
             <div class="cert-title">THE FUTURE ACADEMY</div>
-            <div style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">Mathematics Assessment - Grade 9, Unit 01</div>
+            <div style="font-size: 0.9rem; color: #666; margin-bottom: 15px;" id="certQuizSubtitle">Quiz Assessment</div>
             <div style="font-size: 0.95rem; margin-bottom: 5px;">This is to certify that</div>
             <div class="cert-name" id="certName">Student Name</div>
             <div style="font-size: 0.95rem;">has successfully completed the quiz with</div>
             <div class="cert-stats" id="certStats">
-                <div class="cert-stat-item">Questions: <span id="cTotal">15</span></div>
+                <div class="cert-stat-item">Questions: <span id="cTotal">...</span></div>
                 <div class="cert-stat-item">Correct: <span id="cCorrect">0</span></div>
                 <div class="cert-stat-item">Wrong: <span id="cWrong">0</span></div>
                 <div class="cert-stat-item">Skipped: <span id="cSkipped">0</span></div>
@@ -406,7 +476,7 @@
             <h3>Paste Quiz Data (TSV Format)</h3>
             <button style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;" onclick="App.closeModal()">×</button>
         </div>
-        <textarea id="tsvInput" placeholder="Paste TSV here..."></textarea>
+        <textarea id="tsvInput" placeholder="Paste TSV here..." aria-label="TSV Input"></textarea>
         <div style="display: flex; gap: 10px;">
             <button class="btn" onclick="App.parseAndSaveTSV()">💾 Parse & Save</button>
             <button class="btn btn-secondary" onclick="App.clearTSV()">🗑️ Clear</button>
@@ -419,11 +489,11 @@
     'use strict';
 
     const CONFIG = {
-        maxQuestionsPerQuiz: 5,
-        timerDurationSec: 100,
-        autoAdvanceDelay: 500,
+        maxQuestionsPerQuiz: 25,
+        timerDurationSec: 50,
+        autoAdvanceDelay: 400,
         points: { correct: 1, wrong: 0 },
-        passingThreshold: 80
+        passingThreshold: 75
     };
 
     const state = {
@@ -436,7 +506,8 @@
         timeLeft: CONFIG.timerDurationSec,
         timerInterval: null,
         isLocked: false,
-        studentName: ''
+        studentName: '',
+        activeQuiz: null
     };
 
     const DOM = {
@@ -444,6 +515,7 @@
         nameInput: document.getElementById('studentName'),
         timerBar: document.getElementById('timerBar'),
         qNum: document.getElementById('qNum'),
+        qTotal: document.getElementById('qTotal'),
         liveScore: document.getElementById('liveScore'),
         timeLeft: document.getElementById('timeLeft'),
         qText: document.getElementById('questionText'),
@@ -470,12 +542,13 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
     function init() {
         const params = new URLSearchParams(window.location.search);
         const quizKey = params.get('quiz') || 'maths9_u1';
-        const activeQuiz = QUIZ_DATA[quizKey] || QUIZ_DATA['maths9_u1'];
+        state.activeQuiz = QUIZ_DATA[quizKey] || QUIZ_DATA['maths9_u1'];
 
-        document.getElementById('startTitle').innerText = `🎓 ${activeQuiz.title} 🎓`;
-        document.getElementById('startSubtitle').innerText = activeQuiz.subtitle;
+        document.title = `EKA CBT | ${state.activeQuiz.title}`;
+        document.getElementById('startTitle').innerText = `🎓 ${state.activeQuiz.title} 🎓`;
+        document.getElementById('startSubtitle').innerText = state.activeQuiz.subtitle;
 
-        parseTSV(activeQuiz.tsv);
+        parseTSV(state.activeQuiz.tsv);
         document.getElementById('certDate').innerText = new Date().toLocaleDateString();
     }
 
@@ -520,6 +593,7 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
         state.skippedCount = 0;
         state.timeLeft = CONFIG.timerDurationSec;
 
+        DOM.qTotal.innerText = state.questions.length;
         showScreen('quiz');
         startTimer();
         renderQuestion();
@@ -594,10 +668,20 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
         const percent = Math.round((state.score / state.questions.length) * 100);
         DOM.finalScore.innerText = `Score: ${state.score} / ${state.questions.length}`;
         DOM.finalPercent.innerText = `Percentage: ${percent}%`;
+
+        let remark = "";
+        if (percent >= 90) remark = "Excellent! You're a pro! 🌟";
+        else if (percent >= 75) remark = "Well Done! Great job! 👍";
+        else if (percent >= 50) remark = "Good effort! Keep practicing! 📚";
+        else remark = "Keep studying! You can do better! 💪";
+
+        DOM.finalRemark.innerText = remark;
+        document.getElementById('certRemark').innerText = remark;
     }
 
     function showCertificate() {
         document.getElementById('certName').innerText = state.studentName;
+        document.getElementById('certQuizSubtitle').innerText = `${state.activeQuiz.title} - ${state.activeQuiz.subtitle}`;
         document.getElementById('cTotal').innerText = state.questions.length;
         document.getElementById('cCorrect').innerText = state.correctCount;
         document.getElementById('cWrong').innerText = state.wrongCount;
@@ -657,16 +741,50 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
         }
     }
 
+    function saveCSV() {
+        if (!state.studentName || state.questions.length === 0) {
+            alert("No results to save yet.");
+            return;
+        }
+        const percent = Math.round((state.score / state.questions.length) * 100);
+        const csvContent = [
+            "Student Name,Quiz,Date,Total Questions,Correct,Wrong,Skipped,Score,Percentage",
+            `"${state.studentName}","${state.activeQuiz.title} - ${state.activeQuiz.subtitle}",${new Date().toLocaleDateString()},${state.questions.length},${state.correctCount},${state.wrongCount},${state.skippedCount},${state.score},${percent}%`
+        ].join("\n");
+
+        // Convert to Base64 for WebView DownloadListener compatibility
+        const base64Content = btoa(unescape(encodeURIComponent(csvContent)));
+        const dataUrl = "data:text/csv;base64," + base64Content;
+
+        const link = document.createElement("a");
+        link.setAttribute("href", dataUrl);
+        link.setAttribute("download", `Result_${state.studentName.replace(/\s+/g, '_')}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    function clearTSV() {
+        DOM.tsvInput.value = '';
+    }
+
     function openModal() { DOM.modal.style.display = 'flex'; }
     function closeModal() { DOM.modal.style.display = 'none'; }
-    function parseAndSaveTSV() { parseTSV(DOM.tsvInput.value); alert('Loaded!'); closeModal(); }
+    function parseAndSaveTSV() {
+        parseTSV(DOM.tsvInput.value);
+        state.activeQuiz = { title: "CUSTOM QUIZ", subtitle: "Loaded from TSV" };
+        document.getElementById('startTitle').innerText = `🎓 ${state.activeQuiz.title} 🎓`;
+        document.getElementById('startSubtitle').innerText = state.activeQuiz.subtitle;
+        alert('Loaded!');
+        closeModal();
+    }
 
     function setTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
         document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.theme === theme));
     }
 
-    window.App = { startQuiz, skipQuestion, showCertificate, saveJPG, copyCSV, openModal, closeModal, parseAndSaveTSV, setTheme };
+    window.App = { startQuiz, skipQuestion, showCertificate, saveJPG, copyCSV, openModal, closeModal, parseAndSaveTSV, setTheme, saveCSV, clearTSV };
     init();
 })();
 </script>
