@@ -63,17 +63,30 @@
 
         /* Header */
         header {
-          padding: 10px 16px 6px; text-align: center; flex-shrink: 0;
+          padding: 8px 12px 10px; text-align: center; flex-shrink: 0;
           background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+          border-bottom: 1px solid var(--glass-border);
         }
-        header h1 { font-size: 1.25rem; font-weight: 800; letter-spacing: 0.5px; }
+        header h1 { font-size: 1.1rem; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 6px; }
         .stats-row {
           display: flex; justify-content: space-between; align-items: center;
-          margin-top: 6px; font-size: 0.9rem; font-weight: 700; color: var(--text-sub);
+          margin-bottom: 8px; font-size: 0.85rem; font-weight: 700; color: var(--text-sub);
         }
-        .timer-container { flex: 1; height: 10px; background: rgba(0,0,0,0.1); border-radius: 5px; margin: 0 10px; overflow: hidden; position: relative; }
+        .timer-container { flex: 1; height: 8px; background: rgba(0,0,0,0.1); border-radius: 4px; margin: 0 8px; overflow: hidden; position: relative; }
         #timer-bar { height: 100%; width: 100%; background: var(--accent); transition: width 1s linear; }
-        .stat-badge { background: var(--glass-bg); padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
+        .stat-badge { background: var(--glass-bg); padding: 3px 8px; border-radius: 20px; white-space: nowrap; }
+
+        .header-controls { display: flex; flex-direction: column; gap: 6px; }
+        .header-btns { display: flex; gap: 4px; }
+        .btn-mini {
+          flex: 1; height: 36px; border: none; border-radius: 8px;
+          background: var(--cell-bg); color: var(--text-main);
+          font-size: 0.75rem; font-weight: 700; cursor: pointer;
+          display: flex; align-items: center; justify-content: center; gap: 3px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .btn-mini.danger { background: var(--danger); color: white; }
+        .btn-mini:active { transform: scale(0.95); }
 
         /* Screens & Navigation */
         .screens-wrapper { flex: 1; position: relative; overflow: hidden; display: flex; }
@@ -205,27 +218,24 @@
             <span class="stat-badge" id="disp-level">#1</span>
             <span class="stat-badge" id="disp-score">🌟 0</span>
         </div>
+        <div class="header-controls">
+            <select id="level-select" class="level-selector" style="margin-bottom:0; padding:6px; font-size:0.85rem; height:34px;"></select>
+            <div class="header-btns">
+                <button id="btn-new" class="btn-mini">🆕 New</button>
+                <button id="btn-reveal" class="btn-mini danger">👁️ Reveal</button>
+                <button id="btn-sound" class="btn-mini">🔊 On</button>
+                <button id="btn-giveup" class="btn-mini danger">🏳️ Give Up</button>
+            </div>
+        </div>
     </header>
 
     <div class="screens-wrapper">
         <!-- GAME SCREEN -->
         <section id="screen-game" class="screen active">
-            <div class="glass-card">
-                <select id="level-select" class="level-selector">
-                    <!-- Populated by JS -->
-                </select>
+            <div class="glass-card" style="padding: 10px; gap: 10px;">
                 <div class="wrong-tracker" id="wrong-tracker"></div>
                 <div class="word-display" id="word-display"></div>
                 <div id="game-msg" class="stat-badge" style="min-height:24px; display:inline-block;">Pick a letter!</div>
-
-                <div class="btn-group">
-                    <button id="btn-new" class="btn">🆕 New Word</button>
-                    <button id="btn-reveal" class="btn danger">👁️ Reveal</button>
-                </div>
-                <div class="btn-group">
-                    <button id="btn-sound" class="btn">🔊 On</button>
-                    <button id="btn-giveup" class="btn danger">🏳️ Give Up</button>
-                </div>
             </div>
 
             <div class="alpha-grid" id="alpha-grid"></div>
@@ -237,7 +247,7 @@
                 <h2>📖 How to Play</h2>
                 <p>1. Guess the hidden word by tapping letters A-Z.</p>
                 <p>2. Correct letters reveal their positions.</p>
-                <p>3. Wrong guesses fill the tracker. <strong>8 mistakes = Lose!</strong></p>
+                <p>3. Wrong guesses fill the tracker. <strong>12 mistakes = Lose!</strong></p>
                 <p>4. Beat the <strong>60-second</strong> clock to win.</p>
                 <p style="margin-top:8px; font-weight:600;">💡 Tip: Some words repeat letters. Choose carefully!</p>
                 <button class="btn primary" style="width:100%; margin-top:12px;" onclick="navTo('screen-game')">Back to Game</button>
@@ -295,7 +305,7 @@
     };
 
     let state = {
-      word: "", guessed: new Set(), wrong: 0, maxWrong: 8,
+      word: "", guessed: new Set(), wrong: 0, maxWrong: 12,
       time: 60, interval: null, active: false, soundOn: true,
       baseScore: 0, levelCount: 1, dict: new Set(),
       currentLevel: "Age 12-16"
@@ -402,12 +412,23 @@
       state.dict.add(state.word);
       renderDict();
 
-      UI.wordDisp.innerHTML = state.word.split('').map(() => '<div class="letter-box empty">_</div>').join('');
+      // Reset Alpha Grid UI
       UI.alphaGrid.querySelectorAll('.alpha-btn').forEach(b => { b.className = 'alpha-btn'; });
+
+      // Build Word Display
+      UI.wordDisp.innerHTML = state.word.split('').map(() => '<div class="letter-box empty">_</div>').join('');
+
+      // Auto-reveal first letter
+      const firstChar = state.word[0];
+      state.guessed.add(firstChar);
+      const firstBtn = UI.alphaGrid.querySelector(`[data-c="${firstChar}"]`);
+      if (firstBtn) firstBtn.classList.add('disabled', 'hit');
+      revealPositions(firstChar);
+
       updateTracker();
       updateTimerUI();
       updateStatsUI();
-      UI.msg.textContent = "Tap a letter to start!";
+      UI.msg.textContent = "First letter revealed!";
       UI.msg.style.background = 'var(--cell-bg)';
 
       state.interval = setInterval(() => {
