@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Notes Studio - EKA SIR</title>
+    <title>Academic Notes - EKA SIR</title>
     <style>
         :root {
             --glass: rgba(255, 255, 255, 0.25);
@@ -26,7 +26,6 @@
             align-items: center;
         }
 
-        /* 3D Ice Cube Glass Panel */
         .main-container {
             width: 100%;
             max-width: 500px;
@@ -64,34 +63,32 @@
             letter-spacing: 1px;
         }
 
-        /* Class Selector Grid */
         .class-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
             margin-bottom: 30px;
         }
 
         .class-btn {
             background: var(--glass-heavy);
             border: 1px solid var(--border);
-            padding: 15px;
-            border-radius: 18px;
+            padding: 10px;
+            border-radius: 12px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 800;
             color: var(--text-dark);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            font-size: 0.9rem;
         }
 
         .class-btn:hover, .class-btn.active {
             background: #fff;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        /* Subjects Display Area */
         .subject-section {
             display: none;
             animation: fadeIn 0.4s ease forwards;
@@ -135,10 +132,12 @@
 <a href="index.html" class="home-nav">🏠 Dashboard</a>
 
 <div class="main-container">
-    <h1>Academic Portal</h1>
+    <h1>Academic Notes Portal</h1>
 
     <div class="class-grid">
-        <div class="class-btn active" onclick="showClass(1, this)">Class 1</div>
+        <div class="class-btn active" onclick="showClass('KG1', this)">KG-1</div>
+        <div class="class-btn" onclick="showClass('KG2', this)">KG-2</div>
+        <div class="class-btn" onclick="showClass(1, this)">Class 1</div>
         <div class="class-btn" onclick="showClass(2, this)">Class 2</div>
         <div class="class-btn" onclick="showClass(3, this)">Class 3</div>
         <div class="class-btn" onclick="showClass(4, this)">Class 4</div>
@@ -152,34 +151,75 @@
 
     <hr style="border: 0; height: 1px; background: var(--border); margin-bottom: 20px;">
 
-
-    <div id="class9" class="subject-section active">
-        <h3>📝 Class 9 (Metric)</h3>
-        <a href="maths9_exercises.html" class="note-card">Maths (Exercise-wise) <span class="tag">VIDEO SOL</span></a>
-        <a href="physics9_exercises.html" class="note-card">Physics (Exercise-wise) <span class="tag">VIDEO SOL</span></a>
+    <!-- KG-1 -->
+    <div id="classKG1" class="subject-section active">
+        <h3>📚 KG-1 RESOURCES</h3>
+        <a href="#" class="note-card">Maths Workbook <span class="tag">PDF</span></a>
+        <a href="#" class="note-card">English Alphabets <span class="tag">VIEW</span></a>
+        <a href="#" class="note-card">Urdu Qaida <span class="tag">VIEW</span></a>
+        <a href="#" class="note-card">Basic Islamiat <span class="tag">VIEW</span></a>
     </div>
 
+    <!-- KG-2 -->
+    <div id="classKG2" class="subject-section">
+        <h3>📚 KG-2 RESOURCES</h3>
+        <a href="#" class="note-card">Maths (Numbers) <span class="tag">PDF</span></a>
+        <a href="#" class="note-card">English (Words) <span class="tag">VIEW</span></a>
+        <a href="#" class="note-card">Urdu Phonics <span class="tag">VIEW</span></a>
+        <a href="#" class="note-card">Islamic Stories <span class="tag">VIEW</span></a>
+    </div>
+
+    <!-- Primary & Middle (1-8) placeholder generation -->
+    <script>
+        const grades = [1, 2, 3, 4, 5, 6, 7, 8];
+        grades.forEach(g => {
+            document.write(`
+                <div id="class${g}" class="subject-section">
+                    <h3>📚 CLASS ${g} NOTES</h3>
+                    <a href="#" class="note-card">Mathematics <span class="tag">STBB</span></a>
+                    <a href="#" class="note-card">English <span class="tag">STBB</span></a>
+                    <a href="#" class="note-card">Urdu <span class="tag">STBB</span></a>
+                    <a href="#" class="note-card">Science <span class="tag">STBB</span></a>
+                    <a href="#" class="note-card">Social Studies <span class="tag">STBB</span></a>
+                    <a href="#" class="note-card">Islamiat <span class="tag">STBB</span></a>
+                    <a href="#" class="note-card">Computer <span class="tag">STBB</span></a>
+                </div>
+            `);
+        });
+    </script>
+
+    <!-- Class 9 -->
+    <div id="class9" class="subject-section">
+        <h3>📚 CLASS 9 (STBB)</h3>
+        <a href="maths9_exercises.html" class="note-card">Maths (Exercise-wise) <span class="tag">VIDEO</span></a>
+        <a href="physics9_exercises.html" class="note-card">Physics (Exercise-wise) <span class="tag">VIDEO</span></a>
+        <a href="#" class="note-card">Chemistry Notes <span class="tag">PDF</span></a>
+        <a href="#" class="note-card">Biology Diagrams <span class="tag">VIEW</span></a>
+        <a href="#" class="note-card">Computer Practical <span class="tag">DOC</span></a>
+        <a href="#" class="note-card">English Grammar <span class="tag">PDF</span></a>
+    </div>
+
+    <!-- Class 10 -->
     <div id="class10" class="subject-section">
-        <h3>📝 Class 10 (Metric)</h3>
-        <a href="maths10_exercises.html" class="note-card">Maths (Exercise-wise) <span class="tag">VIDEO SOL</span></a>
-        <a href="physics10_exercises.html" class="note-card">Physics (Exercise-wise) <span class="tag">VIDEO SOL</span></a>
+        <h3>📚 CLASS 10 (STBB)</h3>
+        <a href="maths10_exercises.html" class="note-card">Maths (Exercise-wise) <span class="tag">VIDEO</span></a>
+        <a href="physics10_exercises.html" class="note-card">Physics (Exercise-wise) <span class="tag">VIDEO</span></a>
+        <a href="#" class="note-card">Chemistry Notes <span class="tag">PDF</span></a>
+        <a href="#" class="note-card">Biology Full Book <span class="tag">PDF</span></a>
+        <a href="#" class="note-card">P.Studies (Important) <span class="tag">PDF</span></a>
+        <a href="#" class="note-card">Sindhi Notes <span class="tag">PDF</span></a>
     </div>
 
     <div id="generic" class="subject-section">
-        <p style="text-align: center; font-style: italic; opacity: 0.7;">Content being uploaded for this grade...</p>
+        <p style="text-align: center; font-style: italic; opacity: 0.7;">Resources coming soon...</p>
     </div>
 </div>
 
 <script>
     function showClass(num, btn) {
-        // Update Buttons
         document.querySelectorAll('.class-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-
-        // Hide all sections
         document.querySelectorAll('.subject-section').forEach(s => s.classList.remove('active'));
-
-        // Show selected or generic
         const target = document.getElementById('class' + num);
         if (target) {
             target.classList.add('active');

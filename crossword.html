@@ -3,556 +3,477 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#a8edea">
-    <title>Ice-Cube Crossword — 9×9</title>
+    <title>EKA CROSSWORD</title>
     <style>
         :root {
           --bg-grad: linear-gradient(135deg, #a8edea 0%, #b5f0e0 50%, #88d8c0 100%);
-          --glass-bg: rgba(255, 255, 255, 0.32);
+          --glass-bg: rgba(255, 255, 255, 0.4);
           --glass-border: rgba(255, 255, 255, 0.65);
-          --glass-shadow: 0 8px 32px rgba(0, 70, 60, 0.12);
           --text-main: #004d40;
           --text-sub: #00695c;
           --accent: #00897b;
-          --accent-light: #4db6ac;
           --danger: #e57373;
-          --success: #66bb6a;
-          --found-bg: rgba(255, 249, 196, 0.85);
+          --found-bg: #fff9c4;
           --found-border: #d32f2f;
-          --cell-bg: rgba(255,255,255,0.55);
+          --cell-bg: rgba(255,255,255,0.6);
           --radius: 16px;
-          --nav-h: 62px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body {
-          font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-          background: var(--bg-grad);
-          background-size: 100% 200%;
-          animation: bgFloat 20s ease infinite;
-          color: var(--text-main);
-          height: 100vh; height: 100dvh;
-          width: 100vw;
+          font-family: system-ui, sans-serif;
+          background: var(--bg-grad); background-size: 100% 200%;
+          color: var(--text-main); height: 100dvh; width: 100vw;
           display: flex; justify-content: center; align-items: center;
           overflow: hidden; touch-action: manipulation;
-          padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
         }
 
-        @keyframes bgFloat {
-          0% { background-position: 0% 0%; }
-          50% { background-position: 0% 100%; }
-          100% { background-position: 0% 0%; }
-        }
-
-        /* === 9:16 PORTRAIT CONTAINER (EXACT SPEC) === */
         .app-container {
-          width: 100vw; max-width: 450px;
-          height: 100vh; height: 100dvh;
-          aspect-ratio: 9 / 16;
-          margin: 0 auto;
-          overflow: hidden; display: flex; flex-direction: column;
-          background: rgba(255,255,255,0.12);
-          backdrop-filter: blur(14px);
-          border-radius: var(--radius);
-          box-shadow: 0 12px 35px rgba(0,0,0,0.18);
-          border: 1px solid var(--glass-border);
-        }
-        @media (min-width: 768px) {
-          .app-container { height: 92vh; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.22); }
+          width: 100vw; max-width: 450px; height: 100dvh;
+          display: flex; flex-direction: column;
+          background: rgba(255,255,255,0.1); backdrop-filter: blur(15px);
+          border-radius: var(--radius); border: 1px solid var(--glass-border);
         }
 
-        /* Header */
-        header {
-          padding: 10px 16px 6px; text-align: center; flex-shrink: 0;
-          background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
-        }
-        header h1 { font-size: clamp(1.1rem, 4.5vw, 1.4rem); font-weight: 800; letter-spacing: 0.5px; }
-        .stats-row {
-          display: flex; justify-content: space-between; align-items: center;
-          margin-top: 6px; font-size: 0.9rem; font-weight: 700; color: var(--text-sub);
-        }
-        .stat-badge { background: var(--glass-bg); padding: 4px 10px; border-radius: 20px; }
+        header { padding: 12px 16px 6px; text-align: center; }
+        .stats-row { display: flex; justify-content: space-between; margin-top: 6px; font-weight: 700; align-items: center; }
+        .stat-badge { background: var(--glass-bg); padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; white-space: nowrap; }
 
-        /* Screens & Navigation */
-        .screens-wrapper { flex: 1; position: relative; overflow: hidden; display: flex; }
+        /* Timer Bar */
+        .timer-container { flex: 1; height: 10px; background: rgba(0,0,0,0.1); border-radius: 5px; margin: 0 10px; overflow: hidden; position: relative; }
+        #timer-bar { height: 100%; width: 100%; background: var(--accent); transition: width 1s linear; }
+
+        #game-msg { font-size: 0.8rem; font-weight: 800; color: var(--accent); margin-top: 4px; min-height: 1.2em; }
+
+        .screens-wrapper { flex: 1; position: relative; overflow: hidden; }
         .screen {
-          position: absolute; inset: 0; padding: 12px 14px;
+          position: absolute; inset: 0; padding: 12px;
           display: flex; flex-direction: column; gap: 10px;
-          opacity: 0; transform: translateX(40px) scale(0.98);
-          transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.35s;
-          pointer-events: none; overflow-y: auto;
+          opacity: 0; transform: translateX(30px); pointer-events: none;
+          transition: 0.3s ease;
         }
-        .screen.active {
-          opacity: 1; transform: translateX(0) scale(1); pointer-events: auto; position: relative;
-        }
-        .screen.exit { transform: translateX(-40px) scale(0.96); }
+        .screen.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
 
-        /* Bottom Nav */
-        .bottom-nav {
-          height: var(--nav-h); display: flex; justify-content: space-around; align-items: center;
-          background: rgba(255,255,255,0.65); backdrop-filter: blur(12px);
-          border-top: 1px solid var(--glass-border); flex-shrink: 0;
-          padding-bottom: env(safe-area-inset-bottom);
-        }
-        .nav-btn {
-          flex: 1; background: none; border: none; padding: 8px 4px;
-          font-size: 0.8rem; font-weight: 700; color: var(--text-sub);
-          cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px;
-          transition: color 0.2s, transform 0.1s;
-        }
-        .nav-btn:active { transform: scale(0.92); }
-        .nav-btn.active { color: var(--accent); }
-
-        /* Touch-Friendly Components (>= 44x44px) */
         .glass-card {
           background: var(--glass-bg); border: 1px solid var(--glass-border);
-          border-radius: var(--radius); padding: 14px;
-          box-shadow: var(--glass-shadow);
-          display: flex; flex-direction: column; align-items: center; gap: 10px;
+          border-radius: var(--radius); padding: 8px;
         }
-        .btn {
-          min-height: 48px; min-width: 48px; padding: 0 16px;
-          font-size: 0.9rem; font-weight: 700; border: none; border-radius: 12px;
-          background: var(--cell-bg); color: var(--text-main);
-          cursor: pointer; transition: transform 0.1s, background 0.15s, box-shadow 0.2s;
-          display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-          box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-        }
-        .btn.primary { background: var(--accent); color: white; }
-        .btn.danger { background: var(--danger); color: white; }
-        .btn:active { transform: scale(0.96); box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
-        .btn-group { display: flex; gap: 8px; width: 100%; }
-        .btn-group .btn { flex: 1; }
 
-        /* 9×9 Grid */
-        .grid-wrapper {
-          flex: 1; display: flex; justify-content: center; align-items: center;
-          padding: 8px; min-height: 0;
+        /* Controls in one row */
+        .controls-row {
+          display: flex; gap: 6px; width: 100%; align-items: center;
         }
+        .controls-row .level-selector { flex: 2; min-width: 0; }
+        .btn-mini {
+          flex: 1; height: 44px; border: none; border-radius: 10px;
+          font-weight: 700; cursor: pointer; background: var(--cell-bg);
+          color: var(--text-main); font-size: 0.75rem; padding: 0 4px;
+          display: flex; align-items: center; justify-content: center;
+          white-space: nowrap;
+        }
+        .btn-mini.primary { background: var(--accent); color: white; }
+        .btn-mini:active { transform: scale(0.96); }
+
+        .grid-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 8px; overflow: hidden; }
         #grid {
-          display: grid;
-          grid-template-columns: repeat(9, 1fr);
-          grid-template-rows: repeat(9, 1fr);
-          aspect-ratio: 1 / 1;
-          width: min(92vw, 88dvh);
-          max-width: 420px;
-          background: var(--glass-bg);
-          border-radius: 14px;
-          box-shadow: var(--glass-shadow);
-          padding: 5px;
-          gap: 2px;
-          border: 1px solid var(--glass-border);
+          display: grid; gap: 2px;
+          background: var(--glass-bg); padding: 4px; border-radius: 12px;
+          margin: auto;
+          transition: width 0.3s ease, aspect-ratio 0.3s ease;
         }
         .cell {
-          display: flex; justify-content: center; align-items: center;
-          font-size: clamp(11px, 3.8vw, 18px); font-weight: 800;
-          background: var(--cell-bg); border-radius: 6px;
-          cursor: pointer; user-select: none;
-          border: 2px solid transparent;
-          transition: background 0.15s, border-color 0.15s, transform 0.1s;
+          background: var(--cell-bg); display: flex; justify-content: center; align-items: center;
+          font-weight: 800;
+          border-radius: 4px; cursor: pointer;
+          border: 1.5px solid transparent; transition: 0.1s;
+          font-size: var(--cell-fs, 1rem);
         }
-        .cell:active { transform: scale(0.94); }
-        .cell.selected { background: rgba(0, 150, 136, 0.25); border-color: var(--accent); }
-        .cell.found { background: var(--found-bg); border-color: var(--found-border); color: #b71c1c; }
+        .cell.selected { border-color: var(--accent); background: rgba(0,137,123,0.2); }
+        .cell.found { background: var(--found-bg); border-color: var(--found-border); color: #d32f2f; }
 
-        /* Modal */
+        .bottom-nav {
+          height: 60px; display: flex; background: rgba(255,255,255,0.7);
+          border-top: 1px solid var(--glass-border);
+        }
+        .nav-btn {
+          flex: 1; border: none; background: none; font-size: 0.8rem; font-weight: 700;
+          display: flex; flex-direction: column; align-items: center; justify-content: center;
+          color: var(--text-sub);
+        }
+        .nav-btn.active { color: var(--accent); }
+
+        /* Modal Layout */
         .modal-overlay {
-          position: absolute; inset: 0; background: rgba(0,0,0,0.55);
-          display: none; justify-content: center; align-items: center;
-          z-index: 50; backdrop-filter: blur(5px);
+          position: absolute; inset: 0; background: rgba(0,0,0,0.5);
+          display: none; justify-content: center; align-items: center; z-index: 100;
+          backdrop-filter: blur(4px);
         }
         .modal-overlay.active { display: flex; }
         .modal-box {
-          background: var(--glass-bg); padding: 22px; border-radius: var(--radius);
-          text-align: center; max-width: 85%; box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-          transform: translateY(20px); opacity: 0; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+          background: white; padding: 20px; border-radius: 20px; width: 85%;
+          max-width: 340px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
-        .modal-overlay.active .modal-box { transform: translateY(0); opacity: 1; }
-        .modal-title { font-size: 1.5rem; font-weight: 900; margin-bottom: 8px; color: var(--accent); }
-        .modal-msg { margin-bottom: 16px; color: var(--text-sub); font-size: 0.95rem; }
-
-        /* Word List */
-        .word-list { text-align: left; width: 100%; max-height: 50dvh; overflow-y: auto; padding-right: 4px; }
+        .word-list {
+          display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+          margin: 15px 0; max-height: 40vh; overflow-y: auto;
+        }
         .word-item {
-          padding: 8px 10px; border-bottom: 1px dashed rgba(0,0,0,0.12);
-          font-weight: 600; cursor: pointer; border-radius: 6px;
+          background: #f0f4f4; padding: 10px 5px; border-radius: 8px; font-weight: 700;
+          font-size: 0.85rem; border: 1px solid #ddd;
         }
-        .word-item:active { background: rgba(0,150,136,0.15); }
-        .word-item.found { text-decoration: line-through; color: #888; pointer-events: none; }
+        .word-item.found { text-decoration: line-through; opacity: 0.5; background: #e0e0e0; }
 
-        /* Utility */
-        h2 { margin: 4px 0 8px; font-size: 1.15rem; font-weight: 800; }
-        p { line-height: 1.45; color: var(--text-sub); font-size: 0.9rem; }
-        .hint-text { font-size: 0.85rem; color: var(--text-sub); text-align: center; margin-top: 4px; }
+        .level-selector {
+          padding: 8px; border-radius: 10px; border: 1px solid var(--glass-border);
+          font-weight: 700; background: white; font-size: 0.8rem;
+        }
     </style>
 </head>
 <body>
 <div class="app-container">
     <header>
-        <h1>Ice-Cube Crossword — 9×9</h1>
+        <h1>EKA CROSSWORD</h1>
         <div class="stats-row">
             <span class="stat-badge" id="disp-timer">⏱️ 02:00</span>
-            <span class="stat-badge" id="disp-progress">Found: 0 / 0</span>
+            <div class="timer-container"><div id="timer-bar"></div></div>
+            <span class="stat-badge" id="disp-level">#1</span>
+            <span class="stat-badge" id="disp-score">🌟 0</span>
         </div>
+        <div id="game-msg">Ready?</div>
     </header>
 
     <div class="screens-wrapper">
-        <!-- GAME SCREEN -->
         <section id="screen-game" class="screen active">
             <div class="glass-card">
-                    <div class="btn-group">
-                    <button id="btn-new" class="btn primary">🆕 New Game</button>
-                    <button id="btn-hint" class="btn">💡 Hint</button>
-                </div>
-                <div class="btn-group">
-                    <button id="btn-pause" class="btn">⏸️ Pause</button>
-                    <button id="btn-words" class="btn danger">📖 Words: 0</button>
+                <div class="controls-row">
+                    <select id="level-select" class="level-selector"></select>
+                    <button id="btn-new" class="btn-mini primary">🆕 New</button>
+                    <button id="btn-pause" class="btn-mini">⏸️ Pause</button>
+                    <button id="btn-info" class="btn-mini">❓ Info</button>
                 </div>
             </div>
-            <div class="grid-wrapper">
-                <div id="grid"></div>
-            </div>
+            <div class="grid-wrapper"><div id="grid"></div></div>
         </section>
 
-        <!-- HELP SCREEN -->
         <section id="screen-help" class="screen">
-            <div class="glass-card" style="align-items:flex-start;">
+            <div class="glass-card">
                 <h2>📖 How to Play</h2>
-                <p>1. Find 13-15 hidden words in the 9×9 grid.</p>
-                <p>2. Tap a <strong>start cell</strong>, then an <strong>end cell</strong> in a straight line.</p>
-                <p>3. Correct words turn <strong>yellow with red border</strong>.</p>
-                <p>4. Beat the <strong>2-minute</strong> clock to win!</p>
-                <p style="margin-top:8px; font-weight:600;">💡 Words run horizontally (→) or vertically (↓) only.</p>
-                <button class="btn primary" style="width:100%; margin-top:12px;" onclick="navTo('screen-game')">Back to Game</button>
-            </div>
-        </section>
-
-        <!-- DICTIONARY SCREEN -->
-        <section id="screen-dict" class="screen">
-            <div class="glass-card" style="align-items:flex-start; width:100%;">
-                <h2>📚 Words to Find</h2>
-                <p>Tap any word to highlight it on the grid:</p>
-                <div class="word-list" id="word-list"></div>
-                <button class="btn" style="width:100%; margin-top:10px;" onclick="navTo('screen-game')">Close</button>
+                <p>Find the words hidden in the grid!</p>
+                <p>1. Tap the START and END letters of a word.</p>
+                <p>2. Words can be Horizontal or Vertical.</p>
+                <button class="btn-mini primary" style="width:100%; margin-top:10px;" onclick="navTo('screen-game')">Back to Game</button>
             </div>
         </section>
     </div>
 
     <nav class="bottom-nav">
         <button class="nav-btn active" data-target="screen-game">🎮 Play</button>
-        <button class="nav-btn" data-target="screen-help">📖 Guide</button>
-        <button class="nav-btn" data-target="screen-dict">📚 Words</button>
+        <button class="nav-btn" id="nav-words">📚 Words</button>
+        <button class="nav-btn" data-target="screen-help">❓ Help</button>
     </nav>
 
-    <!-- END MODAL -->
+    <!-- Modals -->
+    <div class="modal-overlay" id="modal-words">
+        <div class="modal-box">
+            <h3 id="modal-words-title">Words to Find</h3>
+            <div class="word-list" id="modal-word-list"></div>
+            <button class="btn-mini primary" id="btn-close-words" style="width:100%">Close</button>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="modal-end">
         <div class="modal-box">
-            <div class="modal-title" id="modal-title">You Win!</div>
-            <div class="modal-msg" id="modal-msg">Nice — you found all the words.</div>
-            <button class="btn primary" style="width:100%;" id="btn-play-again">Play Again</button>
+            <h2 id="end-title">Game Over</h2>
+            <p id="end-msg"></p>
+            <button class="btn-mini primary" id="btn-restart" style="width:100%; margin-top:15px;">Play Again</button>
         </div>
     </div>
 </div>
 
-<script src="dict101.js"></script>
+<script src="vocabulary.js"></script>
 <script>
-    // === HARDWARE-OPTIMIZED DOM CACHE ===
-    const UI = {
-      timer: document.getElementById('disp-timer'),
-      progress: document.getElementById('disp-progress'),
-      grid: document.getElementById('grid'),
-      msg: document.getElementById('game-msg'),
-      btnNew: document.getElementById('btn-new'),
-      btnHint: document.getElementById('btn-hint'),
-      btnPause: document.getElementById('btn-pause'),
-      btnWords: document.getElementById('btn-words'),
-      btnAgain: document.getElementById('btn-play-again'),
-      modal: document.getElementById('modal-end'),
-      mTitle: document.getElementById('modal-title'),
-      mMsg: document.getElementById('modal-msg'),
-      wordList: document.getElementById('word-list')
+    const LEVEL_CONFIGS = {
+        "Age < 8":   { rows: 5,  cols: 5,  words: 4, time: 60 },
+        "Age 8-12":  { rows: 7,  cols: 7,  words: 6, time: 90 },
+        "Age 12-16": { rows: 9,  cols: 9,  words: 8, time: 120 },
+        "Age 16-20": { rows: 11, cols: 9,  words: 10, time: 150 },
+        "Age 20+":   { rows: 12, cols: 10, words: 12, time: 180 }
     };
 
-    // === GAME CONFIG ===
-    const ROWS = 9, COLS = 9, TIME_LIMIT = 120, MIN_WORDS = 9, MAX_WORDS = 12;
+    let ROWS = 9, COLS = 9, TIME_LIMIT = 120;
+    const UI = {
+        grid: document.getElementById('grid'),
+        timer: document.getElementById('disp-timer'),
+        timerBar: document.getElementById('timer-bar'),
+        levelDisp: document.getElementById('disp-level'),
+        score: document.getElementById('disp-score'),
+        level: document.getElementById('level-select'),
+        msg: document.getElementById('game-msg'),
+        modalWords: document.getElementById('modal-words'),
+        modalWordList: document.getElementById('modal-word-list'),
+        modalWordsTitle: document.getElementById('modal-words-title'),
+        modalEnd: document.getElementById('modal-end')
+    };
 
-    // === STATE ===
-    let grid = [], placedWords = [], foundWords = new Set(), startCell = null;
+    let grid = [], placedWords = [], foundWords = new Set();
     let timer = TIME_LIMIT, timerInterval = null, isPaused = false, isGameOver = false;
+    let currentLevel = "Age 12-16", startCell = null, wordsTimeout = null, isInitialPhase = false;
+    let baseScore = 0, levelCount = 1;
 
-    // === INIT ===
     function init() {
-      clearInterval(timerInterval);
-      grid = Array(ROWS).fill(null).map(() => Array(COLS).fill(''));
-      placedWords = []; foundWords.clear(); startCell = null;
-      timer = TIME_LIMIT; isPaused = false; isGameOver = false;
+        populateLevels();
 
-      placeWordsSmart(); // Non-overlapping placement
-      fillRandom();
-      renderGrid();
-      renderWordList();
-      updateUI();
-      startTimer();
-      UI.modal.classList.remove('active');
-    }
+        const cfg = LEVEL_CONFIGS[currentLevel] || LEVEL_CONFIGS["Age 12-16"];
+        ROWS = cfg.rows;
+        COLS = cfg.cols;
+        TIME_LIMIT = cfg.time || 120;
 
-    // === SMART WORD PLACEMENT (MINIMIZE OVERLAPS) ===
-    function placeWordsSmart() {
-      const shuffled = [...dict101].sort(() => 0.5 - Math.random());
-      let placed = 0, target = Math.floor(Math.random() * (MAX_WORDS - MIN_WORDS + 1)) + MIN_WORDS;
+        UI.grid.style.width = `min(97vw, calc(70vh * ${COLS} / ${ROWS}))`;
+        UI.grid.style.aspectRatio = `${COLS} / ${ROWS}`;
 
-      for (let word of shuffled) {
-        if (placed >= target) break;
-        if (word.length > 9) continue; // Skip words too long for 9x9
+        const fs = Math.min(50 / COLS, 40 / ROWS);
+        UI.grid.style.setProperty('--cell-fs', `${fs}vh`);
 
-        let best = null, bestScore = -1;
-        // Try 150 placement attempts per word
-        for (let att = 0; att < 150; att++) {
-          const dir = Math.random() > 0.5 ? 'H' : 'V';
-          const maxR = dir === 'H' ? ROWS : ROWS - word.length + 1;
-          const maxC = dir === 'V' ? COLS : COLS - word.length + 1;
-          if (maxR <= 0 || maxC <= 0) continue;
+        clearInterval(timerInterval);
+        if (wordsTimeout) clearTimeout(wordsTimeout);
 
-          const r = Math.floor(Math.random() * maxR);
-          const c = Math.floor(Math.random() * maxC);
-          if (!canPlace(word, r, c, dir)) continue;
-
-          // Score: prefer placements with fewer overlaps with already-placed words
-          const overlap = countOverlaps(word, r, c, dir);
-          if (overlap > bestScore) { bestScore = overlap; best = { word, r, c, dir, overlap }; }
-        }
-
-        if (best) {
-          place(best.word, best.r, best.c, best.dir);
-          placedWords.push({ word: best.word, r: best.r, c: best.c, dir: best.dir });
-          placed++;
-        }
-      }
-
-      // Fallback: ensure minimum words placed
-      if (placedWords.length < MIN_WORDS) {
-        placedWords = placedWords.slice(0, MIN_WORDS);
         grid = Array(ROWS).fill(null).map(() => Array(COLS).fill(''));
-        placedWords.forEach(pw => place(pw.word, pw.r, pw.c, pw.dir));
-      }
+        placedWords = []; foundWords.clear(); startCell = null;
+        timer = TIME_LIMIT; isGameOver = false; isPaused = true;
+
+        generatePuzzle(cfg.words);
+        renderGrid();
+        updateUI();
+        updateTimerDisplay();
+
+        UI.modalEnd.classList.remove('active');
+        UI.msg.textContent = "Memorize the words!";
+
+        showWordsModal(8000, true);
     }
 
-    function countOverlaps(word, r, c, dir) {
-      let overlaps = 0;
-      for (let i = 0; i < word.length; i++) {
-        const cr = dir === 'H' ? r : r + i;
-        const cc = dir === 'H' ? c + i : c;
-        if (grid[cr][cc]) overlaps++;
-      }
-      return overlaps; // Lower = better (prefer empty cells)
+    function generatePuzzle(targetCount) {
+        const dict = window.VOCABULARY[currentLevel] || window.VOCABULARY["Age 12-16"];
+        const shuffled = [...dict].sort(() => 0.5 - Math.random());
+        const count = Math.min(shuffled.length, targetCount);
+
+        let placed = 0;
+        for (let word of shuffled) {
+            if (placed >= count) break;
+            const maxWordLen = Math.max(ROWS, COLS);
+            if (word.length > maxWordLen) continue;
+
+            let success = false;
+            for (let attempts = 0; attempts < 50; attempts++) {
+                const dir = Math.random() > 0.5 ? 'H' : 'V';
+                const r = Math.floor(Math.random() * (dir === 'H' ? ROWS : ROWS - word.length + 1));
+                const c = Math.floor(Math.random() * (dir === 'V' ? COLS : COLS - word.length + 1));
+
+                if (canPlace(word, r, c, dir)) {
+                    place(word, r, c, dir);
+                    placedWords.push({ word, r, c, dir });
+                    placed++;
+                    success = true;
+                    break;
+                }
+            }
+        }
+
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                if (!grid[r][c]) grid[r][c] = chars[Math.floor(Math.random() * chars.length)];
+            }
+        }
     }
 
     function canPlace(word, r, c, dir) {
-      for (let i = 0; i < word.length; i++) {
-        const cr = dir === 'H' ? r : r + i;
-        const cc = dir === 'H' ? c + i : c;
-        if (grid[cr][cc] && grid[cr][cc] !== word[i]) return false;
-      }
-      return true;
+        for (let i = 0; i < word.length; i++) {
+            const cr = dir === 'H' ? r : r + i, cc = dir === 'H' ? c + i : c;
+            if (cr >= ROWS || cc >= COLS) return false;
+            if (grid[cr][cc] && grid[cr][cc] !== word[i]) return false;
+        }
+        return true;
     }
 
     function place(word, r, c, dir) {
-      for (let i = 0; i < word.length; i++) {
-        const cr = dir === 'H' ? r : r + i;
-        const cc = dir === 'H' ? c + i : c;
-        grid[cr][cc] = word[i];
-      }
-    }
-
-    function fillRandom() {
-      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-      for (let r = 0; r < ROWS; r++) {
-        for (let c = 0; c < COLS; c++) {
-          if (!grid[r][c]) grid[r][c] = letters[Math.floor(Math.random() * letters.length)];
+        for (let i = 0; i < word.length; i++) {
+            const cr = dir === 'H' ? r : r + i, cc = dir === 'H' ? c + i : c;
+            grid[cr][cc] = word[i];
         }
-      }
     }
 
-    // === RENDERING ===
     function renderGrid() {
-      UI.grid.innerHTML = '';
-      for (let r = 0; r < ROWS; r++) {
-        for (let c = 0; c < COLS; c++) {
-          const cell = document.createElement('div');
-          cell.className = 'cell';
-          cell.dataset.r = r; cell.dataset.c = c;
-          cell.textContent = grid[r][c];
-          cell.addEventListener('pointerdown', (e) => {
-            e.preventDefault();
-            handleCellTap(r, c);
-          });
-          UI.grid.appendChild(cell);
+        UI.grid.innerHTML = '';
+        UI.grid.style.gridTemplateRows = `repeat(${ROWS}, 1fr)`;
+        UI.grid.style.gridTemplateColumns = `repeat(${COLS}, 1fr)`;
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                const el = document.createElement('div');
+                el.className = 'cell';
+                el.textContent = grid[r][c];
+                el.dataset.r = r; el.dataset.c = c;
+                el.onpointerdown = (e) => { e.preventDefault(); handleCell(r, c); };
+                UI.grid.appendChild(el);
+            }
         }
-      }
     }
 
-    function renderWordList() {
-      UI.wordList.innerHTML = placedWords.map(pw =>
-        `<div class="word-item ${foundWords.has(pw.word)?'found':''}" data-word="${pw.word}">${pw.word}</div>`
-      ).join('');
-      UI.wordList.querySelectorAll('.word-item').forEach(item => {
-        item.addEventListener('pointerdown', (e) => {
-          e.preventDefault();
-          highlightWordOnGrid(placedWords.find(p => p.word === item.dataset.word));
-        });
-      });
-      UI.btnWords.textContent = `📖 Words: ${placedWords.length}`;
+    function showWordsModal(ms, isInitial = false) {
+        if (wordsTimeout) clearTimeout(wordsTimeout);
+        isPaused = true;
+        isInitialPhase = isInitial;
+        UI.modalWordsTitle.textContent = isInitial ? "Memorize (8s)" : "Words List (5s)";
+        UI.modalWordList.innerHTML = placedWords.map(pw =>
+            `<div class="word-item ${foundWords.has(pw.word) ? 'found' : ''}">${pw.word}</div>`
+        ).join('');
+        UI.modalWords.classList.add('active');
+        wordsTimeout = setTimeout(() => hideWordsModal(), ms);
     }
 
-    // === GAME LOGIC ===
-    function handleCellTap(r, c) {
-      if (isPaused || isGameOver) return;
-      if (!startCell) {
-        startCell = { r, c };
-        highlightSelection(r, c);
-        UI.msg.textContent = "Now tap end cell (same row/col)";
-      } else {
-        validateAndMark(startCell.r, startCell.c, r, c);
-        startCell = null;
-        clearHighlights();
-        UI.msg.textContent = foundWords.size === placedWords.length ? "🎉 All found!" : "Select start cell";
-      }
+    function hideWordsModal() {
+        if (wordsTimeout) clearTimeout(wordsTimeout);
+        UI.modalWords.classList.remove('active');
+        if (isInitialPhase) {
+            isInitialPhase = false;
+            isPaused = false;
+            startTimer();
+            UI.msg.textContent = "";
+        } else if (!isGameOver) {
+            isPaused = false;
+        }
     }
 
-    function highlightSelection(r, c) {
-      clearHighlights();
-      getCellEl(r, c)?.classList.add('selected');
+    function handleCell(r, c) {
+        if (isPaused || isGameOver) return;
+        if (!startCell) {
+            startCell = { r, c };
+            const cell = getCellEl(r, c);
+            if (cell) cell.classList.add('selected');
+        } else {
+            validate(startCell.r, startCell.c, r, c);
+            const cell = getCellEl(startCell.r, startCell.c);
+            if (cell) cell.classList.remove('selected');
+            startCell = null;
+        }
     }
 
-    function clearHighlights() {
-      document.querySelectorAll('.cell.selected').forEach(c => c.classList.remove('selected'));
+    function validate(r1, c1, r2, c2) {
+        if (r1 !== r2 && c1 !== c2) return;
+        const dir = r1 === r2 ? 'H' : 'V';
+        const start = dir === 'H' ? Math.min(c1, c2) : Math.min(r1, r2);
+        const end = dir === 'H' ? Math.max(c1, c2) : Math.max(r1, r2);
+
+        let word = "";
+        for (let i = start; i <= end; i++) {
+            word += (dir === 'H' ? grid[r1][i] : grid[i][c1]);
+        }
+
+        const rev = word.split('').reverse().join('');
+        const match = placedWords.find(pw => !foundWords.has(pw.word) && (pw.word === word || pw.word === rev));
+
+        if (match) {
+            if (navigator.vibrate) navigator.vibrate(40);
+            foundWords.add(match.word);
+            timer = Math.min(TIME_LIMIT, timer + 5); // Add +5s for each word found
+            for (let i = start; i <= end; i++) {
+                getCellEl(dir === 'H' ? r1 : i, dir === 'H' ? i : c1).classList.add('found');
+            }
+            updateUI();
+            if (foundWords.size === placedWords.length) endLevel(true);
+        }
     }
 
-    function getCellEl(r, c) {
-      return UI.grid.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
-    }
+    function getCellEl(r, c) { return UI.grid.children[r * COLS + c]; }
 
-    function validateAndMark(r1, c1, r2, c2) {
-      if (r1 === r2 && c1 === c2) return;
-      if (r1 !== r2 && c1 !== c2) return; // Straight lines only
-
-      const dir = r1 === r2 ? 'H' : 'V';
-      const len = dir === 'H' ? Math.abs(c2 - c1) + 1 : Math.abs(r2 - r1) + 1;
-      const startR = dir === 'H' ? r1 : Math.min(r1, r2);
-      const startC = dir === 'H' ? Math.min(c1, c2) : c1;
-
-      let word = '';
-      const cells = [];
-      for (let i = 0; i < len; i++) {
-        const cr = dir === 'H' ? startR : startR + i;
-        const cc = dir === 'H' ? startC + i : startC;
-        word += grid[cr][cc];
-        cells.push({ r: cr, c: cc });
-      }
-
-      const rev = word.split('').reverse().join('');
-      const match = placedWords.find(pw =>
-        !foundWords.has(pw.word) && (pw.word === word || pw.word === rev)
-      );
-
-      if (match) {
-        foundWords.add(match.word);
-        cells.forEach(({ r, c }) => getCellEl(r, c)?.classList.add('found'));
-        renderWordList();
-        updateUI();
-        if (foundWords.size === placedWords.length) endGame(true);
-      }
-    }
-
-    // === TIMER & UI ===
     function startTimer() {
-      clearInterval(timerInterval);
-      updateTimerDisplay();
-      timerInterval = setInterval(() => {
-        if (!isPaused) {
-          timer--;
-          updateTimerDisplay();
-          if (timer <= 0) endGame(false);
-        }
-      }, 1000);
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            if (!isPaused && !isGameOver) {
+                timer--;
+                updateTimerDisplay();
+                if (timer <= 0) endLevel(false);
+            }
+        }, 1000);
     }
 
     function updateTimerDisplay() {
-      const m = Math.floor(timer / 60).toString().padStart(2, '0');
-      const s = (timer % 60).toString().padStart(2, '0');
-      UI.timer.textContent = `⏱️ ${m}:${s}`;
-      UI.timer.style.color = timer < 15 ? 'var(--danger)' : 'var(--text-main)';
+        const m = Math.floor(timer / 60), s = timer % 60;
+        UI.timer.textContent = `⏱️ ${m}:${s.toString().padStart(2, '0')}`;
+        const pct = (timer / TIME_LIMIT) * 100;
+        UI.timerBar.style.width = pct + "%";
+        UI.timerBar.style.backgroundColor = pct < 25 ? "var(--danger)" : "var(--accent)";
+        calculateScore(false);
+    }
+
+    function calculateScore(includeBonus = false) {
+        const lettersFound = Array.from(foundWords).reduce((sum, word) => sum + word.length, 0);
+        const timeBonus = includeBonus ? Math.max(0, Math.floor(timer / 5)) : 0;
+        const total = baseScore + lettersFound + timeBonus;
+        UI.score.textContent = `🌟 ${total}`;
+        return total;
     }
 
     function updateUI() {
-      UI.progress.textContent = `Found: ${foundWords.size} / ${placedWords.length}`;
+        UI.levelDisp.textContent = currentLevel;
+        calculateScore(false);
     }
 
-    function endGame(won) {
-      isGameOver = true;
-      clearInterval(timerInterval);
-      UI.mTitle.textContent = won ? '🎉 You Win!' : '⏰ Time\'s Up!';
-      UI.mMsg.textContent = won
-        ? `Found all ${placedWords.length} words!`
-        : `Found ${foundWords.size}/${placedWords.length}. Words: ${placedWords.map(p=>p.word).join(', ')}`;
-      UI.modal.classList.add('active');
-    }
+    function endLevel(won) {
+        isGameOver = true;
+        clearInterval(timerInterval);
+        const finalScore = calculateScore(won);
 
-    // === CONTROLS ===
-    function setupControls() {
-      UI.btnNew.addEventListener('pointerdown', e => { e.preventDefault(); init(); });
-      UI.btnPause.addEventListener('pointerdown', e => {
-        e.preventDefault();
-        isPaused = !isPaused;
-        UI.btnPause.textContent = isPaused ? '▶️ Resume' : '⏸️ Pause';
-      });
-      UI.btnHint.addEventListener('pointerdown', e => {
-        e.preventDefault();
-        if (isPaused || isGameOver) return;
-        const unfound = placedWords.find(p => !foundWords.has(p.word));
-        if (unfound) {
-          alert(`💡 "${unfound.word}" starts at row ${unfound.r+1}, col ${unfound.c+1} (${unfound.dir==='H'?'→':'↓'})`);
+        const btnRestart = document.getElementById('btn-restart');
+        if (won) {
+            btnRestart.textContent = "Next Level";
+            btnRestart.onclick = () => {
+                baseScore = finalScore;
+                levelCount++;
+                init();
+            };
+            document.getElementById('end-title').textContent = `🎉 Level ${levelCount} Clear!`;
+        } else {
+            btnRestart.textContent = "Play Again";
+            btnRestart.onclick = () => {
+                baseScore = 0;
+                levelCount = 1;
+                init();
+            };
+            document.getElementById('end-title').textContent = "⏰ Time's Up!";
         }
-      });
-      UI.btnAgain.addEventListener('pointerdown', e => { e.preventDefault(); UI.modal.classList.remove('active'); init(); });
+
+        document.getElementById('end-msg').textContent = (won ? `Excellent! You finished Level ${levelCount}.` : `Found ${foundWords.size} of ${placedWords.length}`) + `\nTotal Score: ${finalScore}`;
+        UI.modalEnd.classList.add('active');
     }
 
-    // === NAVIGATION ===
+    function populateLevels() {
+        if (UI.level.options.length > 0) return;
+        UI.level.innerHTML = Object.keys(LEVEL_CONFIGS).map(l => `<option value="${l}">${l}</option>`).join('');
+        UI.level.value = currentLevel;
+        UI.level.onchange = (e) => { currentLevel = e.target.value; init(); };
+    }
+
     function navTo(id) {
-      document.querySelectorAll('.screen').forEach(s => {
-        if (s.id === id) { s.classList.add('active'); s.classList.remove('exit'); }
-        else { s.classList.remove('active'); s.classList.add('exit'); }
-      });
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.target === id));
+        document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.target === id));
     }
 
-    function highlightWordOnGrid(pw) {
-      if (!pw) return;
-      clearHighlights();
-      for (let i = 0; i < pw.word.length; i++) {
-        const cr = pw.dir === 'H' ? pw.r : pw.r + i;
-        const cc = pw.dir === 'H' ? pw.c + i : pw.c;
-        getCellEl(cr, cc)?.classList.add('selected');
-      }
-      setTimeout(clearHighlights, 1200);
-      navTo('screen-game');
-    }
+    document.getElementById('btn-new').onclick = () => { baseScore = 0; levelCount = 1; init(); };
+    document.getElementById('btn-pause').onclick = () => {
+        isPaused = !isPaused;
+        document.getElementById('btn-pause').textContent = isPaused ? "▶️ Resume" : "⏸️ Pause";
+    };
+    document.getElementById('btn-info').onclick = () => navTo('screen-help');
+    document.getElementById('nav-words').onclick = () => showWordsModal(5000);
+    document.getElementById('btn-close-words').onclick = () => hideWordsModal();
 
-    // === BOOT ===
-    document.addEventListener('DOMContentLoaded', () => {
-      // Navigation events
-      document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('pointerdown', e => {
-        e.preventDefault(); navTo(btn.dataset.target);
-      }));
-      setupControls();
-      init();
+    document.querySelectorAll('.nav-btn[data-target]').forEach(btn => {
+        btn.onclick = () => navTo(btn.dataset.target);
     });
 
-    // === TOUCH OPTIMIZATIONS ===
-    document.addEventListener('touchstart', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
-    document.addEventListener('gesturestart', e => e.preventDefault());
+    window.onload = init;
 </script>
 </body>
 </html>

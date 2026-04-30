@@ -156,68 +156,97 @@
             color: #f9ca24;
         }
 
-        .score-display {
+        /* Standardized Header & Stats */
+        .game-header {
             position: absolute;
-            top: 2%;
-            left: 2%;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 8px 15px;
-            border-radius: 15px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 16px 6px;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+            z-index: 10;
             color: white;
-            font-size: clamp(12px, 3.5vw, 16px);
-            font-weight: bold;
-            z-index: 5;
+            pointer-events: none;
         }
-
-        .time-display {
-            position: absolute;
-            top: 2%;
-            right: 2%;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 8px 15px;
-            border-radius: 15px;
-            color: #ff6b6b;
-            font-size: clamp(12px, 3.5vw, 16px);
-            font-weight: bold;
-            z-index: 5;
+        .game-header h1 {
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            font-weight: 800;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            pointer-events: auto;
+        }
+        .stat-badge {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+            white-space: nowrap;
+        }
+        .timer-container {
+            flex: 1;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            margin: 0 10px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        #timer-bar {
+            height: 100%;
+            width: 100%;
+            background: #00b894;
+            transition: width 1s linear;
         }
 
         .pause-btn {
             position: absolute;
-            top: 2%;
+            top: 85px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(0, 0, 0, 0.7);
-            border: none;
-            padding: 8px 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 6px 15px;
             border-radius: 15px;
             color: white;
             font-size: 14px;
             cursor: pointer;
-            z-index: 5;
+            z-index: 10;
         }
 
         .touch-controls {
             position: absolute;
-            bottom: 2%;
+            bottom: 0;
             left: 0;
             width: 100%;
-            height: 100px;
+            height: clamp(100px, 18vh, 160px);
             display: flex;
             justify-content: space-between;
-            padding: 0 15px;
+            padding: 12px;
             z-index: 5;
             pointer-events: none;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 2px solid rgba(255, 255, 255, 0.1);
         }
 
         .control-btn {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            border: 3px solid rgba(255, 255, 255, 0.5);
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 3px solid rgba(255, 255, 255, 0.4);
             color: white;
-            font-size: 24px;
+            font-size: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -228,21 +257,20 @@
         }
 
         .control-btn:active {
-            background: rgba(255, 255, 255, 0.4);
-            transform: scale(0.9);
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0.96);
         }
 
         .control-btn.pressed {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.4);
             border-color: #f9ca24;
-            box-shadow: 0 0 15px rgba(249, 202, 36, 0.6);
-            transform: scale(0.92);
+            box-shadow: 0 0 20px rgba(249, 202, 36, 0.4);
         }
 
         .control-left, .control-right {
+            width: 48%;
+            height: 100%;
             display: flex;
-            gap: 12px;
-            align-items: flex-end;
         }
 
         .leaderboard {
@@ -315,14 +343,21 @@
 <div id="gameContainer">
     <canvas id="gameCanvas"></canvas>
 
-    <div id="scoreDisplay" class="score-display hidden">Score: 0</div>
-    <div id="timeDisplay" class="time-display hidden">Time: 60s</div>
+    <header id="gameHeader" class="game-header hidden">
+        <h1 id="headerTitle">🍍 Fruit Basket 🧺</h1>
+        <div class="stats-row">
+            <span class="stat-badge" id="disp-timer">⏱️ 01:00</span>
+            <div class="timer-container"><div id="timer-bar"></div></div>
+            <span class="stat-badge" id="disp-level">#1</span>
+            <span class="stat-badge" id="disp-score">🌟 0</span>
+        </div>
+    </header>
+
     <button id="pauseBtn" class="pause-btn hidden">⏸️ Pause</button>
 
     <div id="touchControls" class="touch-controls hidden">
         <div class="control-left">
             <div class="control-btn" id="btnLeft">⬅️</div>
-            <div class="control-btn" id="btnPause">⏸️</div>
         </div>
         <div class="control-right">
             <div class="control-btn" id="btnRight">➡️</div>
@@ -334,6 +369,15 @@
         <p style="color: white; margin-bottom: 15px; font-size: 12px;">By: EKA | V3.0</p>
 
         <input type="text" id="playerName" class="input-field" placeholder="👤 Player Name" maxlength="15">
+
+        <h3 style="color: white; margin: 12px 0 8px; font-size: 14px;">👥 Select Age Bracket</h3>
+        <select id="ageSelect" class="input-field">
+            <option value="Age < 8">Age &lt; 8</option>
+            <option value="Age 8-12">Age 8-12</option>
+            <option value="Age 12-16" selected>Age 12-16</option>
+            <option value="Age 16-20">Age 16-20</option>
+            <option value="Age 20+">Age 20+</option>
+        </select>
 
         <h3 style="color: white; margin: 12px 0 8px; font-size: 14px;">🎨 Theme Selection</h3>
         <div class="theme-grid" id="themeGrid"></div>
@@ -578,13 +622,23 @@
         isPaused: false,
         score: 0,
         time: 60,
+        level: 1,
         playerName: '',
+        currentAge: 'Age 12-16',
         currentTheme: 'deep-sea',
         basket: { x: 0, y: 0, width: 70, height: 50, speed: 8 },
         items: [],
         particles: [],
         powerUps: { wide: false, attract: false, shield: false, slow: false, time: false },
         powerUpTimers: {}
+    };
+
+    const AGE_CONFIGS = {
+        "Age < 8":   { speedMult: 0.8, spawnMult: 1.2 },
+        "Age 8-12":  { speedMult: 1.0, spawnMult: 1.0 },
+        "Age 12-16": { speedMult: 1.2, spawnMult: 0.9 },
+        "Age 16-20": { speedMult: 1.4, spawnMult: 0.8 },
+        "Age 20+":   { speedMult: 1.6, spawnMult: 0.7 }
     };
 
     // Continuous movement state
@@ -649,7 +703,8 @@
         const rect = gameContainer.getBoundingClientRect();
         canvas.width = rect.width;
         canvas.height = rect.height;
-        gameState.basket.y = canvas.height - 90;
+        // Position basket above the touch controls (approx 18vh + buffer)
+        gameState.basket.y = canvas.height - Math.max(120, canvas.height * 0.22);
         gameState.basket.x = canvas.width / 2 - gameState.basket.width / 2;
     }
 
@@ -674,19 +729,24 @@
     }
 
     function setupEventListeners() {
-        document.getElementById('startBtn').addEventListener('click', () => {
-            initAudio();
-            playSound('click');
-            startGame();
-        });
-        document.getElementById('howToPlayBtn').addEventListener('click', () => { playSound('click'); showHowToPlay(); });
-        document.getElementById('backFromHowToBtn').addEventListener('click', () => { playSound('click'); hideHowToPlay(); });
-        document.getElementById('pauseBtn').addEventListener('click', () => { playSound('click'); togglePause(); });
-        document.getElementById('resumeBtn').addEventListener('click', () => { playSound('click'); togglePause(); });
-        document.getElementById('restartFromPauseBtn').addEventListener('click', () => { playSound('click'); restartGame(); });
-        document.getElementById('replayBtn').addEventListener('click', () => { playSound('click'); restartGame(); });
-        document.getElementById('submitScoreBtn').addEventListener('click', () => { playSound('click'); submitScore(); });
-        document.getElementById('menuBtn').addEventListener('click', () => { playSound('click'); showMainMenu(); });
+        const addPointerListener = (id, fn) => {
+            const el = document.getElementById(id);
+            el.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+                fn();
+            });
+        };
+
+        addPointerListener('startBtn', () => { initAudio(); playSound('click'); startGame(); });
+        addPointerListener('howToPlayBtn', () => { playSound('click'); showHowToPlay(); });
+        addPointerListener('backFromHowToBtn', () => { playSound('click'); hideHowToPlay(); });
+        addPointerListener('pauseBtn', () => { playSound('click'); togglePause(); });
+        addPointerListener('resumeBtn', () => { playSound('click'); togglePause(); });
+        addPointerListener('restartFromPauseBtn', () => { playSound('click'); restartGame(); });
+        addPointerListener('replayBtn', () => { playSound('click'); restartGame(); });
+        addPointerListener('submitScoreBtn', () => { playSound('click'); submitScore(); });
+        addPointerListener('menuBtn', () => { playSound('click'); showMainMenu(); });
+
         document.addEventListener('keydown', handleKeyDown);
         document.addEventListener('keyup', handleKeyUp);
     }
@@ -696,93 +756,32 @@
         const btnRight = document.getElementById('btnRight');
         let touchStartX = 0;
 
-        // Left button
-        btnLeft.addEventListener('touchstart', (e) => {
+        const startMove = (dir, btn) => (e) => {
+            if (e.pointerType === 'mouse' && e.button !== 0) return;
             e.preventDefault();
             initAudio();
-            if (movementState.left.pressed) return;
-            movementState.left.pressed = true;
-            btnLeft.classList.add('pressed');
-            moveBasketOnce('left');
-            startContinuousMove('left');
-        });
-        btnLeft.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            stopContinuousMove('left');
-            btnLeft.classList.remove('pressed');
-        });
-        btnLeft.addEventListener('touchcancel', (e) => {
-            stopContinuousMove('left');
-            btnLeft.classList.remove('pressed');
-        });
-        btnLeft.addEventListener('mousedown', (e) => {
-            e.preventDefault();
-            initAudio();
-            if (movementState.left.pressed) return;
-            movementState.left.pressed = true;
-            btnLeft.classList.add('pressed');
-            moveBasketOnce('left');
-            startContinuousMove('left');
-        });
-        btnLeft.addEventListener('mouseup', (e) => {
-            stopContinuousMove('left');
-            btnLeft.classList.remove('pressed');
-        });
-        btnLeft.addEventListener('mouseleave', (e) => {
-            stopContinuousMove('left');
-            btnLeft.classList.remove('pressed');
-        });
+            if (movementState[dir].pressed) return;
+            movementState[dir].pressed = true;
+            btn.classList.add('pressed');
+            moveBasketOnce(dir);
+            startContinuousMove(dir);
+        };
 
-        // Right button
-        btnRight.addEventListener('touchstart', (e) => {
+        const stopMove = (dir, btn) => (e) => {
             e.preventDefault();
-            initAudio();
-            if (movementState.right.pressed) return;
-            movementState.right.pressed = true;
-            btnRight.classList.add('pressed');
-            moveBasketOnce('right');
-            startContinuousMove('right');
-        });
-        btnRight.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            stopContinuousMove('right');
-            btnRight.classList.remove('pressed');
-        });
-        btnRight.addEventListener('touchcancel', (e) => {
-            stopContinuousMove('right');
-            btnRight.classList.remove('pressed');
-        });
-        btnRight.addEventListener('mousedown', (e) => {
-            e.preventDefault();
-            initAudio();
-            if (movementState.right.pressed) return;
-            movementState.right.pressed = true;
-            btnRight.classList.add('pressed');
-            moveBasketOnce('right');
-            startContinuousMove('right');
-        });
-        btnRight.addEventListener('mouseup', (e) => {
-            stopContinuousMove('right');
-            btnRight.classList.remove('pressed');
-        });
-        btnRight.addEventListener('mouseleave', (e) => {
-            stopContinuousMove('right');
-            btnRight.classList.remove('pressed');
-        });
+            stopContinuousMove(dir);
+            btn.classList.remove('pressed');
+        };
 
-        // Pause button
-        document.getElementById('btnPause').addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            initAudio();
-            playSound('click');
-            togglePause();
-        });
-        document.getElementById('btnPause').addEventListener('mousedown', (e) => {
-            e.preventDefault();
-            initAudio();
-            playSound('click');
-            togglePause();
-        });
+        btnLeft.addEventListener('pointerdown', startMove('left', btnLeft));
+        btnLeft.addEventListener('pointerup', stopMove('left', btnLeft));
+        btnLeft.addEventListener('pointerleave', stopMove('left', btnLeft));
+        btnLeft.addEventListener('pointercancel', stopMove('left', btnLeft));
+
+        btnRight.addEventListener('pointerdown', startMove('right', btnRight));
+        btnRight.addEventListener('pointerup', stopMove('right', btnRight));
+        btnRight.addEventListener('pointerleave', stopMove('right', btnRight));
+        btnRight.addEventListener('pointercancel', stopMove('right', btnRight));
 
         // Swipe on canvas
         canvas.addEventListener('touchstart', (e) => {
@@ -882,16 +881,17 @@
     function startGame() {
         const name = document.getElementById('playerName').value.trim() || 'Player';
         gameState.playerName = name;
+        gameState.currentAge = document.getElementById('ageSelect').value;
         gameState.score = 0;
         gameState.time = 60;
+        gameState.level = 1;
         gameState.items = [];
         gameState.particles = [];
         gameState.isPlaying = true;
         gameState.isPaused = false;
 
         document.getElementById('startScreen').classList.add('hidden');
-        document.getElementById('scoreDisplay').classList.remove('hidden');
-        document.getElementById('timeDisplay').classList.remove('hidden');
+        document.getElementById('gameHeader').classList.remove('hidden');
         document.getElementById('pauseBtn').classList.remove('hidden');
         document.getElementById('touchControls').classList.remove('hidden');
 
@@ -903,7 +903,9 @@
     function spawnItems() {
         if (!gameState.isPlaying) return;
 
-        const interval = gameState.powerUps.slow ? 1200 : 800;
+        const ageMult = AGE_CONFIGS[gameState.currentAge]?.spawnMult || 1;
+        const baseInterval = (800 - (gameState.level - 1) * 50) * ageMult;
+        const interval = gameState.powerUps.slow ? baseInterval * 1.5 : Math.max(400, baseInterval);
 
         setTimeout(() => {
             if (!gameState.isPlaying || gameState.isPaused) {
@@ -917,12 +919,13 @@
 
     function spawnItem() {
         const rand = Math.random();
+        const ageSpeedMult = AGE_CONFIGS[gameState.currentAge]?.speedMult || 1;
         let item = {
             x: Math.random() * (canvas.width - 35) + 17,
             y: -40,
             emoji: '',
             type: '',
-            speed: gameState.powerUps.slow ? 2 : 3 + Math.random() * 2
+            speed: ((gameState.powerUps.slow ? 2 : 3 + Math.random() * 2) + (gameState.level - 1) * 0.4) * ageSpeedMult
         };
 
         if (rand < 0.7) {
@@ -961,8 +964,32 @@
     }
 
     function updateScore() {
-        document.getElementById('scoreDisplay').textContent = `Score: ${gameState.score}`;
-        document.getElementById('timeDisplay').textContent = `Time: ${gameState.time}s`;
+        document.getElementById('disp-score').textContent = `🌟 ${gameState.score}`;
+        document.getElementById('disp-level').textContent = gameState.currentAge;
+        updateTimerUI();
+        checkLevelUp();
+    }
+
+    function updateTimerUI() {
+        const m = Math.floor(gameState.time / 60).toString().padStart(2, '0');
+        const s = (gameState.time % 60).toString().padStart(2, '0');
+        document.getElementById('disp-timer').textContent = `⏱️ ${m}:${s}`;
+
+        const pct = Math.min(100, Math.max(0, (gameState.time / 60) * 100));
+        const timerBar = document.getElementById('timer-bar');
+        if (timerBar) {
+            timerBar.style.width = pct + "%";
+            timerBar.style.backgroundColor = pct < 25 ? "#ff6b6b" : "#00b894";
+        }
+    }
+
+    function checkLevelUp() {
+        const newLevel = Math.floor(gameState.score / 500) + 1;
+        if (newLevel > gameState.level) {
+            gameState.level = newLevel;
+            gameState.basket.speed = 8 + (newLevel - 1) * 0.8;
+            playSound('powerup');
+        }
     }
 
     function gameLoop() {
@@ -1135,8 +1162,7 @@
 
     function showMainMenu() {
         document.getElementById('gameOverScreen').classList.add('hidden');
-        document.getElementById('scoreDisplay').classList.add('hidden');
-        document.getElementById('timeDisplay').classList.add('hidden');
+        document.getElementById('gameHeader').classList.add('hidden');
         document.getElementById('startScreen').classList.remove('hidden');
         loadScoresFromFirebase();
     }

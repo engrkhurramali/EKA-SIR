@@ -76,7 +76,18 @@
     <span class="icon">📟</span>
     UNIT CONVERTER
   </a>
+  <a id="download-btn" href="EKA_SIR.apk" download="EKA_SIR.apk" class="card" style="background: rgba(0, 184, 148, 0.3); border-color: #00b894; grid-column: span 2;">
+    <span class="icon">📥</span>
+    DOWNLOAD ANDROID APP
+  </a>
 </div>
+
+<script>
+  // Hide download button if running inside the Android App (WebView/Local File)
+  if (window.location.protocol === 'file:' || navigator.userAgent.includes('wv')) {
+    document.getElementById('download-btn').style.display = 'none';
+  }
+</script>
 
 </div>
 

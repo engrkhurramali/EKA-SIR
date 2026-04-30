@@ -2,79 +2,110 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EKA UNIT PRO MOBILE</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#a8edea">
+    <title>EKA Unit Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Ice Cube / Glassmorphism Theme (Default) */
-            --bg: linear-gradient(135deg, #0f172a, #1e293b);
-            --card-bg: rgba(255, 255, 255, 0.08);
-            --plate: rgba(255, 255, 255, 0.05);
-            --plate-border: rgba(255, 255, 255, 0.1);
-            --text: #f8fafc;
-            --accent: #38bdf8;
-            --border: rgba(255, 255, 255, 0.1);
-            --safe-top: env(safe-area-inset-top, 20px);
-            --safe-bottom: env(safe-area-inset-bottom, 20px);
+          --bg-grad: linear-gradient(135deg, #a8edea 0%, #b5f0e0 50%, #88d8c0 100%);
+          --glass-bg: rgba(255, 255, 255, 0.32);
+          --glass-border: rgba(255, 255, 255, 0.65);
+          --glass-shadow: 0 8px 32px rgba(0, 70, 60, 0.12);
+          --text-main: #004d40;
+          --text-sub: #00695c;
+          --accent: #00897b;
+          --accent-light: #4db6ac;
+          --success: #00b894;
+          --danger: #ff6b6b;
+          --warning: #ffb74d;
+          --radius: 16px;
+          --nav-h: 75px;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            margin: 0; padding: 0;
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-grad);
+            background-size: 100% 200%;
+            animation: bgFloat 20s ease infinite;
+            color: var(--text-main);
+            height: 100vh; height: 100dvh;
+            width: 100vw;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; touch-action: none;
+            padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
         }
 
-        /* 9:16 Mobile Header */
+        @keyframes bgFloat {
+          0% { background-position: 0% 0%; }
+          50% { background-position: 0% 100%; }
+          100% { background-position: 0% 0%; }
+        }
+
+        .app-container {
+          width: 100vw; max-width: 450px;
+          height: 100vh; height: 100dvh;
+          aspect-ratio: 9 / 16;
+          margin: 0 auto;
+          overflow: hidden; display: flex; flex-direction: column;
+          background: rgba(255,255,255,0.12);
+          backdrop-filter: blur(14px);
+          border-radius: var(--radius);
+          box-shadow: 0 12px 35px rgba(0,0,0,0.18);
+          border: 1px solid var(--glass-border);
+        }
+
         header {
-            padding: var(--safe-top) 20px 15px;
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            text-align: center;
+          padding: 10px 16px 6px; text-align: center; flex-shrink: 0;
+          background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
         }
+        header h1 { font-size: clamp(1rem, 4vw, 1.3rem); font-weight: 800; letter-spacing: 0.5px; }
+        .stats-row {
+          display: flex; justify-content: space-around; align-items: center;
+          margin-top: 6px; font-size: 0.85rem; font-weight: 700; color: var(--text-sub);
+        }
+        .stat-badge { background: var(--glass-bg); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--glass-border); white-space: nowrap; }
 
-        .brand { font-weight: 900; font-size: 1.1rem; letter-spacing: 2px; color: var(--accent); }
-
-        /* Scrollable Main Area */
         main {
             flex: 1;
             overflow-y: auto;
-            padding: 15px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
             scroll-behavior: smooth;
         }
 
-        .unit-list { display: flex; flex-direction: column; gap: 12px; }
-
         /* Professional Mobile Input Cards */
         .unit-card {
-            background: var(--plate);
-            border: 1px solid var(--plate-border);
-            border-radius: 16px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
             padding: 12px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            box-shadow: var(--glass-shadow);
+            transition: all 0.3s ease;
         }
 
         .unit-card:focus-within {
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
             border-color: var(--accent);
-            background: rgba(56, 189, 248, 0.05);
-            transform: scale(1.02);
         }
 
         .unit-label {
-            font-size: 0.7rem;
-            font-weight: 700;
+            font-size: 0.75rem;
+            font-weight: 800;
             text-transform: uppercase;
-            color: var(--accent);
+            color: var(--text-sub);
             width: 35%;
         }
 
@@ -84,68 +115,107 @@
             width: 100%;
             background: transparent;
             border: none;
-            color: #fff;
+            color: var(--text-main);
             font-family: 'JetBrains Mono', monospace;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             text-align: right;
             outline: none;
+            font-weight: 700;
         }
 
+        input::placeholder { color: rgba(0, 77, 64, 0.3); }
+
         /* Bottom Category Navigation */
-        .category-bar {
-            background: var(--card-bg);
+        .bottom-nav {
+            background: rgba(255,255,255,0.65);
             backdrop-filter: blur(25px);
-            border-top: 1px solid var(--border);
-            padding: 10px 10px var(--safe-bottom);
+            -webkit-backdrop-filter: blur(25px);
+            border-top: 1px solid var(--glass-border);
+            padding: 12px 12px calc(env(safe-area-inset-bottom) + 8px);
             display: flex;
             overflow-x: auto;
             white-space: nowrap;
             gap: 10px;
+            flex-shrink: 0;
         }
 
-        .category-bar::-webkit-scrollbar { display: none; }
+        .bottom-nav::-webkit-scrollbar { display: none; }
 
         .cat-btn {
             padding: 8px 18px;
             border-radius: 20px;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: #fff;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.3);
+            color: var(--text-sub);
             font-size: 0.85rem;
-            font-weight: 600;
+            font-weight: 700;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 80px;
         }
 
         .cat-btn.active {
             background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(0, 137, 123, 0.3);
+            transform: scale(1.05);
         }
+
+        .cat-icon { font-size: 1.2rem; margin-bottom: 2px; }
 
     </style>
 </head>
 <body>
 
-<header>
-    <div class="brand">EKA UNIT PRO</div>
-</header>
+<div class="app-container">
+    <header>
+        <h1>EKA Unit Pro</h1>
+        <div class="stats-row">
+            <span class="stat-badge" id="disp-level">CAT: LENGTH</span>
+            <span class="stat-badge" id="disp-score">CONVERSIONS: 0</span>
+        </div>
+    </header>
 
-<main id="app">
-    <div class="unit-list" id="unitList">
-    </div>
-</main>
+    <main id="unitList">
+        <!-- Unit cards will be rendered here -->
+    </main>
 
-<nav class="category-bar" id="catBar">
-</nav>
+    <nav class="bottom-nav" id="catBar">
+        <!-- Category buttons will be rendered here -->
+    </nav>
+</div>
 
 <script>
     const conversionData = {
-        Length: { m: 1, km: 0.001, cm: 100, mm: 1000, inch: 39.3701, ft: 3.28084, yard: 1.09361, mile: 0.000621371 },
-        Weight: { kg: 1, g: 1000, mg: 1000000, lb: 2.20462, oz: 35.274, ton: 0.001 },
-        Pressure: { pa: 1, bar: 0.00001, psi: 0.000145038, atm: 0.0000098692, mmhg: 0.00750062 },
-        Temperature: { celsius: 1, kelvin: 1, fahrenheit: 1, rankine: 1 }
+        Length: {
+            icon: '📏',
+            units: { m: 1, km: 0.001, cm: 100, mm: 1000, inch: 39.3701, ft: 3.28084, yard: 1.09361, mile: 0.000621371 }
+        },
+        Weight: {
+            icon: '⚖️',
+            units: { kg: 1, g: 1000, mg: 1000000, lb: 2.20462, oz: 35.274, ton: 0.001 }
+        },
+        Pressure: {
+            icon: '🎈',
+            units: { pa: 1, bar: 0.00001, psi: 0.000145038, atm: 0.0000098692, mmhg: 0.00750062 }
+        },
+        Temperature: {
+            icon: '🌡️',
+            units: { celsius: 1, kelvin: 1, fahrenheit: 1, rankine: 1 }
+        }
     };
 
     let activeCat = 'Length';
+    let conversionCount = 0;
+
+    function updateStats() {
+        document.getElementById('disp-level').innerText = `CAT: ${activeCat.toUpperCase()}`;
+        document.getElementById('disp-score').innerText = `CONVERSIONS: ${conversionCount}`;
+    }
 
     function fmt(n) {
         if (n === 0) return "0";
@@ -158,7 +228,10 @@
         const num = parseFloat(value);
         if (isNaN(num)) return;
 
-        const units = conversionData[activeCat];
+        conversionCount++;
+        updateStats();
+
+        const units = conversionData[activeCat].units;
         let base;
 
         // Normalization to Base
@@ -185,38 +258,53 @@
             }
             document.getElementById(key).value = fmt(res);
         });
+
+        if (navigator.vibrate) navigator.vibrate(5);
     }
 
     function render() {
         const list = document.getElementById('unitList');
         list.innerHTML = '';
 
-        Object.keys(conversionData[activeCat]).forEach(key => {
+        Object.keys(conversionData[activeCat].units).forEach(key => {
             const card = document.createElement('div');
             card.className = 'unit-card';
             card.innerHTML = `
                 <div class="unit-label">${key}</div>
                 <div class="input-wrapper">
-                    <input type="number" inputmode="decimal" id="${key}" placeholder="0"
-                        oninput="syncAll('${key}', this.value)">
+                    <input type="number" inputmode="decimal" id="${key}" placeholder="0">
                 </div>
             `;
             list.appendChild(card);
+        });
+
+        // Add input listeners
+        list.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', (e) => syncAll(e.target.id, e.target.value));
         });
 
         // Render Categories
         const bar = document.getElementById('catBar');
         bar.innerHTML = '';
         Object.keys(conversionData).forEach(cat => {
-            const btn = document.createElement('button');
+            const btn = document.createElement('div');
             btn.className = `cat-btn ${cat === activeCat ? 'active' : ''}`;
-            btn.innerText = cat;
-            btn.onclick = () => { activeCat = cat; render(); };
+            btn.innerHTML = `<span class="cat-icon">${conversionData[cat].icon}</span><span>${cat}</span>`;
+            btn.onclick = () => {
+                activeCat = cat;
+                render();
+                updateStats();
+                if (navigator.vibrate) navigator.vibrate(10);
+            };
             bar.appendChild(btn);
         });
     }
 
+    // Prevent multi-touch zoom and other mobile gestures
+    document.addEventListener('touchstart', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+
     render();
+    updateStats();
 </script>
 </body>
 </html>

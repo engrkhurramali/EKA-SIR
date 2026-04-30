@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Select Chapters - EKA SIR</title>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-heavy: rgba(255, 255, 255, 0.4);
+            --sky-blue: #87CEEB;
+            --mint-green: #98FF98;
+            --text-dark: #1a5f7a;
+            --border: rgba(255, 255, 255, 0.5);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .home-nav {
+            display: flex;
+            align-items: center;
+            background: var(--glass-heavy);
+            padding: 10px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: bold;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            align-self: flex-start;
+        }
+
+        h1 { font-size: 1.4rem; text-align: center; margin-bottom: 5px; }
+        h2 { font-size: 1rem; text-align: center; opacity: 0.8; margin-top: 0; }
+
+        .chapter-list {
+            margin: 20px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 10px;
+        }
+
+        .chapter-item {
+            display: flex;
+            align-items: center;
+            background: var(--glass-heavy);
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .chapter-item:active { transform: scale(0.98); }
+        .chapter-item.selected {
+            background: white;
+            border-color: var(--text-dark);
+        }
+
+        .chapter-item input {
+            margin-right: 15px;
+            transform: scale(1.3);
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--glass-heavy);
+            color: var(--text-dark);
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--text-dark);
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .btn:active { opacity: 0.8; }
+    </style>
+</head>
+<body>
+
+<a href="test.html" class="home-nav">⬅ Back</a>
+
+<div class="main-container">
+    <h1 id="subjectTitle">SUBJECT NAME</h1>
+    <h2 id="classLabel">Class Level</h2>
+
+    <div class="controls">
+        <button class="btn" onclick="toggleAll(true)">Select All</button>
+        <button class="btn" onclick="toggleAll(false)">Clear All</button>
+        <button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <div class="chapter-list" id="chapterList">
+        <!-- Chapters loaded via JS -->
+    </div>
+
+    <button class="btn btn-primary" style="width: 100%;" onclick="startQuiz()">START CUSTOM QUIZ 🚀</button>
+</div>
+
+<script src="quiz_data_kg1.js"></script>
+<script src="quiz_data_kg2.js"></script>
+<script src="quiz_data_class1.js"></script>
+<script src="quiz_data_class2.js"></script>
+<script src="quiz_data_class3.js"></script>
+<script src="quiz_data_class4.js"></script>
+<script src="quiz_data_class5.js"></script>
+<script src="quiz_data_class6.js"></script>
+<script src="quiz_data_class7.js"></script>
+<script src="quiz_data_class8.js"></script>
+<script src="quiz_data_class9.js"></script>
+<script src="quiz_data_class10.js"></script>
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const subject = params.get('subject'); // e.g., maths9
+    const grade = params.get('grade'); // e.g., 9
+
+    function generateFromData(prefix) {
+        console.log("Filtering for prefix:", prefix);
+        if (!window.QUIZ_DATA) {
+            console.error("QUIZ_DATA not found!");
+            return [];
+        }
+
+        const keys = Object.keys(window.QUIZ_DATA).filter(k => {
+            const keyLower = k.toLowerCase();
+            const prefixLower = prefix.toLowerCase();
+            return keyLower.startsWith(prefixLower + "_") || keyLower === prefixLower;
+        });
+
+        console.log("Found keys:", keys);
+
+        // Sort keys naturally (u1, u2, ... u10, u11)
+        keys.sort((a, b) => {
+            const numA = parseInt(a.match(/\d+$/)) || 0;
+            const numB = parseInt(b.match(/\d+$/)) || 0;
+            return numA - numB;
+        });
+
+        return keys.map(k => ({
+            id: k,
+            title: QUIZ_DATA[k].subtitle || QUIZ_DATA[k].title
+        }));
+    }
+
+    window.onload = function() {
+        console.log("Window loaded, initializing...");
+        init();
+    };
+
+    function init() {
+        if (!subject) {
+            document.body.innerHTML = "<h1>Error: No subject specified</h1>";
+            return;
+        }
+
+        // Handle subject names like 'maths9' -> 'MATHS 9'
+        const displaySubject = subject.replace(/(\d+)/, ' $1').toUpperCase();
+        document.getElementById('subjectTitle').innerText = displaySubject;
+        document.getElementById('classLabel').innerText = "Sindh Textbook Board (STBB)";
+
+        const list = document.getElementById('chapterList');
+        list.innerHTML = "<div style='text-align:center; padding:20px;'>Searching for units...</div>";
+
+        // Dynamic generation based on quiz_data.js
+        setTimeout(() => {
+            const availableChapters = generateFromData(subject);
+
+            if (availableChapters.length === 0) {
+                list.innerHTML = `
+                    <div style='text-align:center; padding:20px; opacity:0.8;'>
+                        No units found for <b>${subject}</b>.<br>
+                        <small>Debug: QUIZ_DATA has ${Object.keys(window.QUIZ_DATA || {}).length} keys loaded.</small>
+                    </div>`;
+                return;
+            }
+
+            list.innerHTML = ""; // Clear loader
+            availableChapters.forEach(ch => {
+                const div = document.createElement('div');
+                div.className = 'chapter-item';
+                div.onclick = () => {
+                    const cb = div.querySelector('input');
+                    cb.checked = !cb.checked;
+                    div.classList.toggle('selected', cb.checked);
+                };
+
+                // Extract Unit Number for display, e.g., "maths9_u1" -> "U-1"
+                const unitMatch = ch.id.match(/_u(\d+)$/);
+                const unitDisplay = unitMatch ? `U-${unitMatch[1]}` : "";
+
+                div.innerHTML = `
+                    <input type="checkbox" value="${ch.id}" onclick="event.stopPropagation()">
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-size: 0.7rem; opacity: 0.7; font-weight: bold;">${unitDisplay}</span>
+                        <span style="font-size: 0.95rem;">${ch.title}</span>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+        }, 500);
+    }
+
+    function generateFromData_OLD(prefix) {
+        // Fallback: Find all keys in QUIZ_DATA that start with the subject prefix
+        const keys = Object.keys(QUIZ_DATA).filter(k => k.startsWith(prefix));
+        return keys.map(k => ({
+            id: k,
+            title: QUIZ_DATA[k].subtitle || QUIZ_DATA[k].title
+        }));
+    }
+
+    function toggleAll(check) {
+        document.querySelectorAll('.chapter-item input').forEach(cb => {
+            cb.checked = check;
+            cb.parentElement.classList.toggle('selected', check);
+        });
+    }
+
+    function startQuiz() {
+        const selected = Array.from(document.querySelectorAll('.chapter-item input:checked'))
+                            .map(cb => cb.value);
+
+        if (selected.length === 0) {
+            alert("Please select at least one chapter!");
+            return;
+        }
+
+        window.location.href = `mcq_test.html?quizzes=${selected.join(',')}`;
+    }
+
+    init();
+</script>
+
+</body>
+</html>

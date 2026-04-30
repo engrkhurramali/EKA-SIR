@@ -6,7 +6,18 @@
     <title>EKA CBT QUIZ | MATHS 9 | UNIT - 01</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="quiz_data.js"></script>
+    <script src="quiz_data_kg1.js"></script>
+    <script src="quiz_data_kg2.js"></script>
+    <script src="quiz_data_class1.js"></script>
+    <script src="quiz_data_class2.js"></script>
+    <script src="quiz_data_class3.js"></script>
+    <script src="quiz_data_class4.js"></script>
+    <script src="quiz_data_class5.js"></script>
+    <script src="quiz_data_class6.js"></script>
+    <script src="quiz_data_class7.js"></script>
+    <script src="quiz_data_class8.js"></script>
+    <script src="quiz_data_class9.js"></script>
+    <script src="quiz_data_class10.js"></script>
 
     <style>
         /* ==================== 1. THEME VARIABLES ==================== */
@@ -273,9 +284,21 @@
         .option-card.wrong { background: rgba(231, 76, 60, 0.3) !important; border-color: var(--wrong) !important; }
 
         /* Timer & Status */
+        .quiz-header {
+            position: sticky;
+            top: -20px;
+            background: inherit;
+            margin: -20px -20px 15px -20px;
+            padding: 20px 20px 5px 20px;
+            z-index: 10;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+        }
         .timer-bar-container { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin-bottom: 15px; }
         .timer-bar { height: 100%; width: 100%; background: var(--accent-cyan); transition: width 1s linear, background 0.3s; border-radius: 10px; }
-        .timer-bar.danger { background: var(--wrong); }
+        .timer-bar.warning { background: #fbc02d !important; }
+        .timer-bar.danger { background: var(--wrong) !important; }
 
         .status-bar { display: flex; justify-content: space-between; width: 100%; margin-bottom: 10px; font-weight: 500; background: rgba(0,0,0,0.1); padding: 10px; border-radius: 8px; font-size: 1.1rem; }
         .score-box { color: var(--accent-cyan); font-size: 1.2rem; }
@@ -412,11 +435,13 @@
     <!-- Quiz Screen -->
     <div id="quizScreen" class="screen">
         <div class="glass-panel" style="padding: 20px;">
-            <div class="timer-bar-container"><div id="timerBar" class="timer-bar"></div></div>
-            <div class="status-bar">
-                <span>Q: <span id="qNum">1</span>/<span id="qTotal">...</span></span>
-                <span class="score-box">Score: <span id="liveScore">0</span></span>
-                <span>Time: <span id="timeLeft">00:00</span></span>
+            <div class="quiz-header">
+                <div class="timer-bar-container"><div id="timerBar" class="timer-bar"></div></div>
+                <div class="status-bar">
+                    <span>Q: <span id="qNum">1</span>/<span id="qTotal">...</span></span>
+                    <span class="score-box">Score: <span id="liveScore">0</span></span>
+                    <span>Time: <span id="timeLeft">00:00</span></span>
+                </div>
             </div>
             <h2 id="questionText">Loading...</h2>
             <div id="optionsGrid" class="options-grid"></div>
@@ -552,14 +577,72 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
 
     function init() {
         const params = new URLSearchParams(window.location.search);
-        const quizKey = params.get('quiz') || 'maths9_u1';
-        state.activeQuiz = QUIZ_DATA[quizKey] || QUIZ_DATA['maths9_u1'];
+        const quizKey = params.get('quiz');
+        const quizKeys = params.get('quizzes');
+
+        let keys = [];
+        if (quizKeys) {
+            keys = quizKeys.split(',');
+        } else if (quizKey) {
+            keys = [quizKey];
+        } else {
+            keys = ['maths9_u1'];
+        }
+
+        state.activeQuiz = {
+            title: "QUIZ",
+            subtitle: "",
+            tsv: ""
+        };
+
+        let combinedTsv = "";
+
+        if (keys.length === 1) {
+            const data = QUIZ_DATA[keys[0]];
+            if (data) {
+                state.activeQuiz.title = data.title;
+                state.activeQuiz.subtitle = data.subtitle || "";
+                combinedTsv = data.tsv.trim();
+            }
+        } else {
+            // Multiple chapters selected
+            const firstData = QUIZ_DATA[keys[0]];
+            if (firstData && firstData.title.includes("|")) {
+                state.activeQuiz.title = firstData.title.split("|")[0].trim();
+            } else {
+                state.activeQuiz.title = "Combined Quiz";
+            }
+
+            // Determine subtitle: "All Chapters" or "Multiple Chapters"
+            const firstKey = keys[0];
+            let prefix = firstKey;
+            const uIndex = firstKey.lastIndexOf('_u');
+            if (uIndex !== -1) {
+                prefix = firstKey.substring(0, uIndex);
+            }
+
+            const allPossibleKeys = Object.keys(QUIZ_DATA).filter(k => k.startsWith(prefix + "_u"));
+            const allSelected = allPossibleKeys.length > 0 && allPossibleKeys.every(pk => keys.includes(pk));
+
+            if (allSelected) {
+                state.activeQuiz.subtitle = "All Chapters";
+            } else {
+                state.activeQuiz.subtitle = "Multiple Chapters";
+            }
+
+            keys.forEach(k => {
+                const data = QUIZ_DATA[k];
+                if (data) {
+                    combinedTsv += (combinedTsv ? "\n" : "") + data.tsv.trim();
+                }
+            });
+        }
 
         document.title = `EKA CBT | ${state.activeQuiz.title}`;
         document.getElementById('startTitle').innerText = `🎓 ${state.activeQuiz.title} 🎓`;
         document.getElementById('startSubtitle').innerText = state.activeQuiz.subtitle;
 
-        parseTSV(state.activeQuiz.tsv);
+        parseTSV(combinedTsv);
         document.getElementById('certDate').innerText = new Date().toLocaleDateString();
     }
 
@@ -686,7 +769,17 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
         const mins = Math.floor(state.timeLeft / 60).toString().padStart(2, '0');
         const secs = (state.timeLeft % 60).toString().padStart(2, '0');
         DOM.timeLeft.innerText = `${mins}:${secs}`;
-        DOM.timerBar.style.width = `${(state.timeLeft / state.timerDuration) * 100}%`;
+
+        const pct = (state.timeLeft / state.timerDuration) * 100;
+        DOM.timerBar.style.width = `${pct}%`;
+
+        // Color Logic: < 30% Yellow, < 15% Red
+        DOM.timerBar.classList.remove('warning', 'danger');
+        if (pct < 15) {
+            DOM.timerBar.classList.add('danger');
+        } else if (pct < 30) {
+            DOM.timerBar.classList.add('warning');
+        }
     }
 
     function endQuiz() {
@@ -750,25 +843,36 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
     async function saveJPG() {
         try {
             console.log("Starting JPG Save...");
-            const canvas = await html2canvas(DOM.certContent, {
-                scale: 2,
+            const certWrapper = document.getElementById('certificate-wrapper');
+            const certBox = document.getElementById('certContent');
+
+            // Ensure visibility for capture
+            const originalDisplay = certWrapper.style.display;
+            certWrapper.style.display = 'flex';
+
+            const canvas = await html2canvas(certBox, {
+                scale: 3, // Higher scale for better quality
                 useCORS: true,
-                logging: true,
-                backgroundColor: "#ffffff"
+                logging: false,
+                backgroundColor: "#ffffff",
+                windowWidth: 800, // Fixed width for consistent capture
+                windowHeight: 600
             });
 
-            // Using DataURL for better WebView compatibility
-            const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+            // Restore original state
+            certWrapper.style.display = originalDisplay;
+
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
             const link = document.createElement('a');
-            link.download = `EKA_Result_${state.studentName.replace(/\s+/g, '_')}.jpg`;
+            link.download = `EKA_Result_${state.studentName.replace(/\s+/g, '_')}_${new Date().getTime()}.jpg`;
             link.href = dataUrl;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
 
-            alert("Image generated! Check your downloads or gallery.");
+            alert("Certificate saved successfully!");
         } catch (e) {
-            alert("Error saving image. Error: " + e.message);
+            alert("Error saving image: " + e.message);
             console.error(e);
         }
     }

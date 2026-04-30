@@ -14,9 +14,9 @@
           --glass-shadow: 0 8px 32px rgba(0, 70, 60, 0.12);
           --text-main: #004d40;
           --text-sub: #00695c;
-          --accent: #00897b;
+          --accent: #00b894;
           --accent-light: #4db6ac;
-          --danger: #e57373;
+          --danger: #ff6b6b;
           --success: #66bb6a;
           --radius: 16px;
           --nav-h: 62px;
@@ -71,7 +71,9 @@
           display: flex; justify-content: space-between; align-items: center;
           margin-top: 6px; font-size: 0.9rem; font-weight: 700; color: var(--text-sub);
         }
-        .stat-badge { background: var(--glass-bg); padding: 4px 10px; border-radius: 20px; }
+        .timer-container { flex: 1; height: 10px; background: rgba(0,0,0,0.1); border-radius: 5px; margin: 0 10px; overflow: hidden; position: relative; }
+        #timer-bar { height: 100%; width: 100%; background: var(--accent); transition: width 1s linear; }
+        .stat-badge { background: var(--glass-bg); padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
 
         /* Screens & Navigation */
         .screens-wrapper { flex: 1; position: relative; overflow: hidden; display: flex; }
@@ -184,6 +186,13 @@
         p { line-height: 1.5; color: var(--text-sub); font-size: 0.95rem; }
         .dict-list { text-align: left; width: 100%; max-height: 60vh; overflow-y: auto; padding-right: 4px; }
         .dict-item { padding: 8px 10px; border-bottom: 1px dashed rgba(0,0,0,0.1); font-weight: 600; }
+
+        /* Level Selector */
+        .level-selector {
+          width: 100%; padding: 10px; border-radius: 12px; border: 1px solid var(--glass-border);
+          background: var(--cell-bg); color: var(--text-main); font-weight: 700; font-size: 1rem;
+          margin-bottom: 10px; outline: none; appearance: none;
+        }
     </style>
 </head>
 <body>
@@ -192,7 +201,9 @@
         <h1>Ice-Cube Word Guess</h1>
         <div class="stats-row">
             <span class="stat-badge" id="disp-timer">⏱️ 01:00</span>
-            <span class="stat-badge" id="disp-words">📖 Words: 0</span>
+            <div class="timer-container"><div id="timer-bar"></div></div>
+            <span class="stat-badge" id="disp-level">#1</span>
+            <span class="stat-badge" id="disp-score">🌟 0</span>
         </div>
     </header>
 
@@ -200,6 +211,9 @@
         <!-- GAME SCREEN -->
         <section id="screen-game" class="screen active">
             <div class="glass-card">
+                <select id="level-select" class="level-selector">
+                    <!-- Populated by JS -->
+                </select>
                 <div class="wrong-tracker" id="wrong-tracker"></div>
                 <div class="word-display" id="word-display"></div>
                 <div id="game-msg" class="stat-badge" style="min-height:24px; display:inline-block;">Pick a letter!</div>
@@ -256,12 +270,15 @@
         </div>
     </div>
 </div>
-<script src="dict101.js"></script>
+<script src="vocabulary.js"></script>
 <script>
     // --- HARDWARE OPTIMIZED DOM CACHING ---
     const UI = {
+      levelSelect: document.getElementById('level-select'),
       timer: document.getElementById('disp-timer'),
-      words: document.getElementById('disp-words'),
+      timerBar: document.getElementById('timer-bar'),
+      levelDisp: document.getElementById('disp-level'),
+      score: document.getElementById('disp-score'),
       wordDisp: document.getElementById('word-display'),
       wrongTrack: document.getElementById('wrong-tracker'),
       msg: document.getElementById('game-msg'),
@@ -278,17 +295,29 @@
     };
 
     let state = {
-      word: "", guessed: new Set(), wrong: 0, maxWrong: 12,
-      time: 60, interval: null, active: false, soundOn: true, foundCount: 0, dict: new Set()
+      word: "", guessed: new Set(), wrong: 0, maxWrong: 8,
+      time: 60, interval: null, active: false, soundOn: true,
+      baseScore: 0, levelCount: 1, dict: new Set(),
+      currentLevel: "Age 12-16"
     };
 
     // --- INIT ---
     function init() {
+      populateLevels();
       buildAlpha();
       buildTracker();
       newRound();
       setupEvents();
       renderDict();
+    }
+
+    function populateLevels() {
+      const levels = Object.keys(window.VOCABULARY);
+      UI.levelSelect.innerHTML = levels.map(l => `<option value="${l}" ${l === state.currentLevel ? 'selected' : ''}>${l}</option>`).join('');
+    }
+
+    function getWordList() {
+      return window.VOCABULARY[state.currentLevel] || window.VOCABULARY["Age 12-16"];
     }
 
     function buildAlpha() {
@@ -313,6 +342,12 @@
       UI.btnSound.addEventListener('pointerdown', e => { e.preventDefault(); toggleSound(); });
       UI.btnGiveup.addEventListener('pointerdown', e => { e.preventDefault(); endGame(false); });
       UI.btnAgain.addEventListener('pointerdown', e => { e.preventDefault(); closeModal(); newRound(); });
+
+      // Level Change
+      UI.levelSelect.addEventListener('change', e => {
+        state.currentLevel = e.target.value;
+        newRound();
+      });
 
       // Alphabet Delegation (High Performance)
       UI.alphaGrid.addEventListener('pointerdown', e => {
@@ -347,12 +382,23 @@
     }
 
     // --- GAME LOGIC ---
-    function newRound() {
+    function newRound(isNextLevel = false) {
+      if (!isNextLevel) {
+          state.baseScore = 0;
+          state.levelCount = 1;
+      }
       clearInterval(state.interval);
       state.time = 60; state.wrong = 0; state.guessed.clear(); state.active = true;
 
-      state.word = dict101[Math.floor(Math.random() * dict101.length)];
-      while (state.dict.has(state.word) && dict101.length > 5) state.word = dict101[Math.floor(Math.random() * dict101.length)];
+      const currentDict = getWordList();
+      state.word = currentDict[Math.floor(Math.random() * currentDict.length)].toUpperCase();
+
+      // Ensure it's not a word we just played if possible
+      let attempts = 0;
+      while (state.dict.has(state.word) && currentDict.length > 5 && attempts < 10) {
+        state.word = currentDict[Math.floor(Math.random() * currentDict.length)].toUpperCase();
+        attempts++;
+      }
       state.dict.add(state.word);
       renderDict();
 
@@ -360,10 +406,10 @@
       UI.alphaGrid.querySelectorAll('.alpha-btn').forEach(b => { b.className = 'alpha-btn'; });
       updateTracker();
       updateTimerUI();
+      updateStatsUI();
       UI.msg.textContent = "Tap a letter to start!";
       UI.msg.style.background = 'var(--cell-bg)';
 
-      clearInterval(state.interval);
       state.interval = setInterval(() => {
         if (!state.active) return;
         state.time--;
@@ -380,7 +426,9 @@
       btn.classList.add('disabled', inWord ? 'hit' : 'miss');
 
       if (inWord) {
+        if (navigator.vibrate) navigator.vibrate(40);
         playSound('hit');
+        state.time = Math.min(60, state.time + 3); // Bonus for correct letter
         revealPositions(char);
         UI.msg.textContent = "✅ Correct!";
         UI.msg.style.background = 'rgba(102,187,106,0.3)';
@@ -416,12 +464,37 @@
       state.active = false;
       clearInterval(state.interval);
       playSound(won ? 'win' : 'lose');
-      state.foundCount += won ? 1 : 0;
-      UI.words.textContent = `📖 Words: ${state.foundCount}`;
+
+      const currentScore = calculateScore(won);
 
       UI.mTitle.textContent = won ? '🎉 You Win!' : '⏰ Game Over';
-      UI.mMsg.textContent = won ? `Found "${state.word}"! Great job.` : `The word was: ${state.word}`;
+      UI.mMsg.textContent = (won ? `Found "${state.word}"! Great job.` : `The word was: ${state.word}`) + `\nScore: ${currentScore}`;
+
+      UI.btnAgain.textContent = won ? "Next Level" : "Play Again";
+      UI.btnAgain.onclick = (e) => {
+          e.preventDefault();
+          closeModal();
+          if (won) {
+              state.baseScore = currentScore;
+              state.levelCount++;
+              newRound(true);
+          } else {
+              newRound(false);
+          }
+      };
+
       setTimeout(() => UI.modal.classList.add('active'), 300);
+    }
+
+    function calculateScore(won) {
+        const timeBonus = won ? Math.max(0, state.time) : 0;
+        const accuracyBonus = won ? Math.max(0, (state.maxWrong - state.wrong) * 10) : 0;
+        return state.baseScore + (won ? 50 : 0) + timeBonus + accuracyBonus;
+    }
+
+    function updateStatsUI() {
+        UI.levelDisp.textContent = `#${state.levelCount}`;
+        UI.score.textContent = `🌟 ${state.baseScore}`;
     }
 
     function revealWord() {
@@ -450,6 +523,10 @@
       const s = (state.time % 60).toString().padStart(2, '0');
       UI.timer.textContent = `⏱️ ${m}:${s}`;
       UI.timer.style.color = state.time < 15 ? 'var(--danger)' : 'var(--text-main)';
+
+      const pct = (state.time / 60) * 100;
+      UI.timerBar.style.width = pct + "%";
+      UI.timerBar.style.backgroundColor = pct < 25 ? "var(--danger)" : "var(--accent)";
     }
 
     function renderDict() {

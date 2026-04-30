@@ -7,6 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#a8edea">
     <title>EKA Word Scramble</title>
+    <script src="vocabulary.js"></script>
     <style>
         :root {
           --bg-grad: linear-gradient(135deg, #a8edea 0%, #b5f0e0 50%, #88d8c0 100%);
@@ -17,8 +18,8 @@
           --text-sub: #00695c;
           --accent: #00897b;
           --accent-light: #4db6ac;
-          --success: #66bb6a;
-          --danger: #e57373;
+          --success: #00b894;
+          --danger: #ff6b6b;
           --warning: #ffb74d;
           --radius: 16px;
           --nav-h: 62px;
@@ -35,7 +36,7 @@
           height: 100vh; height: 100dvh;
           width: 100vw;
           display: flex; justify-content: center; align-items: center;
-          overflow: hidden; touch-action: manipulation;
+          overflow: hidden; touch-action: none;
           padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
         }
 
@@ -72,7 +73,14 @@
           display: flex; justify-content: space-between; align-items: center;
           margin-top: 6px; font-size: 0.85rem; font-weight: 700; color: var(--text-sub);
         }
-        .stat-badge { background: var(--glass-bg); padding: 4px 10px; border-radius: 20px; border: 1px solid var(--glass-border); }
+        .stat-badge { background: var(--glass-bg); padding: 4px 10px; border-radius: 20px; border: 1px solid var(--glass-border); white-space: nowrap; }
+
+        .timer-container {
+          flex: 1; height: 8px; background: rgba(0,0,0,0.1);
+          border-radius: 4px; margin: 0 10px; overflow: hidden;
+          border: 1px solid rgba(255,255,255,0.2);
+        }
+        #timer-bar { height: 100%; width: 100%; background: var(--success); transition: width 1s linear, background 0.3s; }
 
         /* Screens & Navigation */
         .screens-wrapper { flex: 1; position: relative; overflow: hidden; display: flex; }
@@ -123,6 +131,13 @@
         .btn.danger { background: var(--danger); color: white; }
         .btn:active { transform: scale(0.96); box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        select.input-field {
+            width: 100%; padding: 12px; border-radius: 12px;
+            border: 1px solid var(--glass-border); background: var(--glass-bg);
+            color: var(--text-main); font-weight: 700; font-size: 1rem;
+            margin-bottom: 10px;
+        }
 
         /* Tile & Slot UI */
         .slots-row {
@@ -198,7 +213,9 @@
     <header>
         <h1>EKA Word Scramble</h1>
         <div class="stats-row">
-            <span class="stat-badge" id="disp-time">⏱️ 01:00</span>
+            <span class="stat-badge" id="disp-timer">⏱️ 01:00</span>
+            <div class="timer-container"><div id="timer-bar"></div></div>
+            <span class="stat-badge" id="disp-level">Age 12-16</span>
             <span class="stat-badge" id="disp-score">🏆 0</span>
         </div>
     </header>
@@ -207,17 +224,16 @@
         <!-- LEVEL SELECTION SCREEN -->
         <section id="screen-levels" class="screen active">
             <div class="glass-card" style="align-items:flex-start; width:100%;">
-                <h2>Select Difficulty</h2>
-                <p>Choose word length to begin</p>
-                <div class="level-grid" id="level-grid">
-                    <div class="level-chip" data-lv="1">Level 1: 3 Letters</div>
-                    <div class="level-chip" data-lv="2">Level 2: 4 Letters</div>
-                    <div class="level-chip" data-lv="3">Level 3: 5 Letters</div>
-                    <div class="level-chip" data-lv="4">Level 4: 3-5 Letters</div>
-                    <div class="level-chip" data-lv="5">Level 5: Up to 6</div>
-                    <div class="level-chip" data-lv="6">Level 6: Up to 10</div>
-                </div>
-                <button id="btn-start" class="btn primary" disabled>🚀 Start Game</button>
+                <h2>Select Age Bracket</h2>
+                <select id="age-selector" class="input-field">
+                    <option value="Age < 8">Age &lt; 8</option>
+                    <option value="Age 8-12">Age 8-12</option>
+                    <option value="Age 12-16" selected>Age 12-16</option>
+                    <option value="Age 16-20">Age 16-20</option>
+                    <option value="Age 20+">Age 20+</option>
+                </select>
+                <p>Words will be selected based on age group</p>
+                <button id="btn-start" class="btn primary">🚀 Start Game</button>
             </div>
         </section>
 
@@ -251,7 +267,9 @@
 <script>
     // === HARDWARE-OPTIMIZED DOM CACHE ===
     const UI = {
-      time: document.getElementById('disp-time'),
+      timer: document.getElementById('disp-timer'),
+      timerBar: document.getElementById('timer-bar'),
+      level: document.getElementById('disp-level'),
       score: document.getElementById('disp-score'),
       slots: document.getElementById('slots-row'),
       pool: document.getElementById('tiles-pool'),
@@ -262,36 +280,18 @@
       mTitle: document.getElementById('modal-title'),
       mMsg: document.getElementById('modal-msg'),
       btnAgain: document.getElementById('btn-play-again'),
-      levelChips: document.querySelectorAll('.level-chip')
-    };
-
-    // === WORD BANK ===
-    const WORDS = {
-      3: ["CAT","DOG","RUN","SKY","ICE","CUP","PEN","SUN","BAT","JET","HAT","BUS","KEY","BOX","MAP"],
-      4: ["FROST","COOL","BLUE","WIND","BIRD","FISH","LION","DEEP","GOLD","MINT","PLAY","GAME","READ","WALK","STAR"],
-      5: ["WATER","LIGHT","SOUND","DREAM","CLOUD","STONE","BRAIN","EARTH","OCEAN","SPACE","MUSIC","POWER","BRAVE","SMILE","GHOST"],
-      6: ["FROZEN","BRIDGE","CASTLE","PLANET","SUNSET","PURPLE","ORANGE","YELLOW","VIOLET","SILVER","ROCKET","MARBLE","GARDEN","CANYON"],
-      7: ["GLACIER","DIAMOND","RAINBOW","HARMONY","MUSEUM","PANTHER","QUANTUM","RHYTHM","SCHOLAR","JUNGLES","VOLCANO","LIBERTY","DYNAMICS"],
-      8: ["AVENGER","DYNAMICS","ELEPHANT","FEATHERS","GHOSTS","HARMONIC","INDUSTRY","JOURNEYS","MAGNETIC","OCTOPUS","BRILLIANT","CAMPFIRE","DIAMONDS"],
-      9: ["ADVENTURE","BEAUTIFUL","COMPANION","ELEVATION","FANTASTIC","GIGANTIC","HURRICANE","JUBILATION","MYSTERIOUS","NAVIGATION","ORCHESTRA","PENTHOUSE","QUARTZITE"],
-      10: ["BREATHTAKING","COMMUNICATE","ELECTRONICS","GEOGRAPHICAL","INTELLIGENCE","LANDSCAPING","METAMORPHOSIS","OPPORTUNITY","PERFECTIONIST","TELESCOPES","UNDERSTAND","WONDERLAND","ZENITHPOINT"]
+      ageSelector: document.getElementById('age-selector')
     };
 
     // === GAME STATE ===
     let state = {
-      level: 1, score: 0, time: 60, interval: null,
+      age: "Age 12-16", score: 0, time: 60, maxTime: 60, interval: null,
       currentWord: "", tiles: [], placed: [], isPlaying: false, isChecking: false
     };
 
     // === INIT ===
     function init() {
       setupEvents();
-      renderLevelGrid();
-    }
-
-    function renderLevelGrid() {
-      UI.levelChips[0].classList.add('selected');
-      state.level = 1;
     }
 
     function setupEvents() {
@@ -300,29 +300,32 @@
         e.preventDefault(); navTo(btn.dataset.target);
       }));
 
-      // Level Selection
-      UI.levelChips.forEach(chip => chip.addEventListener('pointerdown', e => {
+      UI.btnStart.addEventListener('pointerdown', e => {
         e.preventDefault();
-        UI.levelChips.forEach(c => c.classList.remove('selected'));
-        chip.classList.add('selected');
-        state.level = parseInt(chip.dataset.lv);
-        UI.btnStart.disabled = false;
-      }));
+        state.age = UI.ageSelector.value;
+        UI.level.textContent = state.age;
+        startGame();
+      });
 
-      UI.btnStart.addEventListener('pointerdown', e => { e.preventDefault(); startGame(); });
       UI.btnClear.addEventListener('pointerdown', e => { e.preventDefault(); clearSlots(); });
       UI.btnAgain.addEventListener('pointerdown', e => { e.preventDefault(); UI.modal.classList.remove('active'); startGame(); });
 
       // Tile Pool Delegation
       UI.pool.addEventListener('pointerdown', e => {
         const tile = e.target.closest('.tile');
-        if (tile && state.isPlaying && !state.isChecking) placeTile(tile);
+        if (tile && state.isPlaying && !state.isChecking) {
+            e.preventDefault();
+            placeTile(tile);
+        }
       });
 
       // Slots Delegation (tap placed tile to return)
       UI.slots.addEventListener('pointerdown', e => {
         const slot = e.target.closest('.slot');
-        if (slot && slot.classList.contains('filled') && state.isPlaying && !state.isChecking) returnTile(slot);
+        if (slot && slot.classList.contains('filled') && state.isPlaying && !state.isChecking) {
+            e.preventDefault();
+            returnTile(slot);
+        }
       });
 
       window.addEventListener('keydown', e => {
@@ -340,18 +343,14 @@
     }
 
     // === GAME LOGIC ===
-    function getWordForLevel(lv) {
-      let pool = [];
-      if (lv <= 3) pool = WORDS[lv];
-      else if (lv === 4) pool = [...WORDS[3], ...WORDS[4], ...WORDS[5]];
-      else if (lv === 5) pool = [...WORDS[3], ...WORDS[4], ...WORDS[5], ...WORDS[6]];
-      else pool = [...WORDS[3], ...WORDS[4], ...WORDS[5], ...WORDS[6], ...WORDS[7], ...WORDS[8], ...WORDS[9], ...WORDS[10]];
+    function getWordForAge(age) {
+      const pool = window.VOCABULARY[age] || window.VOCABULARY["Age 12-16"];
       return pool[Math.floor(Math.random() * pool.length)];
     }
 
     function scramble(word) {
       let arr = word.split(''), s = word;
-      while (s === word) {
+      while (s === word && word.length > 1) {
         for (let i = arr.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [arr[i], arr[j]] = [arr[j], arr[i]];
@@ -363,7 +362,7 @@
 
     function startGame() {
       clearInterval(state.interval);
-      state.score = 0; state.time = 60; state.isPlaying = true; state.isChecking = false;
+      state.score = 0; state.time = state.maxTime; state.isPlaying = true; state.isChecking = false;
       updateUI();
       navTo('screen-game');
       nextWord();
@@ -371,7 +370,7 @@
     }
 
     function nextWord() {
-      state.currentWord = getWordForLevel(state.level);
+      state.currentWord = getWordForAge(state.age).toUpperCase();
       state.placed = []; state.isChecking = false;
       UI.msg.textContent = "Tap tiles to arrange!";
       UI.msg.style.color = "var(--accent)";
@@ -415,7 +414,7 @@
       state.placed[idx] = tile;
 
       // Auto-check if all slots filled
-      if (state.placed.every(t => t !== undefined)) {
+      if (state.placed.filter(t => t).length === state.currentWord.length) {
         checkWord();
       }
     }
@@ -447,11 +446,12 @@
 
     function checkWord() {
       state.isChecking = true;
-      const formed = state.placed.map(t => t.dataset.char).join('');
+      const formed = state.placed.map(t => t ? t.dataset.char : '').join('');
 
       if (formed === state.currentWord) {
         // SUCCESS
         state.score += state.currentWord.length * 10;
+        state.time = Math.min(state.maxTime, state.time + 3);
         playSound('win');
         state.placed.forEach(t => t.classList.add('correct'));
         UI.msg.textContent = "✅ Perfect! +"+(state.currentWord.length*10);
@@ -461,13 +461,14 @@
       } else {
         // FAIL
         playSound('miss');
-        state.placed.forEach(t => t.classList.add('wrong'));
+        state.placed.forEach(t => { if(t) t.classList.add('wrong'); });
         UI.msg.textContent = "❌ Incorrect! Try again.";
         UI.msg.style.color = "var(--danger)";
         UI.slots.classList.add('shake');
         setTimeout(() => {
           UI.slots.classList.remove('shake');
           clearSlots();
+          state.isChecking = false;
         }, 600);
       }
     }
@@ -489,12 +490,15 @@
     function updateTimerUI() {
       const m = Math.floor(state.time / 60).toString().padStart(2, '0');
       const s = (state.time % 60).toString().padStart(2, '0');
-      UI.time.textContent = `⏱️ ${m}:${s}`;
-      UI.time.style.color = state.time < 10 ? 'var(--danger)' : 'var(--text-main)';
+      UI.timer.textContent = `⏱️ ${m}:${s}`;
+
+      const pct = (state.time / state.maxTime) * 100;
+      UI.timerBar.style.width = `${pct}%`;
+      UI.timerBar.style.background = pct < 25 ? 'var(--danger)' : 'var(--success)';
     }
 
     function updateUI() {
-      UI.score.textContent = `🏆 ${state.score}`;
+      UI.score.textContent = `🌟 ${state.score}`;
     }
 
     function endGame() {

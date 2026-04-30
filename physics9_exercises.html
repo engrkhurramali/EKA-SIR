@@ -172,7 +172,10 @@
         { ch: 9, count: 2 }
     ];
 
-    const placeholderLink = "https://youtube.com/shorts/Ng7K0lxyDE0";
+    const channelLink = "https://www.youtube.com/@engineerkhurramali";
+    const videoLinks = {
+        // Specific links can be added here
+    };
 
     function generateButtons() {
         structure.forEach(item => {
@@ -181,9 +184,11 @@
 
             for (let i = 1; i <= item.count; i++) {
                 const exNum = `${item.ch}.${i}`;
+                const link = videoLinks[exNum] || channelLink;
+
                 const btn = document.createElement('a');
                 btn.className = 'ex-btn';
-                btn.href = placeholderLink;
+                btn.href = link;
                 btn.target = "_blank";
                 btn.innerHTML = `<span>Exercise</span>Ex#${exNum}`;
                 grid.appendChild(btn);

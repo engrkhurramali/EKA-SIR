@@ -206,15 +206,10 @@
         { ch: 30, count: 2 }
     ];
 
-    const placeholderLink = "https://youtube.com/shorts/Ng7K0lxyDE0";
-    const videoLinks = {};
-
-    // Populate videoLinks with placeholders for all exercises
-    structure.forEach(item => {
-        for (let i = 1; i <= item.count; i++) {
-            videoLinks[`${item.ch}.${i}`] = placeholderLink;
-        }
-    });
+    const channelLink = "https://www.youtube.com/@engineerkhurramali";
+    const videoLinks = {
+        // Class 10 specific links can be added here
+    };
 
     function generateButtons() {
         structure.forEach(item => {
@@ -223,7 +218,7 @@
 
             for (let i = 1; i <= item.count; i++) {
                 const exNum = `${item.ch}.${i}`;
-                const link = videoLinks[exNum];
+                const link = videoLinks[exNum] || channelLink;
 
                 const btn = document.createElement('a');
                 btn.className = 'ex-btn';

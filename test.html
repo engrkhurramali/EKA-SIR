@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Notes Studio - EKA SIR</title>
+    <title>CBT Tests - EKA SIR</title>
     <style>
         :root {
             --glass: rgba(255, 255, 255, 0.25);
@@ -26,7 +26,6 @@
             align-items: center;
         }
 
-        /* 3D Ice Cube Glass Panel */
         .main-container {
             width: 100%;
             max-width: 500px;
@@ -36,7 +35,7 @@
             border-radius: 30px;
             padding: 25px;
             border: 1px solid var(--border);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), inset 0 0 15px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
         }
 
         .home-nav {
@@ -50,54 +49,34 @@
             font-weight: bold;
             margin-bottom: 25px;
             border: 1px solid var(--border);
-            transition: 0.3s;
             align-self: flex-start;
         }
 
-        .home-nav:active { transform: scale(0.95); }
+        h1 { text-align: center; font-size: 1.5rem; margin-bottom: 20px; }
 
-        h1 {
-            text-align: center;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Class Selector Grid */
         .class-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
             margin-bottom: 30px;
         }
 
         .class-btn {
             background: var(--glass-heavy);
             border: 1px solid var(--border);
-            padding: 15px;
-            border-radius: 18px;
+            padding: 10px;
+            border-radius: 12px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
             font-weight: 800;
             color: var(--text-dark);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            font-size: 0.9rem;
         }
 
-        .class-btn:hover, .class-btn.active {
-            background: #fff;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
+        .class-btn.active { background: #fff; }
 
-        /* Subjects Display Area */
-        .subject-section {
-            display: none;
-            animation: fadeIn 0.4s ease forwards;
-        }
-
-        .subject-section.active { display: block; }
+        .subject-section { display: none; }
+        .subject-section.active { display: block; animation: fadeIn 0.4s; }
 
         .note-card {
             background: rgba(255, 255, 255, 0.5);
@@ -111,10 +90,7 @@
             text-decoration: none;
             color: var(--text-dark);
             font-weight: 600;
-            transition: 0.2s;
         }
-
-        .note-card:active { background: #fff; }
 
         .tag {
             font-size: 0.7rem;
@@ -124,10 +100,7 @@
             border-radius: 10px;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -135,67 +108,73 @@
 <a href="index.html" class="home-nav">🏠 Dashboard</a>
 
 <div class="main-container">
-    <h1>TEST AND ASSESSMENTS</h1>
+    <h1>CBT ASSESSMENT</h1>
 
     <div class="class-grid">
-        <div class="class-btn active" onclick="showClass(1, this)">Class 1</div>
-        <div class="class-btn" onclick="showClass(2, this)">Class 2</div>
-        <div class="class-btn" onclick="showClass(3, this)">Class 3</div>
-        <div class="class-btn" onclick="showClass(4, this)">Class 4</div>
-        <div class="class-btn" onclick="showClass(5, this)">Class 5</div>
-        <div class="class-btn" onclick="showClass(6, this)">Class 6</div>
-        <div class="class-btn" onclick="showClass(7, this)">Class 7</div>
-        <div class="class-btn" onclick="showClass(8, this)">Class 8</div>
-        <div class="class-btn" onclick="showClass(9, this)">Class 9</div>
-        <div class="class-btn" onclick="showClass(10, this)">Class 10</div>
+        <div class="class-btn active" onclick="showClass('KG1', this)">KG-1</div>
+        <div class="class-btn" onclick="showClass('KG2', this)">KG-2</div>
+        <script>
+            for(let i=1; i<=10; i++) {
+                document.write(`<div class="class-btn" onclick="showClass(${i}, this)">Class ${i}</div>`);
+            }
+        </script>
     </div>
 
     <hr style="border: 0; height: 1px; background: var(--border); margin-bottom: 20px;">
 
-    <div id="class1" class="subject-section active">
-        <h3>📝 Class 1 TEST</h3>
-        <a href="notes1.html" class="note-card">Maths Level 1 <span class="tag">START</span></a>
-        <a href="notes1.html" class="note-card">Science Level 1 <span class="tag">START</span></a>
+    <!-- KG1 to 10 Sections -->
+    <div id="classKG1" class="subject-section active">
+        <h3>📝 KG-1 SUBJECTS</h3>
+        <a href="chapter_select.html?subject=kg1_maths&grade=KG1" class="note-card">Mathematics <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=kg1_english&grade=KG1" class="note-card">English <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=kg1_urdu&grade=KG1" class="note-card">Urdu <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=kg1_islamiat&grade=KG1" class="note-card">Islamiat <span class="tag">SELECT</span></a>
     </div>
 
-    <div id="class9" class="subject-section">
-        <h3>📝 Class 9 TEST</h3>
-        <a href="notes1.html" class="note-card">Physics MCQs <span class="tag">FULL BOOK</span></a>
-        <a href="mcq_test.html?quiz=maths9_u1" class="note-card">Maths Unit 01 Quiz <span class="tag">CBT TEST</span></a>
-        <a href="mcq_test.html?quiz=maths9_u2" class="note-card">Maths Unit 02 Quiz <span class="tag">CBT TEST</span></a>
-        <a href="mcq_test.html?quiz=physics9_u1" class="note-card">Physics Unit 01 Quiz <span class="tag">CBT TEST</span></a>
-        <a href="mcq_test.html?quiz=physics9_u2" class="note-card">Physics Unit 02 Quiz <span class="tag">CBT TEST</span></a>
-        <a href="mcq_test.html?quiz=physics9_u3" class="note-card">Physics Unit 03 Quiz <span class="tag">CBT TEST</span></a>
+    <div id="classKG2" class="subject-section">
+        <h3>📝 KG-2 SUBJECTS</h3>
+        <a href="chapter_select.html?subject=kg2_maths&grade=KG2" class="note-card">Mathematics <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=kg2_english&grade=KG2" class="note-card">English <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=kg2_urdu&grade=KG2" class="note-card">Urdu <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=kg2_islamiat&grade=KG2" class="note-card">Islamiat <span class="tag">SELECT</span></a>
     </div>
 
-    <div id="class10" class="subject-section">
-        <h3>📝 Class 10 TEST</h3>
-        <a href="notes2.html" class="note-card">Physics MCQs <span class="tag">FULL BOOK</span></a>
-        <a href="mcq_test.html?quiz=maths10_u1" class="note-card">Maths Unit 01 Quiz <span class="tag">CBT TEST</span></a>
-        <a href="mcq_test.html?quiz=physics10_u1" class="note-card">Physics Unit 01 Quiz <span class="tag">CBT TEST</span></a>
-    </div>
+    <script>
+        const subjects = ['maths', 'english', 'urdu', 'science', 'sstudies', 'islamiat', 'computer', 'sindhi'];
+        const gradeNames = [1,2,3,4,5,6,7,8];
+        gradeNames.forEach(g => {
+            document.write(`<div id="class${g}" class="subject-section"><h3>📝 CLASS ${g} SUBJECTS</h3>`);
+            subjects.forEach(s => {
+                document.write(`<a href="chapter_select.html?subject=class${g}_${s}&grade=${g}" class="note-card">${s.charAt(0).toUpperCase()+s.slice(1)} <span class="tag">SELECT</span></a>`);
+            });
+            document.write(`</div>`);
+        });
 
-    <div id="generic" class="subject-section">
-        <p style="text-align: center; font-style: italic; opacity: 0.7;">Content being uploaded for this grade...</p>
-    </div>
+        // 9 and 10
+        const highSubs = ['maths', 'physics', 'chem', 'bio', 'comp', 'eng', 'urdu', 'isl', 'pst', 'sindhi'];
+        [9, 10].forEach(g => {
+            document.write(`<div id="class${g}" class="subject-section"><h3>📝 CLASS ${g} SUBJECTS</h3>`);
+            highSubs.forEach(s => {
+                let subCode = s + g; // Consistent naming: chem9, bio10, etc.
+
+                if (s === 'maths' && (g === 9 || g === 10)) {
+                    // Reverting to new page UI for Maths 9 & 10 as requested
+                    document.write(`<a href="chapter_select.html?subject=maths${g}&grade=${g}" class="note-card">Mathematics (Multi-Select) <span class="tag">SELECT</span></a>`);
+                } else {
+                    document.write(`<a href="chapter_select.html?subject=${subCode}&grade=${g}" class="note-card">${s.charAt(0).toUpperCase()+s.slice(1)} <span class="tag">SELECT</span></a>`);
+                }
+            });
+            document.write(`</div>`);
+        });
+    </script>
 </div>
 
 <script>
     function showClass(num, btn) {
-        // Update Buttons
         document.querySelectorAll('.class-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-
-        // Hide all sections
         document.querySelectorAll('.subject-section').forEach(s => s.classList.remove('active'));
-
-        // Show selected or generic
-        const target = document.getElementById('class' + num);
-        if (target) {
-            target.classList.add('active');
-        } else {
-            document.getElementById('generic').classList.add('active');
-        }
+        document.getElementById('class' + num).classList.add('active');
     }
 </script>
 

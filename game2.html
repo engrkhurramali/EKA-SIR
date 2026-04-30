@@ -55,11 +55,61 @@
         .star { width: 55%; height: 55%; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
         .hexagon { width: 55%; height: 55%; clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%); }
 
-        #timer-container { width: 100%; height: 8px; background: rgba(0,0,0,0.3); border-radius: 4px; overflow: hidden; }
-        #timer-bar { width: 100%; height: 100%; background: var(--primary); transition: width 1s linear; }
+        /* Standardized Header & Stats */
+        header {
+            padding: 10px 16px 6px;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+            color: #fff;
+        }
+        header h1 {
+            font-size: clamp(1rem, 4vw, 1.3rem);
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+        .stat-badge {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+            white-space: nowrap;
+        }
+        .timer-container {
+            flex: 1;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            margin: 0 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        #timer-bar {
+            height: 100%;
+            width: 100%;
+            background: var(--primary);
+            transition: width 1s linear;
+        }
 
-        button, input, select { width: 100%; padding: 14px; border-radius: 10px; border: none; font-weight: bold; margin-top: 10px; }
-        button { background: var(--secondary); color: white; font-size: 1.1rem; }
+        #prompt-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 10px;
+            text-align: center;
+            min-height: 50px;
+            margin-top: 5px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
     </style>
 </head>
 <body>
@@ -68,18 +118,30 @@
     <h2 style="text-align:center">EKA MOBILE SNAP</h2>
     <div class="glass-panel" style="margin-top: auto; margin-bottom: 20px;">
         <input type="text" id="playerName" placeholder="Player Name" maxlength="10">
+        <select id="ageSelect" class="input-field" style="width: 100%; margin: 8px 0; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);">
+            <option value="Age < 8">Age &lt; 8</option>
+            <option value="Age 8-12">Age 8-12</option>
+            <option value="Age 12-16" selected>Age 12-16</option>
+            <option value="Age 16-20">Age 16-20</option>
+            <option value="Age 20+">Age 20+</option>
+        </select>
         <select id="themeDropdown"></select>
         <button id="startBtn" style="background: #10b981;">START ADVENTURE</button>
     </div>
 </div>
 
 <div id="screen-game" class="screen">
-    <div id="timer-container"><div id="timer-bar"></div></div>
-    <div style="display:flex; justify-content:space-between; margin: 10px 0;">
-        <span>SCORE: <b id="score">0</b></span>
-        <span>TIME: <b id="timerText">60</b>s</span>
-    </div>
-    <div id="prompt-card" class="glass-panel" style="text-align:center; min-height: 60px;">
+    <header>
+        <h1>EKA MOBILE SNAP</h1>
+        <div class="stats-row">
+            <span class="stat-badge" id="disp-timer">⏱️ 01:00</span>
+            <div class="timer-container"><div id="timer-bar"></div></div>
+            <span class="stat-badge" id="disp-level">#1</span>
+            <span class="stat-badge" id="disp-score">🌟 0</span>
+        </div>
+    </header>
+
+    <div id="prompt-card">
         <span id="prompt" style="font-size: 1.2rem;">Get Ready...</span>
     </div>
     <div id="shapesGrid"></div>
@@ -104,10 +166,19 @@
         sunset: { bg: 'linear-gradient(135deg, #431407, #7c2d12)', primary: '#fbbf24', secondary: '#ea580c' }
     };
 
-    let score = 0, timeLeft = 60, isGameActive = false, timerInterval;
+    let score = 0, timeLeft = 60, level = 1, isGameActive = false, timerInterval;
+    let currentAge = "Age 12-16";
     const synth = window.speechSynthesis;
     const colors = ['red', 'blue', 'green', 'orange', 'purple', 'yellow', 'white'];
     const shapes = ['circle', 'square', 'triangle', 'star', 'hexagon'];
+
+    const AGE_CONFIGS = {
+        "Age < 8":   { timeBonus: 8, penalty: 2, levelStep: 50 },
+        "Age 8-12":  { timeBonus: 5, penalty: 5, levelStep: 100 },
+        "Age 12-16": { timeBonus: 4, penalty: 8, levelStep: 150 },
+        "Age 16-20": { timeBonus: 3, penalty: 10, levelStep: 200 },
+        "Age 20+":   { timeBonus: 2, penalty: 15, levelStep: 250 }
+    };
 
     function showScreen(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -122,25 +193,37 @@
     }
 
     const handleStart = () => {
-        // Priority 1: Change screen immediately
         showScreen('screen-game');
         isGameActive = true;
-        score = 0; timeLeft = 60;
-        document.getElementById('score').textContent = "0";
+        score = 0; timeLeft = 60; level = 1;
+        currentAge = document.getElementById('ageSelect').value;
+        updateStats();
 
-        // Priority 2: Unlock Sound
         speak("Ready");
 
-        // Priority 3: Start logic
         nextPrompt();
         if(timerInterval) clearInterval(timerInterval);
         timerInterval = setInterval(() => {
             timeLeft--;
-            document.getElementById('timerText').textContent = timeLeft;
-            document.getElementById('timer-bar').style.width = (timeLeft/60)*100 + "%";
+            updateTimerUI();
             if(timeLeft <= 0) endGame();
         }, 1000);
     };
+
+    function updateTimerUI() {
+        const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+        const s = (timeLeft % 60).toString().padStart(2, '0');
+        document.getElementById('disp-timer').textContent = `⏱️ ${m}:${s}`;
+        const pct = (timeLeft / 60) * 100;
+        const bar = document.getElementById('timer-bar');
+        bar.style.width = pct + "%";
+        bar.style.backgroundColor = pct < 25 ? "#ff6b6b" : "#00b894";
+    }
+
+    function updateStats() {
+        document.getElementById('disp-score').textContent = `🌟 ${score}`;
+        document.getElementById('disp-level').textContent = currentAge;
+    }
 
     function nextPrompt() {
         const c = colors[Math.floor(Math.random() * colors.length)];
@@ -166,18 +249,23 @@
             if(item.shape === 'triangle') shp.style.borderBottomColor = item.color;
             else shp.style.backgroundColor = item.color;
 
-            // Using click with passive:false for fastest mobile response
-            cube.onclick = (e) => {
+            cube.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
                 if(!isGameActive) return;
+                const config = AGE_CONFIGS[currentAge];
                 if(item.color === targetC && item.shape === targetS) {
                     score += 10;
+                    if (score > 0 && score % config.levelStep === 0) {
+                        level++;
+                        timeLeft = Math.min(60, timeLeft + config.timeBonus);
+                    }
                     if(navigator.vibrate) navigator.vibrate(40);
                 } else {
-                    score = Math.max(0, score - 5);
+                    score = Math.max(0, score - config.penalty);
                 }
-                document.getElementById('score').textContent = score;
+                updateStats();
                 nextPrompt();
-            };
+            });
             cube.appendChild(shp);
             grid.appendChild(cube);
         });

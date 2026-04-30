@@ -15,10 +15,10 @@
           --glass-shadow: 0 8px 32px rgba(0, 70, 60, 0.12);
           --text-main: #004d40;
           --text-sub: #00695c;
-          --accent: #00897b;
-          --accent-light: #4db6ac;
-          --success: #66bb6a;
-          --danger: #e57373;
+          --accent: #00b894;
+          --accent-light: #55efc4;
+          --success: #00b894;
+          --danger: #ff6b6b;
           --warning: #ffb74d;
           --radius: 16px;
           --nav-h: 62px;
@@ -44,18 +44,13 @@
           100% { background-position: 0% 0%; }
         }
 
-        /* === 9:16 PORTRAIT CONTAINER === */
         .app-container {
-          width: 100vw; max-width: 450px;
+          width: 98vw; max-width: 98%;
           height: 100vh; height: 100dvh;
-          aspect-ratio: 9 / 16;
           margin: 0 auto;
           overflow: hidden; display: flex; flex-direction: column;
           background: rgba(255,255,255,0.12);
           backdrop-filter: blur(14px);
-          border-radius: var(--radius);
-          box-shadow: 0 12px 35px rgba(0,0,0,0.18);
-          border: 1px solid var(--glass-border);
         }
         @media (min-width: 768px) {
           .app-container { height: 92vh; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.22); }
@@ -70,7 +65,9 @@
           display: flex; justify-content: space-between; align-items: center;
           margin-top: 6px; font-size: 0.85rem; font-weight: 700; color: var(--text-sub);
         }
-        .stat-badge { background: var(--glass-bg); padding: 4px 10px; border-radius: 20px; border: 1px solid var(--glass-border); }
+        .timer-container { flex: 1; height: 10px; background: rgba(0,0,0,0.1); border-radius: 5px; margin: 0 10px; overflow: hidden; position: relative; }
+        #timer-bar { height: 100%; width: 100%; background: var(--accent); transition: width 0.1s linear; }
+        .stat-badge { background: var(--glass-bg); padding: 4px 10px; border-radius: 20px; border: 1px solid var(--glass-border); white-space: nowrap; }
 
         .screens-wrapper { flex: 1; position: relative; overflow: hidden; display: flex; }
         .screen {
@@ -118,20 +115,24 @@
         .btn.danger { background: var(--danger); color: white; }
         .btn:active { transform: scale(0.96); box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
 
-        /* 95% Progress Bar */
-        .progress-wrapper { width: 95%; margin: 8px auto; position: relative; }
+        .progress-wrapper { width: 100%; margin: 15px 0; position: relative; padding: 0 10px; }
         .progress-track {
-          height: 22px; background: rgba(0,0,0,0.12); border-radius: 12px;
-          position: relative; overflow: visible; border: 1px solid var(--glass-border);
+          height: 50px; background: rgba(0,0,0,0.15); border-radius: 4px;
+          position: relative; overflow: visible; border: 2px solid var(--glass-border);
         }
         .progress-fill {
           height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-light));
-          border-radius: 12px; width: 0%; transition: width 0.05s linear;
+          border-radius: 0; width: 0%; transition: width 0.05s linear;
         }
         .target-markers { position: absolute; inset: 0; pointer-events: none; }
         .marker {
-          position: absolute; top: 0; width: 2px; height: 100%;
-          background: var(--danger); opacity: 0.6; transform: translateX(-50%);
+          position: absolute; top: 0; width: 4px; height: 100%;
+          background: var(--success); opacity: 0.9; transform: translateX(-50%);
+        }
+        .marker-zone {
+          position: absolute; top: 0; height: 100%; background: rgba(255, 235, 59, 0.4);
+          transform: translateX(-50%); border-left: 1px solid rgba(255, 214, 0, 0.5);
+          border-right: 1px solid rgba(255, 214, 0, 0.5);
         }
         .marker-label {
           position: absolute; top: -18px; transform: translateX(-50%);
@@ -143,15 +144,23 @@
           filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
         }
 
-        /* Big Circle Tap Button */
-        .tap-zone { margin-top: 12px; display: flex; justify-content: center; align-items: center; }
+        .tap-zone {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 20px 0;
+        }
         .tap-btn {
-          width: 100px; height: 100px; border-radius: 50%;
+          width: min(77vw, 33vh);
+          height: min(77vw, 33vh);
+          border-radius: 50%;
           background: linear-gradient(135deg, #ffffff, #f0f0f0);
-          border: 3px solid var(--glass-border);
-          box-shadow: 0 6px 16px rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,0.8);
+          border: 8px solid var(--glass-border);
+          box-shadow: 0 10px 25px rgba(0,0,0,0.2), inset 0 4px 0 rgba(255,255,255,0.8);
           display: flex; align-items: center; justify-content: center;
-          font-size: 1.1rem; font-weight: 800; color: var(--accent);
+          font-size: 2.2rem; font-weight: 800; color: var(--accent);
           cursor: pointer; user-select: none;
           transition: transform 0.1s, box-shadow 0.2s, border-color 0.2s;
         }
@@ -165,7 +174,6 @@
           50% { transform: scale(1.04); }
         }
 
-        /* Status & Results */
         .status-msg { font-size: 1rem; font-weight: 700; min-height: 1.4em; text-align: center; color: var(--accent); }
         .status-msg.wait { color: var(--text-sub); }
         .status-msg.go { color: var(--warning); animation: pulseTxt 1s infinite; }
@@ -174,17 +182,19 @@
 
         .results-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; width: 100%; }
         .res-cell { background: rgba(255,255,255,0.4); border-radius: 8px; padding: 8px 4px; text-align: center; font-size: 0.8rem; border: 1px solid var(--glass-border); }
-        .res-cell.hit { background: rgba(102,187,106,0.3); border-color: var(--success); }
-        .res-cell.miss { background: rgba(229,115,115,0.3); border-color: var(--danger); }
-        .res-val { font-weight: 800; font-size: 0.9rem; }
+        .res-cell.hit { background: rgba(0, 184, 148, 0.2); border-color: var(--success); }
+        .res-cell.miss { background: rgba(255, 107, 107, 0.2); border-color: var(--danger); }
+        .res-cell.early { background: rgba(255, 183, 77, 0.15); border-color: var(--warning); }
+        .res-cell.late { background: rgba(0, 184, 148, 0.15); border-color: var(--accent); }
+        .res-val { font-weight: 800; font-size: 0.85rem; }
+        .res-label { font-size: 0.65rem; color: var(--text-sub); margin-bottom: 2px; }
 
         .summary-box { width: 100%; background: rgba(255,255,255,0.4); border-radius: 10px; padding: 12px; text-align: center; border: 1px solid var(--glass-border); margin-top: 8px; }
         .sum-row { display: flex; justify-content: space-between; margin: 4px 0; font-size: 0.9rem; }
         .sum-total { font-weight: 900; color: var(--accent); font-size: 1.1rem; margin-top: 6px; }
 
-        /* Stats Table */
         .stats-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; background: rgba(255,255,255,0.4); border-radius: 10px; overflow: hidden; }
-        .stats-table th { background: rgba(0, 137, 123, 0.2); padding: 8px 6px; font-weight: 700; text-align: center; }
+        .stats-table th { background: rgba(0, 184, 148, 0.2); padding: 8px 6px; font-weight: 700; text-align: center; }
         .stats-table td { padding: 8px 6px; text-align: center; border-bottom: 1px dashed rgba(0,0,0,0.1); }
         .diff-ex { color: var(--success); font-weight: 700; }
         .diff-ok { color: var(--accent); font-weight: 600; }
@@ -203,7 +213,6 @@
         }
         .modal-overlay.active .modal-box { transform: translateY(0); opacity: 1; }
         .modal-title { font-size: 1.4rem; font-weight: 900; margin-bottom: 8px; color: var(--accent); }
-        .modal-msg { margin-bottom: 14px; color: var(--text-sub); font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -211,16 +220,29 @@
     <header>
         <h1>Click Clock Precision</h1>
         <div class="stats-row">
-            <span class="stat-badge" id="disp-target">Target: 2s</span>
-            <span class="stat-badge" id="disp-elapsed">0.00s</span>
+            <span class="stat-badge" id="disp-timer">⏱️ 0.00s</span>
+            <div class="timer-container"><div id="timer-bar"></div></div>
+            <span class="stat-badge" id="disp-level">Age 12-16</span>
+            <span class="stat-badge" id="disp-score">🌟 0</span>
         </div>
     </header>
 
     <div class="screens-wrapper">
-        <!-- GAME SCREEN -->
         <section id="screen-game" class="screen active">
             <div class="glass-card">
-                <div class="status-msg wait" id="status-msg">Tap START to begin</div>
+                <div class="controls-row" style="display: flex; gap: 8px; width: 100%; margin-bottom: 8px;">
+                    <select id="level-select" class="btn" style="flex: 2; height: 40px; padding: 0 8px; font-size: 0.8rem;">
+                        <option value="Age < 8">Age &lt; 8</option>
+                        <option value="Age 8-12">Age 8-12</option>
+                        <option value="Age 12-16" selected>Age 12-16</option>
+                        <option value="Age 16-20">Age 16-20</option>
+                        <option value="Age 20+">Age 20+</option>
+                    </select>
+                    <button id="btn-start" class="btn primary" style="flex: 1; height: 40px;">🚀 START</button>
+                    <button id="btn-reset" class="btn" style="flex: 1; height: 40px;" disabled>🔄 Reset</button>
+                </div>
+
+                <div class="status-msg wait" id="status-msg">Select Age & Tap START</div>
 
                 <div class="progress-wrapper">
                     <div class="progress-track">
@@ -231,11 +253,8 @@
                 </div>
 
                 <div class="tap-zone">
-                    <button class="tap-btn" id="tap-btn">TAP</button>
+                    <button class="tap-btn" id="tap-btn">START</button>
                 </div>
-
-                <button id="btn-start" class="btn primary">🚀 START ROUND</button>
-                <button id="btn-reset" class="btn" disabled>🔄 Reset</button>
             </div>
 
             <div class="glass-card" id="results-card" style="display:none;">
@@ -250,7 +269,6 @@
             </div>
         </section>
 
-        <!-- STATS SCREEN -->
         <section id="screen-stats" class="screen">
             <div class="glass-card" style="align-items:flex-start; width:100%;">
                 <h2>📊 Session History</h2>
@@ -262,15 +280,13 @@
             </div>
         </section>
 
-        <!-- HELP SCREEN -->
         <section id="screen-help" class="screen">
             <div class="glass-card" style="align-items:flex-start;">
                 <h2>📖 How to Play</h2>
                 <p>1. Tap <strong>START</strong> — the rocket moves from 0 to 11s.</p>
                 <p>2. When the rocket hits a target (2s, 4s, 6s, 8s, 10s), a <strong>1-second window</strong> opens.</p>
                 <p>3. Tap the <strong>big circle button</strong> within that window!</p>
-                <p>4. If you miss the 1s window, it counts as a miss and moves to the next target automatically.</p>
-                <p style="margin-top:10px; font-weight:600;">🎯 Goal: Minimize your average reaction difference. <0.3s = Pro!</p>
+                <p>4. Difficulty: Accuracy window shrinks for older age groups!</p>
                 <button class="btn primary" style="width:100%; margin-top:14px;" onclick="navTo('screen-game')">Back to Game</button>
             </div>
         </section>
@@ -283,19 +299,29 @@
     </nav>
 
     <div class="modal-overlay" id="modal-complete">
-        <div class="modal-box">
+        <div class="modal-box" style="width: 95%; max-width: 420px;">
             <div class="modal-title" id="m-title">Round Complete!</div>
-            <div class="modal-msg" id="m-msg">Check your results.</div>
-            <button class="btn primary" style="width:100%;" id="btn-view">View Results</button>
+            <div class="results-grid" id="m-results-grid" style="margin: 12px 0;"></div>
+            <div class="summary-box">
+                <div class="sum-row"><span>Total Diff:</span><span id="m-sum-total">--</span></div>
+                <div class="sum-row"><span>Avg Diff:</span><span id="m-sum-avg">--</span></div>
+                <div class="sum-total" id="m-sum-rating" style="margin-top:4px;">--</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px;">
+                <button class="btn primary" id="btn-play-again">🎮 Play Again</button>
+                <button class="btn" id="btn-close-modal">Close</button>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-    // === HARDWARE-OPTIMIZED DOM CACHE ===
     const UI = {
-      target: document.getElementById('disp-target'),
-      elapsed: document.getElementById('disp-elapsed'),
+      elapsed: document.getElementById('disp-timer'),
+      timerBar: document.getElementById('timer-bar'),
+      levelDisp: document.getElementById('disp-level'),
+      score: document.getElementById('disp-score'),
+      levelSelect: document.getElementById('level-select'),
       fill: document.getElementById('progress-fill'),
       rocket: document.getElementById('rocket'),
       markers: document.getElementById('markers'),
@@ -313,14 +339,23 @@
       btnClear: document.getElementById('btn-clear'),
       modal: document.getElementById('modal-complete'),
       mTitle: document.getElementById('m-title'),
-      mMsg: document.getElementById('m-msg'),
-      btnView: document.getElementById('btn-view')
+      mResults: document.getElementById('m-results-grid'),
+      mSumTotal: document.getElementById('m-sum-total'),
+      mSumAvg: document.getElementById('m-sum-avg'),
+      mSumRating: document.getElementById('m-sum-rating'),
+      btnPlayAgain: document.getElementById('btn-play-again'),
+      btnCloseModal: document.getElementById('btn-close-modal')
     };
 
-    // === CONFIG & STATE ===
     const TARGETS = [2, 4, 6, 8, 10];
     const MAX_TIME = 11;
-    const WINDOW_MS = 1000;
+    const AGE_CONFIGS = {
+        "Age < 8":   { window: 1.2, bonus: 100 },
+        "Age 8-12":  { window: 1.0, bonus: 150 },
+        "Age 12-16": { window: 0.8, bonus: 200 },
+        "Age 16-20": { window: 0.6, bonus: 250 },
+        "Age 20+":   { window: 0.5, bonus: 300 }
+    };
 
     let state = {
       isRunning: false,
@@ -330,10 +365,11 @@
       windowOpen: false,
       hasResponded: false,
       results: [],
-      history: JSON.parse(localStorage.getItem('clickClockPrecisionHistory') || '[]')
+      totalScore: 0,
+      currentAge: "Age 12-16",
+      history: JSON.parse(localStorage.getItem('clickClockHistory') || '[]')
     };
 
-    // === INIT ===
     function init() {
       renderMarkers();
       renderStats();
@@ -342,9 +378,14 @@
     }
 
     function renderMarkers() {
+      const win = AGE_CONFIGS[state.currentAge].window;
+      const winPct = (win / MAX_TIME) * 100;
       UI.markers.innerHTML = TARGETS.map(t => {
         const pos = (t / MAX_TIME) * 100;
-        return `<div class="marker" style="left:${pos}%"><span class="marker-label">${t}s</span></div>`;
+        return `
+            <div class="marker-zone" style="left:${pos}%; width:${winPct}%;"></div>
+            <div class="marker" style="left:${pos}%"><span class="marker-label">${t}s</span></div>
+        `;
       }).join('');
     }
 
@@ -356,8 +397,7 @@
       const recent = [...state.history].reverse().slice(0, 15);
       UI.statsBody.innerHTML = recent.map((h, i) => {
         const cls = h.avg <= 0.2 ? 'diff-ex' : h.avg <= 0.35 ? 'diff-ok' : 'diff-bad';
-        const rating = h.avg <= 0.2 ? '🏆 Expert' : h.avg <= 0.35 ? '✨ Pro' : h.avg <= 0.5 ? '👍 Good' : '🔄 Practice';
-        return `<tr><td>#${state.history.length - i}</td><td class="${cls}">${h.avg.toFixed(2)}s</td><td>${rating}</td></tr>`;
+        return `<tr><td>#${state.history.length - i}</td><td class="${cls}">${h.avg.toFixed(2)}s</td><td>🌟 ${h.score}</td></tr>`;
       }).join('');
     }
 
@@ -371,22 +411,23 @@
       UI.btnReset.addEventListener('pointerdown', e => { e.preventDefault(); resetUI(); });
       UI.btnNew.addEventListener('pointerdown', e => { e.preventDefault(); resetUI(); });
       UI.btnClear.addEventListener('pointerdown', e => { e.preventDefault(); clearHistory(); });
-      UI.btnView.addEventListener('pointerdown', e => { e.preventDefault(); UI.modal.classList.remove('active'); });
-
-      window.addEventListener('keydown', e => {
-        if (e.code === 'Space' && state.isRunning) { e.preventDefault(); handleTap(); }
+      UI.btnPlayAgain.addEventListener('pointerdown', e => { e.preventDefault(); hideModal(); startRound(); });
+      UI.btnCloseModal.addEventListener('pointerdown', e => { e.preventDefault(); hideModal(); });
+      UI.levelSelect.addEventListener('change', (e) => {
+          state.currentAge = e.target.value;
+          UI.levelDisp.textContent = state.currentAge;
+          renderMarkers();
       });
     }
 
     function navTo(id) {
       document.querySelectorAll('.screen').forEach(s => {
-        if (s.id === id) { s.classList.add('active'); s.classList.remove('exit'); }
-        else { s.classList.remove('active'); s.classList.add('exit'); }
+        s.classList.toggle('active', s.id === id);
+        s.classList.toggle('exit', s.id !== id);
       });
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.target === id));
     }
 
-    // === GAME LOGIC ===
     function startRound() {
       if (state.isRunning) return;
       resetUI(false);
@@ -394,152 +435,134 @@
       state.startTime = performance.now();
       state.currentIdx = 0;
       state.results = [];
-
+      state.totalScore = 0;
+      UI.score.textContent = "🌟 0";
       UI.btnStart.disabled = true;
       UI.btnReset.disabled = false;
+      UI.tapBtn.textContent = "TAP";
       UI.resCard.style.display = 'none';
       UI.msg.textContent = "Watch the rocket...";
       UI.msg.className = 'status-msg wait';
-
       tick();
     }
 
     function tick() {
       if (!state.isRunning) return;
-      const nowMs = performance.now();
-      const elapsed = (nowMs - state.startTime) / 1000;
+      const elapsed = (performance.now() - state.startTime) / 1000;
+      UI.elapsed.textContent = `⏱️ ${elapsed.toFixed(2)}s`;
 
-      UI.elapsed.textContent = elapsed.toFixed(2) + 's';
       const progress = Math.min((elapsed / MAX_TIME) * 100, 100);
       UI.fill.style.width = `${progress}%`;
       UI.rocket.style.left = `${progress}%`;
 
-      if (state.currentIdx < 5 && !state.hasResponded) {
-        const target = TARGETS[state.currentIdx];
-        const windowEnd = target + (WINDOW_MS / 1000);
+      const timerPct = Math.max(0, 100 - (elapsed / MAX_TIME) * 100);
+      UI.timerBar.style.width = `${timerPct}%`;
+      UI.timerBar.style.backgroundColor = timerPct < 25 ? "var(--danger)" : "var(--accent)";
 
-        UI.target.textContent = `Target: ${target}s`;
+      if (state.currentIdx < TARGETS.length && !state.hasResponded) {
+        const target = TARGETS[state.currentIdx];
+        const win = AGE_CONFIGS[state.currentAge].window;
+        const windowStart = target - (win/2);
+        const windowEnd = target + (win/2);
 
         if (elapsed >= windowEnd) {
-          recordResult(target, windowEnd, true); // Missed window
-        } else if (elapsed >= target) {
+          recordResult(target, windowEnd, true);
+        } else if (elapsed >= windowStart) {
           UI.tapBtn.classList.add('active');
-          UI.msg.textContent = "Tap now!";
+          UI.msg.textContent = "TAP!";
           UI.msg.className = 'status-msg go';
           state.windowOpen = true;
-        } else {
-          UI.tapBtn.classList.remove('active');
-          UI.msg.textContent = `Next in ${(target - elapsed).toFixed(1)}s`;
-          UI.msg.className = 'status-msg wait';
         }
       }
 
-      if (state.isRunning) {
-        state.animId = requestAnimationFrame(tick);
-      }
+      if (elapsed >= MAX_TIME) endRound();
+      else state.animId = requestAnimationFrame(tick);
     }
 
     function handleTap() {
-      if (!state.isRunning || state.hasResponded || !state.windowOpen) return;
-      const elapsed = (performance.now() - state.startTime) / 1000;
-      const target = TARGETS[state.currentIdx];
-      recordResult(target, elapsed, false);
+      if (!state.isRunning) {
+          startRound();
+          return;
+      }
+      if (state.hasResponded || !state.windowOpen) return;
+      if (navigator.vibrate) navigator.vibrate(40);
+      recordResult(TARGETS[state.currentIdx], (performance.now() - state.startTime) / 1000, false);
     }
 
-    function recordResult(target, actualTime, isMiss) {
+    function recordResult(target, actual, isMiss) {
       state.hasResponded = true;
       state.windowOpen = false;
       UI.tapBtn.classList.remove('active');
+      const diff = isMiss ? 1.0 : (actual - target);
+      const absDiff = Math.abs(diff);
 
-      const diff = isMiss ? 1.0 : Math.abs(actualTime - target);
-      state.results.push({ target, actual: actualTime.toFixed(2), diff, isMiss });
+      if (!isMiss && absDiff < 0.5) {
+          const points = Math.round((0.5 - absDiff) * AGE_CONFIGS[state.currentAge].bonus);
+          state.totalScore += points;
+          UI.score.textContent = `🌟 ${state.totalScore}`;
+      }
 
-      // Visual feedback
+      state.results.push({ target, actual, diff, isMiss });
       UI.tapBtn.classList.add(isMiss ? 'miss' : 'correct');
-      UI.msg.textContent = isMiss ? '❌ Missed!' : `✅ ${diff.toFixed(2)}s diff`;
-      UI.msg.className = isMiss ? 'status-msg done' : 'status-msg done';
+      UI.msg.textContent = isMiss ? '❌ Miss!' : `✅ ${diff >= 0 ? '+' : ''}${diff.toFixed(2)}s`;
+      UI.msg.className = 'status-msg done';
 
-      // Auto-advance after short delay
       setTimeout(() => {
         UI.tapBtn.classList.remove('correct', 'miss');
         state.currentIdx++;
         state.hasResponded = false;
-
-        if (state.currentIdx >= 5) {
-          endRound();
-        } else if (state.isRunning) {
-          UI.msg.textContent = "Get ready...";
-          UI.msg.className = 'status-msg wait';
-        }
-      }, 350);
+        if (state.currentIdx >= TARGETS.length) endRound();
+      }, 400);
     }
 
     function endRound() {
+      if (!state.isRunning) return;
       state.isRunning = false;
       cancelAnimationFrame(state.animId);
-
       UI.btnStart.disabled = false;
       UI.btnReset.disabled = true;
-      UI.msg.textContent = "Round complete!";
-      UI.msg.className = 'status-msg done';
 
-      const diffs = state.results.map(r => r.diff);
-      const total = diffs.reduce((a,b) => a+b, 0);
-      const avg = total / 5;
-      const rating = avg <= 0.2 ? '🏆 Expert' : avg <= 0.35 ? '✨ Pro' : avg <= 0.5 ? '👍 Good' : '🔄 Practice';
+      const avgAbs = state.results.reduce((a, b) => a + Math.abs(b.diff), 0) / 5;
+      const rating = avgAbs <= 0.15 ? '🏆 Expert' : avgAbs <= 0.3 ? '✨ Pro' : '👍 Good';
 
-      UI.sumTotal.textContent = total.toFixed(2) + 's';
-      UI.sumAvg.textContent = avg.toFixed(2) + 's';
-      UI.sumRating.textContent = rating;
+      UI.mSumTotal.textContent = state.totalScore;
+      UI.mSumAvg.textContent = avgAbs.toFixed(2) + 's';
+      UI.mSumRating.textContent = rating;
+      UI.mTitle.textContent = "Round Complete!";
 
-      UI.resGrid.innerHTML = state.results.map((r, i) => `
-        <div class="res-cell ${r.isMiss ? 'miss' : 'hit'}">
-          <div style="font-size:0.75rem; color:var(--text-sub);">${r.target}s</div>
-          <div class="res-val">${r.isMiss ? 'MISS' : r.diff.toFixed(2)+'s'}</div>
-        </div>
+      UI.mResults.innerHTML = state.results.map(r => `
+          <div class="res-cell ${r.isMiss ? 'miss' : (Math.abs(r.diff) < 0.2 ? 'hit' : 'late')}">
+            <div class="res-label">${r.target}s</div>
+            <div class="res-val">${r.isMiss ? 'MISS' : (r.diff >= 0 ? '+' : '') + r.diff.toFixed(2)}</div>
+          </div>
       `).join('');
 
-      UI.resCard.style.display = 'flex';
-
-      if (state.results.length === 5) {
-        state.history.push({ timestamp: Date.now(), avg, total, results: state.results });
-        if (state.history.length > 50) state.history.shift();
-        localStorage.setItem('clickClockPrecisionHistory', JSON.stringify(state.history));
-        renderStats();
-
-        UI.mTitle.textContent = rating;
-        UI.mMsg.textContent = `Avg: ${avg.toFixed(2)}s • Total: ${total.toFixed(2)}s`;
-        setTimeout(() => UI.modal.classList.add('active'), 500);
-      }
+      UI.modal.classList.add('active');
+      state.history.push({ avg: avgAbs, score: state.totalScore });
+      localStorage.setItem('clickClockHistory', JSON.stringify(state.history));
+      renderStats();
     }
 
-    function resetUI(clearResults = true) {
+    function hideModal() { UI.modal.classList.remove('active'); }
+
+    function resetUI(clear = true) {
       state.isRunning = false;
       cancelAnimationFrame(state.animId);
-      if (clearResults) state.results = [];
-
       UI.fill.style.width = '0%';
       UI.rocket.style.left = '0%';
+      UI.timerBar.style.width = '100%';
+      UI.timerBar.style.backgroundColor = "var(--accent)";
       UI.tapBtn.classList.remove('active', 'correct', 'miss');
-      UI.msg.textContent = "Tap START to begin";
-      UI.msg.className = 'status-msg wait';
+      UI.tapBtn.textContent = "START";
+      UI.msg.textContent = "Select Age & Tap START";
       UI.btnStart.disabled = false;
       UI.btnReset.disabled = true;
-      UI.resCard.style.display = 'none';
-      UI.target.textContent = "Target: 2s";
-      UI.elapsed.textContent = "0.00s";
+      UI.elapsed.textContent = "⏱️ 0.00s";
     }
 
-    function clearHistory() {
-      if (confirm('Clear all session history?')) {
-        state.history = [];
-        localStorage.removeItem('clickClockPrecisionHistory');
-        renderStats();
-      }
-    }
+    function clearHistory() { if(confirm('Clear history?')) { state.history = []; localStorage.removeItem('clickClockHistory'); renderStats(); } }
 
-    // === BOOT ===
-    document.addEventListener('DOMContentLoaded', init);
+    init();
     document.addEventListener('touchstart', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
 </script>
 </body>
