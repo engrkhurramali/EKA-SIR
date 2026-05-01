@@ -406,6 +406,7 @@
         const match = placedWords.find(pw => !foundWords.has(pw.word) && (pw.word === word || pw.word === rev));
 
         if (match) {
+            playSuccessSound();
             if (navigator.vibrate) navigator.vibrate(40);
             foundWords.add(match.word);
             timer = Math.min(TIME_LIMIT, timer + 5); // Add +5s for each word found
@@ -415,6 +416,27 @@
             updateUI();
             if (foundWords.size === placedWords.length) endLevel(true);
         }
+    }
+
+    function playSuccessSound() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+            osc.frequency.exponentialRampToValueAtTime(1046.50, ctx.currentTime + 0.1); // C6
+
+            gain.gain.setValueAtTime(0.1, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start();
+            osc.stop(ctx.currentTime + 0.3);
+        } catch(e) { console.log("Audio error", e); }
     }
 
     function getCellEl(r, c) { return UI.grid.children[r * COLS + c]; }
