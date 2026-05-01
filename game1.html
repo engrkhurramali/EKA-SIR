@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#1a1a2e">
-    <title>🍍🍎 Fruit Basket 🧺 | By: EKA | V3.0</title>
+    <title>🍍🍎 Fruit Basket 🧺 | By: EKA </title>
     <style>
         * {
             margin: 0;
@@ -243,9 +243,9 @@
             width: 100%;
             height: 100%;
             border-radius: 15px;
-            background: rgba(255, 255, 255, 0.15);
-            border: 3px solid rgba(255, 255, 255, 0.4);
-            color: white;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.3);
             font-size: 40px;
             display: flex;
             align-items: center;
@@ -254,17 +254,18 @@
             transition: all 0.1s;
             pointer-events: auto;
             -webkit-tap-highlight-color: transparent;
+            backdrop-filter: blur(2px);
         }
 
         .control-btn:active {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
             transform: scale(0.96);
         }
 
         .control-btn.pressed {
-            background: rgba(255, 255, 255, 0.4);
-            border-color: #f9ca24;
-            box-shadow: 0 0 20px rgba(249, 202, 36, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(249, 202, 36, 0.3);
+            box-shadow: 0 0 15px rgba(249, 202, 36, 0.1);
         }
 
         .control-left, .control-right {
@@ -630,7 +631,7 @@
         playerName: '',
         currentAge: 'Age 12-16',
         currentTheme: 'deep-sea',
-        basket: { x: 0, y: 0, width: 70, height: 50, speed: 8 },
+        basket: { x: 0, y: 0, width: 84, height: 55, speed: 8 },
         items: [],
         particles: [],
         powerUps: { wide: false, attract: false, shield: false, slow: false, time: false },
@@ -678,7 +679,7 @@
     };
 
     const items = {
-        fruits: ['🍎', '🍊', '🍍', '', '🍌', '', '', '', '🥝'],
+        fruits: ['🍎', '🍊', '🍍', '🍇', '🍌', '🍉', '🍓', '🍒', '🥝'],
         powerUps: [
             { emoji: '🍬', type: 'time', chance: 0.08 },
             { emoji: '🍫', type: 'wide', chance: 0.05 },
@@ -708,7 +709,7 @@
         canvas.width = rect.width;
         canvas.height = rect.height;
         // Position basket above the touch controls (approx 18vh + buffer)
-        gameState.basket.y = canvas.height - Math.max(120, canvas.height * 0.22);
+        gameState.basket.y = canvas.height - Math.max(120, canvas.height * 0.22) - 10;
         gameState.basket.x = canvas.width / 2 - gameState.basket.width / 2;
     }
 
@@ -758,7 +759,7 @@
     function setupTouchControls() {
         const btnLeft = document.getElementById('btnLeft');
         const btnRight = document.getElementById('btnRight');
-        let touchStartX = 0;
+        let isDraggingBasket = false;
 
         const startMove = (dir, btn) => (e) => {
             if (e.pointerType === 'mouse' && e.button !== 0) return;
@@ -787,19 +788,33 @@
         btnRight.addEventListener('pointerleave', stopMove('right', btnRight));
         btnRight.addEventListener('pointercancel', stopMove('right', btnRight));
 
-        // Swipe on canvas
-        canvas.addEventListener('touchstart', (e) => {
-            touchStartX = e.touches[0].clientX;
-        }, { passive: true });
+        // Basket Dragging and Swipe
+        canvas.addEventListener('pointerdown', (e) => {
+            if (!gameState.isPlaying || gameState.isPaused) return;
+            initAudio();
 
-        canvas.addEventListener('touchend', (e) => {
-            const touchEndX = e.changedTouches[0].clientX;
-            const diff = touchStartX - touchEndX;
-            if (Math.abs(diff) > 40) {
-                initAudio();
-                moveBasketOnce(diff > 0 ? 'right' : 'left');
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            // Check if clicking near basket
+            if (mouseY > gameState.basket.y - 20 && mouseY < gameState.basket.y + gameState.basket.height + 20) {
+                isDraggingBasket = true;
+                gameState.basket.x = Math.min(canvas.width - gameState.basket.width, Math.max(0, mouseX - gameState.basket.width / 2));
             }
-        }, { passive: true });
+        });
+
+        window.addEventListener('pointermove', (e) => {
+            if (!isDraggingBasket || !gameState.isPlaying || gameState.isPaused) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            gameState.basket.x = Math.min(canvas.width - gameState.basket.width, Math.max(0, mouseX - gameState.basket.width / 2));
+        });
+
+        window.addEventListener('pointerup', () => {
+            isDraggingBasket = false;
+        });
     }
 
     function moveBasketOnce(direction) {
@@ -1079,7 +1094,7 @@
 
     function activatePowerUp(type, duration) {
         gameState.powerUps[type] = true;
-        if (type === 'wide') gameState.basket.width = 110;
+        if (type === 'wide') gameState.basket.width = 132;
 
         if (duration > 0) {
             if (gameState.powerUpTimers[type]) clearTimeout(gameState.powerUpTimers[type]);
@@ -1089,7 +1104,7 @@
 
     function deactivatePowerUp(type) {
         gameState.powerUps[type] = false;
-        if (type === 'wide') gameState.basket.width = 70;
+        if (type === 'wide') gameState.basket.width = 84;
     }
 
     function createParticles(x, y, emoji) {
@@ -1121,8 +1136,24 @@
         }
 
         gameState.items.forEach(item => {
-            ctx.font = '25px Arial';
+            const isHazard = item.type === 'bomb' || item.type === 'explosion';
+            const isPowerUp = !isHazard && item.type !== 'fruit';
+
+            if (isHazard) {
+                ctx.shadowBlur = 20;
+                ctx.shadowColor = 'red';
+                ctx.font = '30px Arial';
+            } else if (isPowerUp) {
+                ctx.shadowBlur = 20;
+                ctx.shadowColor = '#00ffcc';
+                ctx.font = '28px Arial';
+            } else {
+                ctx.shadowBlur = 0;
+                ctx.font = '28px Arial';
+            }
+
             ctx.fillText(item.emoji, item.x, item.y);
+            ctx.shadowBlur = 0;
         });
 
         gameState.particles.forEach(p => {
