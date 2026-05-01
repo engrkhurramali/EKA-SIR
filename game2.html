@@ -11,7 +11,7 @@
             --glass: rgba(255, 255, 255, 0.12); --vh: 1vh;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             margin: 0; padding: 0;
@@ -19,6 +19,7 @@
             height: calc(var(--vh) * 100); width: 100vw;
             overflow: hidden; font-family: sans-serif;
             display: flex; flex-direction: column;
+            touch-action: none;
         }
 
         .screen {
@@ -35,7 +36,6 @@
             border-radius: 15px; padding: 15px;
         }
 
-        /* GRID FIX: Ensures 3x3 visibility */
         #shapesGrid {
             display: grid; grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(3, 1fr); gap: 8px;
@@ -46,16 +46,15 @@
             background: rgba(255,255,255,0.05); border-radius: 12px;
             display: flex; justify-content: center; align-items: center;
             border: 1px solid rgba(255,255,255,0.1);
+            touch-action: none;
         }
 
-        /* Responsive Shape Sizes */
         .circle { width: 50%; height: 50%; border-radius: 50%; }
         .square { width: 50%; height: 50%; }
         .triangle { width: 0; height: 0; border-left: 22px solid transparent; border-right: 22px solid transparent; border-bottom: 44px solid; }
         .star { width: 55%; height: 55%; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
         .hexagon { width: 55%; height: 55%; clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%); }
 
-        /* Standardized Header & Stats */
         header {
             padding: 10px 16px 6px;
             text-align: center;
@@ -110,6 +109,16 @@
             margin-top: 5px;
             border: 1px solid rgba(255,255,255,0.1);
         }
+
+        button {
+            width: 100%; padding: 15px; border: none; border-radius: 10px;
+            color: white; font-weight: bold; font-size: 1.1rem; margin-top: 10px;
+            cursor: pointer; background: var(--primary);
+        }
+        input[type="text"] {
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1); color: white; margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -118,14 +127,14 @@
     <h2 style="text-align:center">EKA MOBILE SNAP</h2>
     <div class="glass-panel" style="margin-top: auto; margin-bottom: 20px;">
         <input type="text" id="playerName" placeholder="Player Name" maxlength="10">
-        <select id="ageSelect" class="input-field" style="width: 100%; margin: 8px 0; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);">
+        <select id="ageSelect" style="width: 100%; margin: 8px 0; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);">
             <option value="Age < 8">Age &lt; 8</option>
             <option value="Age 8-12">Age 8-12</option>
             <option value="Age 12-16" selected>Age 12-16</option>
             <option value="Age 16-20">Age 16-20</option>
             <option value="Age 20+">Age 20+</option>
         </select>
-        <select id="themeDropdown"></select>
+        <select id="themeDropdown" style="width: 100%; margin: 8px 0; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);"></select>
         <button id="startBtn" style="background: #10b981;">START ADVENTURE</button>
     </div>
 </div>
@@ -167,12 +176,12 @@
 
     const themes = {
         icecube: { bg: 'linear-gradient(135deg, #020617, #0f172a)', primary: '#00d2ff', secondary: '#0ea5e9' },
-        sunset: { bg: 'linear-gradient(135deg, #431407, #7c2d12)', primary: '#fbbf24', secondary: '#ea580c' }
+        sunset: { bg: 'linear-gradient(135deg, #431407, #7c2d12)', primary: '#fbbf24', secondary: '#ea580c' },
+        neon: { bg: 'linear-gradient(135deg, #1a0033, #000000)', primary: '#ff00ff', secondary: '#00ffff' }
     };
 
     let score = 0, timeLeft = 60, level = 1, isGameActive = false, timerInterval;
     let currentAge = "Age 12-16";
-    const synth = window.speechSynthesis;
     const colors = ['red', 'blue', 'green', 'orange', 'purple', 'yellow', 'white'];
     const shapes = ['circle', 'square', 'triangle', 'star', 'hexagon'];
 
@@ -184,30 +193,82 @@
         "Age 20+":   { timeBonus: 2, penalty: 15, levelStep: 250 }
     };
 
+    // --- High-Performance Audio System (Web Audio API) ---
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+    const synth = window.speechSynthesis;
+
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new AudioContext();
+        }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }
+
+    function playSound(type) {
+        initAudio();
+        if (!audioCtx) return;
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        const now = audioCtx.currentTime;
+
+        if (type === 'correct') {
+            osc.frequency.setValueAtTime(523.25, now);
+            osc.frequency.exponentialRampToValueAtTime(880, now + 0.1);
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+            osc.start(); osc.stop(now + 0.15);
+        } else if (type === 'wrong') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(150, now);
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+            osc.start(); osc.stop(now + 0.2);
+        } else if (type === 'click') {
+            osc.frequency.setValueAtTime(800, now);
+            gain.gain.setValueAtTime(0.05, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+            osc.start(); osc.stop(now + 0.05);
+        }
+    }
+
+    function speak(text) {
+        if (!synth) return;
+        try {
+            synth.cancel();
+            if (text === "") return;
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.rate = 1.3;
+            synth.speak(utter);
+        } catch (e) { console.warn("Speech error:", e); }
+    }
+
     function showScreen(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
     }
 
-    function speak(text) {
-        synth.cancel();
-        const utter = new SpeechSynthesisUtterance(text);
-        utter.rate = 1.2;
-        synth.speak(utter);
-    }
-
     const handleStart = () => {
+        initAudio();
+        playSound('click');
         showScreen('screen-game');
         isGameActive = true;
         score = 0; timeLeft = 60; level = 1;
         currentAge = document.getElementById('ageSelect').value;
         updateStats();
 
-        speak("Ready");
+        speak(""); // Android warm-up
+        setTimeout(() => speak("Ready"), 50);
 
         nextPrompt();
         if(timerInterval) clearInterval(timerInterval);
         timerInterval = setInterval(() => {
+            if (!isGameActive) return;
             timeLeft--;
             updateTimerUI();
             if(timeLeft <= 0) endGame();
@@ -220,8 +281,10 @@
         document.getElementById('disp-timer').textContent = `⏱️ ${m}:${s}`;
         const pct = (timeLeft / 60) * 100;
         const bar = document.getElementById('timer-bar');
-        bar.style.width = pct + "%";
-        bar.style.backgroundColor = pct < 25 ? "#ff6b6b" : "#00b894";
+        if (bar) {
+            bar.style.width = pct + "%";
+            bar.style.backgroundColor = pct < 25 ? "#ff6b6b" : "#00b894";
+        }
     }
 
     function updateStats() {
@@ -253,12 +316,14 @@
             if(item.shape === 'triangle') shp.style.borderBottomColor = item.color;
             else shp.style.backgroundColor = item.color;
 
-            cube.addEventListener('pointerdown', (e) => {
+            const handleTouch = (e) => {
                 e.preventDefault();
                 if(!isGameActive) return;
+                initAudio();
                 const config = AGE_CONFIGS[currentAge];
                 if(item.color === targetC && item.shape === targetS) {
                     score += 10;
+                    playSound('correct');
                     if (score > 0 && score % config.levelStep === 0) {
                         level++;
                         timeLeft = Math.min(60, timeLeft + config.timeBonus);
@@ -266,10 +331,13 @@
                     if(navigator.vibrate) navigator.vibrate(40);
                 } else {
                     score = Math.max(0, score - config.penalty);
+                    playSound('wrong');
                 }
                 updateStats();
                 nextPrompt();
-            });
+            };
+
+            cube.addEventListener('pointerdown', handleTouch);
             cube.appendChild(shp);
             grid.appendChild(cube);
         });
@@ -290,7 +358,6 @@
         localStorage.setItem(key, JSON.stringify(history.slice(0, 10)));
     }
 
-    // Attach listeners directly to avoid mobile lag
     document.getElementById('startBtn').onclick = handleStart;
     document.getElementById('restartBtn').onclick = handleStart;
 
@@ -302,6 +369,7 @@
             document.getElementById('theme-styles').innerHTML = `:root { --primary:${t.primary}; --secondary:${t.secondary}; --bg:${t.bg}; } body { background:${t.bg}; }`;
         };
         drop.dispatchEvent(new Event('change'));
+        if (synth) synth.getVoices();
     };
 </script>
 </body>
