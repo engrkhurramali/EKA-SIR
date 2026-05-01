@@ -134,7 +134,11 @@
 <body>
 <div class="app-container">
     <header>
-        <h1>EKA CROSSWORD</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+            <a href="games.html" style="text-decoration:none; background:rgba(255,255,255,0.4); padding:4px 10px; border-radius:15px; color:var(--text-main); font-weight:bold; font-size:0.8rem;">⬅ Home</a>
+            <h1>EKA CROSSWORD</h1>
+            <div style="width:50px;"></div>
+        </div>
         <div class="stats-row">
             <span class="stat-badge" id="disp-timer">⏱️ 02:00</span>
             <div class="timer-container"><div id="timer-bar"></div></div>
@@ -453,6 +457,10 @@
         clearInterval(timerInterval);
         const finalScore = calculateScore(won);
 
+        if (won) {
+            saveScore(finalScore);
+        }
+
         const btnRestart = document.getElementById('btn-restart');
         if (won) {
             btnRestart.textContent = "Next Level";
@@ -486,6 +494,13 @@
             baseScore = 0;
             init();
         };
+    }
+
+    function saveScore(score) {
+        const key = 'eka_score_crossword';
+        const history = JSON.parse(localStorage.getItem(key) || '[]');
+        history.unshift({ score: score, date: new Date().toLocaleDateString(), level: levelCount });
+        localStorage.setItem(key, JSON.stringify(history.slice(0, 10)));
     }
 
     function navTo(id) {

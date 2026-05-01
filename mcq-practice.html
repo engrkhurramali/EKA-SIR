@@ -189,8 +189,11 @@
 
     function initData() {
         if (window.QUIZ_DATA) {
-            // Filter keys by subject prefix (e.g., "maths9" finds "maths9_u1", "maths9_u2")
-            const keys = Object.keys(QUIZ_DATA).filter(k => k.startsWith(subjectParam));
+            // Precise filtering: exact match or subject_uX pattern
+            const keys = Object.keys(QUIZ_DATA).filter(k => {
+                if (k === subjectParam) return true;
+                return k.startsWith(subjectParam + "_") && !subjectParam.includes('_u');
+            });
             let combinedTsv = "";
             keys.forEach(k => {
                 combinedTsv += (combinedTsv ? "\n" : "") + QUIZ_DATA[k].tsv.trim();

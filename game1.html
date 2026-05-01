@@ -344,7 +344,11 @@
     <canvas id="gameCanvas"></canvas>
 
     <header id="gameHeader" class="game-header hidden">
-        <h1 id="headerTitle">🍍 Fruit Basket 🧺</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; pointer-events: auto;">
+            <a href="games.html" style="text-decoration:none; background:rgba(255,255,255,0.2); padding:4px 10px; border-radius:15px; color:white; font-weight:bold; font-size:0.8rem;">⬅ Home</a>
+            <h1 id="headerTitle">🍍 Fruit Basket 🧺</h1>
+            <div style="width:50px;"></div>
+        </div>
         <div class="stats-row">
             <span class="stat-badge" id="disp-timer">⏱️ 01:00</span>
             <div class="timer-container"><div id="timer-bar"></div></div>
@@ -1183,10 +1187,18 @@
         btn.textContent = '⏳ Saving...';
 
         await saveScoreToFirebase(gameState.playerName, gameState.score);
+        saveScoreToEka(gameState.score);
 
         btn.disabled = false;
         btn.textContent = '📝 Submit & Save Score';
         showMainMenu();
+    }
+
+    function saveScoreToEka(score) {
+        const key = 'eka_score_fruitbasket';
+        const history = JSON.parse(localStorage.getItem(key) || '[]');
+        history.unshift({ score: score, date: new Date().toLocaleDateString(), player: gameState.playerName });
+        localStorage.setItem(key, JSON.stringify(history.slice(0, 10)));
     }
 
     // ============================================

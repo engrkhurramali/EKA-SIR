@@ -5,112 +5,242 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Games - EKA SIR</title>
     <style>
-        body {
-            background: linear-gradient(135deg, #87CEEB, #98FF98);
-            font-family: 'Segoe UI', sans-serif;
-            padding: 20px;
-            padding-top: 50px; /* Adjusted for the Blue Bar */
-            margin: 0;
+        :root {
+            --sky-blue: #87CEEB;
+            --mint-green: #98FF98;
+            --text-dark: #1a5f7a;
+            --glass: rgba(255, 255, 255, 0.25);
+            --border: rgba(255, 255, 255, 0.4);
         }
 
-        .glass-panel {
-            background: rgba(255,255,255,0.25);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
+        body {
+            background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
+            background-attachment: fixed;
+            font-family: 'Segoe UI', sans-serif;
             padding: 20px;
-            border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin: 0;
+            color: var(--text-dark);
+        }
+
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
         }
 
         .home-btn {
             text-decoration: none;
             background: #fff;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 50px;
             font-weight: bold;
-            color: #1a5f7a;
-            display: inline-block;
-            margin-bottom: 20px;
+            color: var(--text-dark);
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            font-size: 0.9rem;
+        }
+
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        h1 { margin: 0; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px; }
+        .subtitle { font-size: 0.85rem; opacity: 0.8; margin-top: 5px; }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
         }
 
         .game-card {
-            background: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 20px;
-            text-align: center;
-            transition: transform 0.2s;
-        }
-
-        .play-btn {
-            display: inline-block;
-            background: #0078D4; /* Matches your Blue Bar */
-            color: white;
-            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 20px;
             text-decoration: none;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 18px;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(0, 120, 212, 0.3);
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
-        .play-btn:active {
+        .game-card:active {
             transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .game-preview {
+            height: 100px;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        /* Enhanced Visual Previews using CSS Art */
+        .preview-basket { background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%); }
+        .preview-crossword { background: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px), repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px); background-color: #fff; }
+        .preview-guess { background: radial-gradient(circle at center, #fff176 0%, #fbc02d 100%); }
+        .preview-clock { background: conic-gradient(#81c784, #4db6ac, #81c784); }
+        .preview-snap { background: linear-gradient(135deg, #64b5f6 0%, #1e88e5 100%); }
+        .preview-scrabble { background: #d7ccc8; border: 4px solid #8d6e63; }
+        .preview-tictactoe { background: #eceff1; }
+
+        .preview-tictactoe::before {
+            content: '❌'; position: absolute; left: 15%; top: 15%; font-size: 30px;
+        }
+        .preview-tictactoe::after {
+            content: '⭕'; position: absolute; right: 15%; bottom: 15%; font-size: 30px;
+        }
+
+        .game-card:hover .game-preview {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+
+        /* Animated visual effects for specific games */
+        .preview-snap { animation: pulse 2s infinite; }
+        .preview-clock { animation: rotate 4s infinite linear; }
+        .preview-fruit { animation: bounce 2s infinite; }
+
+        @keyframes pulse { 0% { opacity: 0.7; } 50% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0.7; } }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+        .game-info {
+            padding: 12px 10px;
+            text-align: center;
+            background: rgba(255,255,255,0.2);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .game-info h3 {
+            margin: 0;
+            font-size: 0.9rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .game-info p {
+            margin: 4px 0 0;
+            font-size: 0.7rem;
+            opacity: 0.8;
+            font-weight: 600;
+        }
+
+        .tag-new {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #ff6b6b;
+            color: white;
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 800;
         }
     </style>
 </head>
 <body>
 
-<a href="index.html" class="home-btn">🏠 Home Dashboard</a>
+<div class="header-row">
+    <a href="index.html" class="home-btn">🏠 HOME</a>
+    <div style="font-weight: 800; font-size: 0.8rem; opacity: 0.6;">EKA SIR v3.5</div>
+</div>
 
 <div class="glass-panel">
-    <h1>🎮 Learning Games</h1>
-    <p>Challenge your brain with interactive physics and math puzzles!</p>
+    <h1>🎮 PLAY & LEARN</h1>
+    <p class="subtitle">Interactive educational games for all ages!</p>
 
-    <div class="game-card">
-        <h3>EKA FRUIT BASKET</h3>
-        <p>Collect Fruits!</p>
-        <a href="game1.html" class="play-btn">FRUIT BASKET</a>
-    </div>
-    <br>
-    <div class="game-card">
-        <h3>CROSSWORD</h3>
-        <p>Test your VOCABULARY.</p>
-        <a href="crossword.html" class="play-btn">CROSSWORD</a>
-    </div>
-    <br>
-    <br>
-    <div class="game-card">
-        <h3>GUESS WORD</h3>
-        <p>Test your VOCABULARY.</p>
-        <a href="guessword.html" class="play-btn">GUESS WORD</a>
-    </div>
-    <br>
-    <div class="game-card">
-        <h3>CLICK CLOCK</h3>
-        <p>Test your REACTION TIME.</p>
-        <a href="gameclickclock.html" class="play-btn">CLICK CLOCK</a>
-    </div>
-    <br>
-    <div class="game-card">
-        <h3>TIC TAC TOE</h3>
-        <p>Challenge the AI or a friend!</p>
-        <a href="tictactoe.html" class="play-btn">TIC TAC TOE</a>
-    </div>
-    <br>
-    <div class="game-card">
-        <h3>EKA MOBILE SNAP</h3>
-        <p>Match the shapes and colors!</p>
-        <a href="game2.html" class="play-btn">MOBILE SNAP</a>
-    </div>
-    <br>
-    <div class="game-card">
-        <h3>SCRAMBLE WORDS</h3>
-        <p>Unscramble the educational terms!</p>
-        <a href="scrabblewords.html" class="play-btn">SCRAMBLE</a>
+    <div class="game-grid">
+        <!-- Fruit Basket -->
+        <a href="game1.html" class="game-card">
+            <div class="game-preview preview-basket preview-fruit">🧺</div>
+            <div class="game-info">
+                <h3>FRUIT BASKET</h3>
+                <p>Catch & Score</p>
+            </div>
+        </a>
+
+        <!-- Crossword -->
+        <a href="crossword.html" class="game-card">
+            <div class="game-preview preview-crossword">🔠</div>
+            <div class="game-info">
+                <h3>CROSSWORD</h3>
+                <p>Vocabulary Test</p>
+            </div>
+        </a>
+
+        <!-- Guess Word -->
+        <a href="guessword.html" class="game-card">
+            <div class="game-preview preview-guess">💡</div>
+            <div class="game-info">
+                <h3>GUESS WORD</h3>
+                <p>Think & Solve</p>
+            </div>
+        </a>
+
+        <!-- Click Clock -->
+        <a href="gameclickclock.html" class="game-card">
+            <div class="game-preview preview-clock">⏱️</div>
+            <div class="game-info">
+                <h3>CLICK CLOCK</h3>
+                <p>Precision Time</p>
+            </div>
+        </a>
+
+        <!-- Mobile Snap -->
+        <a href="game2.html" class="game-card">
+            <span class="tag-new">NEW</span>
+            <div class="game-preview preview-snap preview-snap-anim">🧊</div>
+            <div class="game-info">
+                <h3>MOBILE SNAP</h3>
+                <p>Speed Match</p>
+            </div>
+        </a>
+
+        <!-- Scrabble -->
+        <a href="scrabblewords.html" class="game-card">
+            <div class="game-preview preview-scrabble">🧩</div>
+            <div class="game-info">
+                <h3>SCRABBLE</h3>
+                <p>Word Building</p>
+            </div>
+        </a>
+
+        <!-- Tic Tac Toe -->
+        <a href="tictactoe.html" class="game-card">
+            <div class="game-preview preview-tictactoe">🎮</div>
+            <div class="game-info">
+                <h3>TIC TAC TOE</h3>
+                <p>Classic Strategy</p>
+            </div>
+        </a>
+
+        <!-- Placeholder/Coming Soon -->
+        <div class="game-card" style="opacity: 0.5; pointer-events: none;">
+            <div class="game-preview">🏗️</div>
+            <div class="game-info">
+                <h3>MORE GAMES</h3>
+                <p>Coming Soon...</p>
+            </div>
+        </div>
     </div>
 </div>
 

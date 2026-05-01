@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Maths Class 7 - EKA SIR</title>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-heavy: rgba(255, 255, 255, 0.4);
+            --sky-blue: #87CEEB;
+            --mint-green: #98FF98;
+            --text-dark: #1a5f7a;
+            --border: rgba(255, 255, 255, 0.5);
+            --accent: #ff6b6b;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), inset 0 0 15px rgba(255, 255, 255, 0.3);
+            box-sizing: border-box;
+        }
+
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .back-btn {
+            background: var(--glass-heavy);
+            padding: 10px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: bold;
+            border: 1px solid var(--border);
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .back-btn:active { transform: scale(0.9); }
+
+        h1 {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .math-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .math-item {
+            background: var(--glass-heavy);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .math-item span {
+            font-weight: 700;
+            font-size: 0.95rem;
+            flex: 1;
+        }
+
+        .math-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .math-btns a {
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 800;
+            padding: 10px 15px;
+            border-radius: 12px;
+            background: var(--text-dark);
+            color: white;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .math-btns a.ex {
+            background: var(--accent);
+        }
+
+        .math-btns a:active {
+            transform: scale(0.9);
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="nav-header">
+        <a href="notes.html" class="back-btn">â¬… Back</a>
+        <h1 id="grade-title">Maths Class 7</h1>
+    </div>
+
+    <div class="math-list" id="math-list"></div>
+</div>
+
+<script src="quiz_data_class7.js"></script>
+<script>
+    const grade = 7;
+    const list = document.getElementById('math-list');
+
+    // Dynamically find all math units for this grade from QUIZ_DATA
+    if (window.QUIZ_DATA) {
+        const prefix = `class${grade}_maths_u`;
+        const units = Object.keys(window.QUIZ_DATA)
+            .filter(k => k.startsWith(prefix))
+            .sort((a, b) => {
+                const numA = parseInt(a.replace(prefix, ''));
+                const numB = parseInt(b.replace(prefix, ''));
+                return numA - numB;
+            });
+
+        if (units.length > 0) {
+            units.forEach(uKey => {
+                const unitData = window.QUIZ_DATA[uKey];
+                const uNum = uKey.replace(prefix, '');
+                const item = document.createElement('div');
+                item.className = 'math-item';
+                item.innerHTML = `
+                    <span>Unit ${uNum}: ${unitData.subtitle || 'General Exercises'}</span>
+                    <div class="math-btns">
+                        <a href="https://www.youtube.com/@engineerkhurramali" target="_blank">Intro</a>
+                        <a href="mcq-practice.html?subject=${uKey}&grade=${grade}" class="ex">Exercise</a>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        } else {
+            list.innerHTML = '<p style="text-align:center; opacity:0.6;">No units found for this grade yet.</p>';
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -113,6 +113,47 @@
 
         .note-card:active { background: #fff; }
 
+        .math-list {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .math-item {
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .math-item span {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            flex: 1;
+            padding-right: 10px;
+        }
+        .math-btns {
+            display: flex;
+            gap: 5px;
+        }
+        .math-btns a {
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 5px 8px;
+            border-radius: 6px;
+            background: var(--text-dark);
+            color: white;
+            transition: 0.2s;
+            text-align: center;
+            min-width: 45px;
+        }
+        .math-btns a:active { transform: scale(0.9); }
+        .math-btns a.ex { background: #ff6b6b; }
+
         .tag {
             font-size: 0.7rem;
             background: var(--text-dark);
@@ -171,22 +212,32 @@
 
     <!-- Primary & Middle (1-8) placeholder generation -->
     <script>
-        const grades = [1, 2, 3, 4, 5, 6, 7, 8];
+        const grades = [1, 2, 3, 4, 6, 7, 8];
         grades.forEach(g => {
             document.write(`
                 <div id="class${g}" class="subject-section">
                     <h3>📚 CLASS ${g} NOTES</h3>
-                    <a href="#" class="note-card">Mathematics <span class="tag">STBB</span></a>
-                    <a href="#" class="note-card">English <span class="tag">STBB</span></a>
-                    <a href="#" class="note-card">Urdu <span class="tag">STBB</span></a>
-                    <a href="#" class="note-card">Science <span class="tag">STBB</span></a>
-                    <a href="#" class="note-card">Social Studies <span class="tag">STBB</span></a>
-                    <a href="#" class="note-card">Islamiat <span class="tag">STBB</span></a>
+                    <a href="maths${g}_exercises.html" class="note-card">Mathematics <span class="tag">STBB</span></a>
+                    <a href="mcq-practice.html?subject=class${g}_english&grade=${g}" class="note-card">English <span class="tag">QUIZ</span></a>
+                    <a href="mcq-practice.html?subject=class${g}_urdu&grade=${g}" class="note-card">Urdu <span class="tag">QUIZ</span></a>
+                    <a href="mcq-practice.html?subject=class${g}_science&grade=${g}" class="note-card">Science <span class="tag">QUIZ</span></a>
+                    <a href="mcq-practice.html?subject=class${g}_sstudies&grade=${g}" class="note-card">Social Studies <span class="tag">QUIZ</span></a>
+                    <a href="mcq-practice.html?subject=class${g}_islamiat&grade=${g}" class="note-card">Islamiat <span class="tag">QUIZ</span></a>
                     <a href="#" class="note-card">Computer <span class="tag">STBB</span></a>
                 </div>
             `);
         });
     </script>
+
+    <!-- Class 5 Specific -->
+    <div id="class5" class="subject-section">
+        <h3>📚 CLASS 5 RESOURCES</h3>
+        <a href="maths5_exercises.html" class="note-card">Mathematics <span class="tag">STBB</span></a>
+        <a href="mcq-practice.html?subject=class5_science&grade=5" class="note-card">General Science <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class5_english&grade=5" class="note-card">English <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class5_urdu&grade=5" class="note-card">Urdu <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class5_islamiat&grade=5" class="note-card">Islamiat <span class="tag">QUIZ</span></a>
+    </div>
 
     <!-- Class 9 -->
     <div id="class9" class="subject-section active">

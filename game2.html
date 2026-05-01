@@ -132,7 +132,11 @@
 
 <div id="screen-game" class="screen">
     <header>
-        <h1>EKA MOBILE SNAP</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+            <a href="games.html" style="text-decoration:none; background:rgba(255,255,255,0.2); padding:4px 10px; border-radius:15px; color:white; font-weight:bold; font-size:0.8rem;">⬅ Home</a>
+            <h1>EKA MOBILE SNAP</h1>
+            <div style="width:50px;"></div>
+        </div>
         <div class="stats-row">
             <span class="stat-badge" id="disp-timer">⏱️ 01:00</span>
             <div class="timer-container"><div id="timer-bar"></div></div>
@@ -275,7 +279,15 @@
         isGameActive = false;
         clearInterval(timerInterval);
         document.getElementById('finalScore').textContent = score;
+        saveScore(score);
         showScreen('screen-result');
+    }
+
+    function saveScore(score) {
+        const key = 'eka_score_mobilesnap';
+        const history = JSON.parse(localStorage.getItem(key) || '[]');
+        history.unshift({ score: score, date: new Date().toLocaleDateString(), age: currentAge });
+        localStorage.setItem(key, JSON.stringify(history.slice(0, 10)));
     }
 
     // Attach listeners directly to avoid mobile lag
