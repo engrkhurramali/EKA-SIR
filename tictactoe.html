@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tic Tac Toe - EKA SIR</title>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-heavy: rgba(255, 255, 255, 0.4);
+            --sky-blue: #87CEEB;
+            --mint-green: #98FF98;
+            --text-dark: #1a5f7a;
+            --border: rgba(255, 255, 255, 0.5);
+            --accent: #ff6b6b;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 400px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .nav-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .menu-btn {
+            background: var(--glass-heavy);
+            padding: 8px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: bold;
+            border: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+
+        h1 {
+            font-size: 1.4rem;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .scoreboard {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .scorebox {
+            background: var(--glass-heavy);
+            padding: 10px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            flex: 1;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+            aspect-ratio: 1/1;
+            margin-bottom: 20px;
+        }
+
+        .cell {
+            background: var(--glass-heavy);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .cell:active {
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0.95);
+        }
+
+        #drawBox {
+            background: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            display: none;
+            margin-bottom: 15px;
+        }
+
+        .reset-btn {
+            background: var(--text-dark);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .reset-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="nav-header">
+        <a href="games.html" class="menu-btn">🏠 Menu</a>
+        <h1>Tic Tac Toe</h1>
+        <div style="width: 60px;"></div> <!-- Spacer -->
+    </div>
+
+    <div class="scoreboard">
+        <div class="scorebox">✔️ Score<br><span id="player1Score">0</span></div>
+        <div class="scorebox">⭕ Score<br><span id="player2Score">0</span></div>
+    </div>
+
+    <div id="drawBox">It's a Draw!</div>
+
+    <div class="board" id="board"></div>
+
+    <button class="reset-btn" onclick="resetGame()">RESET GAME</button>
+</div>
+
+<script>
+    const boardEl = document.getElementById('board');
+    const player1ScoreEl = document.getElementById('player1Score');
+    const player2ScoreEl = document.getElementById('player2Score');
+    const drawBox = document.getElementById('drawBox');
+
+    let board = Array(9).fill('');
+    let currentPlayer = Math.random() < 0.5 ? '✔️' : '⭕';
+    let player1StartsNext = currentPlayer === '⭕';
+    let gameOver = false;
+    let player1Score = 0;
+    let player2Score = 0;
+
+    function drawBoard() {
+        boardEl.innerHTML = '';
+        board.forEach((cell, index) => {
+            const cellEl = document.createElement('div');
+            cellEl.className = 'cell';
+            cellEl.textContent = cell;
+            cellEl.addEventListener('click', () => handleClick(index));
+            boardEl.appendChild(cellEl);
+        });
+    }
+
+    function handleClick(index) {
+        if (board[index] || gameOver) return;
+
+        board[index] = currentPlayer;
+        drawBoard();
+        checkWin();
+        if (!gameOver) {
+            currentPlayer = currentPlayer === '✔️' ? '⭕' : '✔️';
+        }
+    }
+
+    function checkWin() {
+        const wins = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+        ];
+
+        for (let combo of wins) {
+            const [a, b, c] = combo;
+            if (board[a] && board[a] === board[b] && board[b] === board[c]) {
+                gameOver = true;
+                if (board[a] === '✔️') {
+                    player1Score++;
+                    player1ScoreEl.textContent = player1Score;
+                } else {
+                    player2Score++;
+                    player2ScoreEl.textContent = player2Score;
+                }
+                return;
+            }
+        }
+
+        if (board.every(cell => cell)) {
+            gameOver = true;
+            drawBox.style.display = 'block';
+        }
+    }
+
+    function resetGame() {
+        board = Array(9).fill('');
+        drawBox.style.display = 'none';
+        gameOver = false;
+        player1StartsNext = !player1StartsNext;
+        currentPlayer = player1StartsNext ? '✔️' : '⭕';
+        drawBoard();
+    }
+
+    drawBoard();
+</script>
+</body>
+</html>

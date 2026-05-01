@@ -80,43 +80,51 @@
 
         .exercise-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
         }
 
         .ex-btn {
             background: var(--glass-heavy);
             border: 1px solid var(--border);
-            padding: 12px 5px;
-            border-radius: 15px;
+            padding: 15px 10px;
+            border-radius: 18px;
             text-align: center;
             cursor: pointer;
             transition: all 0.2s ease;
             font-weight: bold;
             color: var(--text-dark);
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
         .ex-btn:active {
             background: #fff;
             transform: scale(0.95);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .ex-btn span {
-            font-size: 0.65rem;
-            opacity: 0.8;
+            font-size: 0.7rem;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        /* YouTube Icon styling */
+        /* Video Icon styling */
         .ex-btn::after {
-            content: "▶";
-            font-size: 0.7rem;
+            content: "▶ Watch Video";
+            font-size: 0.65rem;
             color: var(--accent);
+            margin-top: 4px;
+            font-weight: 800;
         }
     </style>
 </head>
@@ -160,39 +168,48 @@
 </div>
 
 <script>
-    const structure = [
-        { ch: 1, count: 3 },
-        { ch: 2, count: 4 },
-        { ch: 3, count: 3 },
-        { ch: 4, count: 3 },
-        { ch: 5, count: 3 },
-        { ch: 6, count: 2 },
-        { ch: 7, count: 3 },
-        { ch: 8, count: 3 },
-        { ch: 9, count: 2 }
+    const chapters = [
+        { id: 1, title: "Physical Quantities" },
+        { id: 2, title: "Kinematics" },
+        { id: 3, title: "Dynamics" },
+        { id: 4, title: "Turning Effect" },
+        { id: 5, title: "Forces & Matter" },
+        { id: 6, title: "Gravitation" },
+        { id: 7, title: "Properties of Matter" },
+        { id: 8, title: "Thermal Properties" },
+        { id: 9, title: "Transfer of Heat" }
+    ];
+
+    const categories = [
+        { id: 'theory', label: 'Theory Solution' },
+        { id: 'num', label: 'Numericals' },
+        { id: 'mcq', label: 'MCQs Prep' },
+        { id: 'sum', label: 'Summary / Key' }
     ];
 
     const channelLink = "https://www.youtube.com/@engineerkhurramali";
+
+    // Specific video links mapping: "chID_catID"
     const videoLinks = {
-        // Specific links can be added here
+        // Example: "1_theory": "https://youtu.be/..."
     };
 
     function generateButtons() {
-        structure.forEach(item => {
-            const grid = document.getElementById(`ch${item.ch}-grid`);
+        chapters.forEach(ch => {
+            const grid = document.getElementById(`ch${ch.id}-grid`);
             if (!grid) return;
 
-            for (let i = 1; i <= item.count; i++) {
-                const exNum = `${item.ch}.${i}`;
-                const link = videoLinks[exNum] || channelLink;
+            categories.forEach(cat => {
+                const linkKey = `${ch.id}_${cat.id}`;
+                const link = videoLinks[linkKey] || channelLink;
 
                 const btn = document.createElement('a');
                 btn.className = 'ex-btn';
                 btn.href = link;
                 btn.target = "_blank";
-                btn.innerHTML = `<span>Exercise</span>Ex#${exNum}`;
+                btn.innerHTML = `<span>Chapter ${ch.id}</span>${cat.label}`;
                 grid.appendChild(btn);
-            }
+            });
         });
     }
 

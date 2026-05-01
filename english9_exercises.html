@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Physics Class 10 Exercises - EKA SIR</title>
+    <title>English Class 9 Exercises - EKA SIR</title>
     <style>
         :root {
             --glass: rgba(255, 255, 255, 0.25);
@@ -118,7 +118,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Video Icon styling */
         .ex-btn::after {
             content: "▶ Watch Video";
             font-size: 0.65rem;
@@ -133,87 +132,65 @@
 <div class="main-container">
     <div class="nav-header">
         <a href="notes.html" class="back-btn">⬅ Back</a>
-        <h1>Physics Class 10</h1>
+        <h1>English Class 9</h1>
     </div>
 
     <p style="text-align:center; font-size: 0.8rem; margin-bottom: 20px; font-weight: 600;">Sindh Text Book Board (Video Solutions)</p>
 
-    <div class="chapter-title">Chapter 10: General Wave Properties</div>
-    <div class="exercise-grid" id="ch10-grid"></div>
-
-    <div class="chapter-title">Chapter 11: Sound</div>
-    <div class="exercise-grid" id="ch11-grid"></div>
-
-    <div class="chapter-title">Chapter 12: Geometrical Optics</div>
-    <div class="exercise-grid" id="ch12-grid"></div>
-
-    <div class="chapter-title">Chapter 13: Electrostatics</div>
-    <div class="exercise-grid" id="ch13-grid"></div>
-
-    <div class="chapter-title">Chapter 14: Current Electricity</div>
-    <div class="exercise-grid" id="ch14-grid"></div>
-
-    <div class="chapter-title">Chapter 15: Electromagnetism</div>
-    <div class="exercise-grid" id="ch15-grid"></div>
-
-    <div class="chapter-title">Chapter 16: Basic Electronics</div>
-    <div class="exercise-grid" id="ch16-grid"></div>
-
-    <div class="chapter-title">Chapter 17: Information & Comm. Tech</div>
-    <div class="exercise-grid" id="ch17-grid"></div>
-
-    <div class="chapter-title">Chapter 18: Atomic & Nuclear Physics</div>
-    <div class="exercise-grid" id="ch18-grid"></div>
-
+    <div id="content"></div>
 </div>
 
 <script>
-    const chapters = [
-        { id: 10, title: "General Wave Properties" },
-        { id: 11, title: "Sound" },
-        { id: 12, title: "Geometrical Optics" },
-        { id: 13, title: "Electrostatics" },
-        { id: 14, title: "Current Electricity" },
-        { id: 15, title: "Electromagnetism" },
-        { id: 16, title: "Basic Electronics" },
-        { id: 17, title: "Information & Comm. Tech" },
-        { id: 18, title: "Atomic & Nuclear Physics" }
+    const units = [
+        { id: 1, title: "The Last Sermon of the Holy Prophet (PBUH)" },
+        { id: 2, title: "Shah Abdul Latif Bhittai" },
+        { id: 3, title: "The Neem Tree (Poem)" },
+        { id: 4, title: "Moen-jo-Daro" },
+        { id: 5, title: "Helen Keller" },
+        { id: 6, title: "The Daffodils (Poem)" },
+        { id: 7, title: "Health is Wealth" },
+        { id: 8, title: "Stopping by Woods on a Snowy Evening" },
+        { id: 9, title: "Responsibilities of a Good Citizen" },
+        { id: 10, title: "Abou Ben Adhem (Poem)" }
     ];
 
     const categories = [
-        { id: 'theory', label: 'Theory Solution' },
-        { id: 'num', label: 'Numericals' },
+        { id: 'sol', label: 'Lesson Solution' },
+        { id: 'gram', label: 'Grammar / Poetry' },
         { id: 'mcq', label: 'MCQs Prep' },
         { id: 'sum', label: 'Summary / Key' }
     ];
 
     const channelLink = "https://www.youtube.com/@engineerkhurramali";
+    const videoLinks = {};
 
-    // Specific video links mapping: "chID_catID"
-    const videoLinks = {
-        // Example: "10_theory": "https://youtu.be/..."
-    };
+    function generateContent() {
+        const container = document.getElementById('content');
+        units.forEach(unit => {
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'chapter-title';
+            titleDiv.innerText = `Unit ${unit.id}: ${unit.title}`;
+            container.appendChild(titleDiv);
 
-    function generateButtons() {
-        chapters.forEach(ch => {
-            const grid = document.getElementById(`ch${ch.id}-grid`);
-            if (!grid) return;
+            const gridDiv = document.createElement('div');
+            gridDiv.className = 'exercise-grid';
 
             categories.forEach(cat => {
-                const linkKey = `${ch.id}_${cat.id}`;
+                const linkKey = `u${unit.id}_${cat.id}`;
                 const link = videoLinks[linkKey] || channelLink;
 
                 const btn = document.createElement('a');
                 btn.className = 'ex-btn';
                 btn.href = link;
                 btn.target = "_blank";
-                btn.innerHTML = `<span>Chapter ${ch.id}</span>${cat.label}`;
-                grid.appendChild(btn);
+                btn.innerHTML = `<span>Unit ${unit.id}</span>${cat.label}`;
+                gridDiv.appendChild(btn);
             });
+            container.appendChild(gridDiv);
         });
     }
 
-    generateButtons();
+    generateContent();
 </script>
 
 </body>

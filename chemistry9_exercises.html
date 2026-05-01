@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Physics Class 10 Exercises - EKA SIR</title>
+    <title>Chemistry Class 9 Exercises - EKA SIR</title>
     <style>
         :root {
             --glass: rgba(255, 255, 255, 0.25);
@@ -133,51 +133,47 @@
 <div class="main-container">
     <div class="nav-header">
         <a href="notes.html" class="back-btn">⬅ Back</a>
-        <h1>Physics Class 10</h1>
+        <h1>Chemistry Class 9</h1>
     </div>
 
     <p style="text-align:center; font-size: 0.8rem; margin-bottom: 20px; font-weight: 600;">Sindh Text Book Board (Video Solutions)</p>
 
-    <div class="chapter-title">Chapter 10: General Wave Properties</div>
-    <div class="exercise-grid" id="ch10-grid"></div>
+    <div class="chapter-title">Chapter 1: Fundamentals of Chemistry</div>
+    <div class="exercise-grid" id="ch1-grid"></div>
 
-    <div class="chapter-title">Chapter 11: Sound</div>
-    <div class="exercise-grid" id="ch11-grid"></div>
+    <div class="chapter-title">Chapter 2: Atomic Structure</div>
+    <div class="exercise-grid" id="ch2-grid"></div>
 
-    <div class="chapter-title">Chapter 12: Geometrical Optics</div>
-    <div class="exercise-grid" id="ch12-grid"></div>
+    <div class="chapter-title">Chapter 3: Periodic Table and Periodicity</div>
+    <div class="exercise-grid" id="ch3-grid"></div>
 
-    <div class="chapter-title">Chapter 13: Electrostatics</div>
-    <div class="exercise-grid" id="ch13-grid"></div>
+    <div class="chapter-title">Chapter 4: Structure of Molecules</div>
+    <div class="exercise-grid" id="ch4-grid"></div>
 
-    <div class="chapter-title">Chapter 14: Current Electricity</div>
-    <div class="exercise-grid" id="ch14-grid"></div>
+    <div class="chapter-title">Chapter 5: Physical States of Matter</div>
+    <div class="exercise-grid" id="ch5-grid"></div>
 
-    <div class="chapter-title">Chapter 15: Electromagnetism</div>
-    <div class="exercise-grid" id="ch15-grid"></div>
+    <div class="chapter-title">Chapter 6: Solutions</div>
+    <div class="exercise-grid" id="ch6-grid"></div>
 
-    <div class="chapter-title">Chapter 16: Basic Electronics</div>
-    <div class="exercise-grid" id="ch16-grid"></div>
+    <div class="chapter-title">Chapter 7: Electrochemistry</div>
+    <div class="exercise-grid" id="ch7-grid"></div>
 
-    <div class="chapter-title">Chapter 17: Information & Comm. Tech</div>
-    <div class="exercise-grid" id="ch17-grid"></div>
-
-    <div class="chapter-title">Chapter 18: Atomic & Nuclear Physics</div>
-    <div class="exercise-grid" id="ch18-grid"></div>
+    <div class="chapter-title">Chapter 8: Chemical Reactivity</div>
+    <div class="exercise-grid" id="ch8-grid"></div>
 
 </div>
 
 <script>
     const chapters = [
-        { id: 10, title: "General Wave Properties" },
-        { id: 11, title: "Sound" },
-        { id: 12, title: "Geometrical Optics" },
-        { id: 13, title: "Electrostatics" },
-        { id: 14, title: "Current Electricity" },
-        { id: 15, title: "Electromagnetism" },
-        { id: 16, title: "Basic Electronics" },
-        { id: 17, title: "Information & Comm. Tech" },
-        { id: 18, title: "Atomic & Nuclear Physics" }
+        { id: 1, title: "Fundamentals" },
+        { id: 2, title: "Atomic Structure" },
+        { id: 3, title: "Periodic Table" },
+        { id: 4, title: "Molecules" },
+        { id: 5, title: "States of Matter" },
+        { id: 6, title: "Solutions" },
+        { id: 7, title: "Electrochemistry" },
+        { id: 8, title: "Reactivity" }
     ];
 
     const categories = [
@@ -188,11 +184,7 @@
     ];
 
     const channelLink = "https://www.youtube.com/@engineerkhurramali";
-
-    // Specific video links mapping: "chID_catID"
-    const videoLinks = {
-        // Example: "10_theory": "https://youtu.be/..."
-    };
+    const videoLinks = {};
 
     function generateButtons() {
         chapters.forEach(ch => {
