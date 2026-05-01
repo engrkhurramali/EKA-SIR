@@ -63,15 +63,15 @@
         }
 
         .title {
-            font-size: clamp(20px, 5vw, 32px);
+            font-size: clamp(22px, 6vw, 32px);
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             text-align: center;
             background: linear-gradient(45deg, #ff6b6b, #f9ca24, #6c5ce7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
         }
 
         .input-field {
@@ -79,32 +79,38 @@
             max-width: 250px;
             padding: 12px;
             margin: 8px 0;
-            border: 2px solid #6c5ce7;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
             color: white;
             font-size: 14px;
             text-align: center;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            transition: all 0.3s;
         }
 
         .input-field:focus {
             outline: none;
             border-color: #f9ca24;
-            box-shadow: 0 0 12px rgba(249, 202, 36, 0.5);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(249, 202, 36, 0.2);
         }
 
         .btn {
-            padding: 12px 30px;
+            padding: 12px 25px;
             margin: 8px;
             border: none;
-            border-radius: 25px;
+            border-radius: 12px;
             background: linear-gradient(45deg, #6c5ce7, #a29bfe);
             color: white;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.4);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .btn:active {
@@ -113,23 +119,25 @@
 
         .theme-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            max-width: 280px;
-            max-height: 25vh;
-            overflow-y: auto;
-            padding: 8px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            max-width: 320px;
+            padding: 4px;
         }
 
         .theme-btn {
-            padding: 8px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
+            padding: 8px 2px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
             background: rgba(255, 255, 255, 0.1);
             color: white;
-            font-size: 12px;
+            font-size: 10px;
             cursor: pointer;
             transition: all 0.3s;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .theme-btn.active {
@@ -275,14 +283,19 @@
         }
 
         .leaderboard {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.07);
             padding: 15px;
-            border-radius: 12px;
-            margin: 10px 0;
-            max-width: 85%;
-            max-height: 20vh;
+            border-radius: 18px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 320px;
+            max-height: 28vh;
             overflow-y: auto;
             color: white;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
 
         .leaderboard table {
@@ -338,6 +351,7 @@
         .theme-industrial { background: linear-gradient(135deg, #434343 0%, #000000 100%); }
         .theme-luxury { background: linear-gradient(135deg, #1a1a1a 0%, #4a4a4a 100%); }
         .theme-gold { background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 50%, #b38728 100%); }
+        .theme-sunset { background: linear-gradient(135deg, #ff512f 0%, #dd2476 100%); }
     </style>
 </head>
 <body>
@@ -371,34 +385,26 @@
 
     <div id="startScreen" class="screen">
         <h1 class="title">🍍🍎 FRUIT BASKET 🧺</h1>
-        <p style="color: white; margin-bottom: 15px; font-size: 12px;">By: EKA | V3.0</p>
+        <p style="color: rgba(255,255,255,0.6); margin-bottom: 15px; font-size: 11px;">By: EKA SIR | V 1.0</p>
 
+        <h3 style="color: white; margin: 12px 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8;">🎨 Select Theme</h3>
+        <div class="theme-grid" id="themeGrid"></div>
         <input type="text" id="playerName" class="input-field" placeholder="👤 Player Name" maxlength="15">
 
-        <h3 style="color: white; margin: 12px 0 8px; font-size: 14px;">👥 Select Age Bracket</h3>
-        <select id="ageSelect" class="input-field">
-            <option value="Age < 8">Age &lt; 8</option>
-            <option value="Age 8-12">Age 8-12</option>
-            <option value="Age 12-16" selected>Age 12-16</option>
-            <option value="Age 16-20">Age 16-20</option>
-            <option value="Age 20+">Age 20+</option>
-        </select>
+        <div style="display: flex; gap: 10px; width: 100%; max-width: 280px; margin-top: 10px;">
+            <button class="btn" id="startBtn" style="flex: 1.2; margin: 0; padding: 10px 5px; font-size: 13px;">🎮 Start Game</button>
+            <button class="btn" id="howToPlayBtn" style="flex: 0.8; margin: 0; padding: 10px 5px; font-size: 13px; background: linear-gradient(45deg, #00b894, #55efc4);">📖 Guide</button>
+        </div>
 
-        <h3 style="color: white; margin: 12px 0 8px; font-size: 14px;">🎨 Theme Selection</h3>
-        <div class="theme-grid" id="themeGrid"></div>
-
-        <button class="btn" id="startBtn" style="margin-top: 15px;">🎮 Start Game</button>
-        <button class="btn" id="howToPlayBtn" style="margin-top: 8px; background: linear-gradient(45deg, #00b894, #55efc4);">📖 How to Play</button>
-
-        <div class="leaderboard">
-            <h3 style="text-align: center; margin-bottom: 8px; font-size: 14px;">🏆 Top Scores 🏆</h3>
-            <div id="firebaseStatus" class="firebase-status">Loading scores...</div>
+        <div class="leaderboard" style="margin-top: 12px; max-height: 32vh;">
+            <h3 style="text-align: center; margin-bottom: 8px; font-size: 13px; color: #f9ca24; text-transform: uppercase;">🏆 Top 10 Leaders 🏆</h3>
+            <div id="firebaseStatus" class="firebase-status">Loading global scores...</div>
             <table>
                 <thead>
                 <tr>
-                    <th>Rank</th>
-                    <th>Score</th>
-                    <th>Name</th>
+                    <th style="width: 20%">Rank</th>
+                    <th style="width: 30%">Score</th>
+                    <th style="width: 50%">Name</th>
                 </tr>
                 </thead>
                 <tbody id="leaderboardBody">
@@ -495,12 +501,19 @@
             timestamp: firebase.database.ServerValue.TIMESTAMP
         };
 
-        return firebaseDB.ref('scores').push(scoreData)
+        // Timeout promise to prevent hanging
+        const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Firebase Timeout')), 5000)
+        );
+
+        const savePromise = firebaseDB.ref('scores').push(scoreData);
+
+        return Promise.race([savePromise, timeoutPromise])
             .then(() => {
                 console.log('Score saved to Firebase');
             })
             .catch(err => {
-                console.error('Firebase save error:', err);
+                console.error('Firebase save error or timeout:', err);
                 saveScoreLocal(name, score);
             });
     }
@@ -512,9 +525,9 @@
         }
 
         const statusEl = document.getElementById('firebaseStatus');
-        statusEl.textContent = '⏳ Loading scores...';
+        statusEl.textContent = '⏳ Loading global scores...';
 
-        firebaseDB.ref('scores')
+        const loadPromise = firebaseDB.ref('scores')
             .orderByChild('score')
             .limitToLast(10)
             .once('value')
@@ -525,11 +538,20 @@
                 });
                 scores.sort((a, b) => b.score - a.score);
                 displayLeaderboard(scores);
-                statusEl.textContent = '✅ Firebase scores loaded';
-            })
+                statusEl.textContent = '✅ Global scores loaded';
+                statusEl.style.color = '#55efc4';
+            });
+
+        // Timeout promise to prevent hanging (8 seconds as per plan)
+        const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Firebase Timeout')), 8000)
+        );
+
+        Promise.race([loadPromise, timeoutPromise])
             .catch(err => {
-                console.error('Firebase load error:', err);
-                statusEl.textContent = '⚠️ Using local scores';
+                console.error('Firebase load error or timeout:', err);
+                statusEl.textContent = '⚠️ Offline? Showing local scores';
+                statusEl.style.color = '#fdcb6e';
                 loadLeaderboardLocal();
             });
     }
@@ -629,21 +651,12 @@
         time: 60,
         level: 1,
         playerName: '',
-        currentAge: 'Age 12-16',
         currentTheme: 'deep-sea',
         basket: { x: 0, y: 0, width: 84, height: 55, speed: 8 },
         items: [],
         particles: [],
         powerUps: { wide: false, attract: false, shield: false, slow: false, time: false },
         powerUpTimers: {}
-    };
-
-    const AGE_CONFIGS = {
-        "Age < 8":   { speedMult: 0.8, spawnMult: 1.2 },
-        "Age 8-12":  { speedMult: 1.0, spawnMult: 1.0 },
-        "Age 12-16": { speedMult: 1.2, spawnMult: 0.9 },
-        "Age 16-20": { speedMult: 1.4, spawnMult: 0.8 },
-        "Age 20+":   { speedMult: 1.6, spawnMult: 0.7 }
     };
 
     // Continuous movement state
@@ -656,26 +669,12 @@
     const themes = {
         'deep-sea': { name: 'Deep Sea', class: 'theme-deep-sea' },
         'cyberpunk': { name: 'Cyberpunk', class: 'theme-cyberpunk' },
-        'classic': { name: 'Classic', class: 'theme-classic' },
-        'neon': { name: 'Neon Glow', class: 'theme-neon' },
-        'glow': { name: 'Glow', class: 'theme-glow' },
-        'pastel': { name: 'Pastel', class: 'theme-pastel' },
-        'soft': { name: 'Soft', class: 'theme-soft' },
-        'matrix': { name: 'Matrix', class: 'theme-matrix' },
+        'neon': { name: 'Neon', class: 'theme-neon' },
         'forest': { name: 'Forest', class: 'theme-forest' },
-        'nordic': { name: 'Nordic', class: 'theme-nordic' },
-        'frost': { name: 'Frost', class: 'theme-frost' },
-        'desert': { name: 'Desert', class: 'theme-desert' },
-        'clay': { name: 'Clay', class: 'theme-clay' },
-        'synthwave': { name: 'Synthwave', class: 'theme-synthwave' },
-        'vintage': { name: 'Vintage', class: 'theme-vintage' },
-        'paper': { name: 'Paper', class: 'theme-paper' },
-        'solarized': { name: 'Solarized Dark', class: 'theme-solarized' },
-        'dark': { name: 'Dark', class: 'theme-dark' },
-        'sakura': { name: 'Sakura', class: 'theme-sakura' },
-        'industrial': { name: 'Industrial', class: 'theme-industrial' },
+        'synthwave': { name: 'Synth', class: 'theme-synthwave' },
         'luxury': { name: 'Luxury', class: 'theme-luxury' },
-        'gold': { name: 'Gold', class: 'theme-gold' }
+        'gold': { name: 'Gold', class: 'theme-gold' },
+        'matrix': { name: 'Matrix', class: 'theme-matrix' }
     };
 
     const items = {
@@ -900,7 +899,6 @@
     function startGame() {
         const name = document.getElementById('playerName').value.trim() || 'Player';
         gameState.playerName = name;
-        gameState.currentAge = document.getElementById('ageSelect').value;
         gameState.score = 0;
         gameState.time = 60;
         gameState.level = 1;
@@ -922,8 +920,7 @@
     function spawnItems() {
         if (!gameState.isPlaying) return;
 
-        const ageMult = AGE_CONFIGS[gameState.currentAge]?.spawnMult || 1;
-        const baseInterval = (800 - (gameState.level - 1) * 50) * ageMult;
+        const baseInterval = (800 - (gameState.level - 1) * 50);
         const interval = gameState.powerUps.slow ? baseInterval * 1.5 : Math.max(400, baseInterval);
 
         setTimeout(() => {
@@ -938,13 +935,12 @@
 
     function spawnItem() {
         const rand = Math.random();
-        const ageSpeedMult = AGE_CONFIGS[gameState.currentAge]?.speedMult || 1;
         let item = {
             x: Math.random() * (canvas.width - 35) + 17,
             y: -40,
             emoji: '',
             type: '',
-            speed: ((gameState.powerUps.slow ? 2 : 3 + Math.random() * 2) + (gameState.level - 1) * 0.4) * ageSpeedMult
+            speed: (gameState.powerUps.slow ? 2 : 3 + Math.random() * 2) + (gameState.level - 1) * 0.4
         };
 
         if (rand < 0.7) {
@@ -984,7 +980,7 @@
 
     function updateScore() {
         document.getElementById('disp-score').textContent = `🌟 ${gameState.score}`;
-        document.getElementById('disp-level').textContent = gameState.currentAge;
+        document.getElementById('disp-level').textContent = `#${gameState.level}`;
         updateTimerUI();
         checkLevelUp();
     }
