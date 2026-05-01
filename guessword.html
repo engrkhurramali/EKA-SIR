@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#a8edea">
-    <title>Ice-Cube Word Guess</title>
+    <title>EKA WordGuess</title>
     <style>
         :root {
           --bg-grad: linear-gradient(160deg, #a8edea 0%, #b5f0e0 50%, #88d8c0 100%);
@@ -91,7 +91,7 @@
         /* Screens & Navigation */
         .screens-wrapper { flex: 1; position: relative; overflow: hidden; display: flex; }
         .screen {
-          position: absolute; inset: 0; padding: 12px 14px;
+          position: absolute; inset: 0; padding: 12px 1%;
           display: flex; flex-direction: column; gap: 10px;
           opacity: 0; transform: translateX(40px) scale(0.98);
           transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.35s;
@@ -141,14 +141,15 @@
 
         /* Word Display */
         .word-display {
-          display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
-          min-height: 52px; padding: 8px; width: 100%;
+          display: flex; flex-wrap: nowrap; justify-content: center; gap: 4px;
+          min-height: 52px; padding: 8px 2px; width: 100%;
+          overflow: hidden;
         }
         .letter-box {
-          width: 38px; height: 48px;
+          flex: 1 1 0px; height: 52px; min-width: 0;
           background: var(--cell-bg); border-radius: 8px;
           display: flex; align-items: center; justify-content: center;
-          font-size: 1.5rem; font-weight: 800; color: var(--accent);
+          font-size: clamp(0.7rem, 5.5vw, 1.8rem); font-weight: 800; color: var(--accent);
           border: 2px solid transparent;
         }
         .letter-box.revealed { background: rgba(129, 199, 132, 0.4); border-color: var(--success); }
@@ -166,7 +167,8 @@
 
         /* Alphabet Grid */
         .alpha-grid {
-          display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; width: 100%;
+          display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: 100%;
+          padding: 0 1%;
         }
         .alpha-btn {
           min-height: 44px; aspect-ratio: 1/1; border-radius: 10px;
@@ -211,7 +213,7 @@
 <body>
 <div class="app-container">
     <header>
-        <h1>Ice-Cube Word Guess</h1>
+        <h1>EKA WordGuess</h1>
         <div class="stats-row">
             <span class="stat-badge" id="disp-timer">⏱️ 01:00</span>
             <div class="timer-container"><div id="timer-bar"></div></div>
@@ -232,7 +234,7 @@
     <div class="screens-wrapper">
         <!-- GAME SCREEN -->
         <section id="screen-game" class="screen active">
-            <div class="glass-card" style="padding: 10px; gap: 10px;">
+            <div class="glass-card" style="padding: 10px 2px; gap: 10px; width: 100%;">
                 <div class="wrong-tracker" id="wrong-tracker"></div>
                 <div class="word-display" id="word-display"></div>
                 <div id="game-msg" class="stat-badge" style="min-height:24px; display:inline-block;">Pick a letter!</div>
@@ -248,8 +250,8 @@
                 <p>1. Guess the hidden word by tapping letters A-Z.</p>
                 <p>2. Correct letters reveal their positions.</p>
                 <p>3. Wrong guesses fill the tracker. <strong>12 mistakes = Lose!</strong></p>
-                <p>4. Beat the <strong>60-second</strong> clock to win.</p>
-                <p style="margin-top:8px; font-weight:600;">💡 Tip: Some words repeat letters. Choose carefully!</p>
+                <p>4. Beat the <strong>countdown</strong> clock to win.</p>
+                <p style="margin-top:8px; font-weight:600;">💡 Tip: Time decreases as you reach higher levels!</p>
                 <button class="btn primary" style="width:100%; margin-top:12px;" onclick="navTo('screen-game')">Back to Game</button>
             </div>
         </section>
@@ -304,9 +306,17 @@
       dictList: document.getElementById('dict-list')
     };
 
+    const LEVEL_CONFIGS = {
+        "Age < 8":   { time: 60 },
+        "Age 8-12":  { time: 90 },
+        "Age 12-16": { time: 120 },
+        "Age 16-20": { time: 150 },
+        "Age 20+":   { time: 180 }
+    };
+
     let state = {
       word: "", guessed: new Set(), wrong: 0, maxWrong: 12,
-      time: 60, interval: null, active: false, soundOn: true,
+      time: 60, maxTime: 60, interval: null, active: false, soundOn: true,
       baseScore: 0, levelCount: 1, dict: new Set(),
       currentLevel: "Age 12-16"
     };
@@ -351,7 +361,6 @@
       UI.btnReveal.addEventListener('pointerdown', e => { e.preventDefault(); revealWord(); });
       UI.btnSound.addEventListener('pointerdown', e => { e.preventDefault(); toggleSound(); });
       UI.btnGiveup.addEventListener('pointerdown', e => { e.preventDefault(); endGame(false); });
-      UI.btnAgain.addEventListener('pointerdown', e => { e.preventDefault(); closeModal(); newRound(); });
 
       // Level Change
       UI.levelSelect.addEventListener('change', e => {
@@ -372,7 +381,11 @@
           const btn = UI.alphaGrid.querySelector(`[data-c="${e.key.toUpperCase()}"]`);
           if (btn && !btn.classList.contains('disabled')) guessLetter(e.key.toUpperCase(), btn);
         }
-        if (e.key === 'Enter') newRound();
+        if (e.key === 'Enter') {
+            if (UI.modal.classList.contains('active')) {
+                UI.btnAgain.click();
+            }
+        }
       });
     }
 
@@ -393,12 +406,17 @@
 
     // --- GAME LOGIC ---
     function newRound(isNextLevel = false) {
+      clearInterval(state.interval);
       if (!isNextLevel) {
           state.baseScore = 0;
           state.levelCount = 1;
+          state.dict.clear();
       }
-      clearInterval(state.interval);
-      state.time = 60; state.wrong = 0; state.guessed.clear(); state.active = true;
+
+      const cfg = LEVEL_CONFIGS[state.currentLevel] || LEVEL_CONFIGS["Age 12-16"];
+      state.maxTime = Math.max(30, cfg.time - (state.levelCount - 1) * 10);
+      state.time = state.maxTime;
+      state.wrong = 0; state.guessed.clear(); state.active = true;
 
       const currentDict = getWordList();
       state.word = currentDict[Math.floor(Math.random() * currentDict.length)].toUpperCase();
@@ -428,7 +446,7 @@
       updateTracker();
       updateTimerUI();
       updateStatsUI();
-      UI.msg.textContent = "First letter revealed!";
+      UI.msg.textContent = `Level #${state.levelCount} - Start!`;
       UI.msg.style.background = 'var(--cell-bg)';
 
       state.interval = setInterval(() => {
@@ -449,7 +467,7 @@
       if (inWord) {
         if (navigator.vibrate) navigator.vibrate(40);
         playSound('hit');
-        state.time = Math.min(60, state.time + 3); // Bonus for correct letter
+        state.time = Math.min(state.maxTime, state.time + 3); // Bonus for correct letter
         revealPositions(char);
         UI.msg.textContent = "✅ Correct!";
         UI.msg.style.background = 'rgba(102,187,106,0.3)';
@@ -486,17 +504,26 @@
       clearInterval(state.interval);
       playSound(won ? 'win' : 'lose');
 
-      const currentScore = calculateScore(won);
+      let msg = "";
+      if (won) {
+          const wordPoints = state.word.length;
+          const timeBonus = Math.floor(Math.max(0, state.time) / 5);
+          const roundScore = wordPoints + timeBonus;
+          state.baseScore += roundScore;
+          msg = `Word: "${state.word}" (+${wordPoints} pts)\nTime Bonus: +${timeBonus} pts\nRound Total: +${roundScore} pts`;
+      } else {
+          msg = `The word was: ${state.word}`;
+      }
 
       UI.mTitle.textContent = won ? '🎉 You Win!' : '⏰ Game Over';
-      UI.mMsg.textContent = (won ? `Found "${state.word}"! Great job.` : `The word was: ${state.word}`) + `\nScore: ${currentScore}`;
+      UI.mMsg.style.whiteSpace = 'pre-line';
+      UI.mMsg.textContent = msg + `\n\nSession Total: ${state.baseScore}`;
 
       UI.btnAgain.textContent = won ? "Next Level" : "Play Again";
       UI.btnAgain.onclick = (e) => {
           e.preventDefault();
           closeModal();
           if (won) {
-              state.baseScore = currentScore;
               state.levelCount++;
               newRound(true);
           } else {
@@ -504,13 +531,8 @@
           }
       };
 
+      updateStatsUI();
       setTimeout(() => UI.modal.classList.add('active'), 300);
-    }
-
-    function calculateScore(won) {
-        const timeBonus = won ? Math.max(0, state.time) : 0;
-        const accuracyBonus = won ? Math.max(0, (state.maxWrong - state.wrong) * 10) : 0;
-        return state.baseScore + (won ? 50 : 0) + timeBonus + accuracyBonus;
     }
 
     function updateStatsUI() {
@@ -545,7 +567,7 @@
       UI.timer.textContent = `⏱️ ${m}:${s}`;
       UI.timer.style.color = state.time < 15 ? 'var(--danger)' : 'var(--text-main)';
 
-      const pct = (state.time / 60) * 100;
+      const pct = (state.time / state.maxTime) * 100;
       UI.timerBar.style.width = pct + "%";
       UI.timerBar.style.backgroundColor = pct < 25 ? "var(--danger)" : "var(--accent)";
     }
