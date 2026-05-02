@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chemistry Class 9 Summaries - EKA SIR</title>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-heavy: rgba(255, 255, 255, 0.4);
+            --sky-blue: #87CEEB;
+            --mint-green: #98FF98;
+            --text-dark: #1a5f7a;
+            --border: rgba(255, 255, 255, 0.5);
+            --accent: #ff6b6b;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 15px;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            margin-bottom: 30px;
+        }
+
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            background: var(--glass-heavy);
+            padding: 8px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: bold;
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+
+        .chapter-selector {
+            width: 100%;
+            padding: 12px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text-dark);
+            font-weight: bold;
+            margin-bottom: 20px;
+            outline: none;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        h1 { font-size: 1.2rem; text-align: center; margin: 0; text-transform: uppercase; color: var(--text-dark); }
+        h2 { font-size: 1.1rem; color: #fff; background: var(--text-dark); padding: 10px; border-radius: 10px; margin-top: 25px; text-align: center; }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .content-section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .summary-card {
+            background: rgba(255, 255, 255, 0.4);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 15px;
+            line-height: 1.6;
+            border: 1px solid rgba(255,255,255,0.5);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="nav-header">
+        <a href="chemistry9_exercises.html" class="back-btn">⬅ Back</a>
+        <h1>Chemistry Class 9 Notes</h1>
+    </div>
+
+    <select class="chapter-selector" id="chapterSelect" onchange="showChapter(this.value)">
+        <option value="1">Chapter 1: Fundamentals of Chemistry</option>
+        <option value="2">Chapter 2: Atomic Structure</option>
+        <option value="3">Chapter 3: Periodic Table and Periodicity</option>
+        <option value="4">Chapter 4: Structure of Molecules</option>
+        <option value="5">Chapter 5: Physical States of Matter</option>
+        <option value="6">Chapter 6: Solutions</option>
+        <option value="7">Chapter 7: Electrochemistry</option>
+        <option value="8">Chapter 8: Chemical Reactivity</option>
+    </select>
+
+    <div id="chapter1" class="content-section active"><h2>CHAPTER 1: FUNDAMENTALS OF CHEMISTRY</h2><div class="summary-card"><p>Coming Soon...</p></div></div>
+    <div id="chapter2" class="content-section"><h2>CHAPTER 2: ATOMIC STRUCTURE</h2><div class="summary-card"><p>Coming Soon...</p></div></div>
+    <div id="chapter3" class="content-section"><h2>CHAPTER 3: PERIODIC TABLE</h2><div class="summary-card"><p>Coming Soon...</p></div></div>
+    <div id="chapter4" class="content-section"><h2>CHAPTER 4: STRUCTURE OF MOLECULES</h2><div class="summary-card"><p>Coming Soon...</p></div></div>
+    <div id="chapter5" class="content-section"><h2>CHAPTER 5: PHYSICAL STATES OF MATTER</h2><div class="summary-card"><p>Coming Soon...</p></div></div>
+    <div id="chapter6" class="content-section"><h2>CHAPTER 6: SOLUTIONS</h2><div class="summary-card"><p>Coming Soon...</p></div></div>
+    <div id="chapter7" class="content-section"><h2>CHAPTER 7: ELECTROCHEMISTRY</h2><div class="summary-card"><p>Coming Soon...</p></div></div>
+    <div id="chapter8" class="content-section"><h2>CHAPTER 8: CHEMICAL REACTIVITY</h2><div class="summary-card"><p>Coming Soon...</p></div></div>
+
+</div>
+
+<script>
+    function showChapter(chId) {
+        const sections = document.querySelectorAll('.content-section');
+        sections.forEach(s => s.classList.remove('active'));
+
+        const selected = document.getElementById('chapter' + chId);
+        if (selected) {
+            selected.classList.add('active');
+            document.getElementById('chapterSelect').value = chId;
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const chapter = urlParams.get('chapter');
+        if (chapter) {
+            showChapter(chapter);
+        }
+    }
+</script>
+
+</body>
+</html>

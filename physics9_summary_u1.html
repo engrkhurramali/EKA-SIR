@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Physics Class 9 Summaries - EKA SIR</title>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-heavy: rgba(255, 255, 255, 0.4);
+            --sky-blue: #87CEEB;
+            --mint-green: #98FF98;
+            --text-dark: #1a5f7a;
+            --border: rgba(255, 255, 255, 0.5);
+            --accent: #ff6b6b;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 15px;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            margin-bottom: 30px;
+        }
+
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            background: var(--glass-heavy);
+            padding: 8px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: bold;
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+
+        .chapter-selector {
+            width: 100%;
+            padding: 12px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text-dark);
+            font-weight: bold;
+            margin-bottom: 20px;
+            outline: none;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        h1 { font-size: 1.2rem; text-align: center; margin: 0; text-transform: uppercase; color: var(--text-dark); }
+        h2 { font-size: 1.1rem; color: #fff; background: var(--text-dark); padding: 10px; border-radius: 10px; margin-top: 25px; text-align: center; }
+        h3 { font-size: 1rem; margin-top: 20px; color: #b71c1c; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 5px; }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .content-section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .summary-card {
+            background: rgba(255, 255, 255, 0.4);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 15px;
+            line-height: 1.6;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .page-break {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            opacity: 0.5;
+            margin: 30px 0 15px;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .page-break::before, .page-break::after { content: ""; flex: 1; height: 1px; background: var(--text-dark); opacity: 0.2; }
+
+        .key-term { font-weight: bold; color: #1a5f7a; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+
+        strong { color: #000; }
+
+        .highlight-box {
+            background: var(--mint-green);
+            padding: 12px;
+            border-radius: 12px;
+            margin: 15px 0;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-left: 5px solid var(--text-dark);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.85rem;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td { padding: 10px; border: 1px solid #eee; text-align: left; }
+        th { background: #f8f9fa; color: var(--text-dark); }
+
+        .formula-box {
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border: 1px dashed var(--text-dark);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="nav-header">
+        <a href="physics9_exercises.html" class="back-btn">⬅ Back</a>
+        <h1>Physics Class 9 Notes</h1>
+    </div>
+
+    <select class="chapter-selector" id="chapterSelect" onchange="showChapter(this.value)">
+        <option value="1">Chapter 1: Physical Quantities & Measurement</option>
+        <option value="2">Chapter 2: Kinematics</option>
+        <option value="3">Chapter 3: Dynamics</option>
+        <option value="4">Chapter 4: Turning Effect of Forces</option>
+        <option value="5">Chapter 5: Forces and Matter</option>
+        <option value="6">Chapter 6: Gravitation</option>
+        <option value="7">Chapter 7: Properties of Matter</option>
+        <option value="8">Chapter 8: Thermal Properties of Matter</option>
+        <option value="9">Chapter 9: Transfer of Heat</option>
+    </select>
+
+    <!-- CHAPTER 1 CONTENT -->
+    <div id="chapter1" class="content-section active">
+        <h2>CHAPTER 1: PHYSICAL QUANTITIES AND MEASUREMENT</h2>
+
+        <div class="page-break">PAGE 1: INTRODUCTION</div>
+
+        <div class="summary-card">
+            <h3>1.1 What is Physics?</h3>
+            <p>Physics is the fundamental branch of science that deals with the study of matter, its composition, properties, and interactions with energy. It seeks to understand the natural phenomena occurring in the universe through observation, experimentation, and mathematical analysis.</p>
+
+            <h3>1.2 Branches of Physics</h3>
+            <p>The branches of Physics are classified on the basis of different areas of study with different approaches. These include mechanics, thermodynamics, optics, electromagnetism, atomic physics, nuclear physics, and quantum physics, among others.</p>
+
+            <h3>1.3 Types of Physicists</h3>
+            <ul>
+                <li><strong>Theoretical Physicists:</strong> Develop mathematical models and theories to explain physical phenomena.</li>
+                <li><strong>Experimental Physicists:</strong> Conduct experiments and observations to test theories and discover new phenomena.</li>
+            </ul>
+
+            <h3>1.4 Physical Quantities</h3>
+            <p>Physics defines mathematical relationships between physical quantities. A <strong>physical quantity</strong> is any property that can be measured and expressed numerically. Every physical quantity has two essential components:</p>
+            <ol>
+                <li><strong>Magnitude</strong> (numerical value)</li>
+                <li><strong>Unit</strong> (standard of measurement)</li>
+            </ol>
+
+            <h3>1.5 Classification of Physical Quantities</h3>
+            <p><strong>(i) Base or Fundamental Quantities:</strong> These are independent quantities that cannot be defined in terms of other quantities. The seven base quantities are:</p>
+            <table>
+                <tr><th>Base Quantity</th><th>SI Unit</th><th>Symbol</th></tr>
+                <tr><td>Length</td><td>meter</td><td>m</td></tr>
+                <tr><td>Mass</td><td>kilogram</td><td>kg</td></tr>
+                <tr><td>Time</td><td>second</td><td>s</td></tr>
+                <tr><td>Electric Current</td><td>ampere</td><td>A</td></tr>
+                <tr><td>Temperature</td><td>kelvin</td><td>K</td></tr>
+                <tr><td>Amount of substance</td><td>mole</td><td>mol</td></tr>
+                <tr><td>Luminous intensity</td><td>candela</td><td>cd</td></tr>
+            </table>
+            <p><strong>(ii) Derived Physical Quantities:</strong> These are quantities that are derived from base quantities through mathematical operations. Examples include area, volume, speed, velocity, acceleration, force, energy, power, etc.</p>
+        </div>
+
+        <div class="page-break">PAGE 2: MEASUREMENT STANDARDS</div>
+
+        <div class="summary-card">
+            <h3>2.1 Standards of Measurement</h3>
+            <p><strong>Length:</strong> The standard unit of length is the <strong>meter (m)</strong>. Measured using: Measuring tape (for longer distances) or Meter rule (for shorter distances).</p>
+            <p><strong>Mass:</strong> The standard unit of mass is the <strong>kilogram (kg)</strong>. Measured using a physical balance or electronic balance.</p>
+            <p><strong>Time:</strong> The standard unit of time is the <strong>second (s)</strong>. Measured using: Stopwatch (for short intervals) or Clock (for longer durations).</p>
+
+            <h3>2.2 Scientific Notation</h3>
+            <p>Scientific notation is a way of writing numbers in the form: <span class="formula-box">a × 10ⁿ</span> where 'a' is a number between 1 and 10 and 'n' is an integer (positive or negative).</p>
+            <p><strong>Examples:</strong> Speed of light = 3 × 10⁸ m/s; Diameter of atom = 1 × 10⁻¹⁰ m.</p>
+
+            <h3>2.3 Measurement of Volume</h3>
+            <p><strong>Volume of Liquids:</strong> Calculated or measured with the help of a <strong>measuring cylinder</strong> marked in milliliters (mL) or cubic centimeters (cm³).</p>
+            <p><strong>Volume of Irregular Objects:</strong> Calculated using the <strong>water displacement method</strong>:</p>
+            <div class="formula-box">Volume of object = V₂ - V₁</div>
+
+            <h3>2.4 Prefixes</h3>
+            <p>Prefixes are added to the base units to indicate multiples or submultiples.</p>
+            <table>
+                <tr><th>Prefix</th><th>Value</th><th>Prefix</th><th>Value</th></tr>
+                <tr><td>Kilo (k)</td><td>10³</td><td>Centi (c)</td><td>10⁻²</td></tr>
+                <tr><td>Mega (M)</td><td>10⁶</td><td>Milli (m)</td><td>10⁻³</td></tr>
+                <tr><td>Giga (G)</td><td>10⁹</td><td>Micro (μ)</td><td>10⁻⁶</td></tr>
+                <tr><td>Tera (T)</td><td>10¹²</td><td>Nano (n)</td><td>10⁻⁹</td></tr>
+            </table>
+        </div>
+
+        <div class="page-break">PAGE 3: DENSITY & SIGNIFICANT FIGURES</div>
+
+        <div class="summary-card">
+            <h3>3.1 Density</h3>
+            <p>Density is defined as the ratio of mass per unit volume.</p>
+            <div class="formula-box">Density (ρ) = Mass (m) / Volume (V)</div>
+            <p><strong>Units:</strong> SI unit: kg/m³; CGS unit: g/cm³. Density of water = 1000 kg/m³ or 1 g/cm³.</p>
+
+            <h3>3.2 Specific Gravity (Relative Density)</h3>
+            <div class="formula-box">Specific Gravity = Density of Substance / Density of Water</div>
+            <p>Dimensionless quantity. If specific gravity > 1, the substance sinks in water. If < 1, it floats.</p>
+
+            <h3>3.3 Significant Figures</h3>
+            <p>The most accurate or reliable numbers of a value representing the precision of a measurement.</p>
+            <strong>Rules:</strong>
+            <ul>
+                <li>All non-zero digits are significant.</li>
+                <li>Zeros between non-zero digits are significant.</li>
+                <li>Leading zeros are <strong>NOT</strong> significant.</li>
+                <li>Trailing zeros after decimal point <strong>ARE</strong> significant.</li>
+                <li>Trailing zeros in whole numbers without decimal may or may not be significant.</li>
+            </ul>
+
+            <h3>3.4 Important Concepts Summary</h3>
+            <div class="highlight-box">
+                <strong>Measurement Instruments:</strong><br>
+                Length → Meter rule, Mass → Balance, Time → Stopwatch, Volume → Measuring cylinder, Temperature → Thermometer
+            </div>
+
+            <div class="highlight-box">
+                <strong>Applications in Daily Life:</strong><br>
+                Construction and engineering, Medicine and healthcare, Cooking and baking, Sports and athletics, Weather forecasting.
+            </div>
+        </div>
+    </div>
+
+    <!-- CHAPTER 2 CONTENT -->
+    <div id="chapter2" class="content-section">
+        <h2>CHAPTER 2: KINEMATICS - COMPREHENSIVE SUMMARY</h2>
+
+        <div class="page-break">PAGE 1: FUNDAMENTAL CONCEPTS OF MOTION</div>
+
+        <div class="summary-card">
+            <h3>2.1 Rest and Motion</h3>
+            <p><strong>Rest:</strong> A body is said to be at rest if it does not change its position with respect to its surroundings.</p>
+            <p><strong>Motion:</strong> A body is said to be in motion if it changes its position with respect to its surroundings.</p>
+            <div class="highlight-box">
+                <strong>Note:</strong> Rest and motion are relative terms. A body may be at rest with respect to one object and in motion with respect to another.
+            </div>
+
+            <h3>2.2 Types of Motion</h3>
+            <p><strong>1. Translatory Motion:</strong> When all points of a moving body move uniformly along the same straight line.</p>
+            <p><strong>Types of Translatory Motion:</strong></p>
+            <ul>
+                <li><strong>Linear Motion:</strong> Motion along a straight line. (Example: Car moving on a straight road)</li>
+                <li><strong>Circular Motion:</strong> Motion along a circular path. (Example: Earth revolving around the Sun)</li>
+                <li><strong>Random/Irregular Motion:</strong> Irregular, zigzag motion. (Example: Motion of gas molecules)</li>
+            </ul>
+
+            <p><strong>2. Rotatory/Spin Motion:</strong> The motion of a body around a fixed axis which passes through the body itself.</p>
+            <ul>
+                <li>Example: Spinning top, rotation of Earth about its axis.</li>
+            </ul>
+
+            <p><strong>3. Vibratory/Oscillatory Motion:</strong> The back and forth motion of a body about its mean position.</p>
+            <ul>
+                <li>Example: Motion of pendulum, vibration of guitar string.</li>
+            </ul>
+        </div>
+
+        <div class="page-break">PAGE 2: SCALAR AND VECTOR QUANTITIES</div>
+
+        <div class="summary-card">
+            <h3>2.3 Distance and Displacement</h3>
+            <p><strong>Distance:</strong> The total length covered by a moving body without mentioning direction. It is a <strong>scalar</strong> quantity. SI Unit: <strong>meter (m)</strong>.</p>
+            <p><strong>Displacement:</strong> The distance measured in a straight line in a particular direction. It is a <strong>vector</strong> quantity. SI Unit: <strong>meter (m)</strong>.</p>
+            <div class="highlight-box">
+                <strong>Key Difference:</strong>
+                <ul>
+                    <li>Distance ≥ Displacement</li>
+                    <li>Distance is path-dependent; displacement is path-independent.</li>
+                </ul>
+            </div>
+
+            <h3>2.4 Speed and Velocity</h3>
+            <p><strong>Speed:</strong> Distance covered by an object in unit time. Scalar quantity.</p>
+            <div class="formula-box">Speed (v) = Distance (d) / Time (t)</div>
+            <p><strong>Types of Speed:</strong> Uniform Speed, Variable Speed, Average Speed.</p>
+
+            <p><strong>Velocity:</strong> Rate of change of displacement with respect to time. Vector quantity.</p>
+            <div class="formula-box">Velocity (v) = Displacement (s) / Time (t)</div>
+            <p><strong>Types of Velocity:</strong> Uniform Velocity, Variable Velocity, Average Velocity.</p>
+
+            <h3>2.5 Acceleration</h3>
+            <p><strong>Definition:</strong> Rate of change of velocity of an object with respect to time. Vector quantity.</p>
+            <div class="formula-box">a = (v - u) / t</div>
+            <p>where: <strong>a</strong> = acceleration, <strong>v</strong> = final velocity, <strong>u</strong> = initial velocity, <strong>t</strong> = time. SI Unit: <strong>m/s²</strong>.</p>
+            <p><strong>Types:</strong> Positive Acceleration (velocity increases), Negative Acceleration/Retardation (velocity decreases).</p>
+        </div>
+
+        <div class="page-break">PAGE 3: EQUATIONS OF MOTION</div>
+
+        <div class="summary-card">
+            <h3>2.6 Equations of Uniformly Accelerated Motion</h3>
+            <p><strong>First Equation:</strong> <span class="formula-box">v = u + at</span></p>
+            <p><strong>Second Equation:</strong> <span class="formula-box">s = ut + ½at²</span></p>
+            <p><strong>Third Equation:</strong> <span class="formula-box">v² = u² + 2as</span></p>
+
+            <h3>2.7 Special Case: Equations for Free Fall</h3>
+            <p>When a body falls freely under gravity (acceleration <strong>a = g</strong>, height <strong>s = h</strong>):</p>
+            <ol>
+                <li>v = u + gt</li>
+                <li>h = ut + ½gt²</li>
+                <li>v² = u² + 2gh</li>
+            </ol>
+            <div class="highlight-box">
+                Value of <strong>g ≈ 9.8 m/s²</strong> (often taken as 10 m/s² for calculations).
+            </div>
+
+            <h3>Key Formulas Summary</h3>
+            <table>
+                <tr><th>Quantity</th><th>Formula</th><th>Type</th><th>Unit</th></tr>
+                <tr><td>Speed</td><td>v = d/t</td><td>Scalar</td><td>m/s</td></tr>
+                <tr><td>Velocity</td><td>v = s/t</td><td>Vector</td><td>m/s</td></tr>
+                <tr><td>Acceleration</td><td>a = (v-u)/t</td><td>Vector</td><td>m/s²</td></tr>
+            </table>
+
+            <h3>Important Points</h3>
+            <ul>
+                <li>Slope of distance-time graph = <strong>Speed</strong></li>
+                <li>Slope of velocity-time graph = <strong>Acceleration</strong></li>
+                <li>Area under velocity-time graph = <strong>Distance</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="chapter3" class="content-section">
+        <h2>CHAPTER 3: DYNAMICS - COMPREHENSIVE SUMMARY</h2>
+
+        <div class="page-break">PAGE 1: FOUNDATIONS OF DYNAMICS, FORCE, MOMENTUM & INERTIA</div>
+
+        <div class="summary-card">
+            <h3>3.1 What is Dynamics?</h3>
+            <p>Dynamics is the branch of mechanics that studies the <strong>causes of motion</strong>. While kinematics describes <em>how</em> objects move, dynamics explains <em>why</em> they move by analyzing forces, mass, and interactions.</p>
+
+            <h3>3.2 Force: The Agent of Change</h3>
+            <p><strong>Definition:</strong> A push or pull that can change the state of rest or uniform motion of a body, or alter its shape/direction.</p>
+            <ul>
+                <li><strong>Nature:</strong> Vector quantity.</li>
+                <li><strong>SI Unit:</strong> Newton (N) | 1 N = 1 kg·m/s².</li>
+            </ul>
+
+            <h3>3.3 Momentum: Quantity of Motion</h3>
+            <p><strong>Definition:</strong> Momentum is the product of mass and velocity. It quantifies how difficult it is to stop a moving object.</p>
+            <div class="formula-box">p = m × v</div>
+            <p>Vector quantity; direction same as velocity. <strong>Conservation Principle:</strong> In an isolated system, total momentum remains constant.</p>
+
+            <h3>3.4 Newton’s First Law of Motion & Inertia</h3>
+            <p><strong>Statement:</strong> <em>"A body continues in its state of rest or uniform motion in a straight line unless acted upon by a net external force."</em></p>
+            <p><strong>Inertia:</strong> The inherent property of matter to resist changes in its state of rest or motion. It is directly proportional to mass.</p>
+            <table>
+                <tr><th>Type</th><th>Definition</th></tr>
+                <tr><td><strong>Inertia of Rest</strong></td><td>Tendency to remain at rest. (Example: Passengers fall backward when bus starts)</td></tr>
+                <tr><td><strong>Inertia of Motion</strong></td><td>Tendency to continue moving. (Example: Passengers lean forward when brakes applied)</td></tr>
+                <tr><td><strong>Inertia of Direction</strong></td><td>Tendency to maintain straight-line path.</td></tr>
+            </table>
+        </div>
+
+        <div class="page-break">PAGE 2: NEWTON’S LAWS & CIRCULAR MOTION</div>
+
+        <div class="summary-card">
+            <h3>3.5 Newton’s Second Law of Motion</h3>
+            <p>The acceleration of a body is directly proportional to the net force acting on it and inversely proportional to its mass.</p>
+            <div class="formula-box">F = m × a</div>
+            <p>Force is also the rate of change of momentum: <span class="key-term">F = Δp / Δt</span></p>
+
+            <h3>3.6 Newton’s Third Law of Motion</h3>
+            <p><em>"For every action, there is an equal and opposite reaction."</em></p>
+            <div class="highlight-box">
+                Action and reaction forces act on <strong>different bodies</strong> and therefore do not cancel each other.
+            </div>
+
+            <h3>3.7 Uniform Circular Motion</h3>
+            <p>Motion in a circular path at constant speed. Requires a continuous inward force.</p>
+            <table>
+                <tr><th>Concept</th><th>Definition</th><th>Direction</th><th>Formula</th></tr>
+                <tr><td><strong>Centripetal Force</strong></td><td>Keeps body in circular path</td><td>Inward</td><td>F_c = mv²/r</td></tr>
+                <tr><td><strong>Centrifugal Force</strong></td><td>Apparent outward tendency</td><td>Outward</td><td>-</td></tr>
+            </table>
+        </div>
+
+        <div class="page-break">PAGE 3: FRICTION & SAFETY</div>
+
+        <div class="summary-card">
+            <h3>3.8 Friction: The Resistive Force</h3>
+            <p>The force that opposes relative motion between two surfaces in contact.</p>
+            <ul>
+                <li><strong>Static Friction:</strong> Acts when body is at rest.</li>
+                <li><strong>Limiting Friction:</strong> Max static friction (F_s = μ_sN).</li>
+                <li><strong>Kinetic Friction:</strong> Acts during sliding (F_k = μ_kN).</li>
+            </ul>
+            <div class="highlight-box">
+                <strong>Rolling Friction</strong> is much smaller than sliding friction.
+            </div>
+
+            <h3>3.9 Safety Devices</h3>
+            <p>Based on <strong>Impulse-Momentum Theorem</strong> (FΔt = Δp). To reduce injury (force), we must increase the time of impact.</p>
+            <ul>
+                <li><strong>Seatbelts/Airbags:</strong> Increase stopping time to decrease force.</li>
+                <li><strong>Crumple Zones:</strong> Absorb impact energy by increasing collision duration.</li>
+            </ul>
+
+            <h3>Master Summary</h3>
+            <table>
+                <tr><th>Quantity</th><th>Symbol</th><th>Formula</th></tr>
+                <tr><td>Force</td><td>F</td><td>F = ma</td></tr>
+                <tr><td>Momentum</td><td>p</td><td>p = mv</td></tr>
+                <tr><td>Weight</td><td>W</td><td>W = mg</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Chapters 4-9 placeholders ... -->
+    <div id="chapter4" class="content-section">
+        <h2>CHAPTER 4: TURNING EFFECT OF FORCES - COMPREHENSIVE SUMMARY</h2>
+
+        <div class="page-break">PAGE 1: PARALLEL FORCES & RESOLUTION OF FORCES</div>
+
+        <div class="summary-card">
+            <h3>4.1 Parallel Forces</h3>
+            <p>Forces whose lines of action are parallel to each other are called <strong>parallel forces</strong>.</p>
+            <table>
+                <tr><th>Type</th><th>Definition</th><th>Example</th></tr>
+                <tr><td><strong>Like Parallel Forces</strong></td><td>Parallel forces acting in the <strong>same direction</strong></td><td>Two people pushing a box in the same direction</td></tr>
+                <tr><td><strong>Unlike Parallel Forces</strong></td><td>Parallel forces acting in <strong>opposite directions</strong></td><td>Tug of war, forces on opposite sides</td></tr>
+            </table>
+
+            <h3>4.2 Resultant Force</h3>
+            <p>The sum of two or more forces acting on a body is called the <strong>resultant of forces</strong>.</p>
+            <p><strong>Head to Tail Rule:</strong> The graphical method for addition of forces. Place the tail of the second vector at the head of the first vector. The resultant is drawn from the tail of the first vector to the head of the last vector.</p>
+
+            <h3>4.3 Resolution of Forces</h3>
+            <p>Splitting of a force into two perpendicular components is called <strong>resolution of force</strong>.</p>
+            <p><strong>Rectangular Components:</strong></p>
+            <div class="formula-box">
+                F<sub>x</sub> = F cosθ<br>
+                F<sub>y</sub> = F sinθ
+            </div>
+            <p><strong>Finding Magnitude and Direction:</strong></p>
+            <div class="formula-box">
+                F = √(F<sub>x</sub>² + F<sub>y</sub>²)<br>
+                θ = tan⁻¹(F<sub>y</sub>/F<sub>x</sub>)
+            </div>
+        </div>
+
+        <div class="page-break">PAGE 2: MOMENT OF FORCE (TORQUE)</div>
+
+        <div class="summary-card">
+            <h3>4.4 Turning Effect of Force (Torque)</h3>
+            <p>The turning effect of a force about an axis or pivot is called the <strong>moment of force</strong> or <strong>torque</strong>.</p>
+            <div class="formula-box">τ = F × L</div>
+            <p>Where: <strong>τ</strong> = Torque (N·m), <strong>F</strong> = Force (N), <strong>L</strong> = Moment arm (m).</p>
+            <ul>
+                <li>Torque is a <strong>vector quantity</strong>.</li>
+                <li>SI Unit: <strong>Newton-meter (N·m)</strong>.</li>
+                <li><strong>Clockwise moment:</strong> Negative (-)</li>
+                <li><strong>Anticlockwise moment:</strong> Positive (+)</li>
+            </ul>
+        </div>
+
+        <div class="page-break">PAGE 3: PRINCIPLE OF MOMENTS & COUPLE</div>
+
+        <div class="summary-card">
+            <h3>4.5 Principle of Moments</h3>
+            <p>A body is in equilibrium if the sum of clockwise moments acting on the body is equal to the sum of anticlockwise moments.</p>
+            <div class="formula-box">Σ(Clockwise Moments) = Σ(Anticlockwise Moments)</div>
+
+            <h3>4.6 Couple</h3>
+            <p>Two equal and opposite forces acting along different lines of action form a <strong>couple</strong>. It produces <strong>pure rotation</strong> without translation.</p>
+            <div class="formula-box">Moment of Couple = F × d</div>
+            <p>Where <strong>F</strong> = Magnitude of one force and <strong>d</strong> = Couple arm (perpendicular distance between forces).</p>
+        </div>
+
+        <div class="page-break">PAGE 4: CENTER OF MASS & CENTER OF GRAVITY</div>
+
+        <div class="summary-card">
+            <h3>4.7 Center of Mass</h3>
+            <p>The point where the entire mass of the body is considered to be concentrated.</p>
+
+            <h3>4.8 Center of Gravity</h3>
+            <p>The point where the whole weight of the body acts vertically downward.</p>
+            <div class="highlight-box">
+                For uniform objects, center of mass and center of gravity <strong>coincide</strong>. For regular shapes, it is at the geometric center. For irregular shapes, use the <strong>plumb line method</strong>.
+            </div>
+        </div>
+
+        <div class="page-break">PAGE 5: CONDITIONS OF EQUILIBRIUM</div>
+
+        <div class="summary-card">
+            <h3>4.9 Equilibrium</h3>
+            <p>A body is in equilibrium when it is at rest or moving with uniform velocity (no acceleration).</p>
+            <p><strong>First Condition:</strong> The net force acting on a body is zero.</p>
+            <div class="formula-box">ΣF = 0 (ΣF<sub>x</sub> = 0 and ΣF<sub>y</sub> = 0)</div>
+            <p><strong>Second Condition:</strong> The sum of clockwise torques equals the sum of anticlockwise torques.</p>
+            <div class="formula-box">Στ = 0</div>
+        </div>
+
+        <div class="page-break">PAGE 6: STATES OF EQUILIBRIUM</div>
+
+        <div class="summary-card">
+            <h3>4.10 Types of Equilibrium</h3>
+            <table>
+                <tr><th>State</th><th>Definition</th><th>Center of Gravity</th><th>Behavior</th></tr>
+                <tr><td><strong>STABLE</strong></td><td>Returns to previous position after slight tilt.</td><td><strong>Lowest position</strong>. Rises when tilted.</td><td>Returns to origin.</td></tr>
+                <tr><td><strong>UNSTABLE</strong></td><td>Does not return and topples over.</td><td><strong>Highest position</strong>. Lowers when tilted.</td><td>Topples over.</td></tr>
+                <tr><td><strong>NEUTRAL</strong></td><td>Remains in new position.</td><td><strong>Same height</strong>. Level constant.</td><td>Stays in new spot.</td></tr>
+            </table>
+
+            <h3>Key Formulas Summary</h3>
+            <table>
+                <tr><th>Concept</th><th>Formula</th></tr>
+                <tr><td>Resolution</td><td>F<sub>x</sub> = F cosθ, F<sub>y</sub> = F sinθ</td></tr>
+                <tr><td>Torque</td><td>τ = F × L</td></tr>
+                <tr><td>Couple</td><td>τ = F × d</td></tr>
+                <tr><td>Equilibrium</td><td>ΣF = 0, Στ = 0</td></tr>
+            </table>
+        </div>
+    </div>
+    <!-- CHAPTER 5 CONTENT -->
+    <div id="chapter5" class="content-section">
+        <h2>CHAPTER 5: PROPERTIES OF MATTER - FORCES, ELASTICITY & PRESSURE</h2>
+
+        <div class="page-break">PAGE 1: DEFORMATION & ELASTICITY</div>
+
+        <div class="summary-card">
+            <h3>1. DEFORMATION OF MATERIALS</h3>
+            <p><strong>Definition:</strong> When forces act on an object, they can change its shape or size. This change is called <strong>deformation</strong>.</p>
+
+            <p><strong>Types of Deformation:</strong></p>
+            <table>
+                <tr><th>Type</th><th>Description</th><th>Effect</th><th>Example</th></tr>
+                <tr><td><strong>Tensile</strong></td><td>Force pulls/stretch the object</td><td>Object becomes longer</td><td>Stretching a rubber band, pulling a spring</td></tr>
+                <tr><td><strong>Compressive</strong></td><td>Force pushes/squashes the object</td><td>Object becomes shorter</td><td>Squeezing a sponge, compressing a spring</td></tr>
+            </table>
+
+            <h3>2. ELASTIC BEHAVIOR</h3>
+            <p><strong>Elastic Change:</strong> An object undergoes elastic change when it returns to its <strong>original shape and size</strong> after the load (force) is removed.</p>
+            <p><strong>Examples:</strong> Rubber bands, Springs, Balloons.</p>
+
+            <p><strong>Plastic Deformation:</strong> When an object does <strong>NOT</strong> return to its original shape after removing the load. Permanent deformation occurs.</p>
+        </div>
+
+        <div class="page-break">PAGE 2: HOOKE'S LAW & EXTENSION GRAPHS</div>
+
+        <div class="summary-card">
+            <h3>3. HOOKE'S LAW</h3>
+            <p><strong>Statement:</strong> <em>"The extension in a spring is directly proportional to the load applied to it, provided the limit of elasticity is not exceeded."</em></p>
+
+            <div class="formula-box">F = kx</div>
+            <p>Where: <strong>F</strong> = Force (N); <strong>k</strong> = Spring constant (N/m); <strong>x</strong> = Extension (m).</p>
+
+            <p><strong>Key Concepts:</strong></p>
+            <table>
+                <tr><th>Term</th><th>Definition</th></tr>
+                <tr><td><strong>Spring Constant (k)</strong></td><td>Measure of stiffness. Higher k = Stiffer spring.</td></tr>
+                <tr><td><strong>Limit of Proportionality</strong></td><td>Maximum load up to which Hooke's law is obeyed.</td></tr>
+                <tr><td><strong>Elastic Limit</strong></td><td>Maximum extension after which the spring won't return to original length.</td></tr>
+            </table>
+
+            <h3>4. EXTENSION-LOAD GRAPH</h3>
+            <ul>
+                <li>A straight line through origin represents Hooke's Law.</li>
+                <li>The <strong>gradient (slope)</strong> of the graph = <strong>Spring constant (k)</strong>.</li>
+                <li>Beyond the limit of proportionality, the graph curves.</li>
+            </ul>
+        </div>
+
+        <div class="page-break">PAGE 3: PRESSURE IN SOLIDS</div>
+
+        <div class="summary-card">
+            <h3>5. PRESSURE - BASIC CONCEPT</h3>
+            <p><strong>Definition:</strong> Pressure is the force acting <strong>per unit area</strong> on a surface.</p>
+            <div class="formula-box">P = F / A</div>
+            <p><strong>Key Principle:</strong> <em>"Pressure is greater when a large force acts on a small area"</em></p>
+
+            <p><strong>Practical Examples:</strong></p>
+            <ul>
+                <li><strong>Sharp knife cuts better:</strong> Small area = Higher pressure.</li>
+                <li><strong>Wide tires:</strong> Large area reduces pressure on ground.</li>
+                <li><strong>Nail pointed tip:</strong> Concentrates force for easy penetration.</li>
+            </ul>
+
+            <p><strong>Units:</strong> SI Unit is <strong>Pascal (Pa)</strong>. 1 Pa = 1 N/m².</p>
+        </div>
+
+        <div class="page-break">PAGE 4: PRESSURE IN FLUIDS</div>
+
+        <div class="summary-card">
+            <h3>6. FACTORS AFFECTING FLUID PRESSURE</h3>
+            <p>Pressure in a fluid is greater with <strong>large depth</strong> and <strong>high density</strong>.</p>
+
+            <h3>7. FLUID PRESSURE FORMULA</h3>
+            <div class="formula-box">P = ρgh</div>
+            <p>Where: <strong>ρ (rho)</strong> = Density, <strong>g</strong> = gravity, <strong>h</strong> = Depth.</p>
+
+            <p><strong>Applications:</strong> Dam walls are thicker at the bottom to withstand higher pressure at greater depths.</p>
+        </div>
+
+        <div class="page-break">PAGE 5: PASCAL'S LAW & HYDRAULIC SYSTEMS</div>
+
+        <div class="summary-card">
+            <h3>8. PASCAL'S LAW</h3>
+            <p><strong>Statement:</strong> <em>"Liquids transmit pressure equally in all directions"</em></p>
+            <p>When pressure is applied to a confined fluid, it is transmitted <strong>undiminished</strong> throughout the fluid.</p>
+
+            <h3>9. HYDRAULIC MACHINES</h3>
+            <p>Devices that multiply force using Pascal's Law.</p>
+            <div class="formula-box">F₂ / F₁ = A₂ / A₁</div>
+            <p><strong>Applications:</strong> Hydraulic Brakes, Hydraulic Lifts, Hydraulic Jacks, Excavators.</p>
+            <div class="highlight-box">Result: A small input force can lift a very heavy load if the output area is much larger than the input area.</div>
+        </div>
+    </div>
+
+    <!-- CHAPTER 6 CONTENT -->
+    <div id="chapter6" class="content-section">
+        <h2>CHAPTER 6: GRAVITATION - COMPREHENSIVE SUMMARY</h2>
+
+        <div class="page-break">PAGE 1: NEWTON'S LAW OF GRAVITATION</div>
+
+        <div class="summary-card">
+            <h3>6.1 Newton’s Law of Universal Gravitation</h3>
+            <p>Every particle in the universe attracts every other particle with a force that is directly proportional to the product of their masses and inversely proportional to the square of the distance between their centers.</p>
+            <div class="formula-box">F = G (m₁m₂) / r²</div>
+            <p>Where <strong>G</strong> is the Universal Gravitational Constant: <strong>G = 6.673 × 10⁻¹¹ N·m²/kg²</strong>.</p>
+        </div>
+
+        <div class="page-break">PAGE 2: GRAVITATIONAL FIELD & MASS OF EARTH</div>
+
+        <div class="summary-card">
+            <h3>6.2 Gravitational Field</h3>
+            <p>The region around a mass where it exerts a gravitational force on other masses.</p>
+            <p><strong>Field Strength (g):</strong> Force per unit mass at a point.</p>
+            <div class="formula-box">g = F / m = GM / R²</div>
+
+            <h3>6.3 Mass of the Earth</h3>
+            <p>By using Newton’s law and the value of 'g' at the surface:</p>
+            <div class="formula-box">M_e = gR_e² / G</div>
+            <p>Mass of Earth ≈ <strong>6.0 × 10²⁴ kg</strong>.</p>
+        </div>
+
+        <div class="page-break">PAGE 3: VARIATION OF 'G' & SATELLITES</div>
+
+        <div class="summary-card">
+            <h3>6.4 Variation of 'g' with Altitude</h3>
+            <p>The value of 'g' decreases as we go higher above the Earth's surface.</p>
+            <div class="formula-box">g_h = GM / (R+h)²</div>
+
+            <h3>6.5 Artificial Satellites</h3>
+            <p>Objects that revolve around the Earth. Their orbital velocity depends on their altitude.</p>
+            <div class="formula-box">v_o = √(g_h × (R+h))</div>
+            <p><strong>Geostationary Satellites:</strong> Have an orbital period of 24 hours (same as Earth's rotation) and appear stationary over one point on the equator. Altitude ≈ 36,000 km.</p>
+        </div>
+    </div>
+
+    <!-- CHAPTER 7 CONTENT -->
+    <div id="chapter7" class="content-section">
+        <h2>CHAPTER 7: PROPERTIES OF MATTER - COMPREHENSIVE SUMMARY</h2>
+
+        <div class="page-break">PAGE 1: KINETIC MOLECULAR MODEL & STATES</div>
+
+        <div class="summary-card">
+            <h3>7.1 Kinetic Molecular Model</h3>
+            <ul>
+                <li>Matter is made of tiny particles (molecules/atoms).</li>
+                <li>Molecules are in continuous motion.</li>
+                <li>There are forces of attraction between molecules.</li>
+            </ul>
+
+            <h3>7.2 States of Matter</h3>
+            <table>
+                <tr><th>State</th><th>Shape</th><th>Volume</th><th>Molecular Motion</th></tr>
+                <tr><td><strong>Solid</strong></td><td>Fixed</td><td>Fixed</td><td>Vibratory</td></tr>
+                <tr><td><strong>Liquid</strong></td><td>Not Fixed</td><td>Fixed</td><td>Slide over each other</td></tr>
+                <tr><td><strong>Gas</strong></td><td>Not Fixed</td><td>Not Fixed</td><td>Random/Fast</td></tr>
+                <tr><td><strong>Plasma</strong></td><td>Highly Ionized Gas</td><td>Not Fixed</td><td>High energy ions/electrons</td></tr>
+            </table>
+        </div>
+
+        <div class="page-break">PAGE 2: ARCHIMEDES' PRINCIPLE & FLOATATION</div>
+
+        <div class="summary-card">
+            <h3>7.3 Archimedes’ Principle</h3>
+            <p>When an object is immersed in a fluid, it experiences an upward force (upthrust) equal to the weight of the fluid it displaces.</p>
+            <div class="formula-box">Upthrust = ρ × g × V_displaced</div>
+
+            <h3>7.4 Principle of Floatation</h3>
+            <p>A floating object displaces a weight of fluid equal to its own weight.</p>
+            <ul>
+                <li>If Weight > Upthrust: Object Sinks.</li>
+                <li>If Weight = Upthrust: Object Floats.</li>
+            </ul>
+
+            <h3>7.5 Pascal's Law</h3>
+            <p>Pressure applied at any point of a liquid enclosed in a container is transmitted without loss to all other parts of the liquid.</p>
+            <p><strong>Application:</strong> Hydraulic Press (F₂/A₂ = F₁/A₁).</p>
+        </div>
+    </div>
+
+    <!-- CHAPTER 8 CONTENT -->
+    <div id="chapter8" class="content-section">
+        <h2>CHAPTER 8: THERMAL PROPERTIES OF MATTER - COMPREHENSIVE SUMMARY</h2>
+
+        <div class="page-break">PAGE 1: TEMPERATURE, HEAT & SCALES</div>
+
+        <div class="summary-card">
+            <h3>8.1 Temperature vs Heat</h3>
+            <p><strong>Temperature:</strong> Degree of hotness or coldness. (Average Kinetic Energy).</p>
+            <p><strong>Heat:</strong> Form of energy transferred due to temperature difference. (Total Internal Energy).</p>
+
+            <h3>8.2 Temperature Scales</h3>
+            <ul>
+                <li><strong>Celsius (°C):</strong> Freezing 0°, Boiling 100°.</li>
+                <li><strong>Kelvin (K):</strong> SI Unit. Absolute zero = -273.15°C.</li>
+                <li><strong>Conversion:</strong> <span class="formula-box">K = °C + 273</span></li>
+            </ul>
+        </div>
+
+        <div class="page-break">PAGE 2: SPECIFIC HEAT & LATENT HEAT</div>
+
+        <div class="summary-card">
+            <h3>8.3 Specific Heat Capacity (c)</h3>
+            <p>Amount of heat required to raise the temperature of 1 kg of a substance by 1 K (or 1°C).</p>
+            <div class="formula-box">Q = mcΔT</div>
+            <p>Unit: <strong>J/kg·K</strong>. Water has high specific heat (4200 J/kg·K).</p>
+
+            <h3>8.4 Latent Heat (L)</h3>
+            <p>Heat absorbed or released during a phase change without change in temperature.</p>
+            <ul>
+                <li><strong>Fusion (L_f):</strong> Solid ↔ Liquid.</li>
+                <li><strong>Vaporization (L_v):</strong> Liquid ↔ Gas.</li>
+            </ul>
+            <div class="formula-box">Q = mL</div>
+        </div>
+
+        <div class="page-break">PAGE 3: EVAPORATION</div>
+
+        <div class="summary-card">
+            <h3>8.5 Evaporation</h3>
+            <p>Change of liquid into vapors from the surface at any temperature below its boiling point.</p>
+            <p><strong>Factors:</strong> Surface area, Temperature, Wind speed, Humidity.</p>
+            <div class="highlight-box">Evaporation causes <strong>cooling</strong> because high energy molecules escape, leaving behind lower energy (cooler) molecules.</div>
+        </div>
+    </div>
+
+    <!-- CHAPTER 9 CONTENT -->
+    <div id="chapter9" class="content-section">
+        <h2>CHAPTER 9: TRANSFER OF HEAT - COMPREHENSIVE SUMMARY</h2>
+
+        <div class="page-break">PAGE 1: MODES OF HEAT TRANSFER</div>
+
+        <div class="summary-card">
+            <h3>9.1 Conduction</h3>
+            <p>Transfer of heat through direct contact of molecules (mostly in solids).</p>
+            <p><strong>Mechanism:</strong> Vibration of atoms and free electrons (in metals).</p>
+
+            <h3>9.2 Convection</h3>
+            <p>Transfer of heat by the actual movement of molecules (in liquids and gases).</p>
+            <p><strong>Examples:</strong> Land and sea breezes, convection currents in room heaters.</p>
+
+            <h3>9.3 Radiation</h3>
+            <p>Transfer of heat in the form of electromagnetic waves. Does not require a medium.</p>
+            <p><strong>Example:</strong> Heat from Sun reaching Earth.</p>
+        </div>
+
+        <div class="page-break">PAGE 2: EMISSION, ABSORPTION & GREENHOUSE</div>
+
+        <div class="summary-card">
+            <h3>9.4 Emission and Absorption</h3>
+            <ul>
+                <li><strong>Dull Black Surfaces:</strong> Good absorbers and good emitters.</li>
+                <li><strong>Shiny White Surfaces:</strong> Poor absorbers and poor emitters (good reflectors).</li>
+            </ul>
+
+            <h3>9.5 Greenhouse Effect</h3>
+            <p>The trapping of solar radiation by gases (CO₂, Water vapor) in the atmosphere, keeping the Earth warm.</p>
+            <p><strong>Global Warming:</strong> Increase in Earth's average temperature due to enhanced greenhouse effect.</p>
+
+            <h3>9.6 Applications</h3>
+            <ul>
+                <li><strong>Thermos Flask:</strong> Reduces heat loss by conduction (vacuum), convection (stopper), and radiation (silvered walls).</li>
+                <li><strong>Cooking Utensils:</strong> Bottoms made of copper (good conductor), handles made of wood/plastic (insulator).</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function showChapter(chId) {
+        const sections = document.querySelectorAll('.content-section');
+        sections.forEach(s => s.classList.remove('active'));
+
+        const selected = document.getElementById('chapter' + chId);
+        if (selected) {
+            selected.classList.add('active');
+            document.getElementById('chapterSelect').value = chId;
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const chapter = urlParams.get('chapter');
+        if (chapter) {
+            showChapter(chapter);
+        }
+    }
+</script>
+
+</body>
+</html>

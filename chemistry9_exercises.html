@@ -131,6 +131,10 @@
             content: "📝 Start Practice";
             color: #22c55e;
         }
+
+        .ex-btn[data-type="sum"]::after {
+            content: none;
+        }
     </style>
 </head>
 <body>
@@ -185,7 +189,7 @@
         { id: 'theory', label: 'Theory Solution' },
         { id: 'num', label: 'Numericals' },
         { id: 'mcq', label: 'MCQs Prep' },
-        { id: 'sum', label: 'Summary / Key' }
+        { id: 'sum', label: 'Summary' }
     ];
 
     const channelLink = "https://www.youtube.com/@engineerkhurramali";
@@ -203,6 +207,9 @@
                 if (cat.id === 'mcq') {
                     btn.href = `mcq-practice.html?subject=chem9_u${ch.id}`;
                     btn.dataset.type = 'mcq';
+                } else if (cat.id === 'sum') {
+                    btn.href = `chemistry9_summary.html?chapter=${ch.id}`;
+                    btn.dataset.type = 'sum';
                 } else {
                     const linkKey = `${ch.id}_${cat.id}`;
                     btn.href = videoLinks[linkKey] || channelLink;
