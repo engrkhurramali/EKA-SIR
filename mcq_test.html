@@ -677,8 +677,8 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
     }
 
     function startQuiz() {
-        const name = DOM.nameInput.value.trim();
-        if (!name) return alert('Please enter your name.');
+        let name = DOM.nameInput.value.trim();
+        if (!name) name = "Guest";
         state.studentName = name;
 
         const limit = parseInt(DOM.limitInput.value) || 25;
