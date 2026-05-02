@@ -112,6 +112,39 @@
             opacity: 0.8;
         }
 
+        .mcq-btn {
+            background: var(--text-dark);
+            color: white;
+            border: 1px solid var(--border);
+            padding: 12px 5px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .mcq-btn:active {
+            transform: scale(0.95);
+            opacity: 0.9;
+        }
+
+        .mcq-btn span {
+            font-size: 0.65rem;
+            opacity: 0.9;
+        }
+
+        .mcq-btn::after {
+            content: "📝";
+            font-size: 0.8rem;
+        }
+
         /* YouTube Icon styling */
         .ex-btn::after {
             content: "▶";
@@ -227,6 +260,13 @@
                 btn.innerHTML = `<span>Exercise</span>Ex#${exNum}`;
                 grid.appendChild(btn);
             }
+
+            // Add MCQ Practice button at the end of each chapter
+            const mcqBtn = document.createElement('a');
+            mcqBtn.className = 'mcq-btn';
+            mcqBtn.href = `mcq-practice.html?subject=maths10_u${item.ch}`;
+            mcqBtn.innerHTML = `<span>Practice</span>MCQs`;
+            grid.appendChild(mcqBtn);
         });
     }
 

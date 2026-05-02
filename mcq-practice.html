@@ -129,6 +129,12 @@
     </div>
     <div class="controls-row">
         <input type="search" id="search-box" placeholder="🔍 Find Question...">
+        <div id="auto-next-ctrl" style="display: flex; align-items: center; gap: 4px; background: var(--bg); padding: 5px 8px; border-radius: var(--radius); border: 1px solid var(--border); font-size: 0.75rem; font-weight: 700; color: var(--text);">
+            <input type="checkbox" id="auto-next-check" style="width: 15px; height: 15px; cursor: pointer;">
+            <label for="auto-next-check" style="cursor: pointer; user-select: none;">Auto</label>
+            <input type="number" id="auto-next-delay" value="3500" min="500" max="10000" step="500" style="width: 50px; border: none; background: transparent; color: var(--text); text-align: center; font-weight: 800; font-family: inherit;">
+            <span style="opacity: 0.6; font-size: 0.65rem;">ms</span>
+        </div>
         <button id="toggle-answers" style="padding: 8px; font-size: 0.8rem; min-width: 100px;">Show Answers</button>
     </div>
 </header>
@@ -165,6 +171,7 @@
     let mcqData = [];
     let filteredData = [];
     let currentIndex = 0;
+    let autoNextTimeout = null;
     let answersRevealed = true;
     let userAnswers = {};
 
@@ -197,16 +204,47 @@
         subjectTitle.innerText = `EKA - ${subjectParam.toUpperCase()}`;
     }
 
+    function setupSwipe(card) {
+        let startX = 0;
+        card.ontouchstart = e => startX = e.touches[0].clientX;
+        card.ontouchend = e => {
+            const diff = startX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0 && currentIndex < filteredData.length - 1) renderSlide(currentIndex + 1);
+                else if (diff < 0 && currentIndex > 0) renderSlide(currentIndex - 1);
+            }
+        };
+    }
+
     function renderSlide(index) {
         if (filteredData.length === 0) {
-            container.innerHTML = '<div style="color:white">No questions found.</div>';
+            container.innerHTML = '<div style="color:white; padding: 20px;">No questions found.</div>';
             return;
         }
 
-        container.innerHTML = '';
+        // Clear any existing auto-next timer
+        if (autoNextTimeout) {
+            clearTimeout(autoNextTimeout);
+            autoNextTimeout = null;
+        }
+
+        const oldCard = container.querySelector('.question-card.active');
+        const isNewSlide = (currentIndex !== index) || !oldCard;
+
+        if (oldCard && isNewSlide) {
+            oldCard.classList.remove('active');
+            oldCard.classList.add('prev');
+            setTimeout(() => { if(oldCard && oldCard.parentNode && oldCard.classList.contains('prev')) oldCard.remove(); }, 400);
+        } else if (!oldCard) {
+            container.innerHTML = '';
+        }
+
+        // Update global index
+        currentIndex = index;
+
         const item = filteredData[index];
-        const card = document.createElement('div');
-        card.className = 'question-card active';
+        const card = (!isNewSlide && oldCard) ? oldCard : document.createElement('div');
+        if (isNewSlide) card.className = 'question-card';
 
         card.innerHTML = `
             <div class="q-meta">
@@ -224,14 +262,14 @@
             div.className = 'option';
             if (userAnswers[index] === letter) div.classList.add('selected');
 
-            // Apply correction highlights if revealed
             if (answersRevealed) {
                 if (optText === item.correct) div.classList.add('correct');
                 else if (userAnswers[index] === letter) div.classList.add('wrong');
             }
 
             div.innerHTML = `<span class="radio-dot"></span><span><b>${letter}:</b> ${optText}</span>`;
-            div.onclick = () => {
+            div.onclick = (e) => {
+                e.stopPropagation();
                 userAnswers[index] = letter;
                 localStorage.setItem('eka-answers-' + subjectParam, JSON.stringify(userAnswers));
                 renderSlide(index);
@@ -239,23 +277,38 @@
             optsDiv.appendChild(div);
         });
 
-        container.appendChild(card);
+        if (isNewSlide) {
+            container.appendChild(card);
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    card.classList.add('active');
+                });
+            });
+            setupSwipe(card);
+        }
+
         counterDisplay.innerText = `${index + 1}/${filteredData.length}`;
         document.getElementById('prev-btn').disabled = index === 0;
         document.getElementById('next-btn').disabled = index === filteredData.length - 1;
 
-        // Swipe support
-        let startX = 0;
-        card.ontouchstart = e => startX = e.touches[0].clientX;
-        card.ontouchend = e => {
-            const diff = startX - e.changedTouches[0].clientX;
-            if (Math.abs(diff) > 50) {
-                if (diff > 0 && index < filteredData.length - 1) renderSlide(index + 1);
-                else if (diff < 0 && index > 0) renderSlide(index - 1);
-            }
-        };
-        currentIndex = index;
+        // Auto-next logic: Set timer if check box is checked
+        const autoCheck = document.getElementById('auto-next-check');
+        if (autoCheck && autoCheck.checked && index < filteredData.length - 1) {
+            let delay = parseInt(document.getElementById('auto-next-delay').value) || 3500;
+            delay = Math.max(500, Math.min(10000, delay));
+            autoNextTimeout = setTimeout(() => {
+                renderSlide(index + 1);
+            }, delay);
+        }
     }
+
+    document.getElementById('auto-next-check').onchange = (e) => {
+        if (e.target.checked) renderSlide(currentIndex);
+        else if (autoNextTimeout) {
+            clearTimeout(autoNextTimeout);
+            autoNextTimeout = null;
+        }
+    };
 
     document.getElementById('next-btn').onclick = () => { if(currentIndex < filteredData.length-1) renderSlide(currentIndex + 1); };
     document.getElementById('prev-btn').onclick = () => { if(currentIndex > 0) renderSlide(currentIndex - 1); };
