@@ -126,6 +126,11 @@
             margin-top: 4px;
             font-weight: 800;
         }
+
+        .ex-btn[data-type="mcq"]::after {
+            content: "📝 Start Practice";
+            color: #22c55e;
+        }
     </style>
 </head>
 <body>
@@ -192,13 +197,18 @@
             if (!grid) return;
 
             categories.forEach(cat => {
-                const linkKey = `${ch.id}_${cat.id}`;
-                const link = videoLinks[linkKey] || channelLink;
-
                 const btn = document.createElement('a');
                 btn.className = 'ex-btn';
-                btn.href = link;
-                btn.target = "_blank";
+
+                if (cat.id === 'mcq') {
+                    btn.href = `mcq-practice.html?subject=chem9_u${ch.id}`;
+                    btn.dataset.type = 'mcq';
+                } else {
+                    const linkKey = `${ch.id}_${cat.id}`;
+                    btn.href = videoLinks[linkKey] || channelLink;
+                    btn.target = "_blank";
+                }
+
                 btn.innerHTML = `<span>Chapter ${ch.id}</span>${cat.label}`;
                 grid.appendChild(btn);
             });
