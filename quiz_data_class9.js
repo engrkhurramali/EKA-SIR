@@ -1096,9 +1096,45 @@ Origin coordinates?	(0, 0)	(1, 1)	(0, 1)	(1, 0)	A`
    The study of light and its properties is called:	Acoustics	Optics	Mechanics	Thermodynamics	B
    The study of electricity and magnetism is called:	Optics	Electromagnetism	Thermodynamics	Plasma Physics	B
    The study of atomic nuclei is called:	Plasma Physics	Nuclear Physics	Astrophysics	Biophysics	B
-   The study of properties of matter at very low temperatures is called:	Cryogenics	Plasma Physics	Geophysics	Astrophysics	A
    The study of ionized state of matter is called:	Plasma Physics	Nuclear Physics	Astrophysics	Geophysics	A
    The study of earth's internal structure is called:	Geophysics	Astrophysics	Biophysics	Nuclear Physics	A
+   The word "Physics" comes from Greek word "Physis" meaning:	Nature	Motion	Energy	Matter	A
+   Study of celestial objects is called:	Astrophysics	Geophysics	Biophysics	Nuclear Physics	A
+   Study of living organisms using physics is:	Biophysics	Geophysics	Astrophysics	Plasma Physics	A
+Which of the following is NOT a branch of physics?	Mechanics	Thermodynamics	Optics	Botany	D
+Which of the following is NOT a base quantity?	Length	Mass	Time	Force	D
+Which of the following is NOT a derived quantity?	Area	Volume	Velocity	Length	D
+Which of the following is NOT an SI base unit?	Meter	Kilogram	Second	Newton	D
+Which of the following is NOT a prefix for large quantities?	kilo	mega	giga	milli	D
+Which of the following is NOT a prefix for small quantities?	milli	micro	nano	kilo	D
+Which instrument cannot measure length?	Meter rule	Vernier calipers	Screw gauge	Physical balance	D
+Which instrument cannot measure time?	Stopwatch	Clock	Pendulum	Vernier calipers	D
+The meniscus in water is concave due to:	Cohesion only	Adhesion only	Both cohesion and adhesion	Neither	D
+The meniscus in mercury is convex due to:	Cohesion > Adhesion	Adhesion > Cohesion	Equal forces	No forces	D
+For accurate volume measurement, measuring cylinder should be read at:	Top of meniscus for all liquids	Bottom for all liquids	Eye level with meniscus	Any angle	D
+The density of a substance depends on:	Mass only	Volume only	Temperature only	All of these	D
+Relative density of a substance is ratio of its density to density of:	Air	Mercury	Oil	Water	D
+A body floats when its weight equals:	Volume of fluid displaced	Density of fluid	Mass of fluid	Buoyant force	D
+The instrument used to measure density of liquids is:	Barometer	Thermometer	Manometer	Hydrometer	D
+Lactometer is used to measure purity of:	Water	Oil	Mercury	Milk	D
+The number 0.00078 in scientific notation is:	7.8 × 10⁻³	7.8 × 10⁻⁴	78 × 10⁻⁵	0.78 × 10⁻³	D
+The number 56000 in scientific notation is:	5.6 × 10³	5.6 × 10⁴	56 × 10³	0.56 × 10⁵	D
+The value of 1 Ångström (Å) is:	10⁻⁸ m	10⁻⁹ m	10⁻¹⁰ m	10⁻¹¹ m	C
+The value of 1 fermi is:	10⁻¹² m	10⁻¹³ m	10⁻¹⁴ m	10⁻¹⁵ m	C
+The value of 1 light year is approximately:	9.46 × 10¹² m	9.46 × 10¹³ m	9.46 × 10¹⁵ m	9.46 × 10¹⁶ m	C
+The number of significant figures in 0.02050 is:	2	3	4	5	C
+The number of significant figures in 200.00 is:	2	3	4	5	C
+
+   Plasma is found in:	Sun	Fluorescent tubes	Lightning	All of these	D
+   Most visible matter in universe is in:	Solid state	Liquid state	Gas state	Plasma state	D
+   SI system was established in:	1960	1970	1980	1990	A
+   Before SI system, ______ system was used:	CGS	FGS	MKS	Both A and C	D
+   CGS stands for:	Centimeter-Gram-Second	Centimeter-Gram-System	Celsius-Gram-Second	Centimeter-Gravity-Second	A
+   MKS stands for:	Meter-Kilogram-Second	Meter-Kilogram-System	Mass-Kilogram-Second	Meter-Kelvin-Second	A
+   Base quantities are ______ in number in SI:	5	6	7	8	C
+   Amount of substance is measured in:	Gram	Kilogram	Mole	Liter	C
+   Luminous intensity measures:	Brightness of light source	Total light emitted	Light falling on surface	Light reflected	A
+   Prefixes help to express:	Very large numbers	Very small numbers	Both A and B	Neither A nor B	C
    The international system of units is abbreviated as:	IS	SI	IU	IOS	B
    How many base quantities are in SI system?	5	6	7	8	C
    Which is NOT a base quantity?	Length	Mass	Time	Speed	D
@@ -1130,6 +1166,35 @@ Origin coordinates?	(0, 0)	(1, 1)	(0, 1)	(1, 0)	A`
    The prefix "nano" represents:	10⁻⁶	10⁻⁹	10⁻¹²	10⁻¹⁵	B
    The prefix "pico" represents:	10⁻⁹	10⁻¹²	10⁻¹⁵	10⁻¹⁸	B
    The prefix "femto" represents:	10⁻¹²	10⁻¹⁵	10⁻¹⁸	10⁻²¹	B
+   Prefix "deci" represents:	10⁻¹	10⁻²	10⁻³	10⁻⁴	A
+   Prefix "centi" represents:	10⁻¹	10⁻²	10⁻³	10⁻⁴	B
+   Prefix "deca" represents:	10¹	10²	10³	10⁴	A
+   Prefix "hecto" represents:	10¹	10²	10³	10⁴	B
+   Prefix "tera" represents:	10⁹	10¹²	10¹⁵	10¹⁸	B
+   Prefix "peta" represents:	10¹²	10¹⁵	10¹⁸	10²¹	B
+   Prefix "exa" represents:	10¹⁵	10¹⁸	10²¹	10²⁴	B
+   Prefix "atto" represents:	10⁻¹⁵	10⁻¹⁸	10⁻²¹	10⁻²⁴	B
+   Prefix "zepto" represents:	10⁻¹⁸	10⁻²¹	10⁻²⁴	10⁻²⁷	B
+   Prefix "yocto" represents:	10⁻²¹	10⁻²⁴	10⁻²⁷	10⁻³⁰	B
+   Prefix "yotta" represents:	10²¹	10²⁴	10²⁷	10³⁰	B
+   Prefix "zetta" represents:	10¹⁸	10²¹	10²⁴	10²⁷	B
+   Symbol for micro is:	m	µ	μ	Both B and C	D
+   Symbol for nano is:	n	N	ne	na	A
+   Symbol for pico is:	p	P	pc	pic	A
+   Symbol for femto is:	f	F	fe	fem	A
+   Symbol for mega is:	m	M	Me	meg	B
+   Symbol for giga is:	g	G	Gi	gig	B
+   Symbol for kilo is:	k	K	Ki	kil	A
+   Symbol for milli is:	m	M	Mi	mil	A
+   Which prefix is largest?	kilo	mega	giga	tera	D
+   Which prefix is smallest?	milli	micro	nano	pico	D
+   10⁶ is represented by prefix:	kilo	mega	giga	tera	B
+   10⁻⁶ is represented by prefix:	milli	micro	nano	pico	B
+   10⁹ is represented by prefix:	mega	giga	tera	peta	B
+   10⁻⁹ is represented by prefix:	micro	nano	pico	femto	B
+   1 microsecond (µs) equals:	10⁻³ s	10⁻⁶ s	10⁻⁹ s	10⁻¹² s	B
+   1 millisecond (ms) equals:	10⁻³ s	10⁻⁶ s	10⁻⁹ s	10⁻¹² s	A
+   1 nanosecond (ns) equals:	10⁻⁶ s	10⁻⁹ s	10⁻¹² s	10⁻¹⁵ s	B
    1 kilometer equals:	100 m	1000 m	10000 m	100000 m	B
    1 meter equals:	10 cm	100 cm	1000 cm	10000 cm	B
    1 centimeter equals:	0.1 mm	1 mm	10 mm	100 mm	C
@@ -1195,9 +1260,6 @@ Origin coordinates?	(0, 0)	(1, 1)	(0, 1)	(1, 0)	A`
    Stopwatch is used to measure:	Distance	Mass	Time	Temperature	C
    Least count of mechanical stopwatch is:	0.1 s	0.01 s	1 s	0.001 s	A
    Least count of digital stopwatch is:	0.1 s	0.01 s	1 s	10 s	B
-   1 microsecond (µs) equals:	10⁻³ s	10⁻⁶ s	10⁻⁹ s	10⁻¹² s	B
-   1 millisecond (ms) equals:	10⁻³ s	10⁻⁶ s	10⁻⁹ s	10⁻¹² s	A
-   1 nanosecond (ns) equals:	10⁻⁶ s	10⁻⁹ s	10⁻¹² s	10⁻¹⁵ s	B
    Precision of measurement depends on:	Least count of instrument	Observer's skill	Both A and B	Neither A nor B	C
    Accuracy of measurement means:	Closeness to true value	Repeatability of measurement	Smallest measurable value	Largest measurable value	A
    Precision of measurement means:	Closeness to true value	Repeatability of measurement	Average of readings	Median of readings	B
@@ -1234,32 +1296,6 @@ Origin coordinates?	(0, 0)	(1, 1)	(0, 1)	(1, 0)	A`
    1 m³ equals:	1000 L	100 L	10 L	1 L	A
    1 Liter equals:	1000 cm³	100 cm³	10 cm³	1 cm³	A
    1 cm³ equals:	1 mL	10 mL	0.1 mL	100 mL	A
-   Prefix "deci" represents:	10⁻¹	10⁻²	10⁻³	10⁻⁴	A
-   Prefix "centi" represents:	10⁻¹	10⁻²	10⁻³	10⁻⁴	B
-   Prefix "deca" represents:	10¹	10²	10³	10⁴	A
-   Prefix "hecto" represents:	10¹	10²	10³	10⁴	B
-   Prefix "tera" represents:	10⁹	10¹²	10¹⁵	10¹⁸	B
-   Prefix "peta" represents:	10¹²	10¹⁵	10¹⁸	10²¹	B
-   Prefix "exa" represents:	10¹⁵	10¹⁸	10²¹	10²⁴	B
-   Prefix "atto" represents:	10⁻¹⁵	10⁻¹⁸	10⁻²¹	10⁻²⁴	B
-   Prefix "zepto" represents:	10⁻¹⁸	10⁻²¹	10⁻²⁴	10⁻²⁷	B
-   Prefix "yocto" represents:	10⁻²¹	10⁻²⁴	10⁻²⁷	10⁻³⁰	B
-   Prefix "yotta" represents:	10²¹	10²⁴	10²⁷	10³⁰	B
-   Prefix "zetta" represents:	10¹⁸	10²¹	10²⁴	10²⁷	B
-   Symbol for micro is:	m	µ	μ	Both B and C	D
-   Symbol for nano is:	n	N	ne	na	A
-   Symbol for pico is:	p	P	pc	pic	A
-   Symbol for femto is:	f	F	fe	fem	A
-   Symbol for mega is:	m	M	Me	meg	B
-   Symbol for giga is:	g	G	Gi	gig	B
-   Symbol for kilo is:	k	K	Ki	kil	A
-   Symbol for milli is:	m	M	Mi	mil	A
-   Which prefix is largest?	kilo	mega	giga	tera	D
-   Which prefix is smallest?	milli	micro	nano	pico	D
-   10⁶ is represented by prefix:	kilo	mega	giga	tera	B
-   10⁻⁶ is represented by prefix:	milli	micro	nano	pico	B
-   10⁹ is represented by prefix:	mega	giga	tera	peta	B
-   10⁻⁹ is represented by prefix:	micro	nano	pico	femto	B
    Convert 5 km to meters:	50 m	500 m	5000 m	50000 m	C
    Convert 2500 g to kg:	0.25 kg	2.5 kg	25 kg	250 kg	B
    Convert 3 hours to seconds:	3600 s	7200 s	10800 s	1800 s	C
@@ -1277,12 +1313,16 @@ Origin coordinates?	(0, 0)	(1, 1)	(0, 1)	(1, 0)	A`
    Significant figures in 2.00 × 10⁵:	1	2	3	6	C
    Significant figures in 500:	1	2	3	Cannot be determined	D
    Significant figures in 500.:	1	2	3	D
+   2.5 × 10³ has significant figures:	1	2	3	4	B
+   2.50 × 10³ has significant figures:	1	2	3	4	C
+   2.500 × 10³ has significant figures:	1	2	3	4	D
+   0.0250 has significant figures:	1	2	3	4	C
+   250.0 has significant figures:	1	2	3	4	D
+   250 has significant figures:	1	2	3	Cannot be determined	B
+   In 3.14159, all digits are significant because:	They are measured	They are from constant π	They are non-zero	All of these	C
    Round 3.456 to 2 significant figures:	3.4	3.5	3.46	3.50	B
    Round 0.00789 to 2 significant figures:	0.0078	0.0079	0.008	0.00789	B
    Round 1234 to 2 significant figures:	1200	1230	1300	1200	A
-   In (2.5 × 3.42), result should have significant figures:	1	2	3	4	B
-   In (12.5 + 0.456), result should have decimal places:	1	2	3	4	A
-   In (100.0 - 0.5), result should have decimal places:	0	1	2	3	B
    Which instrument has highest precision?	Meter rule	Vernier calipers	Screw gauge	Measuring cylinder	C
    Least count indicates:	Maximum measurable value	Minimum measurable value	Average value	Zero error	B
    Smaller least count means:	Less precision	More precision	No effect on precision	More error	B
@@ -1324,68 +1364,6 @@ Origin coordinates?	(0, 0)	(1, 1)	(0, 1)	(1, 0)	A`
    Absolute error is:	Measured - True value	True - Measured value	|Measured - True|	Always positive	C
    Relative error is:	Absolute error/True value	Absolute error/Measured value	True/Absolute error	Measured/Absolute error	A
    Percentage error is:	Relative error × 100	Absolute error × 100	True error × 100	Measured × 100	A
-   If true value = 10.0 and measured = 10.5, absolute error is:	0.5	-0.5	±0.5	10.5	A
-   If true value = 20.0 and measured = 19.5, percentage error is:	2.5%	-2.5%	±2.5%	25%	A
-   Propagation of errors occurs in:	Addition only	Multiplication only	Both addition and multiplication	Neither	C
-   For Z = A + B, error in Z is:	ΔA + ΔB	ΔA - ΔB	√(ΔA² + ΔB²)	ΔA × ΔB	A
-   For Z = A × B, relative error in Z is:	ΔA + ΔB	ΔA - ΔB	(ΔA/A) + (ΔB/B)	(ΔA/A) × (ΔB/B)	C
-   Dimensional analysis is used to:	Check equation correctness	Derive formulas	Convert units	All of these	D
-   Dimension of length is represented by:	M	L	T	A
-   Dimension of mass is represented by:	M	L	T	A
-   Dimension of time is represented by:	M	L	T	C
-   Dimension of velocity is:	[L][T]⁻¹	[L][T]	[L]²[T]⁻¹	[L][T]⁻²	A
-   Dimension of acceleration is:	[L][T]⁻¹	[L][T]⁻²	[L]²[T]⁻¹	[L][T]	A
-   Dimension of force is:	[M][L][T]⁻²	[M][L]²[T]⁻¹	[M][L][T]⁻¹	[M][L]²[T]⁻²	A
-   Dimension of work is:	[M][L][T]⁻²	[M][L]²[T]⁻²	[M][L][T]⁻¹	[M][L]²[T]⁻¹	B
-   Dimension of power is:	[M][L]²[T]⁻²	[M][L]²[T]⁻³	[M][L][T]⁻³	[M][L]²[T]⁻¹	B
-   Dimension of density is:	[M][L]⁻³	[M][L]³	[M]⁻¹[L]³	[M][L]⁻²	A
-   Equation is dimensionally correct if:	Dimensions match on both sides	Units match on both sides	Numbers match	Constants match	A
-   Dimensional analysis cannot determine:	Dimensionless constants	Numerical factors	Both A and B	Neither A nor B	C
-   The word "Physics" comes from Greek word "Physis" meaning:	Nature	Motion	Energy	Matter	A
-   Study of celestial objects is called:	Astrophysics	Geophysics	Biophysics	Nuclear Physics	A
-   Study of living organisms using physics is:	Biophysics	Geophysics	Astrophysics	Plasma Physics	A
-   Plasma is found in:	Sun	Fluorescent tubes	Lightning	All of these	D
-   Most visible matter in universe is in:	Solid state	Liquid state	Gas state	Plasma state	D
-   SI system was established in:	1960	1970	1980	1990	A
-   Before SI system, ______ system was used:	CGS	FGS	MKS	Both A and C	D
-   CGS stands for:	Centimeter-Gram-Second	Centimeter-Gram-System	Celsius-Gram-Second	Centimeter-Gravity-Second	A
-   MKS stands for:	Meter-Kilogram-Second	Meter-Kilogram-System	Mass-Kilogram-Second	Meter-Kelvin-Second	A
-   Base quantities are ______ in number in SI:	5	6	7	8	C
-   Amount of substance is measured in:	Gram	Kilogram	Mole	Liter	C
-   Luminous intensity measures:	Brightness of light source	Total light emitted	Light falling on surface	Light reflected	A
-   Derived quantities are ______ in number:	7	Few	Many	Infinite	D
-   Speed is derived from:	Distance and time	Mass and time	Force and area	Volume and mass	A
-   Acceleration is derived from:	Velocity and time	Distance and time	Mass and force	Volume and time	A
-   Momentum is derived from:	Mass and velocity	Force and time	Work and energy	Power and time	A
-   Kinetic energy formula is:	½mv²	mv²	mgh	mgt	A
-   Potential energy formula is:	½mv²	mv²	mgh	mgt	C
-   Pressure formula is:	F/A	A/F	F×A	F+A	A
-   Young's modulus has dimension of:	Pressure	Velocity	Acceleration	Force	A
-   Viscosity has SI unit:	Pa·s	N/m²	kg/m³	m/s	A
-   Surface tension has SI unit:	N/m	N/m²	kg/m	J/m	A
-   Coefficient of friction is:	Dimensionless	Has dimension of force	Has dimension of pressure	Has dimension of energy	A
-   Angle in radians is:	Dimensionless	Has dimension [L]	Has dimension [T]	Has dimension [M]	A
-   Solid angle has unit:	Radian	Steradian	Degree	Both B and C	D
-   Frequency has SI unit:	Hertz	Second⁻¹	Both A and B	Cycle/second	C
-   Wavelength has SI unit:	Meter	Hertz	Second	Meter/second	A
-   Wave speed formula is:	fλ	f/λ	λ/f	1/fλ	A
-   Electric charge has SI unit:	Coulomb	Ampere	Volt	Ohm	A
-   Electric potential has SI unit:	Volt	Ampere	Coulomb	Ohm	A
-   Resistance has SI unit:	Ohm	Volt	Ampere	Coulomb	A
-   Capacitance has SI unit:	Farad	Henry	Ohm	Siemens	A
-   Magnetic flux has SI unit:	Weber	Tesla	Henry	Farad	A
-   Magnetic field has SI unit:	Tesla	Weber	Henry	Farad	A
-   Inductance has SI unit:	Henry	Farad	Ohm	Tesla	A
-   Radioactivity has SI unit:	Becquerel	Curie	Gray	Sievert	A
-   Absorbed dose has SI unit:	Gray	Sievert	Becquerel	Curie	A
-   Dose equivalent has SI unit:	Sievert	Gray	Becquerel	Curie	A
-   Catalytic activity has SI unit:	Katal	Mole/second	Both A and B	Hertz	C
-   Plane angle in degrees for one revolution:	90°	180°	270°	360°	D
-   Plane angle in radians for one revolution:	π	2π	π/2	π/4	B
-   Solid angle for complete sphere is:	π	2π	4π	π/2	C
-   1 radian equals approximately:	57.3°	90°	180°	360°	A
-   1 degree equals approximately:	0.01745 rad	0.1745 rad	1.745 rad	17.45 rad	A
-   Prefixes help to express:	Very large numbers	Very small numbers	Both A and B	Neither A nor B	C
    Writing 0.000001 m as 1 µm uses:	Scientific notation	Prefix notation	Both A and B	Neither A nor B	C
    Standard form of 5.67 × 10⁻⁸ is:	0.0000000567	0.000000567	0.00000567	0.0000567	A
    Standard form of 3.4 × 10⁵ is:	3400	34000	340000	3400000	C
@@ -1402,201 +1380,24 @@ Origin coordinates?	(0, 0)	(1, 1)	(0, 1)	(1, 0)	A`
    Volume of cylinder = πr²h. If r = 2.0 cm, h = 5.0 cm, volume with correct SF is:	62.8 cm³	63 cm³	62.83 cm³	60 cm³	B
    Density calculation: if m = 24.5 g (3 SF), V = 12.0 cm³ (3 SF), density should have:	1 SF	2 SF	3 SF	4 SF	C
    Area of circle with r = 3.0 cm (2 SF) should be reported as:	28.27 cm²	28.3 cm²	28 cm²	30 cm²	C
-   Time period of pendulum T = 2π√(l/g). Dimension of T is:	[T]	[L]	[M]	[L][T]⁻²	A
-   If equation v = u + at is dimensionally checked, [v] = [u] = [at] = :	[L][T]⁻¹	[L][T]	[L][T]⁻²	[L]²[T]⁻¹	A
-   Which is dimensionally incorrect?	v = u + at	s = ut + ½at²	v² = u² + 2as	s = vt + ½at	D
-   Dimensional formula [M⁰L⁰T⁰] represents:	Dimensionless quantity	Zero quantity	Infinite quantity	Constant quantity	A
-   Refractive index has dimension:	[M][L]⁻³	[M⁰L⁰T⁰]	[L][T]⁻¹	[M][L][T]⁻²	B
-   Strain has dimension:	[M][L]⁻³	[M⁰L⁰T⁰]	[L][T]⁻¹	[M][L][T]⁻²	B
-   Angle has dimension:	[M⁰L⁰T⁰]	[L]	[T]	[M]	A
-   Which pair has same dimension?	Work and torque	Force and pressure	Velocity and acceleration	Mass and weight	A
-   Which does NOT have dimension of time?	Period	Frequency	½	Frequency⁻¹	B
-   Dimension of gravitational constant G is:	[M]⁻¹[L]³[T]⁻²	[M][L]³[T]⁻²	[M]⁻¹[L]²[T]⁻²	[M][L]²[T]⁻²	A
-   Dimension of Planck's constant h is:	[M][L]²[T]⁻¹	[M][L][T]⁻¹	[M][L]²[T]⁻²	[M][L]³[T]⁻²	A
-   Dimension of Boltzmann constant k is:	[M][L]²[T]⁻²[K]⁻¹	[M][L][T]⁻²[K]⁻¹	[M][L]²[T]⁻¹[K]⁻¹	[M][L]³[T]⁻²[K]⁻¹	A
-   Universal gas constant R has dimension:	[M][L]²[T]⁻²[K]⁻¹[mol]⁻¹	[M][L][T]⁻²[K]⁻¹[mol]⁻¹	[M][L]²[T]⁻¹[K]⁻¹[mol]⁻¹	[M][L]³[T]⁻²[K]⁻¹[mol]⁻¹	A
-   Dimension of permittivity of free space ε₀ is:	[M]⁻¹[L]⁻³[T]⁴[A]²	[M]⁻¹[L]⁻²[T]³[A]²	[M]⁻¹[L]⁻³[T]³[A]²	[M]⁻¹[L]⁻⁴[T]⁴[A]²	A
-   Dimension of permeability of free space μ₀ is:	[M][L][T]⁻²[A]⁻²	[M][L]²[T]⁻²[A]⁻²	[M][L][T]⁻¹[A]⁻²	[M][L]³[T]⁻²[A]⁻²	A
-   Speed of light c has dimension:	[L][T]⁻¹	[L][T]	[L]²[T]⁻¹	[L][T]⁻²	A
-   Dimension of electric field E is:	[M][L][T]⁻³[A]⁻¹	[M][L]²[T]⁻³[A]⁻¹	[M][L][T]⁻²[A]⁻¹	[M][L]³[T]⁻³[A]⁻¹	A
-   Dimension of magnetic field B is:	[M][T]⁻²[A]⁻¹	[M][L][T]⁻²[A]⁻¹	[M][L]²[T]⁻²[A]⁻¹	[M][T]⁻¹[A]⁻¹	A
-   Dimension of energy density is:	[M][L]⁻¹[T]⁻²	[M][L]⁻²[T]⁻²	[M][L]⁻³[T]⁻²	[M][L]⁻¹[T]⁻¹	A
-   Dimension of power density is:	[M][L]⁻¹[T]⁻³	[M][L]⁻²[T]⁻³	[M][L]⁻³[T]⁻³	[M][L]⁻¹[T]⁻²	A
-   Dimension of specific heat capacity is:	[L]²[T]⁻²[K]⁻¹	[L][T]⁻²[K]⁻¹	[L]²[T]⁻¹[K]⁻¹	[L]³[T]⁻²[K]⁻¹	A
-   Dimension of thermal conductivity is:	[M][L][T]⁻³[K]⁻¹	[M][L]²[T]⁻³[K]⁻¹	[M][L][T]⁻²[K]⁻¹	[M][L]³[T]⁻³[K]⁻¹	A
-   Dimension of viscosity coefficient η is:	[M][L]⁻¹[T]⁻¹	[M][L]⁻²[T]⁻¹	[M][L]⁻¹[T]⁻²	[M][L]⁻³[T]⁻¹	A
-   Dimension of surface tension is:	[M][T]⁻²	[M][L][T]⁻²	[M][L]⁻¹[T]⁻²	[M][L]²[T]⁻²	A
-   Dimension of gravitational potential is:	[L]²[T]⁻²	[L][T]⁻²	[L]²[T]⁻¹	[L]³[T]⁻²	A
-   Dimension of escape velocity is:	[L][T]⁻¹	[L][T]	[L]²[T]⁻¹	[L][T]⁻²	A
-   Dimension of angular velocity is:	[T]⁻¹	[L][T]⁻¹	[L]²[T]⁻¹	[T]	A
-   Dimension of angular acceleration is:	[T]⁻²	[L][T]⁻²	[L]²[T]⁻²	[T]⁻¹	A
-   Dimension of moment of inertia is:	[M][L]²	[M][L]	[M][L]³	[M][L]⁻²	A
-   Dimension of torque is:	[M][L]²[T]⁻²	[M][L][T]⁻²	[M][L]²[T]⁻¹	[M][L]³[T]⁻²	A
-   Dimension of angular momentum is:	[M][L]²[T]⁻¹	[M][L][T]⁻¹	[M][L]²[T]⁻²	[M][L]³[T]⁻¹	A
-   Dimension of impulse is:	[M][L][T]⁻¹	[M][L][T]⁻²	[M][L]²[T]⁻¹	[M][L][T]	A
-   Dimension of pressure gradient is:	[M][L]⁻²[T]⁻²	[M][L]⁻¹[T]⁻²	[M][L]⁻³[T]⁻²	[M][L]⁻²[T]⁻¹	A
-   Dimension of velocity gradient is:	[T]⁻¹	[L][T]⁻¹	[L]⁻¹[T]⁻¹	[L][T]⁻²	A
-   Dimension of diffusion coefficient is:	[L]²[T]⁻¹	[L][T]⁻¹	[L]²[T]⁻²	[L]³[T]⁻¹	A
-   Dimension of thermal diffusivity is:	[L]²[T]⁻¹	[L][T]⁻¹	[L]²[T]⁻²	[L]³[T]⁻¹	A
-   Dimension of wave number is:	[L]⁻¹	[L]	[T]⁻¹	[L][T]⁻¹	A
-   Dimension of intensity of wave is:	[M][T]⁻³	[M][L][T]⁻³	[M][L]⁻¹[T]⁻³	[M][L]²[T]⁻³	A
-   Dimension of radiation pressure is:	[M][L]⁻¹[T]⁻²	[M][L]⁻²[T]⁻²	[M][L]⁻³[T]⁻²	[M][L]⁻¹[T]⁻¹	A
-   Dimension of electric dipole moment is:	[L][T][A]	[L]²[T][A]	[L][A]	[L]²[A]	A
-   Dimension of magnetic dipole moment is:	[L]²[A]	[L][A]	[L]²[T][A]	[L][T][A]	A
-   Dimension of electric flux is:	[M][L]³[T]⁻³[A]⁻¹	[M][L]²[T]⁻³[A]⁻¹	[M][L]³[T]⁻²[A]⁻¹	[M][L]⁴[T]⁻³[A]⁻¹	A
-   Dimension of magnetic flux is:	[M][L]²[T]⁻²[A]⁻¹	[M][L][T]⁻²[A]⁻¹	[M][L]²[T]⁻¹[A]⁻¹	[M][L]³[T]⁻²[A]⁻¹	A
-   Dimension of self-inductance is:	[M][L]²[T]⁻²[A]⁻²	[M][L][T]⁻²[A]⁻²	[M][L]²[T]⁻¹[A]⁻²	[M][L]³[T]⁻²[A]⁻²	A
-   Dimension of mutual inductance is:	[M][L]²[T]⁻²[A]⁻²	[M][L][T]⁻²[A]⁻²	[M][L]²[T]⁻¹[A]⁻²	[M][L]³[T]⁻²[A]⁻²	A
-   Dimension of capacitance is:	[M]⁻¹[L]⁻²[T]⁴[A]²	[M]⁻¹[L]⁻¹[T]⁴[A]²	[M]⁻¹[L]⁻²[T]³[A]²	[M]⁻¹[L]⁻³[T]⁴[A]²	A
-   Dimension of resistance is:	[M][L]²[T]⁻³[A]⁻²	[M][L][T]⁻³[A]⁻²	[M][L]²[T]⁻²[A]⁻²	[M][L]³[T]⁻³[A]⁻²	A
-   Dimension of resistivity is:	[M][L]³[T]⁻³[A]⁻²	[M][L]²[T]⁻³[A]⁻²	[M][L]³[T]⁻²[A]⁻²	[M][L]⁴[T]⁻³[A]⁻²	A
-   Dimension of conductivity is:	[M]⁻¹[L]⁻³[T]³[A]²	[M]⁻¹[L]⁻²[T]³[A]²	[M]⁻¹[L]⁻³[T]²[A]²	[M]⁻¹[L]⁻⁴[T]³[A]²	A
-   Dimension of mobility is:	[M]⁻¹[T]²[A]	[M]⁻¹[L][T]²[A]	[M]⁻¹[T][A]	[M]⁻¹[L][T][A]	A
-   Dimension of Hall coefficient is:	[M]⁻¹[L]³[T]⁻¹[A]⁻¹	[M]⁻¹[L]²[T]⁻¹[A]⁻¹	[M]⁻¹[L]³[T]⁻²[A]⁻¹	[M]⁻¹[L]⁴[T]⁻¹[A]⁻¹	A
-   Dimension of thermoelectric power is:	[M][L]²[T]⁻³[A]⁻¹[K]⁻¹	[M][L][T]⁻³[A]⁻¹[K]⁻¹	[M][L]²[T]⁻²[A]⁻¹[K]⁻¹	[M][L]³[T]⁻³[A]⁻¹[K]⁻¹	A
-   Dimension of Stefan's constant is:	[M][T]⁻³[K]⁻⁴	[M][L][T]⁻³[K]⁻⁴	[M][L]⁻¹[T]⁻³[K]⁻⁴	[M][L]²[T]⁻³[K]⁻⁴	A
-   Dimension of Wien's constant is:	[L][K]	[L]²[K]	[L][K]²	[L]²[K]²	A
-   Dimension of Rydberg constant is:	[L]⁻¹	[L]	[T]⁻¹	[L][T]⁻¹	A
-   Dimension of Bohr radius is:	[L]	[L]²	[T]	[L][T]⁻¹	A
-   Dimension of fine structure constant is:	[M⁰L⁰T⁰]	[L]	[T]	[M]	A
-   Which is a scalar quantity?	Force	Velocity	Mass	Acceleration	C
-   Which is a vector quantity?	Mass	Time	Distance	Displacement	D
-   Scalar quantities have:	Magnitude only	Direction only	Both magnitude and direction	Neither A nor B	A
-   Vector quantities have:	Magnitude only	Direction only	Both magnitude and direction	Neither A nor B	C
-   Addition of vectors follows:	Algebraic rules	Geometric rules	Both A and B	Neither A nor B	C
-   Dot product of two vectors gives:	Vector	Scalar	Both	Neither	B
-   Cross product of two vectors gives:	Vector	Scalar	Both	Neither	A
-   Unit vector has magnitude:	0	1	Infinity	Depends on vector	B
-   Null vector has magnitude:	0	1	Infinity	Depends	B
-   Position vector specifies:	Magnitude only	Direction only	Position relative to origin	Both magnitude and direction	C
-   Components of vector in 2D are:	1	2	3	4	B
-   Magnitude of vector with components (3,4) is:	5	7	12	1	A
-   Direction of vector (3,4) from x-axis is:	tan⁻¹(3/4)	tan⁻¹(4/3)	tan⁻¹(7)	tan⁻¹(1)	B
-   Resultant of two perpendicular vectors of magnitude 3 and 4 is:	1	5	7	12	B
-   Triangle law of vector addition is used for:	Two vectors	Three vectors	Any number	Only parallel	A
-   Parallelogram law is used for:	Two vectors	Three vectors	Any number	Only perpendicular	A
-   Polygon law is used for:	Two vectors	Three or more vectors	Only parallel	Only perpendicular	B
-   Resolution of vector means:	Adding vectors	Multiplying vectors	Breaking into components	Finding magnitude	C
-   Scalar product A·B = AB cosθ is maximum when θ = :	0°	90°	180°	270°	A
-   Scalar product is minimum when θ = :	0°	90°	180°	270°	C
-   Vector product |A×B| = AB sinθ is maximum when θ = :	0°	90°	180°	270°	B
-   Vector product is zero when θ = :	0° or 180°	90°	45°	60°	A
-   Direction of A×B is given by:	Right hand rule	Left hand rule	Random	Always upward	A
-   If A and B are parallel, A×B = :	AB	0	AB sinθ	AB cosθ	B
-   If A and B are perpendicular, A·B = :	AB	0	AB sinθ	AB cosθ	B
-   i·i = j·j = k·k = :	0	1	-1	i	B
-   i·j = j·k = k·i = :	0	1	-1	i	A
-   i×j = :	k	-k	j	-i	A
-   j×k = :	i	-i	k	-j	A
-   k×i = :	j	-j	i	-k	A
-   j×i = :	k	-k	j	-i	B
-   k×j = :	i	-i	k	-j	B
-   i×k = :	j	-j	i	-k	B
-   Vector A = 3i + 4j has magnitude:	5	7	12	1	A
-   Vector A = 3i + 4j makes angle with x-axis:	tan⁻¹(3/4)	tan⁻¹(4/3)	tan⁻¹(7)	tan⁻¹(1)	B
-   Unit vector along A = 3i + 4j is:	(3i+4j)/5	(3i+4j)/7	(3i+4j)/12	3i+4j	A
-   If A = 2i + 3j and B = 4i - j, A+B = :	6i + 2j	-2i + 4j	6i - 2j	2i + 2j	A
-   If A = 2i + 3j and B = 4i - j, A-B = :	-2i + 4j	6i + 2j	2i + 4j	-2i - 4j	A
-   Dot product of A = 2i + 3j and B = 4i - j is:	5	8	11	-5	A
-   Cross product of A = 2i + 3j and B = 4i - j (in z-direction) is:	-14k	14k	10k	-10k	A
-   Work done W = F·d is:	Vector	Scalar	Both	Neither	B
-   Torque τ = r×F is:	Vector	Scalar	Both	Neither	A
-   Power P = F·v is:	Vector	Scalar	Both	Neither	B
-   Angular momentum L = r×p is:	Vector	Scalar	Both	Neither	A
-   Kinetic energy is:	Vector	Scalar	Both	Neither	B
-   Momentum is:	Vector	Scalar	Both	Neither	A
-   Speed is:	Vector	Scalar	Both	Neither	B
-   Velocity is:	Vector	Scalar	Both	Neither	A
-   Acceleration is:	Vector	Scalar	Both	Neither	A
-   Force is:	Vector	Scalar	Both	Neither	A
-   Pressure is:	Vector	Scalar	Both	Neither	B
-   Density is:	Vector	Scalar	Both	Neither	B
-   Temperature is:	Vector	Scalar	Both	Neither	B
-   Electric field is:	Vector	Scalar	Both	Neither	A
-   Electric potential is:	Vector	Scalar	Both	Neither	B
-   Magnetic field is:	Vector	Scalar	Both	Neither	A
-   Current is:	Vector	Scalar	Both	Neither	B
-   Which measurement has most uncertainty?	Length with meter rule	Mass with physical balance	Time with stopwatch	Volume with measuring cylinder	A
-   Most precise instrument for small lengths:	Meter rule	Vernier calipers	Screw gauge	Measuring cylinder	C
-   For measuring internal diameter of tube, use:	Meter rule	Vernier calipers	Screw gauge	Measuring cylinder	B
-   For measuring thickness of paper, use:	Meter rule	Vernier calipers	Screw gauge	Measuring cylinder	C
-   For measuring volume of irregular stone, use:	Vernier calipers	Screw gauge	Measuring cylinder by displacement	Meter rule	C
-   For measuring mass of liquid, use:	Measuring cylinder only	Physical balance only	Both together	Vernier calipers	C
-   Stopwatch should be started/stopped:	By guess	At exact event	After event	Before event	B
-   To reduce reaction time error in stopwatch:	Use digital stopwatch	Take multiple readings	Use automatic trigger	All of these	D
-   Reading error in analog instruments is typically:	±LC	±½LC	±2LC	±10LC	B
-   Digital instruments have reading error of:	±1 in last digit	±½ in last digit	±2 in last digit	Zero	A
-   Calibration of instrument means:	Checking with standard	Cleaning	Repairing	Storing	A
-   Standard for length calibration is:	Metal bar	Laser wavelength	Both A and B	Plastic ruler	C
-   Standard for mass calibration is:	Kilogram prototype	Spring	Gravity pendulum	Water volume	A
-   Standard for time calibration is:	Pendulum	Atomic clock	Solar day	Lunar month	B
-   SI second is defined by:	Pendulum period	Cesium atom transition	Earth rotation	Sun position	B
-   SI meter is defined by:	Metal bar	Speed of light	Earth circumference	Water wavelength	B
-   SI kilogram was defined by:	Platinum-iridium prototype	Speed of light	Earth mass	Water volume	A
-   New definition of kilogram (2019) uses:	Planck constant	Speed of light	Avogadro number	Both A and C	D
-   Measurement uncertainty includes:	Random errors	Systematic errors	Both A and B	Neither A nor B	C
-   Standard deviation measures:	Random error	Systematic error	Zero error	Parallax error	A
-   Accuracy can be improved by:	Better calibration	More readings	Better technique	All of these	D
-   Precision can be improved by:	Better instrument	More careful reading	Controlled environment	All of these	D
-   Relative uncertainty is:	Absolute uncertainty/Measured value	Absolute uncertainty/True value	Measured value/Absolute uncertainty	True value/Absolute uncertainty	A
-   Percentage uncertainty is:	Relative uncertainty × 100	Absolute uncertainty × 100	Measured × 100	True × 100	A
-   If length = 10.0 ± 0.1 cm, relative uncertainty is:	0.01	0.1	1.0	10	A
-   If length = 10.0 ± 0.1 cm, percentage uncertainty is:	0.1%	1%	10%	100%	B
-   For product Z = XY, percentage uncertainty in Z is:	%X + %Y	%X - %Y	%X × %Y	%X ÷ %Y	A
-   For quotient Z = X/Y, percentage uncertainty in Z is:	%X + %Y	%X - %Y	%X × %Y	%X ÷ %Y	A
-   For power Z = Xⁿ, percentage uncertainty in Z is:	%X	|%| × %X	%X/|n|	%X + |n|	B
-   If radius of sphere has 2% uncertainty, volume uncertainty is:	2%	4%	6%	8%	C
-   If length and width each have 1% uncertainty, area uncertainty is:	1%	2%	3%	4%	B
-   If mass has 1% and volume has 2% uncertainty, density uncertainty is:	1%	2%	3%	4%	C
-   Best estimate from multiple readings is:	Mean	Median	Mode	Range	A
-   Uncertainty in mean of n readings is:	Standard deviation	SD/√n	SD×√n	SD/n	B
-   Significant figures indicate:	Precision of measurement	Accuracy of measurement	Uncertainty	Both A and C	D
-   Leading zeros are not significant because they:	Are placeholders	Are uncertain	Cannot be measured	Are always zero	A
-   Trailing zeros in 2500 are ambiguous because:	No decimal point	Too many zeros	Instrument limitation	Observer error	A
-   Writing 2500 as 2.50 × 10³ shows:	3 significant figures	4 significant figures	2 significant figures	Uncertain	A
-   In calculations, keep extra digits until:	Final answer	Each step	Beginning	Intermediate	B
-   Round only at:	Final answer	Each step	Beginning	Never	A
-   Exact numbers (like counting) have:	Infinite significant figures	Zero significant figures	1 significant figure	Depends	A
-   Conversion factors (like 1 m = 100 cm) have:	Infinite significant figures	Zero significant figures	1 significant figure	3 significant figures	A
-   Constants like π have:	As many SF as needed	1 SF	2 SF	3 SF	A
-   When multiplying by exact number, SF in result depends on:	Measured value only	Exact number only	Both	Neither	A
-   In addition, the least certain decimal place determines:	Result's decimal place	Result's SF	Result's magnitude	Result's sign	A
-   0.1 + 0.01 + 0.001 should be reported as:	0.111	0.11	0.1	0.1110	C
-   12.345 + 0.01 should be reported as:	12.355	12.36	12.4	12.35	B
-   100.0 - 0.1234 should be reported as:	99.8766	99.877	99.88	99.9	C
    Which has most significant figures?	0.001	0.0010	0.00100	0.001000	D
    Which has least significant figures?	100	100.	100.0	1.00 × 10²	A
-   2.5 × 10³ has significant figures:	1	2	3	4	B
-   2.50 × 10³ has significant figures:	1	2	3	4	C
-   2.500 × 10³ has significant figures:	1	2	3	4	D
-   0.0250 has significant figures:	1	2	3	4	C
-   250.0 has significant figures:	1	2	3	4	D
-   250 has significant figures:	1	2	3	Cannot be determined	D
-   In 3.14159, all digits are significant because:	They are measured	They are from constant π	They are non-zero	All of these	C
-   Uncertainty should be reported with:	1 significant figure	2 significant figures	Same as measurement	Depends	A
-   If measurement = 12.34 ± 0.056, report as:	12.34 ± 0.06	12.34 ± 0.056	12.3 ± 0.1	12 ± 1	A
-   If measurement = 123.4 ± 2.56, report as:	123.4 ± 2.6	123.4 ± 2.56	123 ± 3	120 ± 3	A
-   Graphical representation of data helps to:	See trends	Find relationships	Estimate values	All of these	D
-   Slope of straight line graph gives:	Rate of change	Intercept	Error	Uncertainty	A
-   Y-intercept of graph represents:	Value when x = 0	Value when y = 0	Slope	Error	A
-   Best fit line minimizes:	Sum of squares of residuals	Sum of residuals	Maximum error	Minimum error	A
-   Correlation coefficient close to 1 indicates:	Strong positive correlation	Strong negative correlation	No correlation	Weak correlation	A
-   Correlation coefficient close to -1 indicates:	Strong positive correlation	Strong negative correlation	No correlation	Weak correlation	B
-   Correlation coefficient close to 0 indicates:	Strong correlation	No linear correlation	Perfect correlation	Inverse correlation	B
-   Error bars on graph represent:	Uncertainty in measurements	Slope	Intercept	Correlation	A
-   Physics experiments should be:	Repeatable	Controlled	Documented	All of these	D
-   Hypothesis testing requires:	Control group	Experimental group	Both A and B	Neither A nor B	C
-   Peer review in science ensures:	Quality	Validity	Reliability	All of these	D
-   Scientific knowledge is:	Tentative	Cumulative	Self-correcting	All of these	D
-   Ethics in measurement includes:	Honest reporting	Proper calibration	Data integrity	All of these	D
-   Safety in physics lab requires:	Protective equipment	Proper training	Emergency procedures	All of these	D
-   SI system promotes:	Global standardization	Scientific communication	Educational consistency	All of these	D
-   Metric system advantages include:	Base-10 scaling	Easy conversion	Global acceptance	All of these	D
    Prefix notation helps to:	Avoid large exponents	Improve readability	Facilitate calculation	All of these	D
    Scientific notation helps to:	Handle very large/small numbers	Maintain significant figures	Simplify calculation	All of these	D
-   Dimensional analysis helps to:	Detect errors	Derive relationships	Convert units	All of these	D
-   Vector algebra is essential for:	Mechanics	Electromagnetism	Fluid dynamics	All of these	D
    Measurement is foundation of:	Experimental science	Theoretical science	Both A and B	Neither A nor B	C
+The instrument used to measure atmospheric pressure is:	Barometer	Thermometer	Hygrometer	Manometer	A
+The instrument used to measure temperature is:	Thermometer	Barometer	Hygrometer	Manometer	A
+The instrument used to measure humidity is:	Hygrometer	Barometer	Thermometer	Manometer	A
+The instrument used to measure pressure of gases is:	Manometer	Barometer	Thermometer	Hygrometer	A
+Hydrometer is used to measure:	Mass	Volume	Density of liquids	Temperature	C
+Lactometer is a type of:	Hydrometer	Thermometer	Barometer	Manometer	A
+Accuracy of measurement means:	Closeness to true value	Repeatability of measurement	Smallest measurable value	Largest measurable value	A
+Precision of measurement means:	Closeness to true value	Repeatability of measurement	Average of readings	Median of readings	B
+Error is difference between:	Measured value and true value	Two measured values	Least count and reading	Zero error and correction	A
+Random errors can be reduced by:	Taking multiple readings	Using better instrument	Calibrating instrument	All of these	D
+Systematic errors are caused by:	Faulty instrument	Wrong technique	Environmental factors	All of these	D
+Zero error is a type of:	Random error	Systematic error	Human error	All of these	B
+Parallax error occurs when:	Eye is not perpendicular to scale	Instrument has zero error	Reading is taken quickly	Instrument is faulty	A
    Physics progress depends on:	Better measurements	New theories	Both A and B	Technological advances	C
    Interdisciplinary science uses:	Physics principles	Mathematical tools	Engineering applications	All of these	D
    STEM education emphasizes:	Science	Technology	Engineering and Math	All of these	D
