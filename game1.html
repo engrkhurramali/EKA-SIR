@@ -387,9 +387,18 @@
         <h1 class="title">🍍🍎 FRUIT BASKET 🧺</h1>
         <p style="color: rgba(255,255,255,0.6); margin-bottom: 15px; font-size: 11px;">By: EKA SIR | V 1.0</p>
 
+        <h3 style="color: white; margin: 12px 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8;">👤 Player Info</h3>
+        <input type="text" id="playerName" class="input-field" placeholder="Player Name" maxlength="15">
+        <select id="age-selector" class="input-field">
+            <option value="Age < 8">Age &lt; 8</option>
+            <option value="Age 8-12">Age 8-12</option>
+            <option value="Age 12-16" selected>Age 12-16</option>
+            <option value="Age 16-20">Age 16-20</option>
+            <option value="Age 20+">Age 20+</option>
+        </select>
+
         <h3 style="color: white; margin: 12px 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8;">🎨 Select Theme</h3>
-        <div class="theme-grid" id="themeGrid"></div>
-        <input type="text" id="playerName" class="input-field" placeholder="👤 Player Name" maxlength="15">
+        <div id="themeGrid" class="theme-grid"></div>
 
         <div style="display: flex; gap: 10px; width: 100%; max-width: 280px; margin-top: 10px;">
             <button class="btn" id="startBtn" style="flex: 1.2; margin: 0; padding: 10px 5px; font-size: 13px;">🎮 Start Game</button>
@@ -449,72 +458,76 @@
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
 
 <script>
     // ============================================
-    // 🔥 FIREBASE CONFIGURATION - REPLACE WITH YOURS
+    // 🔥 FIREBASE CONFIGURATION
     // ============================================
     const firebaseConfig = {
-        apiKey: "AIzaSyDOOtB7WDu53Jkbl9vmDbu6xZt6DCRC-N4",
+        apiKey: "AIzaSyAEcPKE7n33wNUGxYpyqm5UWFjwXTT_x_c",
         authDomain: "eka-sir.firebaseapp.com",
         databaseURL: "https://eka-sir-default-rtdb.firebaseio.com",
         projectId: "eka-sir",
         storageBucket: "eka-sir.firebasestorage.app",
         messagingSenderId: "1022804634776",
-        appId: "1:1022804634776:android:bc21f8bcd07b828d5734ed"
+        appId: "1:1022804634776:web:4c547efa80d625885734ed",
+        measurementId: "G-5P543VP1EZ"
     };
 
     let firebaseDB = null;
     let firebaseInitialized = false;
+    let analytics = null;
 
     function initFirebase() {
         try {
-            if (!firebaseConfig.apiKey || firebaseConfig.apiKey === "YOUR_API_KEY_HERE") {
-                document.getElementById('firebaseStatus').textContent = '⚠️ Firebase not configured. Local scores only.';
-                document.getElementById('firebaseStatus').style.color = '#fdcb6e';
-                return;
-            }
             const app = firebase.initializeApp(firebaseConfig);
             firebaseDB = firebase.database();
+            if (firebaseConfig.measurementId) {
+                analytics = firebase.analytics();
+            }
             firebaseInitialized = true;
             document.getElementById('firebaseStatus').textContent = '✅ Connected to Firebase';
         } catch (e) {
             console.error("Firebase init error:", e);
-            document.getElementById('firebaseStatus').textContent = '❌ Firebase connection failed';
+            document.getElementById('firebaseStatus').textContent = '❌ Connection failed';
             document.getElementById('firebaseStatus').style.color = '#ff6b6b';
         }
     }
 
-    function saveScoreToFirebase(name, score) {
+    function saveScoreToFirebase(name, score, age) {
         if (!firebaseInitialized || !firebaseDB) {
             console.log('Firebase not initialized, saving locally only');
             saveScoreLocal(name, score);
             return Promise.resolve();
         }
 
+        const agePath = age || gameState.age || 'Age 12-16';
         const now = new Date();
         const scoreData = {
             name: name || 'Anonymous',
-            score: score,
+            score: parseInt(score) || 0,
+            age: agePath,
             date: now.toISOString(),
             dateTime: `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`,
             timestamp: firebase.database.ServerValue.TIMESTAMP
         };
 
-        // Timeout promise to prevent hanging
+        const newScoreRef = firebaseDB.ref('scores_fruitbasket').push();
+        const savePromise = newScoreRef.set(scoreData);
+
         const timeoutPromise = new Promise((_, reject) =>
             setTimeout(() => reject(new Error('Firebase Timeout')), 5000)
         );
 
-        const savePromise = firebaseDB.ref('scores').push(scoreData);
-
         return Promise.race([savePromise, timeoutPromise])
             .then(() => {
-                console.log('Score saved to Firebase');
+                console.log('Score saved to Firebase at:', newScoreRef.key);
             })
             .catch(err => {
                 console.error('Firebase save error or timeout:', err);
                 saveScoreLocal(name, score);
+                throw err; // Re-throw to handle in submitScore
             });
     }
 
@@ -524,25 +537,35 @@
             return;
         }
 
+        const agePath = document.getElementById('age-selector').value;
         const statusEl = document.getElementById('firebaseStatus');
-        statusEl.textContent = '⏳ Loading global scores...';
+        statusEl.textContent = '⏳ Fetching global scores...';
 
-        const loadPromise = firebaseDB.ref('scores')
+        const loadPromise = firebaseDB.ref('scores_fruitbasket')
             .orderByChild('score')
             .limitToLast(10)
             .once('value')
             .then(snapshot => {
                 const scores = [];
-                snapshot.forEach(child => {
-                    scores.push(child.val());
-                });
-                scores.sort((a, b) => b.score - a.score);
-                displayLeaderboard(scores);
-                statusEl.textContent = '✅ Global scores loaded';
-                statusEl.style.color = '#55efc4';
+                if (snapshot.exists()) {
+                    snapshot.forEach(child => {
+                        const val = child.val();
+                        if (val) scores.push(val);
+                    });
+                    // Query limitToLast(10) returns them in ascending order,
+                    // so we reverse to show highest first
+                    scores.sort((a, b) => (b.score || 0) - (a.score || 0));
+                    displayLeaderboard(scores);
+                    statusEl.textContent = `✅ Loaded ${scores.length} global scores`;
+                    statusEl.style.color = '#55efc4';
+                } else {
+                    console.log("No data found at 'scores' path.");
+                    statusEl.textContent = '✅ No global scores yet';
+                    statusEl.style.color = '#55efc4';
+                    loadLeaderboardLocal();
+                }
             });
 
-        // Timeout promise to prevent hanging (8 seconds as per plan)
         const timeoutPromise = new Promise((_, reject) =>
             setTimeout(() => reject(new Error('Firebase Timeout')), 8000)
         );
@@ -550,7 +573,7 @@
         Promise.race([loadPromise, timeoutPromise])
             .catch(err => {
                 console.error('Firebase load error or timeout:', err);
-                statusEl.textContent = '⚠️ Offline? Showing local scores';
+                statusEl.textContent = '⚠️ Connection error. Showing local.';
                 statusEl.style.color = '#fdcb6e';
                 loadLeaderboardLocal();
             });
@@ -648,7 +671,7 @@
         isPlaying: false,
         isPaused: false,
         score: 0,
-        time: 60,
+        time: 10,
         level: 1,
         playerName: '',
         currentTheme: 'deep-sea',
@@ -697,6 +720,12 @@
         window.addEventListener('resize', resizeCanvas);
         initThemes();
         initFirebase();
+
+        const savedName = localStorage.getItem('eka_player_name');
+        if (savedName) document.getElementById('playerName').value = savedName;
+
+        document.getElementById('age-selector').addEventListener('change', loadScoresFromFirebase);
+
         loadScoresFromFirebase();
         setupEventListeners();
         setupTouchControls();
@@ -898,9 +927,12 @@
 
     function startGame() {
         const name = document.getElementById('playerName').value.trim() || 'Player';
+        const age = document.getElementById('age-selector').value;
+        localStorage.setItem('eka_player_name', name);
         gameState.playerName = name;
+        gameState.age = age;
         gameState.score = 0;
-        gameState.time = 60;
+        gameState.time = 10;
         gameState.level = 1;
         gameState.items = [];
         gameState.particles = [];
@@ -1213,12 +1245,21 @@
         btn.disabled = true;
         btn.textContent = '⏳ Saving...';
 
-        await saveScoreToFirebase(gameState.playerName, gameState.score);
-        saveScoreToEka(gameState.score);
-
-        btn.disabled = false;
-        btn.textContent = '📝 Submit & Save Score';
-        showMainMenu();
+        try {
+            await saveScoreToFirebase(gameState.playerName, gameState.score, gameState.age);
+            saveScoreToEka(gameState.score);
+            btn.textContent = '✅ Saved!';
+            setTimeout(() => {
+                showMainMenu();
+            }, 1000);
+        } catch (error) {
+            console.error("Failed to submit score:", error);
+            btn.textContent = '❌ Failed';
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.textContent = '📝 Submit & Save Score';
+            }, 2000);
+        }
     }
 
     function saveScoreToEka(score) {
@@ -1247,15 +1288,16 @@
 
     function displayLeaderboard(scores) {
         const tbody = document.getElementById('leaderboardBody');
-        if (scores.length === 0) {
-            tbody.innerHTML = '<tr><td>-</td><td>-</td><td>-</td></tr>';
+        const agePath = document.getElementById('age-selector').value;
+        if (!scores || scores.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 20px; opacity: 0.5;">No scores for ${agePath} yet.<br>Be the first!</td></tr>`;
             return;
         }
         tbody.innerHTML = scores.slice(0, 10).map((s, i) => `
             <tr>
                 <td>${i + 1}</td>
-                <td>${s.score}</td>
-                <td>${s.name}</td>
+                <td style="font-weight: bold; color: #f9ca24;">${s.score || 0}</td>
+                <td>${s.name || 'Anonymous'}</td>
             </tr>
         `).join('');
     }

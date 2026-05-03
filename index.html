@@ -105,6 +105,32 @@
         100% { transform: rotate(0deg); }
     }
 
+/* The "Spin-Zoom" Effect */
+.ani-spin-zoom {
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card:hover .ani-spin-zoom {
+    /* Spins 360 degrees and zooms in by 40% */
+    transform: rotate(360deg) scale(1.4);
+}
+
+/* Optional: Add a slight glow during the zoom */
+.card:hover {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+    @keyframes spinZoomInfinite {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+.ani-auto-spin-zoom {
+    animation: spinZoomInfinite 4s infinite linear;
+}
+
     .label { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
     .download-card {
@@ -122,7 +148,7 @@
 <div class="grid">
   <!-- Notes: Floating Animation -->
   <a href="notes.html" class="card">
-    <div class="icon-box ani-float">📚</div>
+    <div class="icon-box ani-spin-zoom">📚</div>
     <div class="label">Notes</div>
   </a>
 
