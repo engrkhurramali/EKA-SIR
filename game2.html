@@ -119,13 +119,52 @@
             width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
             background: rgba(255,255,255,0.1); color: white; margin-bottom: 10px;
         }
+
+        /* Leaderboard Styles */
+        .leaderboard {
+            background: rgba(255, 255, 255, 0.07);
+            padding: 15px;
+            border-radius: 18px;
+            margin-top: 20px;
+            width: 100%;
+            max-height: 28vh;
+            overflow-y: auto;
+            color: white;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .leaderboard table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leaderboard th, .leaderboard td {
+            padding: 6px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 12px;
+        }
+
+        .leaderboard th {
+            color: #f9ca24;
+        }
+
+        .firebase-status {
+            font-size: 11px;
+            color: #55efc4;
+            margin-top: 5px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 
 <div id="screen-start" class="screen active">
     <h2 style="text-align:center">EKA MOBILE SNAP</h2>
-    <div class="glass-panel" style="margin-top: auto; margin-bottom: 20px;">
+    <div class="glass-panel" style="margin-top: auto; margin-bottom: 10px;">
         <input type="text" id="playerName" placeholder="Player Name" maxlength="10">
         <select id="ageSelect" style="width: 100%; margin: 8px 0; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);">
             <option value="Age < 8">Age &lt; 8</option>
@@ -136,6 +175,23 @@
         </select>
         <select id="themeDropdown" style="width: 100%; margin: 8px 0; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);"></select>
         <button id="startBtn" style="background: #10b981;">START ADVENTURE</button>
+    </div>
+
+    <div class="leaderboard" style="margin-bottom: 20px;">
+        <h3 style="text-align: center; margin-bottom: 8px; font-size: 13px; color: #f9ca24; text-transform: uppercase;">🏆 Top 10 Leaders 🏆</h3>
+        <div id="firebaseStatus" class="firebase-status">Loading global scores...</div>
+        <table>
+            <thead>
+            <tr>
+                <th style="width: 20%">Rank</th>
+                <th style="width: 30%">Score</th>
+                <th style="width: 50%">Name</th>
+            </tr>
+            </thead>
+            <tbody id="leaderboardBody">
+            <tr><td>-</td><td>-</td><td>-</td></tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -164,12 +220,98 @@
     <div class="glass-panel" style="margin: auto 0; text-align: center;">
         <h2>TIME UP!</h2>
         <div style="font-size: 2rem; margin-bottom: 20px;">Score: <b id="finalScore">0</b></div>
+        <button id="submitScoreBtn" style="background: #6c5ce7; margin-bottom: 10px;">SAVE SCORE</button>
         <button id="restartBtn">PLAY AGAIN</button>
         <button onclick="location.reload()" style="background:#475569">HOME</button>
     </div>
 </div>
 
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
 <script>
+    // ============================================
+    // 🔥 FIREBASE CONFIGURATION
+    // ============================================
+    const firebaseConfig = {
+        apiKey: "AIzaSyAEcPKE7n33wNUGxYpyqm5UWFjwXTT_x_c",
+        authDomain: "eka-sir.firebaseapp.com",
+        databaseURL: "https://eka-sir-default-rtdb.firebaseio.com",
+        projectId: "eka-sir",
+        storageBucket: "eka-sir.firebasestorage.app",
+        messagingSenderId: "1022804634776",
+        appId: "1:1022804634776:web:4c547efa80d625885734ed",
+        measurementId: "G-5P543VP1EZ"
+    };
+
+    let firebaseDB = null;
+    let firebaseInitialized = false;
+
+    function initFirebase() {
+        try {
+            if (!firebaseConfig.apiKey || firebaseConfig.apiKey.includes("YOUR_API_KEY")) {
+                document.getElementById('firebaseStatus').textContent = '⚠️ Firebase not configured.';
+                return;
+            }
+            const app = firebase.initializeApp(firebaseConfig);
+            firebaseDB = firebase.database();
+            firebaseInitialized = true;
+            document.getElementById('firebaseStatus').textContent = '✅ Connected to Firebase';
+        } catch (e) {
+            console.error("Firebase init error:", e);
+            document.getElementById('firebaseStatus').textContent = '❌ Connection failed';
+        }
+    }
+
+    function saveScoreToFirebase(name, score, age) {
+        if (!firebaseInitialized || !firebaseDB) return Promise.resolve();
+        const now = new Date();
+        const scoreData = {
+            name: name || 'Anonymous',
+            score: parseInt(score) || 0,
+            age: age,
+            date: now.toISOString(),
+            timestamp: firebase.database.ServerValue.TIMESTAMP
+        };
+        return firebaseDB.ref('scores_snap').push().set(scoreData);
+    }
+
+    function loadScoresFromFirebase() {
+        if (!firebaseInitialized || !firebaseDB) { loadLeaderboardLocal(); return; }
+        const statusEl = document.getElementById('firebaseStatus');
+        statusEl.textContent = '⏳ Loading...';
+
+        firebaseDB.ref('scores_snap').orderByChild('score').limitToLast(10).once('value')
+            .then(snapshot => {
+                const scores = [];
+                snapshot.forEach(child => { scores.push(child.val()); });
+                scores.sort((a, b) => b.score - a.score);
+                displayLeaderboard(scores);
+                statusEl.textContent = '✅ Global Leaders';
+            }).catch(err => {
+                console.error(err);
+                statusEl.textContent = '⚠️ Local scores only';
+                loadLeaderboardLocal();
+            });
+    }
+
+    function displayLeaderboard(scores) {
+        const tbody = document.getElementById('leaderboardBody');
+        if (!scores || scores.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center">No scores yet.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = scores.map((s, i) => `
+            <tr><td>${i + 1}</td><td style="font-weight:bold;color:#f9ca24">${s.score}</td><td>${s.name}</td></tr>
+        `).join('');
+    }
+
+    function loadLeaderboardLocal() {
+        const scores = JSON.parse(localStorage.getItem('eka_score_mobilesnap') || '[]');
+        displayLeaderboard(scores);
+    }
+
     // Adjust for mobile address bar
     const resize = () => document.documentElement.style.setProperty('--vh', `${window.innerHeight/100}px`);
     window.addEventListener('resize', resize); resize();
@@ -347,21 +489,34 @@
         isGameActive = false;
         clearInterval(timerInterval);
         document.getElementById('finalScore').textContent = score;
-        saveScore(score);
         showScreen('screen-result');
     }
 
-    function saveScore(score) {
-        const key = 'eka_score_mobilesnap';
-        const history = JSON.parse(localStorage.getItem(key) || '[]');
-        history.unshift({ score: score, date: new Date().toLocaleDateString(), age: currentAge });
-        localStorage.setItem(key, JSON.stringify(history.slice(0, 10)));
+    async function submitScore() {
+        const name = document.getElementById('playerName').value || 'Anonymous';
+        localStorage.setItem('eka_player_name', name);
+        const btn = document.getElementById('submitScoreBtn');
+        btn.disabled = true; btn.textContent = 'SAVING...';
+
+        await saveScoreToFirebase(name, score, currentAge);
+
+        const history = JSON.parse(localStorage.getItem('eka_score_mobilesnap') || '[]');
+        history.unshift({ score, name, age: currentAge, date: new Date().toLocaleDateString() });
+        localStorage.setItem('eka_score_mobilesnap', JSON.stringify(history.slice(0, 10)));
+
+        btn.disabled = false; btn.textContent = 'SAVED!';
+        setTimeout(() => location.reload(), 1000);
     }
 
     document.getElementById('startBtn').onclick = handleStart;
     document.getElementById('restartBtn').onclick = handleStart;
+    document.getElementById('submitScoreBtn').onclick = submitScore;
 
     window.onload = () => {
+        const savedName = localStorage.getItem('eka_player_name');
+        if (savedName) document.getElementById('playerName').value = savedName;
+        initFirebase();
+        loadScoresFromFirebase();
         const drop = document.getElementById('themeDropdown');
         for(let k in themes) drop.add(new Option(k.toUpperCase(), k));
         drop.onchange = (e) => {

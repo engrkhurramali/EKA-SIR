@@ -389,6 +389,24 @@
         .emoji-popup { position: fixed; pointer-events: none; animation: floatUp 1.2s forwards; font-size: 2.5rem; z-index: 50; }
         @keyframes floatUp { 0% { transform: translateY(0) scale(0.5); opacity: 0; } 50% { transform: translateY(-30px) scale(1.2); opacity: 1; } 100% { transform: translateY(-60px) scale(1); opacity: 0; } }
 
+        /* Leaderboard Table */
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        .leaderboard-table th, .leaderboard-table td {
+            padding: 10px;
+            border-bottom: 1px solid var(--glass-border);
+            text-align: left;
+        }
+        .leaderboard-table th {
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+
         @media print {
             @page { size: 7in 4in landscape; margin: 0; }
             body * { visibility: hidden; }
@@ -426,6 +444,7 @@
 
             <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
                 <button class="btn" onclick="App.startQuiz()">▶ START</button>
+                <button class="btn btn-secondary" onclick="App.showLeaderboard()">🏆 Leaderboard</button>
                 <button class="btn btn-secondary" onclick="App.openModal()"> Load Quiz Data</button>
                 <button class="btn btn-secondary" onclick="location.href='test.html'">🏠 Menu</button>
             </div>
@@ -460,10 +479,30 @@
             <p id="finalRemark" style="margin: 10px 0; font-weight: bold; color: var(--accent-cyan);"></p>
             <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
                 <button class="btn" onclick="App.showCertificate()"> SEE RESULT</button>
+                <button class="btn btn-secondary" onclick="App.showLeaderboard()">🏆 Leaderboard</button>
                 <button class="btn btn-secondary" onclick="App.saveCSV()"> Download Scores (CSV)</button>
                 <button class="btn btn-secondary" onclick="location.reload()"> Restart</button>
                 <button class="btn btn-secondary" onclick="location.href='test.html'">🏠 Menu</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Screen -->
+    <div id="leaderboardScreen" class="screen">
+        <div class="glass-panel">
+            <h1 id="lbTitle">🏆 Top 15 Leaderboard</h1>
+            <div style="display: flex; gap: 8px; margin-bottom: 10px; width: 100%;">
+                <button class="btn" style="flex: 1; font-size: 0.75rem; padding: 8px;" id="btnTop15" onclick="App.fetchLeaderboard('top')">🏆 Top 15</button>
+                <button class="btn btn-secondary" style="flex: 1; font-size: 0.75rem; padding: 8px;" id="btnRecent60" onclick="App.fetchLeaderboard('recent')">🕒 Recent 60</button>
+            </div>
+            <div style="width: 100%; overflow-y: auto; max-height: 55vh; margin-top: 5px; border-radius: 10px;">
+                <table class="leaderboard-table">
+                    <tbody id="leaderboardBody">
+                        <tr><td style="text-align:center">Loading results...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <button class="btn btn-secondary" style="margin-top: 20px;" onclick="App.showScreen('start')">⬅️ Back</button>
         </div>
     </div>
 
@@ -514,6 +553,10 @@
     </div>
 </div>
 
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
 <script>
 ;(function() {
     'use strict';
@@ -525,6 +568,21 @@
         points: { correct: 1, wrong: 0 },
         passingThreshold: 75
     };
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAEcPKE7n33wNUGxYpyqm5UWFjwXTT_x_c",
+        authDomain: "eka-sir.firebaseapp.com",
+        databaseURL: "https://eka-sir-default-rtdb.firebaseio.com",
+        projectId: "eka-sir",
+        storageBucket: "eka-sir.firebasestorage.app",
+        messagingSenderId: "1022804634776",
+        appId: "1:1022804634776:web:4c547efa80d625885734ed",
+        measurementId: "G-5P543VP1EZ"
+    };
+
+    if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
 
     const state = {
         pool: [],
@@ -541,11 +599,18 @@
         timerInterval: null,
         isLocked: false,
         studentName: '',
-        activeQuiz: null
+        activeQuiz: null,
+        quizKey: '',
+        lastSaveTime: null
     };
 
     const DOM = {
-        screens: { start: document.getElementById('startScreen'), quiz: document.getElementById('quizScreen'), result: document.getElementById('resultScreen') },
+        screens: {
+            start: document.getElementById('startScreen'),
+            quiz: document.getElementById('quizScreen'),
+            result: document.getElementById('resultScreen'),
+            leaderboard: document.getElementById('leaderboardScreen')
+        },
         nameInput: document.getElementById('studentName'),
         limitInput: document.getElementById('quizLimit'),
         timerInput: document.getElementById('quizTimer'),
@@ -583,10 +648,13 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
         let keys = [];
         if (quizKeys) {
             keys = quizKeys.split(',');
+            state.quizKey = quizKeys;
         } else if (quizKey) {
             keys = [quizKey];
+            state.quizKey = quizKey;
         } else {
             keys = ['maths9_u1'];
+            state.quizKey = 'maths9_u1';
         }
 
         state.activeQuiz = {
@@ -799,6 +867,107 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
 
         DOM.finalRemark.innerText = remark;
         document.getElementById('certRemark').innerText = remark;
+
+        state.lastSaveTime = Date.now();
+        saveToFirebase();
+    }
+
+    function saveToFirebase() {
+        if (typeof firebase === 'undefined' || !firebase.apps.length) return;
+
+        const attempted = state.correctCount + state.wrongCount;
+        const percent = attempted > 0 ? Math.round((state.score / attempted) * 100) : 0;
+
+        const resultData = {
+            studentName: state.studentName,
+            quizTitle: state.activeQuiz.title,
+            quizSubtitle: state.activeQuiz.subtitle,
+            testCode: state.quizKey,
+            score: state.score,
+            totalQuestions: attempted,
+            percentage: percent,
+            correct: state.correctCount,
+            wrong: state.wrongCount,
+            skipped: state.skippedCount,
+            timestamp: state.lastSaveTime || firebase.database.ServerValue.TIMESTAMP
+        };
+
+        firebase.database().ref('mcq_results').push(resultData)
+            .then(() => console.log('Quiz result synced to Firebase successfully'))
+            .catch(err => console.error('Firebase Sync Error:', err));
+    }
+
+    function fetchLeaderboard(mode = 'top') {
+        if (typeof firebase === 'undefined' || !firebase.apps.length) return;
+
+        const lbBody = document.getElementById('leaderboardBody');
+        const lbTitle = document.getElementById('lbTitle');
+        const btnTop = document.getElementById('btnTop15');
+        const btnRecent = document.getElementById('btnRecent60');
+
+        lbBody.innerHTML = '<tr><td style="text-align:center">Loading...</td></tr>';
+
+        if (mode === 'top') {
+            lbTitle.innerText = "🏆 Top 15 Leaderboard";
+            btnTop.classList.remove('btn-secondary');
+            btnRecent.classList.add('btn-secondary');
+        } else {
+            lbTitle.innerText = "🕒 Last 60 Records";
+            btnRecent.classList.remove('btn-secondary');
+            btnTop.classList.add('btn-secondary');
+        }
+
+        const dbRef = firebase.database().ref('mcq_results');
+        let q;
+        if (mode === 'top') {
+            q = dbRef.orderByChild('percentage').limitToLast(15);
+        } else {
+            q = dbRef.orderByChild('timestamp').limitToLast(60);
+        }
+
+        q.once('value', (snapshot) => {
+            lbBody.innerHTML = '';
+            const results = [];
+            snapshot.forEach((child) => {
+                results.push(child.val());
+            });
+
+            results.reverse(); // Newest or Highest first
+
+            if (results.length === 0) {
+                lbBody.innerHTML = '<tr><td style="text-align:center">No scores yet!</td></tr>';
+                return;
+            }
+
+            results.forEach((data, index) => {
+                const isMe = data.studentName === state.studentName && data.timestamp === state.lastSaveTime; // Using timestamp for better session match
+                const testName = data.testCode || 'N/A';
+
+                const row = `
+                    <tr style="${isMe ? 'background: rgba(38, 166, 154, 0.2); font-weight: bold;' : ''}">
+                        <td style="border-bottom: none; padding-bottom: 2px;">
+                            <span style="color:var(--accent-cyan)">#${index + 1}</span> <b>${data.studentName}</b>
+                            <span style="font-size:0.7rem; opacity:0.7; float:right;">${testName}</span>
+                        </td>
+                    </tr>
+                    <tr style="${isMe ? 'background: rgba(38, 166, 154, 0.2); font-weight: bold;' : ''}">
+                        <td style="padding-top: 0; font-size: 0.8rem; opacity: 0.9;">
+                            Score: ${data.score}/${data.totalQuestions} — <b style="color:var(--accent-blue)">${data.percentage}%</b>
+                            <span style="font-size:0.65rem; float:right; opacity:0.6;">${new Date(data.timestamp).toLocaleDateString()}</span>
+                        </td>
+                    </tr>
+                `;
+                lbBody.innerHTML += row;
+            });
+        }).catch(err => {
+            console.error("Leaderboard Error:", err);
+            lbBody.innerHTML = `<tr><td>Error: ${err.message}</td></tr>`;
+        });
+    }
+
+    function showLeaderboard() {
+        showScreen('leaderboard');
+        fetchLeaderboard();
     }
 
     function showCertificate() {
@@ -921,7 +1090,7 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
         document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.theme === theme));
     }
 
-    window.App = { startQuiz, skipQuestion, showCertificate, saveJPG, copyCSV, openModal, closeModal, parseAndSaveTSV, setTheme, saveCSV, clearTSV };
+    window.App = { startQuiz, skipQuestion, showCertificate, saveJPG, copyCSV, openModal, closeModal, parseAndSaveTSV, setTheme, saveCSV, clearTSV, showLeaderboard, showScreen };
     init();
 })();
 </script>

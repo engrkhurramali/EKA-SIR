@@ -405,8 +405,8 @@
             <button class="btn" id="howToPlayBtn" style="flex: 0.8; margin: 0; padding: 10px 5px; font-size: 13px; background: linear-gradient(45deg, #00b894, #55efc4);">📖 Guide</button>
         </div>
 
-        <div class="leaderboard" style="margin-top: 12px; max-height: 32vh;">
-            <h3 style="text-align: center; margin-bottom: 8px; font-size: 13px; color: #f9ca24; text-transform: uppercase;">🏆 Top 10 Leaders 🏆</h3>
+        <div class="leaderboard" style="margin-top: 12px; max-height: 35vh; overflow-y: auto;">
+            <h3 style="text-align: center; margin-bottom: 8px; font-size: 13px; color: #f9ca24; text-transform: uppercase;">🏆 Top 15 Leaders 🏆</h3>
             <div id="firebaseStatus" class="firebase-status">Loading global scores...</div>
             <table>
                 <thead>
@@ -543,7 +543,7 @@
 
         const loadPromise = firebaseDB.ref('scores_fruitbasket')
             .orderByChild('score')
-            .limitToLast(10)
+            .limitToLast(15)
             .once('value')
             .then(snapshot => {
                 const scores = [];
@@ -671,7 +671,7 @@
         isPlaying: false,
         isPaused: false,
         score: 0,
-        time: 10,
+        time: 60,
         level: 1,
         playerName: '',
         currentTheme: 'deep-sea',
@@ -932,7 +932,7 @@
         gameState.playerName = name;
         gameState.age = age;
         gameState.score = 0;
-        gameState.time = 10;
+        gameState.time = 60;
         gameState.level = 1;
         gameState.items = [];
         gameState.particles = [];
@@ -1293,13 +1293,17 @@
             tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 20px; opacity: 0.5;">No scores for ${agePath} yet.<br>Be the first!</td></tr>`;
             return;
         }
-        tbody.innerHTML = scores.slice(0, 10).map((s, i) => `
-            <tr>
-                <td>${i + 1}</td>
-                <td style="font-weight: bold; color: #f9ca24;">${s.score || 0}</td>
-                <td>${s.name || 'Anonymous'}</td>
-            </tr>
-        `).join('');
+
+        tbody.innerHTML = scores.slice(0, 15).map((s, i) => {
+            const isCurrentPlayer = s.name === gameState.playerName && s.score === gameState.score;
+            return `
+                <tr style="${isCurrentPlayer ? 'background: rgba(249, 202, 36, 0.2); font-weight: bold;' : ''}">
+                    <td>${i + 1}</td>
+                    <td style="font-weight: bold; color: #f9ca24;">${s.score || 0}</td>
+                    <td>${s.name || 'Anonymous'} ${isCurrentPlayer ? '⭐' : ''}</td>
+                </tr>
+            `;
+        }).join('');
     }
 
     document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });

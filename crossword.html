@@ -129,6 +129,40 @@
           padding: 8px; border-radius: 10px; border: 1px solid var(--glass-border);
           font-weight: 700; background: white; font-size: 0.8rem;
         }
+
+        /* Leaderboard Styles */
+        .leaderboard {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 15px;
+            margin-top: 15px;
+            width: 100%;
+            max-height: 25vh;
+            overflow-y: auto;
+            color: var(--text-main);
+            border: 1px solid var(--glass-border);
+        }
+
+        .leaderboard table { width: 100%; border-collapse: collapse; }
+        .leaderboard th, .leaderboard td {
+            padding: 6px; text-align: left;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 0.75rem;
+        }
+        .leaderboard th { color: var(--text-sub); font-size: 0.65rem; text-transform: uppercase; }
+
+        .firebase-status {
+            font-size: 10px; color: var(--accent);
+            text-align: center; font-weight: bold; margin-bottom: 5px;
+        }
+
+        .input-glass {
+            width: 100%; padding: 10px; border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.5);
+            color: var(--text-main); font-size: 0.9rem;
+            margin-bottom: 10px; outline: none;
+        }
     </style>
 </head>
 <body>
@@ -151,6 +185,7 @@
     <div class="screens-wrapper">
         <section id="screen-game" class="screen active">
             <div class="glass-card">
+                <input type="text" id="playerName" class="input-glass" placeholder="Player Name" maxlength="12">
                 <div class="controls-row">
                     <select id="level-select" class="level-selector"></select>
                     <button id="btn-new" class="btn-mini primary">🆕 New</button>
@@ -163,6 +198,16 @@
 
         <section id="screen-help" class="screen">
             <div class="glass-card">
+                <h2>🏆 Top 15 Leaderboard</h2>
+                <div id="firebaseStatus" class="firebase-status">Connecting...</div>
+                <div class="leaderboard" style="max-height: 40vh; overflow-y: auto;">
+                    <table>
+                        <thead><tr><th>Rank</th><th>Score</th><th>Name</th></tr></thead>
+                        <tbody id="leaderboardBody"><tr><td colspan="3">Loading...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="glass-card" style="margin-top: 10px;">
                 <h2>📖 How to Play</h2>
                 <p>Find the words hidden in the grid!</p>
                 <p>1. Drag from the START to the END of a word.</p>
@@ -192,10 +237,15 @@
         <div class="modal-box">
             <h2 id="end-title">Game Over</h2>
             <p id="end-msg"></p>
-            <button class="btn-mini primary" id="btn-restart" style="width:100%; margin-top:15px;">Play Again</button>
+            <button class="btn-mini primary" id="btn-save-score" style="width:100%; margin-top:15px; background: #6c5ce7; display: none;">💾 Save to Global</button>
+            <button class="btn-mini primary" id="btn-restart" style="width:100%; margin-top:10px;">Play Again</button>
         </div>
     </div>
 </div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
 <script src="vocabulary.js"></script>
 <script>
@@ -219,8 +269,84 @@
         modalWords: document.getElementById('modal-words'),
         modalWordList: document.getElementById('modal-word-list'),
         modalWordsTitle: document.getElementById('modal-words-title'),
-        modalEnd: document.getElementById('modal-end')
+        modalEnd: document.getElementById('modal-end'),
+        playerName: document.getElementById('playerName'),
+        btnSaveScore: document.getElementById('btn-save-score'),
+        leaderboardBody: document.getElementById('leaderboardBody'),
+        firebaseStatus: document.getElementById('firebaseStatus')
     };
+
+    // ============================================
+    // 🔥 FIREBASE CONFIGURATION
+    // ============================================
+    const firebaseConfig = {
+        apiKey: "AIzaSyAEcPKE7n33wNUGxYpyqm5UWFjwXTT_x_c",
+        authDomain: "eka-sir.firebaseapp.com",
+        databaseURL: "https://eka-sir-default-rtdb.firebaseio.com",
+        projectId: "eka-sir",
+        storageBucket: "eka-sir.firebasestorage.app",
+        messagingSenderId: "1022804634776",
+        appId: "1:1022804634776:web:4c547efa80d625885734ed",
+        measurementId: "G-5P543VP1EZ"
+    };
+
+    let firebaseDB = null;
+    let firebaseInitialized = false;
+
+    function initFirebase() {
+        try {
+            if (!firebaseConfig.apiKey || firebaseConfig.apiKey.includes("YOUR_API_KEY")) return;
+            const app = firebase.initializeApp(firebaseConfig);
+            firebaseDB = firebase.database();
+            firebaseInitialized = true;
+            UI.firebaseStatus.textContent = '✅ Global Server Ready';
+            loadScoresFromFirebase();
+        } catch (e) {
+            UI.firebaseStatus.textContent = '❌ Offline Mode';
+        }
+    }
+
+    function saveScoreToFirebase(name, score, age) {
+        if (!firebaseInitialized || !firebaseDB) return Promise.resolve();
+        const agePath = age || currentLevel;
+        return firebaseDB.ref('scores_crossword').push().set({
+            name: name || 'Anonymous',
+            score: parseInt(score) || 0,
+            age: agePath,
+            timestamp: firebase.database.ServerValue.TIMESTAMP
+        });
+    }
+
+    function loadScoresFromFirebase() {
+        if (!firebaseInitialized || !firebaseDB) return;
+        firebaseDB.ref('scores_crossword').orderByChild('score').limitToLast(15).once('value')
+            .then(snapshot => {
+                const scores = [];
+                snapshot.forEach(child => { scores.push(child.val()); });
+                scores.sort((a, b) => b.score - a.score);
+                displayLeaderboard(scores);
+            });
+    }
+
+    function displayLeaderboard(scores) {
+        if (!scores || scores.length === 0) {
+            UI.leaderboardBody.innerHTML = `<tr><td colspan="3">No scores yet.</td></tr>`;
+            return;
+        }
+        const currentScore = calculateScore(false);
+        const currentPlayer = UI.playerName.value.trim();
+
+        UI.leaderboardBody.innerHTML = scores.map((s, i) => {
+            const isMe = s.name === currentPlayer && s.score === currentScore;
+            return `
+                <tr style="${isMe ? 'background:rgba(0,137,123,0.15);font-weight:bold' : ''}">
+                    <td>${i + 1}</td>
+                    <td style="font-weight:bold;color:var(--accent)">${s.score}</td>
+                    <td>${s.name} ${isMe ? '⭐' : ''}</td>
+                </tr>
+            `;
+        }).join('');
+    }
 
     let grid = [], placedWords = [], foundWords = new Set();
     let timer = TIME_LIMIT, timerInterval = null, isPaused = false, isGameOver = false;
@@ -229,6 +355,7 @@
     let isDragging = false, dragEndCell = null;
 
     function init() {
+        initFirebase();
         populateLevels();
 
         const cfg = LEVEL_CONFIGS[currentLevel] || LEVEL_CONFIGS["Age 12-16"];
@@ -481,6 +608,16 @@
 
         if (won) {
             saveScore(finalScore);
+            UI.btnSaveScore.style.display = 'block';
+            UI.btnSaveScore.onclick = async () => {
+                UI.btnSaveScore.disabled = true;
+                UI.btnSaveScore.textContent = "⏳ Saving...";
+                await saveScoreToFirebase(UI.playerName.value.trim(), finalScore, currentLevel);
+                UI.btnSaveScore.textContent = "✅ Saved!";
+                loadScoresFromFirebase();
+            };
+        } else {
+            UI.btnSaveScore.style.display = 'none';
         }
 
         const btnRestart = document.getElementById('btn-restart');
@@ -514,6 +651,7 @@
             currentLevel = e.target.value;
             levelCount = 1;
             baseScore = 0;
+            loadScoresFromFirebase();
             init();
         };
     }

@@ -213,6 +213,62 @@
         }
         .modal-overlay.active .modal-box { transform: translateY(0); opacity: 1; }
         .modal-title { font-size: 1.4rem; font-weight: 900; margin-bottom: 8px; color: var(--accent); }
+
+        /* Leaderboard Styles */
+        .leaderboard {
+            background: rgba(255, 255, 255, 0.07);
+            padding: 15px;
+            border-radius: 18px;
+            margin-top: 20px;
+            width: 100%;
+            max-height: 40vh;
+            overflow-y: auto;
+            color: var(--text-main);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .leaderboard table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leaderboard th, .leaderboard td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 13px;
+        }
+
+        .leaderboard th {
+            color: var(--text-sub);
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        .firebase-status {
+            font-size: 11px;
+            color: var(--success);
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .input-glass {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.2);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            outline: none;
+        }
+        .input-glass::placeholder { color: rgba(0,77,64,0.5); }
     </style>
 </head>
 <body>
@@ -230,6 +286,7 @@
     <div class="screens-wrapper">
         <section id="screen-game" class="screen active">
             <div class="glass-card">
+                <input type="text" id="playerName" class="input-glass" placeholder="Enter Player Name" maxlength="15">
                 <div class="controls-row" style="display: flex; gap: 8px; width: 100%; margin-bottom: 8px;">
                     <select id="level-select" class="btn" style="flex: 2; height: 40px; padding: 0 8px; font-size: 0.8rem;">
                         <option value="Age < 8">Age &lt; 8</option>
@@ -271,6 +328,25 @@
 
         <section id="screen-stats" class="screen">
             <div class="glass-card" style="align-items:flex-start; width:100%;">
+                <h2>🏆 Global Leaderboard</h2>
+                <div id="firebaseStatus" class="firebase-status">Connecting to global server...</div>
+                <div class="leaderboard">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 20%">Rank</th>
+                                <th style="width: 30%">Score</th>
+                                <th style="width: 50%">Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboardBody">
+                            <tr><td colspan="3" style="text-align:center">Loading scores...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="glass-card" style="align-items:flex-start; width:100%; margin-top: 15px;">
                 <h2>📊 Session History</h2>
                 <table class="stats-table">
                     <thead><tr><th>Round</th><th>Avg Diff</th><th>Rating</th></tr></thead>
@@ -307,13 +383,20 @@
                 <div class="sum-row"><span>Avg Diff:</span><span id="m-sum-avg">--</span></div>
                 <div class="sum-total" id="m-sum-rating" style="margin-top:4px;">--</div>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px;">
+            <div style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 16px;">
+                <button class="btn primary" id="btn-save-score" style="background: #6c5ce7; color: white;">💾 Save to Leaderboard</button>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
                 <button class="btn primary" id="btn-play-again">🎮 Play Again</button>
                 <button class="btn" id="btn-close-modal">Close</button>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
 <script>
     const UI = {
@@ -343,9 +426,91 @@
       mSumTotal: document.getElementById('m-sum-total'),
       mSumAvg: document.getElementById('m-sum-avg'),
       mSumRating: document.getElementById('m-sum-rating'),
+      btnSaveScore: document.getElementById('btn-save-score'),
       btnPlayAgain: document.getElementById('btn-play-again'),
-      btnCloseModal: document.getElementById('btn-close-modal')
+      btnCloseModal: document.getElementById('btn-close-modal'),
+      playerName: document.getElementById('playerName'),
+      leaderboardBody: document.getElementById('leaderboardBody'),
+      firebaseStatus: document.getElementById('firebaseStatus')
     };
+
+    // ============================================
+    // 🔥 FIREBASE CONFIGURATION
+    // ============================================
+    const firebaseConfig = {
+        apiKey: "AIzaSyAEcPKE7n33wNUGxYpyqm5UWFjwXTT_x_c",
+        authDomain: "eka-sir.firebaseapp.com",
+        databaseURL: "https://eka-sir-default-rtdb.firebaseio.com",
+        projectId: "eka-sir",
+        storageBucket: "eka-sir.firebasestorage.app",
+        messagingSenderId: "1022804634776",
+        appId: "1:1022804634776:web:4c547efa80d625885734ed",
+        measurementId: "G-5P543VP1EZ"
+    };
+
+    let firebaseDB = null;
+    let firebaseInitialized = false;
+
+    function initFirebase() {
+        try {
+            if (!firebaseConfig.apiKey || firebaseConfig.apiKey.includes("YOUR_API_KEY")) {
+                UI.firebaseStatus.textContent = '⚠️ Firebase not configured.';
+                return;
+            }
+            const app = firebase.initializeApp(firebaseConfig);
+            firebaseDB = firebase.database();
+            firebaseInitialized = true;
+            UI.firebaseStatus.textContent = '✅ Connected to Firebase';
+            loadScoresFromFirebase();
+        } catch (e) {
+            console.error("Firebase init error:", e);
+            UI.firebaseStatus.textContent = '❌ Connection failed';
+        }
+    }
+
+    function saveScoreToFirebase(name, score, age) {
+        if (!firebaseInitialized || !firebaseDB) return Promise.resolve();
+        const now = new Date();
+        const scoreData = {
+            name: name || 'Anonymous',
+            score: parseInt(score) || 0,
+            age: age,
+            date: now.toISOString(),
+            timestamp: firebase.database.ServerValue.TIMESTAMP
+        };
+        return firebaseDB.ref('scores_clickclock').push().set(scoreData);
+    }
+
+    function loadScoresFromFirebase() {
+        if (!firebaseInitialized || !firebaseDB) { return; }
+        UI.firebaseStatus.textContent = '⏳ Loading global scores...';
+
+        firebaseDB.ref('scores_clickclock').orderByChild('score').limitToLast(10).once('value')
+            .then(snapshot => {
+                const scores = [];
+                snapshot.forEach(child => { scores.push(child.val()); });
+                scores.sort((a, b) => b.score - a.score);
+                displayLeaderboard(scores);
+                UI.firebaseStatus.textContent = '✅ Global Leaders Updated';
+            }).catch(err => {
+                console.error(err);
+                UI.firebaseStatus.textContent = '⚠️ Failed to load scores';
+            });
+    }
+
+    function displayLeaderboard(scores) {
+        if (!scores || scores.length === 0) {
+            UI.leaderboardBody.innerHTML = '<tr><td colspan="3" style="text-align:center">No scores yet.</td></tr>';
+            return;
+        }
+        UI.leaderboardBody.innerHTML = scores.map((s, i) => `
+            <tr>
+                <td>${i + 1}</td>
+                <td style="font-weight:bold;color:var(--accent)">${s.score}</td>
+                <td>${s.name}</td>
+            </tr>
+        `).join('');
+    }
 
     const TARGETS = [2, 4, 6, 8, 10];
     const MAX_TIME = 11;
@@ -371,6 +536,9 @@
     };
 
     function init() {
+      const savedName = localStorage.getItem('eka_player_name');
+      if (savedName) UI.playerName.value = savedName;
+      initFirebase();
       renderMarkers();
       renderStats();
       setupEvents();
@@ -412,6 +580,7 @@
       UI.btnNew.addEventListener('pointerdown', e => { e.preventDefault(); resetUI(); });
       UI.btnClear.addEventListener('pointerdown', e => { e.preventDefault(); clearHistory(); });
       UI.btnPlayAgain.addEventListener('pointerdown', e => { e.preventDefault(); hideModal(); startRound(); });
+      UI.btnSaveScore.addEventListener('pointerdown', e => { e.preventDefault(); submitScore(); });
       UI.btnCloseModal.addEventListener('pointerdown', e => { e.preventDefault(); hideModal(); });
       UI.levelSelect.addEventListener('change', (e) => {
           state.currentAge = e.target.value;
@@ -561,6 +730,27 @@
     }
 
     function clearHistory() { if(confirm('Clear history?')) { state.history = []; localStorage.removeItem('clickClockHistory'); renderStats(); } }
+
+    async function submitScore() {
+        const name = UI.playerName.value.trim() || 'Anonymous';
+        localStorage.setItem('eka_player_name', name);
+        UI.btnSaveScore.disabled = true;
+        UI.btnSaveScore.textContent = '⏳ SAVING...';
+
+        try {
+            await saveScoreToFirebase(name, state.totalScore, state.currentAge);
+            UI.btnSaveScore.textContent = '✅ SAVED!';
+            loadScoresFromFirebase();
+            setTimeout(() => {
+                hideModal();
+                navTo('screen-stats');
+            }, 1000);
+        } catch (e) {
+            console.error(e);
+            UI.btnSaveScore.disabled = false;
+            UI.btnSaveScore.textContent = '❌ FAILED';
+        }
+    }
 
     init();
     document.addEventListener('touchstart', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });

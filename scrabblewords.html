@@ -157,6 +157,7 @@
         }
         .tile {
           width: var(--cube-size); height: var(--cube-size);
+          min-width: 44px; min-height: 44px;
           background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
           border: 1px solid var(--glass-border); border-radius: 10px;
           display: flex; align-items: center; justify-content: center;
@@ -206,6 +207,38 @@
           25% { transform: translateX(-5px); }
           75% { transform: translateX(5px); }
         }
+        /* Leaderboard Styles */
+        .leaderboard {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 15px;
+            margin-top: 15px;
+            width: 100%;
+            max-height: 150px;
+            overflow-y: auto;
+            color: var(--text-main);
+            border: 1px solid var(--glass-border);
+        }
+        .leaderboard table { width: 100%; border-collapse: collapse; }
+        .leaderboard th, .leaderboard td {
+            padding: 6px; text-align: left;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 0.75rem;
+        }
+        .leaderboard th { color: var(--text-sub); font-size: 0.65rem; text-transform: uppercase; }
+
+        .firebase-status {
+            font-size: 10px; color: var(--accent);
+            text-align: center; font-weight: bold; margin-bottom: 5px;
+        }
+
+        .input-glass {
+            width: 100%; padding: 12px; border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.5);
+            color: var(--text-main); font-size: 1rem;
+            margin-bottom: 10px; outline: none; font-weight: 700;
+        }
     </style>
 </head>
 <body>
@@ -228,6 +261,9 @@
         <!-- LEVEL SELECTION SCREEN -->
         <section id="screen-levels" class="screen active">
             <div class="glass-card" style="align-items:flex-start; width:100%;">
+                <h2>Player Profile</h2>
+                <input type="text" id="playerName" class="input-glass" placeholder="Enter Name" maxlength="12">
+
                 <h2>Select Age Bracket</h2>
                 <select id="age-selector" class="input-field">
                     <option value="Age < 8">Age &lt; 8</option>
@@ -238,6 +274,19 @@
                 </select>
                 <p>Words will be selected based on age group</p>
                 <button id="btn-start" class="btn primary">🚀 Start Game</button>
+            </div>
+
+            <div class="glass-card" style="margin-top: 10px;">
+                <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+                    <h2>🏆 Global Ranking</h2>
+                    <div id="firebaseStatus" class="firebase-status">Connecting...</div>
+                </div>
+                <div class="leaderboard">
+                    <table>
+                        <thead><tr><th>Rank</th><th>Score</th><th>Name</th></tr></thead>
+                        <tbody id="leaderboardBody"><tr><td colspan="3">Loading...</td></tr></tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
@@ -263,10 +312,90 @@
         <div class="modal-box">
             <div class="modal-title" id="modal-title">Time's Up!</div>
             <div class="modal-msg" id="modal-msg">Final Score: 0</div>
+            <button class="btn primary" style="width:100%; margin-bottom:10px; background: #6c5ce7; display:none;" id="btn-save-score">💾 Save to Global</button>
             <button class="btn primary" style="width:100%;" id="btn-play-again">🔄 Play Again</button>
         </div>
     </div>
 </div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
+<script>
+    // === FIREBASE CONFIG ===
+    const firebaseConfig = {
+        apiKey: "AIzaSyAEcPKE7n33wNUGxYpyqm5UWFjwXTT_x_c",
+        authDomain: "eka-sir.firebaseapp.com",
+        databaseURL: "https://eka-sir-default-rtdb.firebaseio.com",
+        projectId: "eka-sir",
+        storageBucket: "eka-sir.firebasestorage.app",
+        messagingSenderId: "1022804634776",
+        appId: "1:1022804634776:web:4c547efa80d625885734ed",
+        measurementId: "G-5P543VP1EZ"
+    };
+
+    let firebaseDB = null;
+    let firebaseInitialized = false;
+
+    function initFirebase() {
+        try {
+            if (typeof firebase !== 'undefined') {
+                firebase.initializeApp(firebaseConfig);
+                firebaseDB = firebase.database();
+                firebaseInitialized = true;
+                UI.firebaseStatus.textContent = '✅ Global Online';
+                loadScoresFromFirebase();
+            }
+        } catch (e) {
+            console.error("Firebase init failed", e);
+            UI.firebaseStatus.textContent = '❌ Offline Mode';
+        }
+    }
+
+    function loadScoresFromFirebase() {
+        if (!firebaseInitialized || !firebaseDB) return;
+        const agePath = UI.ageSelector.value;
+        firebaseDB.ref('scores_scrabble').orderByChild('score').limitToLast(10).on('value', snapshot => {
+            const scores = [];
+            snapshot.forEach(child => { scores.push(child.val()); });
+            scores.sort((a, b) => b.score - a.score);
+            displayLeaderboard(scores);
+        });
+    }
+
+    function displayLeaderboard(scores) {
+        if (!scores || scores.length === 0) {
+            UI.lBoard.innerHTML = `<tr><td colspan="3">No scores for ${UI.ageSelector.value} yet.</td></tr>`;
+            return;
+        }
+        UI.lBoard.innerHTML = scores.map((s, i) => `
+            <tr><td>${i + 1}</td><td style="font-weight:bold;color:var(--accent)">${s.score}</td><td>${s.name}</td></tr>
+        `).join('');
+    }
+
+    async function saveScoreToFirebase() {
+        if (!firebaseInitialized || !firebaseDB) return;
+        const name = UI.playerName.value.trim() || "Anonymous";
+        const agePath = state.age;
+        UI.btnSave.disabled = true;
+        UI.btnSave.textContent = "⏳ Saving...";
+
+        try {
+            await firebaseDB.ref('scores_scrabble').push().set({
+                name: name,
+                score: state.score,
+                age: state.age,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            });
+            UI.btnSave.textContent = "✅ Saved!";
+            loadScoresFromFirebase();
+        } catch (e) {
+            UI.btnSave.textContent = "❌ Error";
+            UI.btnSave.disabled = false;
+        }
+    }
+</script>
 
 <script>
     // === HARDWARE-OPTIMIZED DOM CACHE ===
@@ -284,7 +413,11 @@
       mTitle: document.getElementById('modal-title'),
       mMsg: document.getElementById('modal-msg'),
       btnAgain: document.getElementById('btn-play-again'),
-      ageSelector: document.getElementById('age-selector')
+      ageSelector: document.getElementById('age-selector'),
+      playerName: document.getElementById('playerName'),
+      btnSave: document.getElementById('btn-save-score'),
+      lBoard: document.getElementById('leaderboardBody'),
+      firebaseStatus: document.getElementById('firebaseStatus')
     };
 
     // === GAME STATE ===
@@ -296,6 +429,9 @@
     // === INIT ===
     function init() {
       setupEvents();
+      initFirebase();
+      const savedName = localStorage.getItem('eka_player_name');
+      if (savedName) UI.playerName.value = savedName;
     }
 
     function setupEvents() {
@@ -308,11 +444,20 @@
         e.preventDefault();
         state.age = UI.ageSelector.value;
         UI.level.textContent = state.age;
+        if (UI.playerName.value.trim()) {
+            localStorage.setItem('eka_player_name', UI.playerName.value.trim());
+        }
         startGame();
+      });
+
+      UI.ageSelector.addEventListener('change', () => {
+          state.age = UI.ageSelector.value;
+          loadScoresFromFirebase();
       });
 
       UI.btnClear.addEventListener('pointerdown', e => { e.preventDefault(); clearSlots(); });
       UI.btnAgain.addEventListener('pointerdown', e => { e.preventDefault(); UI.modal.classList.remove('active'); startGame(); });
+      UI.btnSave.addEventListener('pointerdown', e => { e.preventDefault(); saveScoreToFirebase(); });
 
       // Tile Pool Delegation
       UI.pool.addEventListener('pointerdown', e => {
@@ -509,6 +654,15 @@
       saveScore();
       UI.mTitle.textContent = state.score >= 100 ? '🎉 Excellent!' : '⏰ Time\'s Up!';
       UI.mMsg.textContent = `Final Score: ${state.score} points`;
+
+      if (firebaseInitialized && state.score > 0) {
+          UI.btnSave.style.display = 'block';
+          UI.btnSave.disabled = false;
+          UI.btnSave.textContent = "💾 Save to Global";
+      } else {
+          UI.btnSave.style.display = 'none';
+      }
+
       UI.modal.classList.add('active');
     }
 

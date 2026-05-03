@@ -208,6 +208,40 @@
           background: var(--cell-bg); color: var(--text-main); font-weight: 700; font-size: 1rem;
           margin-bottom: 10px; outline: none; appearance: none;
         }
+
+        /* Leaderboard Styles */
+        .leaderboard {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px;
+            border-radius: 15px;
+            margin-top: 10px;
+            width: 100%;
+            max-height: 25vh;
+            overflow-y: auto;
+            color: var(--text-main);
+            border: 1px solid var(--glass-border);
+        }
+
+        .leaderboard table { width: 100%; border-collapse: collapse; }
+        .leaderboard th, .leaderboard td {
+            padding: 8px; text-align: left;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 13px;
+        }
+        .leaderboard th { color: var(--text-sub); font-size: 11px; text-transform: uppercase; font-weight: 800; }
+
+        .firebase-status {
+            font-size: 11px; color: var(--accent);
+            text-align: center; font-weight: bold; margin-bottom: 8px;
+        }
+
+        .input-glass {
+            width: 100%; padding: 10px 14px; border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.4);
+            color: var(--text-main); font-size: 0.95rem;
+            margin-bottom: 10px; outline: none;
+        }
     </style>
 </head>
 <body>
@@ -238,6 +272,9 @@
     <div class="screens-wrapper">
         <!-- GAME SCREEN -->
         <section id="screen-game" class="screen active">
+            <div class="glass-card" style="width: 100%; padding: 12px;">
+                <input type="text" id="playerName" class="input-glass" placeholder="Enter Player Name" maxlength="12">
+            </div>
             <div class="glass-card" style="padding: 10px 2px; gap: 10px; width: 100%;">
                 <div class="wrong-tracker" id="wrong-tracker"></div>
                 <div class="word-display" id="word-display"></div>
@@ -249,7 +286,17 @@
 
         <!-- HELP SCREEN -->
         <section id="screen-help" class="screen">
-            <div class="glass-card" style="align-items:flex-start;">
+            <div class="glass-card" style="width: 100%;">
+                <h2>🏆 Top 15 Leaderboard</h2>
+                <div id="firebaseStatus" class="firebase-status">Connecting to global server...</div>
+                <div class="leaderboard">
+                    <table>
+                        <thead><tr><th>Rank</th><th>Score</th><th>Name</th></tr></thead>
+                        <tbody id="leaderboardBody"><tr><td colspan="3" style="text-align:center">Loading...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="glass-card" style="align-items:flex-start; margin-top: 10px;">
                 <h2>📖 How to Play</h2>
                 <p>1. Guess the hidden word by tapping letters A-Z.</p>
                 <p>2. Correct letters reveal their positions.</p>
@@ -282,10 +329,16 @@
         <div class="modal-box">
             <div class="modal-title" id="modal-title">You Win!</div>
             <div class="modal-msg" id="modal-msg">Great job!</div>
+            <button class="btn primary" style="width:100%; margin-bottom: 10px; background: #6c5ce7;" id="btn-save-score">💾 Save Score</button>
             <button class="btn primary" style="width:100%;" id="btn-play-again">Play Again</button>
         </div>
     </div>
 </div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
 <script src="vocabulary.js"></script>
 <script>
     // --- HARDWARE OPTIMIZED DOM CACHING ---
@@ -307,8 +360,81 @@
       modal: document.getElementById('modal-end'),
       mTitle: document.getElementById('modal-title'),
       mMsg: document.getElementById('modal-msg'),
-      dictList: document.getElementById('dict-list')
+      dictList: document.getElementById('dict-list'),
+      playerName: document.getElementById('playerName'),
+      btnSaveScore: document.getElementById('btn-save-score'),
+      leaderboardBody: document.getElementById('leaderboardBody'),
+      firebaseStatus: document.getElementById('firebaseStatus')
     };
+
+    // ============================================
+    // 🔥 FIREBASE CONFIGURATION
+    // ============================================
+    const firebaseConfig = {
+        apiKey: "AIzaSyAEcPKE7n33wNUGxYpyqm5UWFjwXTT_x_c",
+        authDomain: "eka-sir.firebaseapp.com",
+        databaseURL: "https://eka-sir-default-rtdb.firebaseio.com",
+        projectId: "eka-sir",
+        storageBucket: "eka-sir.firebasestorage.app",
+        messagingSenderId: "1022804634776",
+        appId: "1:1022804634776:web:4c547efa80d625885734ed",
+        measurementId: "G-5P543VP1EZ"
+    };
+
+    let firebaseDB = null;
+    let firebaseInitialized = false;
+
+    function initFirebase() {
+        try {
+            if (!firebaseConfig.apiKey || firebaseConfig.apiKey.includes("YOUR_API_KEY")) return;
+            const app = firebase.initializeApp(firebaseConfig);
+            firebaseDB = firebase.database();
+            firebaseInitialized = true;
+            UI.firebaseStatus.textContent = '✅ Global Server Ready';
+            loadScoresFromFirebase();
+        } catch (e) {
+            UI.firebaseStatus.textContent = '❌ Offline Mode';
+        }
+    }
+
+    function saveScoreToFirebase(name, score, age) {
+        if (!firebaseInitialized || !firebaseDB) return Promise.resolve();
+        return firebaseDB.ref('scores_guessword').push().set({
+            name: name || 'Anonymous',
+            score: parseInt(score) || 0,
+            age: age,
+            timestamp: firebase.database.ServerValue.TIMESTAMP
+        });
+    }
+
+    function loadScoresFromFirebase() {
+        if (!firebaseInitialized || !firebaseDB) return;
+        firebaseDB.ref('scores_guessword').orderByChild('score').limitToLast(15).once('value')
+            .then(snapshot => {
+                const scores = [];
+                snapshot.forEach(child => { scores.push(child.val()); });
+                scores.sort((a, b) => b.score - a.score);
+                displayLeaderboard(scores);
+            });
+    }
+
+    function displayLeaderboard(scores) {
+        if (!scores || scores.length === 0) {
+            UI.leaderboardBody.innerHTML = '<tr><td colspan="3" style="text-align:center">No scores yet.</td></tr>';
+            return;
+        }
+        const currentName = UI.playerName.value.trim();
+        UI.leaderboardBody.innerHTML = scores.map((s, i) => {
+            const isMe = s.name === currentName && s.score === state.baseScore;
+            return `
+                <tr style="${isMe ? 'background:rgba(0,184,148,0.2); font-weight:bold;' : ''}">
+                    <td>${i + 1}</td>
+                    <td style="font-weight:bold;color:var(--accent)">${s.score}</td>
+                    <td>${s.name} ${isMe ? '⭐' : ''}</td>
+                </tr>
+            `;
+        }).join('');
+    }
 
     const LEVEL_CONFIGS = {
         "Age < 8":   { time: 60 },
@@ -327,6 +453,9 @@
 
     // --- INIT ---
     function init() {
+      const savedName = localStorage.getItem('eka_player_name');
+      if (savedName) UI.playerName.value = savedName;
+      initFirebase();
       populateLevels();
       buildAlpha();
       buildTracker();
@@ -365,6 +494,7 @@
       UI.btnReveal.addEventListener('pointerdown', e => { e.preventDefault(); revealWord(); });
       UI.btnSound.addEventListener('pointerdown', e => { e.preventDefault(); toggleSound(); });
       UI.btnGiveup.addEventListener('pointerdown', e => { e.preventDefault(); endGame(false); });
+      UI.btnSaveScore.addEventListener('pointerdown', e => { e.preventDefault(); submitScore(); });
 
       // Level Change
       UI.levelSelect.addEventListener('change', e => {
@@ -515,9 +645,13 @@
           const roundScore = wordPoints + timeBonus;
           state.baseScore += roundScore;
           saveScore(state.baseScore);
+          UI.btnSaveScore.style.display = 'block';
+          UI.btnSaveScore.disabled = false;
+          UI.btnSaveScore.textContent = '💾 Save Score';
           msg = `Word: "${state.word}" (+${wordPoints} pts)\nTime Bonus: +${timeBonus} pts\nRound Total: +${roundScore} pts`;
       } else {
           msg = `The word was: ${state.word}`;
+          UI.btnSaveScore.style.display = 'none';
       }
 
       UI.mTitle.textContent = won ? '🎉 You Win!' : '⏰ Game Over';
@@ -589,27 +723,82 @@
       if (!state.dict.size) UI.dictList.innerHTML = '<div class="dict-item" style="color:#999;">No words played yet.</div>';
     }
 
+    async function submitScore() {
+        const name = UI.playerName.value.trim() || 'Anonymous';
+        localStorage.setItem('eka_player_name', name);
+        UI.btnSaveScore.disabled = true;
+        UI.btnSaveScore.textContent = '⏳ Saving...';
+        try {
+            await saveScoreToFirebase(name, state.baseScore, state.currentLevel);
+            UI.btnSaveScore.textContent = '✅ Saved!';
+            loadScoresFromFirebase();
+            setTimeout(() => {
+                closeModal();
+                navTo('screen-help');
+            }, 1000);
+        } catch (e) {
+            UI.btnSaveScore.disabled = false;
+            UI.btnSaveScore.textContent = '❌ Failed';
+        }
+    }
+
     function closeModal() { UI.modal.classList.remove('active'); }
+
+    // --- SOUND SYSTEM ---
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function initAudio() {
+        if (!audioCtx) audioCtx = new AudioContext();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
 
     function playSound(type) {
       if (!state.soundOn) return;
-      // Simple oscillator feedback for zero-dependency
+      initAudio();
+
       try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain); gain.connect(ctx.destination);
-        const now = ctx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        const now = audioCtx.currentTime;
 
-        if (type === 'hit') { osc.frequency.setValueAtTime(400, now); osc.frequency.exponentialRampToValueAtTime(800, now+0.1); }
-        else if (type === 'miss') { osc.frequency.setValueAtTime(300, now); osc.frequency.exponentialRampToValueAtTime(100, now+0.2); }
-        else if (type === 'win') { [440,550,660,880].forEach((f,i) => osc.frequency.setValueAtTime(f, now+i*0.1)); }
-        else { osc.frequency.setValueAtTime(400, now); osc.frequency.exponentialRampToValueAtTime(100, now+0.5); }
-
-        gain.gain.setValueAtTime(0.1, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + (type==='win'?0.5:0.2));
-        osc.start(now); osc.stop(now + 0.5);
-      } catch(e) {}
+        if (type === 'hit') {
+            osc.frequency.setValueAtTime(523.25, now); // C5
+            osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.1); // G5
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+            osc.start(now); osc.stop(now + 0.15);
+        }
+        else if (type === 'miss') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(220, now); // A3
+            osc.frequency.exponentialRampToValueAtTime(110, now + 0.2); // A2
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+            osc.start(now); osc.stop(now + 0.2);
+        }
+        else if (type === 'win') {
+            const notes = [523.25, 659.25, 783.99, 1046.50]; // C-E-G-C
+            notes.forEach((f, i) => {
+                const o = audioCtx.createOscillator();
+                const g = audioCtx.createGain();
+                o.connect(g); g.connect(audioCtx.destination);
+                o.frequency.setValueAtTime(f, now + i * 0.1);
+                g.gain.setValueAtTime(0.1, now + i * 0.1);
+                g.gain.exponentialRampToValueAtTime(0.01, now + i * 0.1 + 0.3);
+                o.start(now + i * 0.1); o.stop(now + i * 0.1 + 0.3);
+            });
+        }
+        else if (type === 'lose') {
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(150, now);
+            osc.frequency.exponentialRampToValueAtTime(40, now + 0.5);
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+            osc.start(now); osc.stop(now + 0.5);
+        }
+      } catch(e) { console.warn('Sound error:', e); }
     }
 
     // Boot

@@ -1,228 +1,399 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe - EKA SIR</title>
     <style>
-        body {
-          font-family: 'Segoe UI', sans-serif;
-          background: linear-gradient(135deg, #87CEEB, #98FF98);
-          text-align: center;
-          padding: 20px;
-          margin: 0;
-          height: 100vh;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
+        :root {
+          --bg: #0f172a; --surface: #1e293b; --text: #f8fafc;
+          --primary: #3b82f6; --primary-hover: #2563eb;
+          --accent: #10b981; --danger: #ef4444;
+          --cell: #334155; --cell-hover: #475569; --cell-disabled: #1e293b;
+          --shadow: 0 10px 15px -3px rgba(0,0,0,0.5);
+          --radius: 12px; --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        [data-theme="light"] {
+          --bg: #f8fafc; --surface: #ffffff; --text: #0f172a;
+          --cell: #e2e8f0; --cell-hover: #cbd5e1; --cell-disabled: #f1f5f9;
+          --shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        [data-theme="neon"] {
+          --bg: #050505; --surface: #0a0a0a; --text: #00ffcc;
+          --primary: #ff00ff; --accent: #00ff00;
+          --cell: #111; --cell-hover: #222;
+          --shadow: 0 0 15px rgba(0,255,204,0.5);
         }
 
-        .glass-panel {
-            background: rgba(255,255,255,0.25);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 20px;
-            border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 400px;
-            margin: auto;
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; justify-content: center; align-items: center; transition: background var(--transition); }
+
+        .app { width: 100%; max-width: 420px; padding: 20px; }
+        .screen { display: none; flex-direction: column; align-items: center; gap: 20px; animation: fadeIn 0.4s ease; }
+        .screen.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        h1 { font-size: 2rem; margin-bottom: 5px; text-align: center; }
+        h2 { font-size: 1.5rem; text-align: center; margin-bottom: 10px; }
+        .card { background: var(--surface); padding: 24px; border-radius: var(--radius); box-shadow: var(--shadow); width: 100%; text-align: center; }
+
+        input, select, button {
+          width: 100%; padding: 12px 16px; margin: 8px 0; border: none; border-radius: 8px;
+          font-size: 1rem; background: var(--cell); color: var(--text); outline: none; transition: var(--transition);
         }
+        button { background: var(--primary); font-weight: bold; cursor: pointer; }
+        button:hover:not(:disabled) { background: var(--primary-hover); transform: translateY(-2px); }
+        button:disabled { background: var(--cell-disabled); cursor: not-allowed; opacity: 0.6; }
+        .btn-secondary { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        .btn-secondary:hover { background: var(--primary); color: var(--text); }
 
-        h1 { margin-top: 0; color: #1a5f7a; }
-
-        .board {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          grid-gap: 12px;
-          margin: 20px 0;
+        .mode-select, .theme-select { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .mode-select label, .theme-select label {
+          flex: 1; min-width: 100px; padding: 12px; border: 2px solid var(--cell); border-radius: 8px; cursor: pointer; transition: var(--transition); text-align: center;
         }
+        .mode-select input, .theme-select input { display: none; }
+        .mode-select input:checked + label, .theme-select input:checked + label { border-color: var(--primary); background: var(--cell-hover); box-shadow: 0 0 8px var(--primary); }
 
+        .board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 280px; height: 280px; margin: 10px auto; }
         .cell {
-          aspect-ratio: 1/1;
-          font-size: 48px;
-          background: rgba(255, 255, 255, 0.4);
-          border: 1px solid rgba(255, 255, 255, 0.6);
-          border-radius: 15px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          user-select: none;
-          color: #1a5f7a;
+          background: var(--cell); border-radius: 12px; font-size: 3rem; font-weight: bold; cursor: pointer;
+          display: flex; align-items: center; justify-content: center; transition: var(--transition);
         }
+        .cell:hover:not(.taken) { background: var(--cell-hover); transform: scale(1.05); }
+        .cell.taken { cursor: default; }
+        .cell.x { color: var(--primary); }
+        .cell.o { color: var(--accent); }
 
-        .cell:active {
-          transform: scale(0.95);
-          background: rgba(255, 255, 255, 0.6);
-        }
+        .status { font-size: 1.1rem; font-weight: 500; height: 24px; margin: 10px 0; }
+        .scores { display: flex; justify-content: space-around; width: 100%; font-size: 0.9rem; opacity: 0.8; margin-bottom: 5px; }
 
-        .scoreboard {
-          display: flex;
-          justify-content: space-around;
-          margin-top: 10px;
-          gap: 15px;
-        }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 10px; border-bottom: 1px solid var(--cell); text-align: left; }
+        th { color: var(--primary); font-weight: 600; }
+        tr:last-child td { border-bottom: none; }
 
-        .scorebox {
-          background: rgba(255, 255, 255, 0.5);
-          padding: 10px;
-          border-radius: 12px;
-          flex: 1;
-          font-weight: bold;
-          color: #1a5f7a;
-        }
-
-        #drawBox {
-          margin-top: 10px;
-          background-color: #0078D4;
-          color: white;
-          padding: 10px;
-          border-radius: 10px;
-          display: none;
-          font-weight: bold;
-        }
-
-        .btn-row {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            width: 100%;
-        }
-
-        button {
-          flex: 1;
-          padding: 12px;
-          font-size: 16px;
-          background-color: #0078D4;
-          color: white;
-          border: none;
-          border-radius: 10px;
-          font-weight: bold;
-          cursor: pointer;
-          box-shadow: 0 4px 15px rgba(0, 120, 212, 0.3);
-        }
-
-        .home-btn {
-            background-color: #475569;
-        }
-
-        button:active {
-          transform: scale(0.95);
-        }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--surface); color: var(--text); padding: 12px 20px; border-radius: 8px; box-shadow: var(--shadow); opacity: 0; transition: 0.3s; pointer-events: none; z-index: 100; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
     </style>
 </head>
 <body>
+<div class="app">
+    <!-- SCREEN 1: MENU -->
+    <div id="screen-menu" class="screen active">
+        <h1>Tic Tac Toe</h1>
+        <div class="card">
+            <input type="text" id="playerName" placeholder="Enter Your Name" maxlength="15" required>
 
-<div class="glass-panel">
-    <h1>Tic Tac Toe</h1>
+            <h3 style="margin:15px 0 10px; font-weight:500;">Game Mode</h3>
+            <div class="mode-select">
+                <input type="radio" name="mode" id="pvp" value="pvp" checked><label for="pvp">👥 Player vs Player</label>
+                <input type="radio" name="mode" id="pvc" value="pvc"><label for="pvc">🤖 Player vs Computer</label>
+            </div>
 
-    <div class="scoreboard">
-        <div class="scorebox" id="player1ScoreBox">✔️<br><span id="player1Score">0</span></div>
-        <div class="scorebox" id="player2ScoreBox">⭕<br><span id="player2Score">0</span></div>
+            <h3 style="margin:15px 0 10px; font-weight:500;">Theme</h3>
+            <div class="theme-select">
+                <input type="radio" name="theme" id="dark" value="dark" checked><label for="dark">🌙 Dark</label>
+                <input type="radio" name="theme" id="light" value="light"><label for="light">☀️ Light</label>
+                <input type="radio" name="theme" id="neon" value="neon"><label for="neon">⚡ Neon</label>
+            </div>
+
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button id="btn-start">▶️ Start Game</button>
+                <button id="btn-leaderboard" class="btn-secondary">🏆 Leaderboard</button>
+            </div>
+        </div>
     </div>
 
-    <div class="board" id="board"></div>
+    <!-- SCREEN 2: GAME -->
+    <div id="screen-game" class="screen">
+        <div class="scores">
+            <span>✔️ <b id="score-x">0</b></span>
+            <span>⭕ <b id="score-o">0</b></span>
+            <span>🤝 <b id="score-draw">0</b></span>
+        </div>
+        <div class="status" id="game-status">Player X's Turn</div>
+        <div class="board" id="board"></div>
+        <div style="display:flex; gap:10px; width:100%;">
+            <button id="btn-reset">🔄 Reset</button>
+            <button id="btn-exit" class="btn-secondary">🚪 Exit</button>
+        </div>
+    </div>
 
-    <div id="drawBox">DRAW! ➖</div>
+    <!-- SCREEN 3: GAME OVER -->
+    <div id="screen-gameover" class="screen">
+        <h2 id="result-title">Game Over</h2>
+        <div class="card">
+            <p id="result-message" style="margin-bottom:15px; font-size:1.1rem;"></p>
+            <input type="text" id="winner-name" placeholder="Save as..." readonly>
+            <input type="number" id="score-value" placeholder="Points" min="10" max="100" value="10">
+            <button id="btn-submit">💾 Submit Score</button>
+            <button id="btn-back-menu" class="btn-secondary" style="margin-top:10px;">🏠 Main Menu</button>
+        </div>
+    </div>
 
-    <div class="btn-row">
-        <button onclick="resetGame()">Reset</button>
-        <button onclick="location.href='games.html'" class="home-btn">Exit</button>
+    <!-- SCREEN 4: LEADERBOARD -->
+    <div id="screen-leaderboard" class="screen">
+        <h2>🏆 Top 15 Players</h2>
+        <div class="card" style="max-height: 60vh; overflow-y: auto; padding: 12px;">
+            <table style="width: 100%;">
+                <thead><tr><th>#</th><th>Name</th><th>Score</th></tr></thead>
+                <tbody id="leaderboard-body"><tr><td colspan="3">Loading...</td></tr></tbody>
+            </table>
+        </div>
+        <button id="btn-back-lb" class="btn-secondary" style="margin-top:15px; width: auto; padding: 10px 30px;">⬅️ Back</button>
     </div>
 </div>
 
-<script>
+<div id="toast" class="toast"></div>
+
+<script type="module">
+    // 🔥 FIREBASE SETUP
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getDatabase, ref, push, query, orderByChild, limitToLast, get } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAEcPKE7n33wNUGxYpyqm5UWFjwXTT_x_c",
+        authDomain: "eka-sir.firebaseapp.com",
+        databaseURL: "https://eka-sir-default-rtdb.firebaseio.com",
+        projectId: "eka-sir",
+        storageBucket: "eka-sir.firebasestorage.app",
+        messagingSenderId: "1022804634776",
+        appId: "1:1022804634776:web:4c547efa80d625885734ed",
+        measurementId: "G-5P543VP1EZ"
+    };
+
+    let db;
+    try {
+        const app = initializeApp(firebaseConfig);
+        db = getDatabase(app);
+    }
+    catch(e) { console.warn("Firebase not configured. Leaderboard will run locally only."); }
+
+    // 🎮 STATE & DOM
+    const state = {
+      player: 'Player 1', mode: 'pvp', theme: 'dark',
+      board: Array(9).fill(null), currentPlayer: 'X', gameActive: true,
+      scores: { X: 0, O: 0, draws: 0 }
+    };
+
+    const screens = {
+      menu: document.getElementById('screen-menu'),
+      game: document.getElementById('screen-game'),
+      gameover: document.getElementById('screen-gameover'),
+      leaderboard: document.getElementById('screen-leaderboard')
+    };
+
     const boardEl = document.getElementById('board');
-    const player1ScoreEl = document.getElementById('player1Score');
-    const player2ScoreEl = document.getElementById('player2Score');
-    const drawBox = document.getElementById('drawBox');
+    const statusEl = document.getElementById('game-status');
+    const toast = document.getElementById('toast');
 
-    let board = Array(9).fill('');
-    let currentPlayer = Math.random() < 0.5 ? '✔️' : '⭕';
-    let player1StartsNext = currentPlayer === '⭕'; // So it flips next time
-    let gameOver = false;
-    let player1Score = 0;
-    let player2Score = 0;
+    // 🧭 NAVIGATION
+    function showScreen(name) {
+      Object.values(screens).forEach(s => s.classList.remove('active'));
+      screens[name].classList.add('active');
+      if(name === 'leaderboard') loadLeaderboard();
+    }
 
-    function drawBoard() {
+    function showToast(msg, type='info') {
+      toast.textContent = msg;
+      toast.style.borderLeft = `4px solid ${type==='error' ? 'var(--danger)' : 'var(--accent)'}`;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    // 🎨 THEME & MODE
+    document.querySelectorAll('input[name="theme"]').forEach(r => {
+      r.addEventListener('change', () => document.documentElement.setAttribute('data-theme', r.value));
+    });
+
+    // ▶️ START GAME
+    document.getElementById('btn-start').addEventListener('click', () => {
+      const name = document.getElementById('playerName').value.trim();
+      if(!name) return showToast('Please enter a name!', 'error');
+      state.player = name;
+      state.mode = document.querySelector('input[name="mode"]:checked').value;
+      state.theme = document.querySelector('input[name="theme"]:checked').value;
+      resetGame();
+      showScreen('game');
+    });
+
+    // 🔄 RESET / EXIT
+    document.getElementById('btn-reset').addEventListener('click', resetGame);
+    document.getElementById('btn-exit').addEventListener('click', () => showScreen('menu'));
+    document.getElementById('btn-back-menu').addEventListener('click', () => showScreen('menu'));
+    document.getElementById('btn-back-lb').addEventListener('click', () => showScreen('menu'));
+    document.getElementById('btn-leaderboard').addEventListener('click', () => showScreen('leaderboard'));
+
+    function resetGame() {
+      state.board.fill(null); state.currentPlayer = 'X'; state.gameActive = true;
+      statusEl.textContent = "Player X's Turn";
+      renderBoard();
+    }
+
+    // 📦 RENDER BOARD
+    function renderBoard() {
       boardEl.innerHTML = '';
-      board.forEach((cell, index) => {
-        const cellEl = document.createElement('div');
-        cellEl.className = 'cell';
-        cellEl.textContent = cell;
-        cellEl.addEventListener('click', () => handleClick(index));
-        boardEl.appendChild(cellEl);
+      state.board.forEach((cell, i) => {
+        const div = document.createElement('div');
+        div.className = `cell ${cell ? cell.toLowerCase() : ''} ${cell ? 'taken' : ''}`;
+        div.textContent = cell || '';
+        div.addEventListener('click', () => handleMove(i));
+        boardEl.appendChild(div);
       });
     }
 
-    function handleClick(index) {
-      if (board[index] || gameOver) return;
+    // ✋ HANDLE MOVE
+    function handleMove(index) {
+      if(!state.gameActive || state.board[index]) return;
+      state.board[index] = state.currentPlayer;
+      renderBoard();
 
-      board[index] = currentPlayer;
-      drawBoard();
-      checkWin();
-      if (!gameOver) {
-        currentPlayer = currentPlayer === '✔️' ? '⭕' : '✔️';
+      if(checkWin()) return endGame(state.currentPlayer);
+      if(state.board.every(c => c)) return endGame('draw');
+
+      state.currentPlayer = state.currentPlayer === 'X' ? 'O' : 'X';
+      statusEl.textContent = `${state.mode === 'pvc' && state.currentPlayer === 'O' ? 'AI' : 'Player ' + state.currentPlayer}'s Turn`;
+
+      if(state.mode === 'pvc' && state.currentPlayer === 'O') {
+        setTimeout(makeAIMove, 500);
       }
     }
 
-    function checkWin() {
-      const wins = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
-        [0, 3, 6], [1, 4, 7], [2, 5, 8], // cols
-        [0, 4, 8], [2, 4, 6]             // diags
-      ];
-
-      for (let combo of wins) {
-        const [a, b, c] = combo;
-        if (board[a] && board[a] === board[b] && board[b] === board[c]) {
-          gameOver = true;
-          if (board[a] === '✔️') {
-            player1Score++;
-            player1ScoreEl.textContent = player1Score;
-            saveScore('player1', player1Score);
-          } else {
-            player2Score++;
-            player2ScoreEl.textContent = player2Score;
-            saveScore('player2', player2Score);
-          }
-          return;
+    // 🤖 MINIMAX AI
+    function makeAIMove() {
+      if(!state.gameActive) return;
+      let bestScore = -Infinity, move = -1;
+      const b = [...state.board];
+      for(let i=0; i<9; i++) {
+        if(!b[i]) {
+          b[i] = 'O';
+          let score = minimax(b, 0, false);
+          b[i] = null;
+          if(score > bestScore) { bestScore = score; move = i; }
         }
       }
+      handleMove(move);
+    }
 
-      if (board.every(cell => cell)) {
-        gameOver = true;
-        drawBox.style.display = 'block'; // show draw box
+    function minimax(board, depth, isMax) {
+      if(checkWinState(board, 'O')) return 10 - depth;
+      if(checkWinState(board, 'X')) return depth - 10;
+      if(board.every(c => c)) return 0;
+
+      if(isMax) {
+        let best = -Infinity;
+        for(let i=0; i<9; i++) {
+          if(!board[i]) { board[i]='O'; best = Math.max(best, minimax(board, depth+1, false)); board[i]=null; }
+        }
+        return best;
+      } else {
+        let best = Infinity;
+        for(let i=0; i<9; i++) {
+          if(!board[i]) { board[i]='X'; best = Math.min(best, minimax(board, depth+1, true)); board[i]=null; }
+        }
+        return best;
       }
     }
 
-    function saveScore(player, score) {
-        localStorage.setItem('eka_score_tictactoe_' + player, score);
+    function checkWinState(b, p) {
+      const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+      return wins.some(([a,c,d]) => b[a]===p && b[c]===p && b[d]===p);
     }
 
-    function loadScores() {
-        player1Score = parseInt(localStorage.getItem('eka_score_tictactoe_player1')) || 0;
-        player2Score = parseInt(localStorage.getItem('eka_score_tictactoe_player2')) || 0;
-        player1ScoreEl.textContent = player1Score;
-        player2ScoreEl.textContent = player2Score;
+    function checkWin() { return checkWinState(state.board, state.currentPlayer); }
+
+    // 🏁 END GAME
+    function endGame(winner) {
+      state.gameActive = false;
+      let title, msg, points;
+      if(winner === 'draw') {
+        title = "🤝 It's a Draw!";
+        msg = "Well played by both sides.";
+        points = 5; state.scores.draws++;
+        document.getElementById('winner-name').value = state.player;
+      } else {
+        title = `🏆 ${winner === 'X' ? 'Player X' : (state.mode==='pvc'?'AI':'Player O')} Wins!`;
+        msg = winner === 'X' ? `Great job, ${state.player}!` : "Better luck next time.";
+        points = 10; state.scores[winner]++;
+        document.getElementById('winner-name').value = winner === 'X' ? state.player : (state.mode==='pvc'?'Computer AI':'Player 2');
+      }
+      document.getElementById('result-title').textContent = title;
+      document.getElementById('result-message').textContent = msg;
+      document.getElementById('score-value').value = points;
+      updateScoreUI();
+      showScreen('gameover');
     }
 
-    function resetGame() {
-      board = Array(9).fill('');
-      drawBox.style.display = 'none';
-      gameOver = false;
-
-      // Alternate starting player
-      player1StartsNext = !player1StartsNext;
-      currentPlayer = player1StartsNext ? '✔️' : '⭕';
-
-      drawBoard();
+    function updateScoreUI() {
+      document.getElementById('score-x').textContent = state.scores.X;
+      document.getElementById('score-o').textContent = state.scores.O;
+      document.getElementById('score-draw').textContent = state.scores.draws;
     }
 
-    loadScores();
-    drawBoard();
+    // 💾 SUBMIT SCORE
+    document.getElementById('btn-submit').addEventListener('click', async () => {
+      const name = document.getElementById('winner-name').value || state.player;
+      const score = parseInt(document.getElementById('score-value').value) || 10;
+      if(!db) return showToast('Firebase not connected. Score saved locally.', 'error');
+
+      try {
+        await push(ref(db, "tictactoe_leaderboard"), {
+          name,
+          score,
+          date: new Date().toISOString(),
+          timestamp: Date.now()
+        });
+        showToast("Score submitted successfully!");
+        document.getElementById('btn-submit').disabled = true;
+        document.getElementById('btn-submit').textContent = "✅ Saved";
+      } catch(err) {
+        showToast("Failed to save: " + err.message, "error");
+      }
+    });
+
+    // 📊 LOAD LEADERBOARD
+    async function loadLeaderboard() {
+      const tbody = document.getElementById('leaderboard-body');
+      tbody.innerHTML = '<tr><td colspan="3">⏳ Loading...</td></tr>';
+      if(!db) {
+        tbody.innerHTML = '<tr><td colspan="3">🔌 Firebase not configured</td></tr>';
+        return;
+      }
+      try {
+        const q = query(ref(db, "tictactoe_leaderboard"), orderByChild("score"), limitToLast(15));
+        const snap = await get(q);
+        if(!snap.exists()) { tbody.innerHTML = '<tr><td colspan="3">📭 No scores yet</td></tr>'; return; }
+
+        const data = [];
+        snap.forEach((child) => {
+          data.push(child.val());
+        });
+        data.sort((a, b) => b.score - a.score);
+
+        const currentName = document.getElementById('playerName').value.trim();
+        const currentScore = parseInt(document.getElementById('score-value').value);
+        const isGameOver = screens.gameover.classList.contains('active');
+
+        tbody.innerHTML = '';
+        data.forEach((d, i) => {
+          const isMe = isGameOver && d.name === name && d.score === currentScore; // Simple check
+          // Better check for highlighting:
+          const isHighlight = d.name === state.player && (isGameOver ? d.score === currentScore : true);
+
+          tbody.innerHTML += `
+            <tr style="${d.name === state.player ? 'background:rgba(59,130,246,0.2); font-weight:bold;' : ''}">
+                <td>${i+1}</td>
+                <td>${d.name} ${d.name === state.player ? '⭐' : ''}</td>
+                <td style="color:var(--primary); font-weight:bold;">${d.score}</td>
+            </tr>`;
+        });
+      } catch(err) {
+        tbody.innerHTML = `<tr><td colspan="3">⚠️ ${err.message}</td></tr>`;
+      }
+    }
+
+    // Init
+    renderBoard();
 </script>
 </body>
 </html>
