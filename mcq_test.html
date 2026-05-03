@@ -521,7 +521,7 @@
     const CONFIG = {
         maxQuestionsPerQuiz: 25,
         timerDurationSec: 275,
-        autoAdvanceDelay: 400,
+        autoAdvanceDelay: 650,
         points: { correct: 1, wrong: 0 },
         passingThreshold: 75
     };
@@ -682,7 +682,7 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
         state.studentName = name;
 
         const limit = parseInt(DOM.limitInput.value) || 25;
-        const duration = parseInt(DOM.timerInput.value) || 275;
+        const duration = parseInt(DOM.timerInput.value) || 150;
 
         state.questions = shuffleArray(state.pool);
         state.quizLimit = Math.min(limit, state.questions.length);

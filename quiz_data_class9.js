@@ -1149,13 +1149,6 @@ The number of significant figures in 200.00 is:	2	3	4	5	C
    SI unit of luminous intensity is:	Lux	Candela	Lumen	Watt	B
    Derived quantities are defined in terms of:	Base quantities	Other derived quantities	Both A and B	Constants	C
    Which is a derived quantity?	Mass	Time	Area	Temperature	C
-   Area is derived from:	Length only	Mass and time	Length × Length	Time only	C
-   Volume is derived from:	Length	Mass	Length³	Time	C
-   Velocity is derived from:	Length and time	Mass and time	Force and area	Time only	A
-   Force is derived from:	Mass and acceleration	Length and time	Temperature and mass	Current and voltage	A
-   Work is derived from:	Force and distance	Mass and velocity	Time and power	Current and resistance	A
-   Power is derived from:	Work and time	Force and area	Mass and acceleration	Voltage and current	A
-   Pressure is derived from:	Force and area	Mass and volume	Length and time	Temperature and mass	A
    Density is defined as:	Mass/Volume	Volume/Mass	Mass × Volume	Force/Area	A
    SI unit of density is:	kg/m³	g/cm³	kg/L	g/mL	A
    The prefix "kilo" represents:	10²	10³	10⁶	10⁹	B
@@ -1237,16 +1230,6 @@ The number of significant figures in 200.00 is:	2	3	4	5	C
    If 4th vernier division coincides with main scale and LC = 0.1 mm, zero error is:	+0.4 mm	-0.4 mm	+0.04 mm	-0.04 mm	A
    Screw gauge is used to measure:	Length of table	Diameter of wire	Volume of liquid	Mass of object	B
    Least count of screw gauge is:	0.1 mm	0.01 mm	0.001 mm	1 mm	B
-   Pitch of screw gauge is distance moved in:	Half rotation	One rotation	Two rotations	Ten rotations	B
-   Standard pitch of screw gauge is:	0.5 mm	1 mm	2 mm	0.1 mm	B
-   If pitch = 1 mm and circular scale has 100 divisions, LC is:	0.1 mm	0.01 mm	0.001 mm	0.0001 mm	B
-   Formula for least count of screw gauge:	Pitch ÷ Total circular divisions	Pitch × Total circular divisions	Pitch + Total circular divisions	Pitch - Total circular divisions	A
-   When screw gauge jaws are closed, zero of circular scale should:	Coincide with reference line	Be above reference line	Be below reference line	Not matter	A
-   If circular scale zero is above reference line, error is:	Positive	Negative	Zero	Infinite	B
-   If circular scale zero is below reference line, error is:	Positive	Negative	Zero	Infinite	A
-   Negative zero error in screw gauge should be:	Added	Subtracted	Multiplied	Divided	A
-   Positive zero error in screw gauge should be:	Added	Subtracted	Multiplied	Divided	B
-   If 5th division of circular scale coincides with reference line when closed and LC = 0.01 mm, zero error is:	+0.05 mm	-0.05 mm	+0.5 mm	-0.5 mm	B
    Measuring cylinder is used to measure:	Mass	Length	Volume	Time	C
    Volume in measuring cylinder is read at:	Upper meniscus	Lower meniscus	Middle of meniscus	Any point	B
    Eye should be kept ______ to meniscus while reading volume:	Above	Below	Level with	At angle	C
@@ -1284,13 +1267,8 @@ The number of significant figures in 200.00 is:	2	3	4	5	C
    Mass of liquid is measured by:	Measuring cylinder only	Physical balance only	Both cylinder and balance	Meter rule	C
    To find mass of liquid:	Weigh empty container, then with liquid, subtract	Weigh liquid directly	Pour liquid on balance	Estimate by volume	A
    Area of rectangle is:	Length × Width	Length + Width	2(Length + Width)	Length/Width	A
-   Area of circle is:	πr²	2πr	πd	πr	A
    Volume of cube is:	a³	6a²	12a	4a	A
    Volume of sphere is:	4/3 πr³	πr²	2πr	4πr²	A
-   Surface area of sphere is:	4πr²	4/3 πr³	πr²	2πr	A
-   Circumference of circle is:	2πr	πr²	πd	Both A and C	D
-   If radius of circle doubles, area becomes:	2 times	4 times	8 times	Same	B
-   If side of cube doubles, volume becomes:	2 times	4 times	8 times	16 times	C
    SI unit of area is:	cm²	m²	km²	mm²	B
    SI unit of volume is:	Liter	m³	cm³	mL	B
    1 m³ equals:	1000 L	100 L	10 L	1 L	A
@@ -1326,7 +1304,6 @@ The number of significant figures in 200.00 is:	2	3	4	5	C
    Which instrument has highest precision?	Meter rule	Vernier calipers	Screw gauge	Measuring cylinder	C
    Least count indicates:	Maximum measurable value	Minimum measurable value	Average value	Zero error	B
    Smaller least count means:	Less precision	More precision	No effect on precision	More error	B
-   Vernier constant is same as:	Pitch	Least count	Zero error	Reading	B
    If vernier calipers has 20 divisions on vernier scale and 1 MSD = 1 mm, LC is:	0.1 mm	0.05 mm	0.01 mm	0.02 mm	B
    For screw gauge, if pitch = 0.5 mm and circular divisions = 50, LC is:	0.1 mm	0.01 mm	0.001 mm	0.05 mm	B
    Zero correction is:	Same as zero error	Opposite of zero error	Equal to reading	Always positive	B
@@ -1353,7 +1330,6 @@ The number of significant figures in 200.00 is:	2	3	4	5	C
    Ice floats on water because its density is:	Greater than water	Less than water	Equal to water	Zero	B
    Ship made of iron floats because:	Iron is light	It has hollow structure	Water is dense	Iron density changes	B
    Hydrometer is used to measure:	Mass	Volume	Density of liquids	Temperature	C
-   Lactometer is a type of:	Hydrometer	Thermometer	Barometer	Manometer	A
    Physics is based on:	Observation only	Experiment only	Both observation and experiment	Theory only	C
    Scientific method includes:	Observation	Hypothesis	Experiment	All of these	D
    A hypothesis is:	A fact	A theory	A testable prediction	A law	C
