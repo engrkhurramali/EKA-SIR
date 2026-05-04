@@ -23,7 +23,8 @@
           --warning: #ffb74d;
           --radius: 16px;
           --nav-h: 62px;
-          --cube-size: 48px;
+          --cube-size: 40px;
+          --tile-gap: 2px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -120,8 +121,8 @@
           display: flex; flex-direction: column; align-items: center; gap: 14px;
         }
         .btn {
-          min-height: 52px; min-width: 48px; padding: 0 18px;
-          font-size: 0.95rem; font-weight: 700; border: none; border-radius: 12px;
+          min-height: 48px; min-width: 44px; padding: 0 14px;
+          font-size: 0.9rem; font-weight: 700; border: none; border-radius: 12px;
           background: var(--glass-bg); color: var(--text-main);
           cursor: pointer; transition: transform 0.1s, background 0.15s, box-shadow 0.2s;
           display: inline-flex; align-items: center; justify-content: center; gap: 6px;
@@ -129,6 +130,7 @@
         }
         .btn.primary { background: var(--accent); color: white; }
         .btn.danger { background: var(--danger); color: white; }
+        .btn.secondary { background: var(--warning); color: #004d40; }
         .btn:active { transform: scale(0.96); box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -139,21 +141,44 @@
             margin-bottom: 10px;
         }
 
+        /* === TARGET WORD DISPLAY (CENTERED, SINGLE ROW) === */
+        .target-word-container {
+            width: 100%; display: flex; justify-content: center;
+            margin: 4px 0 8px; padding: 8px 0;
+        }
+        .target-word {
+            display: flex; gap: 4px; justify-content: center; flex-wrap: nowrap;
+            font-family: 'JetBrains Mono', monospace; font-weight: 800;
+            font-size: 1.8rem; letter-spacing: 2px; color: var(--accent);
+            text-transform: uppercase;
+        }
+        .target-letter {
+            width: 36px; height: 36px; min-width: 32px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(0,137,123,0.15); border-radius: 8px;
+            border: 2px solid var(--accent-light);
+        }
+
         /* Tile & Slot UI */
         .slots-row {
-          display: flex; justify-content: center; gap: 8px; min-height: var(--cube-size); flex-wrap: wrap; width: 100%;
+          display: flex; justify-content: center; gap: 6px; min-height: var(--cube-size);
+          flex-wrap: nowrap; width: 100%; overflow-x: auto; padding: 4px 0;
+          scrollbar-width: none;
         }
+        .slots-row::-webkit-scrollbar { display: none; }
+
         .slot {
-          width: var(--cube-size); height: var(--cube-size);
+          width: var(--cube-size); height: var(--cube-size); min-width: 44px;
           background: rgba(0,0,0,0.05); border: 2px dashed var(--text-sub);
           border-radius: 10px; display: flex; align-items: center; justify-content: center;
-          transition: all 0.2s ease;
+          transition: all 0.2s ease; flex-shrink: 0;
         }
         .slot.filled { border-style: solid; border-color: var(--accent); background: rgba(0, 137, 123, 0.15); }
         .slot.shake { animation: shake 0.4s ease; }
 
         .tiles-pool {
-          display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; min-height: 60px; width: 100%; padding: 8px 0;
+          display: flex; justify-content: center; gap: 6px; flex-wrap: wrap;
+          min-height: 56px; width: 100%; padding: 8px 0;
         }
         .tile {
           width: var(--cube-size); height: var(--cube-size);
@@ -161,10 +186,11 @@
           background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
           border: 1px solid var(--glass-border); border-radius: 10px;
           display: flex; align-items: center; justify-content: center;
-          font-size: 1.4rem; font-weight: 800; color: var(--accent);
+          font-size: 1.3rem; font-weight: 800; color: var(--accent);
           box-shadow: 0 4px 10px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8);
           cursor: pointer; user-select: none;
           transition: transform 0.1s, box-shadow 0.2s;
+          flex-shrink: 0;
         }
         .tile:active { transform: scale(0.92); box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
         .tile.correct { background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%); color: #1b5e20; }
@@ -200,13 +226,14 @@
         h2 { margin: 4px 0 8px; font-size: 1.15rem; font-weight: 800; }
         p { line-height: 1.45; color: var(--text-sub); font-size: 0.9rem; text-align: center; }
         .hint { font-size: 0.85rem; color: var(--text-sub); margin-top: 4px; }
-        .status-msg { font-size: 1rem; font-weight: 700; min-height: 1.5em; color: var(--accent); }
+        .status-msg { font-size: 1rem; font-weight: 700; min-height: 1.5em; color: var(--accent); text-align: center; }
 
         @keyframes shake {
           0%, 100% { transform: translateX(0); }
           25% { transform: translateX(-5px); }
           75% { transform: translateX(5px); }
         }
+
         /* Leaderboard Styles */
         .leaderboard {
             background: rgba(255, 255, 255, 0.2);
@@ -239,6 +266,12 @@
             color: var(--text-main); font-size: 1rem;
             margin-bottom: 10px; outline: none; font-weight: 700;
         }
+
+        /* Button row for game controls */
+        .game-controls {
+            display: flex; gap: 8px; width: 100%; margin-top: 8px;
+        }
+        .game-controls .btn { flex: 1; min-height: 44px; font-size: 0.85rem; }
     </style>
 </head>
 <body>
@@ -294,9 +327,20 @@
         <section id="screen-game" class="screen">
             <div class="glass-card">
                 <div class="status-msg" id="status-msg">Arrange tiles to form the word</div>
+
+
+                <!-- TARGET WORD DISPLAY (CENTERED, SINGLE ROW) - HIDDEN -->
+                <div class="target-word-container" style="display:none;">
+                    <div class="target-word" id="target-word"></div>
+                </div>
+
                 <div class="slots-row" id="slots-row"></div>
                 <div class="tiles-pool" id="tiles-pool"></div>
-                <button id="btn-clear" class="btn danger">🗑️ Clear Slots</button>
+
+                <div class="game-controls">
+                    <button id="btn-clear" class="btn danger">🗑️ Clear</button>
+                    <button id="btn-skip" class="btn secondary">⏭️ Skip</button>
+                </div>
             </div>
         </section>
     </div>
@@ -323,7 +367,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
 <script>
-    // === FIREBASE CONFIG ===
+    // === FIREBASE CONFIG (EXACTLY LIKE game1.html) ===
     const firebaseConfig = {
         apiKey: "AIzaSyAEcPKE7n33wNUGxYpyqm5UWFjwXTT_x_c",
         authDomain: "eka-sir.firebaseapp.com",
@@ -353,6 +397,7 @@
         }
     }
 
+    // === LOAD LEADERBOARD FROM FIREBASE (game1.html pattern) ===
     function loadScoresFromFirebase() {
         if (!firebaseInitialized || !firebaseDB) return;
         const agePath = UI.ageSelector.value;
@@ -374,6 +419,7 @@
         `).join('');
     }
 
+    // === SAVE SCORE TO FIREBASE (game1.html pattern) ===
     async function saveScoreToFirebase() {
         if (!firebaseInitialized || !firebaseDB) return;
         const name = UI.playerName.value.trim() || "Anonymous";
@@ -408,6 +454,7 @@
       pool: document.getElementById('tiles-pool'),
       msg: document.getElementById('status-msg'),
       btnClear: document.getElementById('btn-clear'),
+      btnSkip: document.getElementById('btn-skip'), // NEW: Skip button
       btnStart: document.getElementById('btn-start'),
       modal: document.getElementById('modal-end'),
       mTitle: document.getElementById('modal-title'),
@@ -417,7 +464,8 @@
       playerName: document.getElementById('playerName'),
       btnSave: document.getElementById('btn-save-score'),
       lBoard: document.getElementById('leaderboardBody'),
-      firebaseStatus: document.getElementById('firebaseStatus')
+      firebaseStatus: document.getElementById('firebaseStatus'),
+      targetWord: document.getElementById('target-word') // NEW: Target word display
     };
 
     // === GAME STATE ===
@@ -456,6 +504,7 @@
       });
 
       UI.btnClear.addEventListener('pointerdown', e => { e.preventDefault(); clearSlots(); });
+      UI.btnSkip.addEventListener('pointerdown', e => { e.preventDefault(); skipWord(); }); // NEW: Skip handler
       UI.btnAgain.addEventListener('pointerdown', e => { e.preventDefault(); UI.modal.classList.remove('active'); startGame(); });
       UI.btnSave.addEventListener('pointerdown', e => { e.preventDefault(); saveScoreToFirebase(); });
 
@@ -479,6 +528,7 @@
 
       window.addEventListener('keydown', e => {
         if (e.key === 'Escape' && state.isPlaying) clearSlots();
+        if (e.key === 's' && state.isPlaying && !state.isChecking) skipWord(); // Keyboard skip
       });
     }
 
@@ -523,7 +573,21 @@
       state.placed = []; state.isChecking = false;
       UI.msg.textContent = "Tap tiles to arrange!";
       UI.msg.style.color = "var(--accent)";
+
+      // Render target word (centered, single row)
+      renderTargetWord(state.currentWord);
       renderTiles(scramble(state.currentWord));
+    }
+
+    // === NEW: Render target word centered in single row ===
+    function renderTargetWord(word) {
+        UI.targetWord.innerHTML = '';
+        word.split('').forEach(char => {
+            const letter = document.createElement('div');
+            letter.className = 'target-letter';
+            letter.textContent = char;
+            UI.targetWord.appendChild(letter);
+        });
     }
 
     function renderTiles(scrambled) {
@@ -531,7 +595,7 @@
       UI.slots.innerHTML = ''; UI.pool.innerHTML = '';
       state.tiles = [];
 
-      // Create slots
+      // Create slots (flex row, no wrap)
       for (let i = 0; i < state.currentWord.length; i++) {
         const slot = document.createElement('div');
         slot.className = 'slot'; slot.dataset.idx = i;
@@ -593,6 +657,15 @@
       });
     }
 
+    // === NEW: Skip word function ===
+    function skipWord() {
+        if (!state.isPlaying || state.isChecking) return;
+        playSound('skip');
+        UI.msg.textContent = "⏭️ Skipped!";
+        UI.msg.style.color = "var(--warning)";
+        setTimeout(nextWord, 400);
+    }
+
     function checkWord() {
       state.isChecking = true;
       const formed = state.placed.map(t => t ? t.dataset.char : '').join('');
@@ -608,17 +681,19 @@
         updateUI();
         setTimeout(nextWord, 700);
       } else {
-        // FAIL
+        // FAIL: AUTO-RESHUFFLE TO NEXT WORD (as requested)
         playSound('miss');
         state.placed.forEach(t => { if(t) t.classList.add('wrong'); });
-        UI.msg.textContent = "❌ Incorrect! Try again.";
+        UI.msg.textContent = "❌ Incorrect! Next word...";
         UI.msg.style.color = "var(--danger)";
         UI.slots.classList.add('shake');
+
+        // Auto-advance to next word after brief delay (no retry)
         setTimeout(() => {
           UI.slots.classList.remove('shake');
-          clearSlots();
           state.isChecking = false;
-        }, 600);
+          nextWord(); // Auto-reshuffle for next try
+        }, 800);
       }
     }
 
@@ -680,6 +755,7 @@
         osc.connect(gain); gain.connect(ctx.destination);
         const now = ctx.currentTime;
         if (type === 'win') { [523, 659, 784].forEach((f,i) => osc.frequency.setValueAtTime(f, now+i*0.1)); }
+        else if (type === 'skip') { osc.frequency.setValueAtTime(400, now); osc.frequency.exponentialRampToValueAtTime(200, now+0.15); }
         else { osc.frequency.setValueAtTime(200, now); osc.frequency.exponentialRampToValueAtTime(100, now+0.2); }
         gain.gain.setValueAtTime(0.15, now); gain.gain.exponentialRampToValueAtTime(0.001, now+0.3);
         osc.start(now); osc.stop(now+0.3);

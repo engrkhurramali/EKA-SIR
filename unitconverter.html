@@ -80,7 +80,6 @@
             scroll-behavior: smooth;
         }
 
-        /* Professional Mobile Input Cards */
         .unit-card {
             background: var(--glass-bg);
             backdrop-filter: blur(15px);
@@ -106,10 +105,10 @@
             font-weight: 800;
             text-transform: uppercase;
             color: var(--text-sub);
-            width: 35%;
+            width: 45%;
         }
 
-        .input-wrapper { width: 65%; text-align: right; }
+        .input-wrapper { width: 55%; text-align: right; }
 
         input {
             width: 100%;
@@ -117,7 +116,7 @@
             border: none;
             color: var(--text-main);
             font-family: 'JetBrains Mono', monospace;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             text-align: right;
             outline: none;
             font-weight: 700;
@@ -125,7 +124,6 @@
 
         input::placeholder { color: rgba(0, 77, 64, 0.3); }
 
-        /* Bottom Category Navigation */
         .bottom-nav {
             background: rgba(255,255,255,0.65);
             backdrop-filter: blur(25px);
@@ -142,19 +140,19 @@
         .bottom-nav::-webkit-scrollbar { display: none; }
 
         .cat-btn {
-            padding: 8px 18px;
+            padding: 8px 14px;
             border-radius: 20px;
             border: 1px solid var(--glass-border);
             background: rgba(255, 255, 255, 0.3);
             color: var(--text-sub);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-width: 80px;
+            min-width: 75px;
         }
 
         .cat-btn.active {
@@ -165,8 +163,23 @@
             transform: scale(1.05);
         }
 
-        .cat-icon { font-size: 1.2rem; margin-bottom: 2px; }
+        .cat-icon { font-size: 1.1rem; margin-bottom: 2px; }
+        .cat-desc {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            opacity: 0.85;
+            margin: -4px 0 8px;
+            font-weight: 500;
+            padding: 0 8px;
+        }
 
+        /* Fix for input sync visual feedback */
+        input.updated { animation: pulse 0.2s ease; }
+        @keyframes pulse {
+            0% { background: rgba(0,137,123,0.1); }
+            100% { background: transparent; }
+        }
     </style>
 </head>
 <body>
@@ -176,135 +189,350 @@
         <h1>EKA Unit Pro</h1>
         <div class="stats-row">
             <span class="stat-badge" id="disp-level">CAT: LENGTH</span>
-            <span class="stat-badge" id="disp-score">CONVERSIONS: 0</span>
+            <span class="stat-badge" id="disp-score">CONV: 0</span>
         </div>
     </header>
 
-    <main id="unitList">
-        <!-- Unit cards will be rendered here -->
-    </main>
+    <main id="unitList"></main>
+    <div class="cat-desc" id="catDesc">Convert between metric & imperial length units</div>
 
-    <nav class="bottom-nav" id="catBar">
-        <!-- Category buttons will be rendered here -->
-    </nav>
+    <nav class="bottom-nav" id="catBar"></nav>
 </div>
 
 <script>
+    // === CONVERSION DATABASE (24 Categories) ===
     const conversionData = {
+        // === ORIGINAL 4 ===
         Length: {
-            icon: '📏',
-            units: { m: 1, km: 0.001, cm: 100, mm: 1000, inch: 39.3701, ft: 3.28084, yard: 1.09361, mile: 0.000621371 }
+            icon: '📏', desc: 'Distance & linear measurements', base: 'm',
+            units: { km: { f: 1000, l: 'Kilometer' }, m: { f: 1, l: 'Meter' }, cm: { f: 0.01, l: 'Centimeter' }, mm: { f: 0.001, l: 'Millimeter' }, mile: { f: 1609.344, l: 'Mile' }, yard: { f: 0.9144, l: 'Yard' }, ft: { f: 0.3048, l: 'Foot' }, inch: { f: 0.0254, l: 'Inch' } }
         },
         Weight: {
-            icon: '⚖️',
-            units: { kg: 1, g: 1000, mg: 1000000, lb: 2.20462, oz: 35.274, ton: 0.001 }
+            icon: '⚖️', desc: 'Mass from grams to tons', base: 'kg',
+            units: { ton: { f: 1000, l: 'Metric Ton' }, kg: { f: 1, l: 'Kilogram' }, g: { f: 0.001, l: 'Gram' }, mg: { f: 1e-6, l: 'Milligram' }, lb: { f: 0.45359237, l: 'Pound' }, oz: { f: 0.02834952, l: 'Ounce' } }
         },
         Pressure: {
-            icon: '🎈',
-            units: { pa: 1, bar: 0.00001, psi: 0.000145038, atm: 0.0000098692, mmhg: 0.00750062 }
+            icon: '🎈', desc: 'Force per unit area', base: 'pa',
+            units: { pa: { f: 1, l: 'Pascal' }, kpa: { f: 1000, l: 'Kilopascal' }, bar: { f: 1e5, l: 'Bar' }, psi: { f: 6894.757, l: 'PSI' }, atm: { f: 101325, l: 'Atmosphere' }, mmhg: { f: 133.322, l: 'mmHg' } }
         },
         Temperature: {
-            icon: '🌡️',
-            units: { celsius: 1, kelvin: 1, fahrenheit: 1, rankine: 1 }
+            icon: '🌡️', desc: 'Thermal scale conversions', base: 'c', isFormula: true,
+            units: { c: { l: 'Celsius (°C)' }, f: { l: 'Fahrenheit (°F)' }, k: { l: 'Kelvin (K)' }, r: { l: 'Rankine (°R)' } }
+        },
+
+        // === EXPANDED 10 (Original Request) ===
+        Speed: {
+            icon: '🚀', desc: 'Velocity & speed measurements', base: 'mps',
+            units: { mps: { f: 1, l: 'm/s' }, kmh: { f: 0.277777778, l: 'km/h' }, mph: { f: 0.44704, l: 'mph' }, knot: { f: 0.514444444, l: 'Knot' }, fps: { f: 0.3048, l: 'ft/s' } }
+        },
+        Volume: {
+            icon: '🧪', desc: 'Liquid & capacity units', base: 'liter',
+            units: { m3: { f: 1000, l: 'm³' }, liter: { f: 1, l: 'Liter' }, ml: { f: 0.001, l: 'Milliliter' }, gallon: { f: 3.785411784, l: 'US Gallon' }, quart: { f: 0.946352946, l: 'Quart' }, pint: { f: 0.473176473, l: 'Pint' }, cup: { f: 0.24, l: 'Cup' }, floz: { f: 0.0295735296, l: 'Fl Oz' } }
+        },
+        Area: {
+            icon: '📐', desc: 'Surface area measurements', base: 'm2',
+            units: { km2: { f: 1e6, l: 'km²' }, m2: { f: 1, l: 'm²' }, cm2: { f: 1e-4, l: 'cm²' }, hectare: { f: 10000, l: 'Hectare' }, acre: { f: 4046.856422, l: 'Acre' }, sqmile: { f: 2.59e6, l: 'mi²' }, sqyard: { f: 0.83612736, l: 'yd²' }, sqft: { f: 0.09290304, l: 'ft²' } }
+        },
+        Time: {
+            icon: '⏱️', desc: 'Duration & intervals', base: 'sec',
+            units: { year: { f: 31556952, l: 'Year' }, day: { f: 86400, l: 'Day' }, hour: { f: 3600, l: 'Hour' }, minute: { f: 60, l: 'Minute' }, sec: { f: 1, l: 'Second' }, ms: { f: 0.001, l: 'Millisecond' }, week: { f: 604800, l: 'Week' } }
+        },
+        Data: {
+            icon: '💾', desc: 'Digital storage units', base: 'byte',
+            units: { bit: { f: 0.125, l: 'Bit' }, byte: { f: 1, l: 'Byte' }, kb: { f: 1024, l: 'Kilobyte' }, mb: { f: 1048576, l: 'Megabyte' }, gb: { f: 1073741824, l: 'Gigabyte' }, tb: { f: 1.099511627776e12, l: 'Terabyte' }, kib: { f: 1000, l: 'KB (SI)' }, mib: { f: 1e6, l: 'MB (SI)' } }
+        },
+        Energy: {
+            icon: '⚡', desc: 'Work, heat & energy', base: 'joule',
+            units: { joule: { f: 1, l: 'Joule' }, kj: { f: 1000, l: 'Kilojoule' }, cal: { f: 4.184, l: 'Calorie' }, kcal: { f: 4184, l: 'Kilocalorie' }, wh: { f: 3600, l: 'Watt-hour' }, kwh: { f: 3.6e6, l: 'kWh' }, btu: { f: 1055.056, l: 'BTU' } }
+        },
+        Power: {
+            icon: '🔋', desc: 'Energy transfer rate', base: 'watt',
+            units: { watt: { f: 1, l: 'Watt' }, kw: { f: 1000, l: 'Kilowatt' }, mw: { f: 1e6, l: 'Megawatt' }, hp: { f: 745.699872, l: 'Horsepower' }, btuh: { f: 0.29307107, l: 'BTU/h' } }
+        },
+        Frequency: {
+            icon: '📡', desc: 'Cycles per second', base: 'hz',
+            units: { hz: { f: 1, l: 'Hertz' }, khz: { f: 1000, l: 'Kilohertz' }, mhz: { f: 1e6, l: 'Megahertz' }, ghz: { f: 1e9, l: 'Gigahertz' }, rpm: { f: 1/60, l: 'RPM' } }
+        },
+        Angle: {
+            icon: '🔄', desc: 'Angular measurements', base: 'deg',
+            units: { deg: { f: 1, l: 'Degree (°)' }, rad: { f: 57.295779513, l: 'Radian' }, grad: { f: 0.9, l: 'Gradian' }, arcmin: { f: 1/60, l: 'Arcminute' }, arcsec: { f: 1/3600, l: 'Arcsecond' }, turn: { f: 360, l: 'Turn' } }
+        },
+
+        // === NEW 10 CATEGORIES ===
+        Force: {
+            icon: '💪', desc: 'Force & thrust measurements', base: 'newton',
+            units: { newton: { f: 1, l: 'Newton (N)' }, kn: { f: 1000, l: 'Kilonewton' }, dyne: { f: 1e-5, l: 'Dyne' }, lbf: { f: 4.448221615, l: 'Pound-force' }, kgf: { f: 9.80665, l: 'Kilogram-force' }, ozf: { f: 0.278013851, l: 'Ounce-force' } }
+        },
+        Torque: {
+            icon: '🔧', desc: 'Rotational force measurements', base: 'nm',
+            units: { nm: { f: 1, l: 'N·m' }, lbft: { f: 1.355817948, l: 'lb·ft' }, lbin: { f: 0.112984829, l: 'lb·in' }, kgm: { f: 9.80665, l: 'kg·m' }, dynecm: { f: 1e-7, l: 'dyne·cm' } }
+        },
+        Density: {
+            icon: '🧊', desc: 'Mass per unit volume', base: 'kgm3',
+            units: { kgm3: { f: 1, l: 'kg/m³' }, gcm3: { f: 1000, l: 'g/cm³' }, lbft3: { f: 16.01846337, l: 'lb/ft³' }, lbgal: { f: 119.826427, l: 'lb/gal (US)' }, kgL: { f: 1000, l: 'kg/L' } }
+        },
+        FlowRate: {
+            icon: '💧', desc: 'Volumetric flow measurements', base: 'm3s',
+            units: { m3s: { f: 1, l: 'm³/s' }, Ls: { f: 0.001, l: 'L/s' }, Lmin: { f: 1/60000, l: 'L/min' }, gpm: { f: 6.30901964e-5, l: 'GPM (US)' }, cfm: { f: 0.000471947443, l: 'CFM' }, m3h: { f: 1/3600, l: 'm³/h' } }
+        },
+        Illuminance: {
+            icon: '💡', desc: 'Light intensity on surface', base: 'lux',
+            units: { lux: { f: 1, l: 'Lux' }, fc: { f: 10.763910417, l: 'Foot-candle' }, phot: { f: 10000, l: 'Phot' }, nox: { f: 0.001, l: 'Nox' } }
+        },
+        Viscosity: {
+            icon: '🍯', desc: 'Fluid resistance to flow', base: 'pas',
+            units: { pas: { f: 1, l: 'Pa·s' }, cp: { f: 0.001, l: 'Centipoise' }, poise: { f: 0.1, l: 'Poise' }, lbfts: { f: 1.488163944, l: 'lb/ft·s' }, reyn: { f: 6894.757293, l: 'Reyn' } }
+        },
+        Radiation: {
+            icon: '☢️', desc: 'Radiation dose measurements', base: 'sv',
+            units: { sv: { f: 1, l: 'Sievert' }, msv: { f: 0.001, l: 'milliSievert' }, usv: { f: 1e-6, l: 'microSievert' }, rem: { f: 0.01, l: 'rem' }, rad: { f: 0.01, l: 'rad' }, gy: { f: 1, l: 'Gray' } }
+        },
+        Typography: {
+            icon: '✒️', desc: 'Web & print design units', base: 'px',
+            units: { px: { f: 1, l: 'Pixel (96 DPI)' }, pt: { f: 1.333333333, l: 'Point' }, em: { f: 16, l: 'em' }, rem: { f: 16, l: 'rem' }, cm: { f: 37.795275591, l: 'Centimeter' }, mm: { f: 3.779527559, l: 'Millimeter' }, in: { f: 96, l: 'Inch' } }
+        },
+        BloodGlucose: {
+            icon: '🩸', desc: 'Blood sugar measurements', base: 'mgdl',
+            units: { mgdl: { f: 1, l: 'mg/dL' }, mmolL: { f: 18.0182, l: 'mmol/L' } }
+        },
+        ElectricCharge: {
+            icon: '🔌', desc: 'Electric charge & capacity', base: 'coulomb',
+            units: { coulomb: { f: 1, l: 'Coulomb' }, mah: { f: 3.6, l: 'mAh' }, ah: { f: 3600, l: 'Ampere-hour' }, statc: { f: 3.33564e-10, l: 'Statcoulomb' }, faraday: { f: 96485.33212, l: 'Faraday' } }
         }
     };
 
+    // === APP STATE ===
     let activeCat = 'Length';
     let conversionCount = 0;
+    let isUpdating = false; // Prevent recursive updates
 
+    // === UTILITY FUNCTIONS ===
     function updateStats() {
-        document.getElementById('disp-level').innerText = `CAT: ${activeCat.toUpperCase()}`;
-        document.getElementById('disp-score').innerText = `CONVERSIONS: ${conversionCount}`;
+        document.getElementById('disp-level').textContent = `CAT: ${activeCat.toUpperCase()}`;
+        document.getElementById('disp-score').textContent = `CONV: ${conversionCount}`;
+        document.getElementById('catDesc').textContent = conversionData[activeCat].desc;
     }
 
+    // Smart formatter - handles precision & scientific notation
     function fmt(n) {
-        if (n === 0) return "0";
-        let absN = Math.abs(n);
-        if (absN >= 1e9 || (absN < 0.0001 && absN > 0)) return n.toExponential(4);
-        return parseFloat(n.toFixed(6)).toString();
+        if (!isFinite(n)) return '∞';
+        if (n === 0) return '0';
+
+        const absN = Math.abs(n);
+        // Scientific notation for very large/small numbers
+        if (absN >= 1e12 || (absN < 1e-6 && absN > 0)) {
+            return n.toExponential(4).replace(/\.?0+e/, 'e');
+        }
+        // Add commas for thousands, limit decimals
+        if (absN >= 1000) {
+            return n.toLocaleString('en-US', { maximumFractionDigits: 4 });
+        }
+        // Standard precision for normal numbers
+        const fixed = parseFloat(n.toFixed(8));
+        return fixed.toString();
     }
 
+    // Temperature conversion formulas (non-linear)
+    const tempFormulas = {
+        toBase: {
+            c: v => v,
+            f: v => (v - 32) * 5/9,
+            k: v => v - 273.15,
+            r: v => (v - 491.67) * 5/9
+        },
+        fromBase: {
+            c: v => v,
+            f: v => (v * 9/5) + 32,
+            k: v => v + 273.15,
+            r: v => (v + 273.15) * 9/5
+        }
+    };
+
+    // Blood glucose conversion (medical standard)
+    const bloodFormulas = {
+        toBase: { mgdl: v => v, mmolL: v => v * 18.0182 },
+        fromBase: { mgdl: v => v, mmolL: v => v / 18.0182 }
+    };
+
+    // === CORE CONVERSION ENGINE (FIXED) ===
     function syncAll(srcId, value) {
-        const num = parseFloat(value);
-        if (isNaN(num)) return;
+        if (isUpdating) return;
+        isUpdating = true;
+
+        const cat = conversionData[activeCat];
+        const units = cat.units;
+
+        // Handle empty/invalid input gracefully
+        const num = value === '' || value === '-' ? NaN : parseFloat(value);
+
+        if (isNaN(num)) {
+            // Clear other fields when input is invalid
+            Object.keys(units).forEach(key => {
+                if (key !== srcId) {
+                    const input = document.getElementById(key);
+                    if (input && input.value !== '') {
+                        input.value = '';
+                        input.classList.remove('updated');
+                    }
+                }
+            });
+            isUpdating = false;
+            return;
+        }
 
         conversionCount++;
         updateStats();
 
-        const units = conversionData[activeCat].units;
-        let base;
-
-        // Normalization to Base
-        if (activeCat === 'Temperature') {
-            if (srcId === 'celsius') base = num;
-            else if (srcId === 'kelvin') base = num - 273.15;
-            else if (srcId === 'fahrenheit') base = (num - 32) * 5/9;
-            else base = (num - 491.67) * 5/9;
+        // Step 1: Convert input to base unit
+        let baseValue;
+        if (cat.isFormula) {
+            if (activeCat === 'Temperature') {
+                baseValue = tempFormulas.toBase[srcId](num);
+            } else if (activeCat === 'BloodGlucose') {
+                baseValue = bloodFormulas.toBase[srcId](num);
+            }
         } else {
-            base = num / units[srcId];
+            // Standard linear conversion: input × factor = base
+            baseValue = num * units[srcId].f;
         }
 
-        // Update All Fields
-        Object.keys(units).forEach(key => {
+        // Step 2: Convert base to all other units
+        Object.entries(units).forEach(([key, unit]) => {
             if (key === srcId) return;
-            let res;
-            if (activeCat === 'Temperature') {
-                if (key === 'celsius') res = base;
-                else if (key === 'kelvin') res = base + 273.15;
-                else if (key === 'fahrenheit') res = (base * 9/5) + 32;
-                else res = (base + 273.15) * 9/5;
+            const input = document.getElementById(key);
+            if (!input) return;
+
+            let result;
+            if (cat.isFormula) {
+                if (activeCat === 'Temperature') {
+                    result = tempFormulas.fromBase[key](baseValue);
+                } else if (activeCat === 'BloodGlucose') {
+                    result = bloodFormulas.fromBase[key](baseValue);
+                }
             } else {
-                res = base * units[key];
+                // Standard: base ÷ factor = output
+                result = baseValue / unit.f;
             }
-            document.getElementById(key).value = fmt(res);
+
+            // Format and update with visual feedback
+            const formatted = fmt(result);
+            if (input.value !== formatted) {
+                input.value = formatted;
+                input.classList.add('updated');
+                setTimeout(() => input.classList.remove('updated'), 200);
+            }
         });
 
-        if (navigator.vibrate) navigator.vibrate(5);
+        // Haptic feedback for mobile
+        if (navigator.vibrate) navigator.vibrate(2);
+        isUpdating = false;
     }
 
-    function render() {
+    // === RENDER FUNCTIONS ===
+    function renderUnits() {
         const list = document.getElementById('unitList');
         list.innerHTML = '';
+        const units = conversionData[activeCat].units;
 
-        Object.keys(conversionData[activeCat].units).forEach(key => {
+        Object.entries(units).forEach(([key, unit]) => {
             const card = document.createElement('div');
             card.className = 'unit-card';
             card.innerHTML = `
-                <div class="unit-label">${key}</div>
+                <div class="unit-label">${unit.l}</div>
                 <div class="input-wrapper">
-                    <input type="number" inputmode="decimal" id="${key}" placeholder="0">
+                    <input type="text" inputmode="decimal" id="${key}"
+                           placeholder="0" autocomplete="off" spellcheck="false">
                 </div>
             `;
             list.appendChild(card);
         });
 
-        // Add input listeners
+        // Add debounced input listeners
         list.querySelectorAll('input').forEach(input => {
-            input.addEventListener('input', (e) => syncAll(e.target.id, e.target.value));
-        });
-
-        // Render Categories
-        const bar = document.getElementById('catBar');
-        bar.innerHTML = '';
-        Object.keys(conversionData).forEach(cat => {
-            const btn = document.createElement('div');
-            btn.className = `cat-btn ${cat === activeCat ? 'active' : ''}`;
-            btn.innerHTML = `<span class="cat-icon">${conversionData[cat].icon}</span><span>${cat}</span>`;
-            btn.onclick = () => {
-                activeCat = cat;
-                render();
-                updateStats();
-                if (navigator.vibrate) navigator.vibrate(10);
-            };
-            bar.appendChild(btn);
+            let timeout;
+            input.addEventListener('input', (e) => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    syncAll(e.target.id, e.target.value.trim());
+                }, 8); // 8ms debounce for smooth typing
+            });
+            // Select all on focus for easy replacement
+            input.addEventListener('focus', (e) => {
+                if (e.target.value && e.target.value !== '0') {
+                    e.target.select();
+                }
+            });
         });
     }
 
-    // Prevent multi-touch zoom and other mobile gestures
-    document.addEventListener('touchstart', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+    function renderCategories() {
+        const bar = document.getElementById('catBar');
+        bar.innerHTML = '';
 
-    render();
-    updateStats();
+        Object.entries(conversionData).forEach(([name, data]) => {
+            const btn = document.createElement('div');
+            btn.className = `cat-btn ${name === activeCat ? 'active' : ''}`;
+            btn.innerHTML = `<span class="cat-icon">${data.icon}</span><span>${name}</span>`;
+            btn.onclick = () => {
+                activeCat = name;
+                renderUnits();
+                renderCategories();
+                updateStats();
+                if (navigator.vibrate) navigator.vibrate(6);
+            };
+            bar.appendChild(btn);
+        });
+
+        // Auto-scroll active button into view
+        const activeBtn = bar.querySelector('.active');
+        if (activeBtn) {
+            activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+    }
+
+    // === MOBILE OPTIMIZATIONS ===
+    document.addEventListener('touchstart', e => {
+        if (e.touches.length > 1) e.preventDefault();
+    }, { passive: false });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (['ArrowLeft', 'ArrowRight'].includes(e.key)) {
+            const cats = Object.keys(conversionData);
+            const idx = cats.indexOf(activeCat);
+            if (e.key === 'ArrowLeft' && idx > 0) {
+                activeCat = cats[idx - 1];
+            } else if (e.key === 'ArrowRight' && idx < cats.length - 1) {
+                activeCat = cats[idx + 1];
+            }
+            renderUnits();
+            renderCategories();
+            updateStats();
+        }
+    });
+
+    // Prevent zoom on double-tap
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', (e) => {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) e.preventDefault();
+        lastTouchEnd = now;
+    }, false);
+
+    // === INITIALIZATION ===
+    function init() {
+        renderUnits();
+        renderCategories();
+        updateStats();
+
+        // PWA readiness check
+        if ('serviceWorker' in navigator) {
+            console.log('✅ EKA Unit Pro ready for PWA installation');
+        }
+    }
+
+    // Start app
+    init();
 </script>
 </body>
 </html>
