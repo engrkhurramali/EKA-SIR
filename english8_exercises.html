@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maths Class 8 - EKA SIR</title>
+    <title>English Class 8 - EKA SIR</title>
     <style>
         :root {
             --glass: rgba(255, 255, 255, 0.25);
             --glass-heavy: rgba(255, 255, 255, 0.4);
-            --sky-blue: #87CEEB;
-            --mint-green: #98FF98;
-            --text-dark: #1a5f7a;
+            --sky-blue: #a8e6cf;
+            --mint-green: #dcedc1;
+            --text-dark: #2d5a27;
             --border: rgba(255, 255, 255, 0.5);
-            --accent: #ff6b6b;
+            --accent: #ff8b94;
         }
 
         body {
@@ -68,13 +68,13 @@
             text-transform: uppercase;
         }
 
-        .math-list {
+        .eng-list {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .math-item {
+        .eng-item {
             background: var(--glass-heavy);
             border: 1px solid var(--border);
             padding: 15px;
@@ -85,18 +85,18 @@
             gap: 10px;
         }
 
-        .math-item span {
+        .eng-item span {
             font-weight: 700;
             font-size: 0.95rem;
             flex: 1;
         }
 
-        .math-btns {
+        .eng-btns {
             display: flex;
             gap: 8px;
         }
 
-        .math-btns a {
+        .eng-btns a {
             text-decoration: none;
             font-size: 0.8rem;
             font-weight: 800;
@@ -108,11 +108,11 @@
             white-space: nowrap;
         }
 
-        .math-btns a.ex {
+        .eng-btns a.ex {
             background: var(--accent);
         }
 
-        .math-btns a:active {
+        .eng-btns a:active {
             transform: scale(0.9);
         }
     </style>
@@ -121,21 +121,20 @@
 
 <div class="main-container">
     <div class="nav-header">
-        <a href="notes.html" class="back-btn">â¬… Back</a>
-        <h1 id="grade-title">Maths Class 8</h1>
+        <a href="notes.html" class="back-btn">⬅ Back</a>
+        <h1 id="grade-title">English Class 8</h1>
     </div>
 
-    <div class="math-list" id="math-list"></div>
+    <div class="eng-list" id="eng-list"></div>
 </div>
 
 <script src="quiz_data_class8.js"></script>
 <script>
     const grade = 8;
-    const list = document.getElementById('math-list');
+    const list = document.getElementById('eng-list');
 
-    // Dynamically find all math units for this grade from QUIZ_DATA
     if (window.QUIZ_DATA) {
-        const prefix = `class${grade}_maths_u`;
+        const prefix = `class${grade}_eng_u`;
         const units = Object.keys(window.QUIZ_DATA)
             .filter(k => k.startsWith(prefix))
             .sort((a, b) => {
@@ -149,18 +148,17 @@
                 const unitData = window.QUIZ_DATA[uKey];
                 const uNum = uKey.replace(prefix, '');
                 const item = document.createElement('div');
-                item.className = 'math-item';
+                item.className = 'eng-item';
                 item.innerHTML = `
-                    <span>Unit ${uNum}: ${unitData.subtitle || 'General Exercises'}</span>
-                    <div class="math-btns">
-                        <a href="https://www.youtube.com/@engineerkhurramali" target="_blank">Intro</a>
+                    <span>Unit ${uNum}: ${unitData.subtitle || 'Grammar & Vocab'}</span>
+                    <div class="eng-btns">
                         <a href="mcq-practice.html?subject=${uKey}&grade=${grade}" class="ex">📝 MCQs Prep</a>
                     </div>
                 `;
                 list.appendChild(item);
             });
         } else {
-            list.innerHTML = '<p style="text-align:center; opacity:0.6;">No units found for this grade yet.</p>';
+            list.innerHTML = '<p style="text-align:center; opacity:0.6;">No English units found for this grade yet.</p>';
         }
     }
 </script>

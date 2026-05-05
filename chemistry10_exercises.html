@@ -119,12 +119,13 @@
         }
 
         /* Video Icon styling */
-        .ex-btn::after {
-            content: "▶ Watch Video";
-            font-size: 0.65rem;
-            color: var(--accent);
-            margin-top: 4px;
-            font-weight: 800;
+        .ex-btn[data-type="mcq"]::after {
+            content: "📝 Start Practice";
+            color: #22c55e;
+        }
+
+        .ex-btn[data-type="sum"]::after {
+            content: none;
         }
     </style>
 </head>
@@ -192,13 +193,21 @@
             if (!grid) return;
 
             categories.forEach(cat => {
-                const linkKey = `${ch.id}_${cat.id}`;
-                const link = videoLinks[linkKey] || channelLink;
-
                 const btn = document.createElement('a');
                 btn.className = 'ex-btn';
-                btn.href = link;
-                btn.target = "_blank";
+
+                if (cat.id === 'mcq') {
+                    btn.href = `mcq-practice.html?subject=chem10_u${ch.id}`;
+                    btn.dataset.type = 'mcq';
+                } else if (cat.id === 'sum') {
+                    btn.href = `chemistry10_summary.html?chapter=${ch.id}`;
+                    btn.dataset.type = 'sum';
+                } else {
+                    const linkKey = `${ch.id}_${cat.id}`;
+                    btn.href = videoLinks[linkKey] || channelLink;
+                    btn.target = "_blank";
+                }
+
                 btn.innerHTML = `<span>Chapter ${ch.id}</span>${cat.label}`;
                 grid.appendChild(btn);
             });

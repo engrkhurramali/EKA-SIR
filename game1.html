@@ -154,6 +154,7 @@
             max-width: 85%;
             max-height: 20vh;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
             color: white;
             font-size: 12px;
             line-height: 1.5;
@@ -291,6 +292,7 @@
             max-width: 320px;
             max-height: 28vh;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
             touch-action: pan-y;
             color: white;
             backdrop-filter: blur(15px);
@@ -299,16 +301,18 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
 
-        .leaderboard::-webkit-scrollbar {
-            width: 5px;
+        /* Custom Scrollbar for Mobile Visibility */
+        .leaderboard::-webkit-scrollbar, .how-to-play::-webkit-scrollbar {
+            width: 6px;
         }
-        .leaderboard::-webkit-scrollbar-track {
+        .leaderboard::-webkit-scrollbar-track, .how-to-play::-webkit-scrollbar-track {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
         }
-        .leaderboard::-webkit-scrollbar-thumb {
-            background: rgba(249, 202, 36, 0.4);
+        .leaderboard::-webkit-scrollbar-thumb, .how-to-play::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #f9ca24, #e17055);
             border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         .leaderboard table {
