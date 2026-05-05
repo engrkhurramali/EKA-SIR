@@ -1,924 +1,602 @@
-if (!window.QUIZ_DATA) window.QUIZ_DATA = {};
+window.QUIZ_DATA = window.QUIZ_DATA || {};
 Object.assign(window.QUIZ_DATA, {
     "class1_maths_u1": {
         "title": "MATHS 1 | UNIT 01",
-        "subtitle": "Numbers 1-20",
-        "tsv": `Count the stars: * * *? 1	2	3	4	C
-                What comes after 5? 6	4	7	5	A
-                Which number is written as "seven"? 6	8	7	9	C
-                How many fingers on one hand? 4	6	10	5	D
-                Count: 🍎🍎🍎🍎? 4	3	5	2	A
-                What is 1 more than 9? 8	10	11	9	B
-                Which is the smallest? 3, 1, 4? 3	4	1	2	C
-                Write the number for "twelve"? 11	13	10	12	D
-                How many legs does a cat have? 4	2	6	8	A
-                Count backwards: 5, 4, __? 2	3	6	1	B
-                Which number is between 7 and 9? 6	10	8	7	C
-                What comes before 15? 13	16	15	14	D
-                How many wheels on a bicycle? 2	3	4	1	A
-                Count the dots: •••••? 4	5	6	3	B
-                Which is greater: 8 or 6? 6	7	8	9	C
-                What is 2 less than 10? 7	9	6	8	D
-                How many days in a week? 7	5	6	8	A
-                Count: ★★★★★★★? 6	7	8	5	B
-                Which number is "fifteen"? 14	16	15	13	C
-                What comes after 19? 18	21	19	20	D
-                How many sides does a triangle have? 3	4	2	5	A
-                Count backwards from 10: 10,9,8,__? 6	7	5	4	B
-                Which is odd: 2,4,5,6? 2	4	5	6	C
-                How many months in a year? 10	11	13	12	D
-                What is 1 less than 1? 0	1	2	-1	A
-                Count: 🌟🌟🌟🌟🌟🌟? 5	6	7	4	B
-                Which number is written "eighteen"? 17	19	18	16	C
-                How many corners does a square have? 3	5	2	4	D
-                What comes between 11 and 13? 12	10	14	11	A
-                Count the apples: 🍏🍏? 1	2	3	4	B
-                Which is even: 3,5,7,8? 3	5	8	7	C
-                How many hours in a day? 12	6	48	24	D
-                What is 3 more than 7? 10	9	11	8	A
-                Count: ♦♦♦♦♦♦♦? 6	7	8	5	B
-                Which number is "twenty"? 19	21	20	18	C
-                How many legs on a spider? 6	4	10	8	D
-                What comes before 1? 0	1	2	-1	A
-                Count backwards: 8,7,6,__? 4	5	3	2	B
-                Which is greater: 12 or 15? 12	13	15	14	C
-                How many sides does a rectangle have? 3	5	6	4	D
-                What is 2 more than 13? 15	14	16	12	A
-                Count: 🔵🔵🔵? 2	3	4	1	B
-                Which number is between 16 and 18? 15	19	17	16	C
-                How many fingers on two hands? 8	12	5	10	D
-                What comes after 9? 10	8	11	7	A
-                Count the birds: 🐦🐦🐦🐦🐦? 4	5	6	3	B
-                Which is smaller: 14 or 11? 14	12	11	13	C
-                How many wheels on a car? 2	6	8	4	D
-                What is 1 more than 19? 20	18	21	17	A
-                Count: ⚫⚫⚫⚫⚫⚫⚫⚫? 7	8	9	6	B
-                Which number is "thirteen"? 12	14	13	11	C
-                How many corners does a circle have? 1	2	4	0	D
-                What comes before 10? 9	8	11	7	A
-                Count backwards from 7: 7,6,5,__? 3	4	2	1	B
-                Which is odd: 4,6,8,9? 4	6	9	8	C
-                How many seasons in a year? 3	5	2	4	D
-                What is 2 less than 5? 3	2	4	1	A
-                Count: 🟡🟡🟡🟡? 3	4	5	2	B
-                Which number is written "sixteen"? 15	17	16	14	C
-                How many sides does a pentagon have? 4	6	3	5	D
-                What comes between 4 and 6? 5	3	7	4	A
-                Count the flowers: 🌸🌸🌸? 2	3	4	1	B
-                Which is even: 1,3,5,10? 1	3	10	5	C
-                How many minutes in an hour? 30	45	90	60	D
-                What is 3 less than 9? 6	5	7	4	A
-                Count: ⭐⭐⭐⭐⭐⭐⭐⭐⭐? 8	9	10	7	B
-                Which number is "eleven"? 10	12	11	9	C
-                How many legs does a bird have? 4	6	1	2	D
-                What comes after 14? 15	13	16	12	A
-                Count backwards: 12,11,10,__? 8	9	7	6	B
-                Which is greater: 7 or 9? 7	8	9	6	C
-                How many sides does a hexagon have? 5	7	4	6	D
-                What is 1 more than 8? 9	7	10	6	A
-                Count: 🔶🔶🔶🔶🔶? 4	5	6	3	B
-                Which number is between 19 and 21? 18	22	20	19	C
-                How many eyes do you have? 1	3	4	2	D
-                What comes before 16? 15	14	17	13	A
-                Count the pencils: ✏️✏️✏️✏️✏️✏️? 5	6	7	4	B
-                Which is smaller: 18 or 13? 18	15	13	16	C
-                How many wheels on a tricycle? 2	4	1	3	D
-                What is 2 more than 6? 8	7	9	5	A
-                Count: ◼️◼️◼️◼️◼️◼️◼️◼️◼️? 8	9	10	7	B
-                Which number is "fourteen"? 13	15	14	12	C
-                How many corners does a triangle have? 4	2	5	3	D
-                What comes after 17? 18	16	19	15	A
-                Count backwards from 15: 15,14,13,__? 11	12	10	9	B
-                Which is odd: 10,12,14,15? 10	12	15	14	C
-                How many days in a weekend? 1	3	4	2	D
-                What is 3 more than 4? 7	6	8	5	A
-                Count: 🔺🔺🔺🔺? 3	4	5	2	B
-                Which number is written "nineteen"? 18	20	19	17	C
-                How many sides does an octagon have? 7	9	6	8	D
-                What comes between 8 and 10? 9	7	11	8	A
-                Count the balloons: 🎈🎈🎈🎈🎈🎈🎈? 6	7	8	5	B
-                Which is even: 7,9,11,12? 7	9	12	11	C
-                How many hours in half a day? 6	24	18	12	D
-                What is 2 less than 12? 10	9	11	8	A
-                Count: ⬤⬤⬤⬤⬤⬤⬤⬤⬤⬤? 9	10	11	8	B
-                Which number is "seventeen"? 16	18	17	15	C
-                How many legs does a dog have? 2	6	8	4	D
-                What comes before 20? 19	18	21	17	A
-                Count backwards: 20,19,18,__? 16	17	15	14	B
-                Which is greater: 16 or 19? 16	17	19	18	C
-                How many sides does a circle have? 1	2	4	0	D
-                What is 1 more than 11? 12	10	13	9	A
-                Count: ◆◆◆◆◆◆? 5	6	7	4	B
-                Which number is between 2 and 4? 1	5	3	2	C
-                How many fingers on one foot? 4	6	10	5	D
-                What comes after 6? 7	5	8	4	A
-                Count the books: 📚📚📚📚📚? 4	5	6	3	B
-                Which is smaller: 9 or 12? 12	10	9	11	C
-                How many wheels on a bus? 2	6	8	4	D
-                What is 3 less than 15? 12	11	13	10	A
-                Count: ★★★★★★★★★★? 9	10	11	8	B
-                Which number is written "ten"? 9	11	10	8	C
-                How many corners does a rectangle have? 3	5	2	4	D
-                What comes before 7? 6	5	8	4	A
-                Count backwards from 9: 9,8,7,__? 5	6	4	3	B
-                Which is odd: 2,4,6,7? 2	4	7	6	C
-                How many months have 31 days? 6	5	8	7	D
-                What is 2 more than 11? 13	12	14	10	A
-                Count: 🔴🔴🔴🔴🔴🔴🔴? 6	7	8	5	B
-                Which number is "fifteen"? 14	16	15	13	C
-                How many legs does an insect have? 4	8	2	6	D
-                What comes after 12? 13	11	14	10	A
-                Count backwards: 14,13,12,__? 10	11	9	8	B
-                Which is greater: 5 or 8? 5	6	8	7	C
-                How many sides does a square have? 3	5	6	4	D
-                What is 1 less than 20? 19	18	21	17	A
-                Count: ◯◯◯◯◯◯◯◯? 7	8	9	6	B
-                Which number is between 13 and 15? 12	16	14	13	C
-                How many eyes does a cat have? 1	3	4	2	D
-                What comes before 11? 10	9	12	8	A
-                Count the toys: 🧸🧸🧸🧸? 3	4	5	2	B
-                Which is even: 5,7,9,14? 5	7	14	9	C
-                How many days in February (non-leap)? 29	30	31	28	D
-                What is 3 more than 10? 13	12	14	11	A
-                Count: ■■■■■■■■■? 8	9	10	7	B
-                Which number is written "eight"? 7	9	8	6	C
-                How many corners does a pentagon have? 4	6	3	5	D
-                What comes after 18? 19	17	20	16	A
-                Count backwards from 11: 11,10,9,__? 7	8	6	5	B
-                Which is smaller: 17 or 14? 17	15	14	16	C
-                How many wheels on a motorcycle? 3	4	1	2	D
-                What is 2 less than 8? 6	5	7	4	A
-                Count: ▲▲▲▲▲▲▲▲▲▲? 9	10	11	8	B
-                Which number is "twelve"? 11	13	12	10	C
-                How many legs does a horse have? 2	6	8	4	D
-                What comes before 13? 12	11	14	10	A
-                Count the fruits: 🍊🍊🍊🍊🍊🍊? 5	6	7	4	B
-                Which is greater: 11 or 13? 11	12	13	10	C
-                How many sides does a triangle have? 4	2	5	3	D
-                What is 1 more than 15? 16	14	17	13	A
-                Count: ●●●●●? 4	5	6	3	B
-                Which number is between 5 and 7? 4	8	6	5	C
-                How many fingers on three hands? 10	20	5	15	D
-                What comes after 3? 4	2	5	1	A
-                Count backwards: 6,5,4,__? 2	3	1	0	B
-                Which is odd: 8,10,12,13? 8	10	13	12	C
-                How many hours from morning to evening? 6	24	18	12	D
-                What is 2 more than 9? 11	10	12	8	A
-                Count: ▼▼▼▼▼▼? 5	6	7	4	B
-                Which number is written "six"? 5	7	6	4	C
-                How many corners does a hexagon have? 5	7	4	6	D
-                What comes before 18? 17	16	19	15	A
-                Count the animals: 🐱🐱🐱? 2	3	4	1	B
-                Which is even: 3,5,7,8? 3	5	8	7	C
-                How many days in March? 30	29	28	31	D
-                What is 3 less than 12? 9	8	10	7	A
-                Count: ◀️◀️◀️◀️◀️◀️◀️◀️? 7	8	9	6	B
-                Which number is "nine"? 8	10	9	7	C
-                How many legs does a cow have? 2	6	8	4	D
-                What comes after 16? 17	15	18	14	A
-                Count backwards from 13: 13,12,11,__? 9	10	8	7	B
-                Which is smaller: 10 or 15? 15	12	10	13	C
-                How many wheels on a wheelchair? 2	6	8	4	D
-                What is 1 less than 5? 4	3	5	2	A
-                Count: ▶️▶️▶️▶️▶️▶️▶️▶️▶️? 8	9	10	7	B
-                Which number is between 17 and 19? 16	20	18	17	C
-                How many eyes does a spider have? 2	4	6	8	D
-                What comes before 14? 13	12	15	11	A
-                Count the shapes: 🔷🔷🔷🔷🔷? 4	5	6	3	B
-                Which is greater: 6 or 4? 4	5	6	3	C
-                How many sides does a rectangle have? 3	5	2	4	D
-                What is 2 more than 14? 16	15	17	13	A
-                Count: ⬛⬛⬛⬛? 3	4	5	2	B
-                Which number is written "four"? 3	5	4	2	C
-                How many corners does an octagon have? 7	9	6	8	D
-                What comes after 10? 11	9	12	8	A
-                Count backwards: 16,15,14,__? 12	13	11	10	B
-                Which is odd: 14,16,18,19? 14	16	19	18	C
-                How many months have 30 days? 3	5	6	4	D
-                What is 3 more than 6? 9	8	10	7	A
-                Count: ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜? 10	11	12	9	B
-                Which number is "thirteen"? 12	14	13	11	C
-                How many legs does a chicken have? 4	6	1	2	D
-                What comes before 9? 8	7	10	6	A
-                Count the vehicles: 🚗🚗🚗🚗? 3	4	5	2	B
-                Which is even: 9,11,13,16? 9	11	16	13	C
-                How many days in April? 31	29	28	30	D
-                What is 2 less than 15? 13	12	14	11	A
-                Count: 🔸🔸🔸🔸🔸🔸? 5	6	7	4	B
-                Which number is between 9 and 11? 8	12	10	9	C
-                How many fingers on four hands? 15	25	10	20	D
-                What comes after 8? 9	7	10	6	A
-                Count backwards from 17: 17,16,15,__? 13	14	12	11	B
-                Which is smaller: 19 or 16? 19	17	16	18	C
-                How many wheels on a skateboard? 2	6	3	4	D
-                What is 1 more than 7? 8	6	9	5	A
-                Count: 🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹? 11	12	13	10	B
-                Which number is written "five"? 4	6	5	3	C
-                How many corners does a circle have? 1	2	4	0	D
-                What comes before 12? 11	10	13	9	A
-                Count the clothes: 👕👕👕? 2	3	4	1	B
-                Which is greater: 14 or 11? 11	12	14	13	C
-                How many sides does a pentagon have? 4	6	3	5	D
-                What is 3 less than 18? 15	14	16	13	A
-                Count: ◢◢◢◢◢◢◢? 6	7	8	5	B
-                Which number is "seventeen"? 16	18	17	15	C
-                How many legs does a frog have? 2	6	8	4	D
-                What comes after 15? 16	14	17	13	A
-                Count backwards: 18,17,16,__? 14	15	13	12	B
-                Which is odd: 16,18,20,21? 16	18	21	20	C
-                How many hours in two days? 24	36	12	48	D
-                What is 2 more than 16? 18	17	19	15	A
-                Count: ◣◣◣◣◣◣◣◣◣? 8	9	10	7	B
-                Which number is between 14 and 16? 13	17	15	14	C
-                How many eyes does a bird have? 1	3	4	2	D
-                What comes before 17? 16	15	18	14	A
-                Count the food: 🍕🍕🍕🍕🍕? 4	5	6	3	B
-                Which is even: 15,17,19,20? 15	17	20	19	C
-                How many days in May? 30	29	28	31	D
-                What is 1 less than 13? 12	11	14	10	A
-                Count: ◤◤◤◤◤◤◤◤? 7	8	9	6	B
-                Which number is written "three"? 2	4	3	1	C
-                How many corners does a square have? 3	5	2	4	D
-                What comes after 11? 12	10	13	9	A
-                Count backwards from 19: 19,18,17,__? 15	16	14	13	B
-                Which is smaller: 13 or 17? 17	14	13	15	C
-                How many wheels on a scooter? 3	4	1	2	D
-                What is 3 more than 12? 15	14	16	13	A
-                Count: ◥◥◥◥◥◥◥◥◥◥? 9	10	11	8	B
-                Which number is "eighteen"? 17	19	18	16	C
-                How many legs does a rabbit have? 2	6	8	4	D
-                What comes before 15? 14	13	16	12	A
-                Count the drinks: 🥤🥤🥤🥤? 3	4	5	2	B
-                Which is greater: 9 or 12? 9	10	12	11	C
-                How many sides does a hexagon have? 5	7	4	6	D
-                What is 2 less than 11? 9	8	10	7	A
-                Count: ◢◣◢◣◢◣? 5	6	7	4	B
-                Which number is between 11 and 13? 10	14	12	11	C
-                How many fingers on five hands? 20	30	15	25	D
-                What comes after 13? 14	12	15	11	A
-                Count backwards: 20,19,18,17,__? 15	16	14	13	B
-                Which is odd: 18,20,22,23? 18	20	23	22	C
-                How many months have 28 days? 1	2	4	12	D
-                What is 1 more than 17? 18	16	19	15	A
-                Count: ★☆★☆★☆★☆★☆? 9	10	11	8	B
-                Which number is written "two"? 1	3	2	0	C
-                How many corners does a triangle have? 4	2	5	3	D
-                What comes before 19? 18	17	20	16	A
-                Count the nature: 🌳🌳🌳🌳🌳🌳? 5	6	7	4	B
-                Which is even: 21,23,25,24? 21	23	24	25	C
-                How many days in June? 31	29	28	30	D
-                What is 3 less than 20? 17	16	18	15	A
-                Count: ⬟⬟⬟⬟⬟? 4	5	6	3	B
-                Which number is "sixteen"? 15	17	16	14	C
-                How many legs does a goat have? 2	6	8	4	D
-                What comes after 19? 20	18	21	17	A
-                Count backwards from 14: 14,13,12,__? 10	11	9	8	B
-                Which is smaller: 15 or 18? 18	16	15	17	C
-                How many wheels on a wagon? 2	6	8	4	D
-                What is 2 more than 18? 20	19	21	17	A
-                Count: ⬡⬡⬡⬡⬡⬡⬡? 6	7	8	5	B
-                Which number is between 18 and 20? 17	21	19	18	C
-                How many eyes does a fish have? 1	3	4	2	D
-                What comes before 10? 9	8	11	7	A
-                Count the sports: ⚽⚽⚽? 2	3	4	1	B
-                Which is greater: 17 or 14? 14	15	17	16	C
-                How many sides does an octagon have? 7	9	6	8	D
-                What is 1 less than 16? 15	14	17	13	A
-                Count: ⬢⬢⬢⬢⬢⬢⬢⬢? 7	8	9	6	B
-                Which number is written "one"? 0	2	1	3	C
-                How many corners does a rectangle have? 3	5	2	4	D
-                What comes after 4? 5	3	6	2	A
-                Count backwards: 10,9,8,7,__? 5	6	4	3	B
-                Which is odd: 22,24,26,27? 22	24	27	26	C
-                How many hours from noon to midnight? 6	24	18	12	D
-                What is 3 more than 14? 17	16	18	15	A
-                Count: ⬣⬣⬣⬣⬣⬣⬣⬣⬣? 8	9	10	7	B
-                Which number is "twenty"? 19	21	20	18	C
-                How many legs does a pig have? 2	6	8	4	D
-                What comes before 8? 7	6	9	5	A
-                Count the music: 🎵🎵🎵🎵? 3	4	5	2	B
-                Which is even: 25,27,29,30? 25	27	30	29	C
-                How many days in July? 30	29	28	31	D
-                What is 2 less than 14? 12	11	13	10	A
-                Count: ⬤⬥⬤⬥⬤⬥? 5	6	7	4	B
-                Which number is between 7 and 9? 6	10	8	7	C
-                How many fingers on six hands? 25	35	20	30	D
-                What comes after 17? 18	16	19	15	A
-                Count backwards from 16: 16,15,14,__? 12	13	11	10	B
-                Which is smaller: 11 or 14? 14	12	11	13	C
-                How many wheels on a rollerblade? 2	6	8	4	D
-                What is 1 more than 13? 14	12	15	11	A
-                Count: ◉◉◉◉◉◉◉◉◉◉◉◉◉? 12	13	14	11	B
-                Which number is written "zero"? 1	2	0	-1	C
-                How many corners does a pentagon have? 4	6	3	5	D
-                What comes before 11? 10	9	12	8	A
-                Count the weather: ☀️☀️☀️☀️☀️? 4	5	6	3	B
-                Which is greater: 19 or 16? 16	17	19	18	C
-                How many sides does a circle have? 1	2	4	0	D
-                What is 3 less than 16? 13	12	14	11	A
-                Count: ◎◎◎◎◎◎◎◎◎◎◎◎? 11	12	13	10	B
-                Which number is "fifteen"? 14	16	15	13	C
-                How many legs does a sheep have? 2	6	8	4	D
-                What comes after 14? 15	13	16	12	A
-                Count backwards: 15,14,13,12,__? 10	11	9	8	B
-                Which is odd: 26,28,30,31? 26	28	31	30	C
-                How many months have 31 days? 6	5	8	7	D
-                What is 2 more than 12? 14	13	15	11	A
-                Count: ◐◐◐◐◐◐◐? 6	7	8	5	B
-                Which number is between 15 and 17? 14	18	16	15	C
-                How many eyes does a butterfly have? 1	3	4	2	D
-                What comes before 16? 15	14	17	13	A
-                Count the colors: 🔴🔴🔴🔴🔴🔴? 5	6	7	4	B
-                Which is even: 29,31,33,32? 29	31	32	33	C
-                How many days in August? 30	29	28	31	D
-                What is 1 less than 18? 17	16	19	15	A
-                Count: ◑◑◑◑◑◑◑◑? 7	8	9	6	B
-                Which number is written "nineteen"? 18	20	19	17	C
-                How many corners does a hexagon have? 5	7	4	6	D
-                What comes after 12? 13	11	14	10	A
-                Count backwards from 18: 18,17,16,__? 14	15	13	12	B
-                Which is smaller: 16 or 19? 19	17	16	18	C
-                How many wheels on a unicycle? 2	3	4	1	D
-                What is 3 more than 8? 11	10	12	9	A
-                Count: ◒◒◒◒◒◒◒◒◒? 8	9	10	7	B
-                Which number is "eleven"? 10	12	11	9	C
-                How many legs does a duck have? 4	6	1	2	D
-                What comes before 13? 12	11	14	10	A
-                Count the emotions: 😊😊😊? 2	3	4	1	B
-                Which is greater: 13 or 10? 10	11	13	12	C
-                How many sides does a triangle have? 4	2	5	3	D
-                What is 2 less than 17? 15	14	16	13	A
-                Count: ◓◓◓◓◓◓◓◓◓◓? 9	10	11	8	B
-                Which number is between 12 and 14? 11	15	13	12	C
-                How many fingers on seven hands? 30	40	25	35	D
-                What comes after 9? 10	8	11	7	A
-                Count backwards: 17,16,15,14,__? 12	13	11	10	B
-                Which is odd: 30,32,34,35? 30	32	35	34	C
-                How many hours in three days? 48	36	24	72	D
-                What is 1 more than 19? 20	18	21	17	A
-                Count: ◔◔◔◔◔◔◔◔◔◔◔? 10	11	12	9	B
-                Which number is written "seventeen"? 16	18	17	15	C
-                How many corners does an octagon have? 7	9	6	8	D
-                What comes before 14? 13	12	15	11	A
-                Count the school: ✏️✏️✏️✏️✏️✏️✏️? 6	7	8	5	B
-                Which is even: 33,35,37,36? 33	35	36	37	C
-                How many days in September? 31	29	28	30	D
-                What is 3 less than 14? 11	10	12	9	A
-                Count: ◕◕◕◕◕◕◕◕◕◕◕◕? 11	12	13	10	B
-                Which number is "thirteen"? 12	14	13	11	C
-                How many legs does a turkey have? 4	6	1	2	D
-                What comes after 16? 17	15	18	14	A
-                Count backwards from 12: 12,11,10,__? 8	9	7	6	B
-                Which is smaller: 14 or 17? 17	15	14	16	C
-                How many wheels on a bicycle with training wheels? 2	6	3	4	D
-                What is 2 more than 15? 17	16	18	14	A
-                Count: ◖◖◖◖◖◖◖? 6	7	8	5	B
-                Which number is between 16 and 18? 15	19	17	16	C
-                How many eyes does a crab have? 1	3	4	2	D
-                What comes before 17? 16	15	18	14	A
-                Count the planets: 🪐🪐🪐🪐? 3	4	5	2	B
-                Which is greater: 15 or 12? 12	13	15	14	C
-                How many sides does a square have? 3	5	6	4	D
-                What is 1 less than 14? 13	12	15	11	A
-                Count: ◗◗◗◗◗◗◗◗? 7	8	9	6	B
-                Which number is written "twelve"? 11	13	12	10	C
-                How many corners does a circle have? 1	2	4	0	D
-                What comes after 18? 19	17	20	16	A
-                Count backwards: 19,18,17,16,__? 14	15	13	12	B
-                Which is odd: 34,36,38,39? 34	36	39	38	C
-                How many months have 30 days? 3	5	6	4	D
-                What is 3 more than 11? 14	13	15	12	A
-                Count: ◜◜◜◜◜◜◜◜◜? 8	9	10	7	B
-                Which number is "fourteen"? 13	15	14	12	C
-                How many legs does a lizard have? 2	6	8	4	D
-                What comes before 12? 11	10	13	9	A
-                Count the holidays: 🎄🎄🎄? 2	3	4	1	B
-                Which is even: 37,39,41,40? 37	39	40	41	C
-                How many days in October? 30	29	28	31	D
-                What is 2 less than 13? 11	10	12	9	A
-                Count: ◝◝◝◝◝◝◝◝◝◝? 9	10	11	8	B
-                Which number is between 10 and 12? 9	13	11	10	C
-                How many fingers on eight hands? 35	45	30	40	D
-                What comes after 15? 16	14	17	13	A
-                Count backwards from 15: 15,14,13,12,__? 10	11	9	8	B
-                Which is smaller: 12 or 15? 15	13	12	14	C
-                How many wheels on a car with spare? 4	6	3	5	D
-                What is 1 more than 16? 17	15	18	14	A
-                Count: ◞◞◞◞◞◞◞◞◞◞◞? 10	11	12	9	B
-                Which number is written "sixteen"? 15	17	16	14	C
-                How many corners does a rectangle have? 3	5	2	4	D
-                What comes before 18? 17	16	19	15	A
-                Count the ocean: 🌊🌊🌊🌊🌊? 4	5	6	3	B
-                Which is greater: 18 or 15? 15	16	18	17	C
-                How many sides does a pentagon have? 4	6	3	5	D
-                What is 3 less than 19? 16	15	17	14	A
-                Count: ◟◟◟◟◟◟◟◟◟◟◟◟? 11	12	13	10	B
-                Which number is "eighteen"? 17	19	18	16	C
-                How many legs does a snake have? 2	4	6	0	D
-                What comes after 11? 12	10	13	9	A
-                Count backwards: 13,12,11,10,__? 8	9	7	6	B
-                Which is odd: 38,40,42,43? 38	40	43	42	C
-                How many hours in half a week? 42	168	24	84	D
-                What is 2 more than 17? 19	18	20	16	A
-                Count: ◠◠◠◠◠◠◠◠◠◠◠◠◠? 12	13	14	11	B
-                Which number is between 19 and 21? 18	22	20	19	C
-                How many eyes does a starfish have? 1	2	5	0	D
-                What comes before 15? 14	13	16	12	A
-                Count the space: 🚀🚀🚀🚀? 3	4	5	2	B
-                Which is even: 41,43,45,44? 41	43	44	45	C
-                How many days in November? 31	29	28	30	D
-                What is 1 less than 12? 11	10	13	9	A
-                Count: ◡◡◡◡◡◡◡◡◡◡◡◡◡◡? 13	14	15	12	B
-                Which number is written "twenty"? 19	21	20	18	C`
+        "subtitle": "Numbers 1-50 & Counting",
+        "tsv": `What number comes after 9?	8	10	11	7	B
+How many fingers do you have on one hand?	10	5	2	1	B
+Which is the smallest number?	5	9	2	7	C
+Count the stars: ** ** **?	4	5	6	3	C
+What is 1 more than 19?	18	20	21	10	B
+Which number comes before 30?	31	20	29	32	C
+How do you write 'five'?	4	6	5	0	C
+What is the value of 1 in 10?	1	10	0	None	B
+Which is the biggest number?	15	5	50	25	C
+Counting by 2s: 2, 4, __?	5	6	8	3	B
+What is 1 less than 10?	11	9	8	0	B
+How many legs does a cat have?	2	3	4	5	C
+Zero means?	Everything	Something	Nothing	Ten	C
+Which number is between 14 and 16?	13	15	17	12	B
+How many ones in 5?	0	1	5	10	C
+Number name for 20?	Twelve	Twenty	Two	Ten	B
+What is $10 + 0$?	0	1	10	100	C
+Smallest 1-digit number?	0	1	9	10	B
+Largest 1-digit number?	1	0	9	10	C
+Which is less than 5?	6	8	3	10	C
+Which is the number 'four'?	4	3	2	1	A
+Number between 9 and 11?	8	10	12	7	B
+Count dots: ..	2	3	1	0	A
+How many ears do you have?	1	2	3	4	B
+Which number is 'zero'?	0	1	10	100	A`
     },
 
-        "class1_maths_u2": {
-            "title": "MATHS 1 | UNIT 02",
-            "subtitle": "Numbers 21-50",
-            "tsv": `What is 20 + 1?	22	21	20	19	B
-                    Which number has 2 tens and 3 ones?	32	20	23	3	C
-                    What comes after 29?	28	31	27	30	D
-                    How many tens in 40?	3	4	5	2	B
-                    Which is greater: 35 or 42?	42	35	38	40	A
-                    Write the number: thirty-four?	33	35	34	43	C
-                    What is 10 more than 25?	26	34	24	35	D
-                    Which number is between 38 and 40?	39	37	41	38	A
-                    How many ones in 47?	4	7	40	47	B
-                    What comes before 50?	48	51	47	49	D
-                    Which has more tens: 28 or 31?	28	31	29	30	B
-                    Write the number: forty-two?	41	42	43	24	B
-                    What is 20 + 20?	30	50	40	35	C
-                    Which number has 4 tens and 0 ones?	4	44	14	40	D
-                    What comes after 45?	46	44	47	43	A
-                    How many tens and ones in 36?	6 tens 3 ones	3 tens 6 ones	30 tens 6 ones	36 tens 0 ones	B
-                    Which is smaller: 27 or 32?	32	29	27	30	C
-                    Write the number: twenty-nine?	28	30	92	29	D
-                    What is 10 less than 40?	30	39	41	29	A
-                    Which number is between 44 and 46?	43	45	47	44	B
-                    How many ones in 23?	2	20	3	23	C
-                    What comes before 31?	29	32	28	30	D
-                    Which has more ones: 38 or 42?	42	38	40	39	A
-                    Write the number: fifty?	49	50	51	5	B
-                    What is 30 + 10?	31	39	40	29	C
-                    Which number has 2 tens and 9 ones?	92	20	9	29	D
-                    What comes after 39?	40	38	41	37	A
-                    How many tens in 25?	5	2	20	25	B
-                    Which is greater: 48 or 43?	43	48	45	46	B
-                    Write the number: thirty-one?	30	32	13	31	D
-                    What is 10 more than 38?	48	39	47	37	A
-                    Which number is between 26 and 28?	25	27	29	26	B
-                    How many ones in 41?	4	40	1	41	C
-                    What comes before 42?	40	43	39	41	D
-                    Which has more tens: 33 or 29?	33	29	30	31	A
-                    Write the number: forty-seven?	46	47	48	74	B
-                    What is 20 + 15?	25	45	35	30	C
-                    Which number has 3 tens and 5 ones?	53	30	5	35	D
-                    What comes after 49?	50	48	51	47	A
-                    How many tens and ones in 28?	8 tens 2 ones	2 tens 8 ones	20 tens 8 ones	28 tens 0 ones	B
-                    Which is smaller: 44 or 39?	44	41	39	42	C
-                    Write the number: twenty-five?	24	26	52	25	D
-                    What is 10 less than 35?	25	34	36	24	A
-                    Which number is between 33 and 35?	32	34	36	33	B
-                    How many ones in 37?	3	30	7	37	C
-                    What comes before 26?	24	27	23	25	D
-                    Which has more ones: 45 or 39?	45	39	42	40	A
-                    Write the number: thirty-eight?	37	38	39	83	B
-                    What is 40 + 5?	44	46	45	35	C
-                    Which number has 4 tens and 3 ones?	34	40	3	43	D
-                    What comes after 34?	35	33	36	32	A
-                    How many tens in 49?	9	4	40	49	B
-                    Which is greater: 22 or 29?	22	25	29	26	C
-                    Write the number: forty?	39	41	4	40	D
-                    What is 10 more than 47?	57	48	56	46	A
-                    Which number is between 41 and 43?	40	42	44	41	B
-                    How many ones in 50?	5	50	0	10	C
-                    What comes before 35?	33	36	32	34	D
-                    Which has more tens: 46 or 38?	46	38	42	40	A
-                    Write the number: twenty-three?	22	23	24	32	B
-                    What is 30 + 18?	38	58	48	42	C
-                    Which number has 2 tens and 7 ones?	72	20	7	27	D
-                    What comes after 41?	42	40	43	39	A
-                    How many tens and ones in 45?	5 tens 4 ones	4 tens 5 ones	40 tens 5 ones	45 tens 0 ones	B
-                    Which is smaller: 36 or 41?	41	38	36	39	C
-                    Write the number: thirty-three?	32	34	333	33	D
-                    What is 10 less than 50?	40	49	51	39	A
-                    Which number is between 29 and 31?	28	30	32	29	B
-                    How many ones in 44?	40	44	4	14	B
-                    What comes before 48?	46	49	45	47	D
-                    Which has more ones: 32 or 46?	46	32	39	40	A
-                    Write the number: forty-nine?	48	49	50	94	B
-                    What is 25 + 20?	35	55	45	40	C
-                    Which number has 3 tens and 9 ones?	93	30	9	39	D
-                    What comes after 36?	37	35	38	34	A
-                    How many tens in 31?	1	3	30	31	B
-                    Which is greater: 47 or 44?	44	45	47	46	C
-                    Write the number: twenty-eight?	27	29	82	28	D
-                    What is 10 more than 29?	39	30	38	28	A
-                    Which number is between 47 and 49?	46	48	50	47	B
-                    How many ones in 33?	30	33	3	13	B
-                    What comes before 44?	42	45	41	43	D
-                    Which has more tens: 24 or 37?	37	24	30	31	A
-                    Write the number: thirty-six?	35	36	37	63	B
-                    What is 40 + 8?	47	49	48	38	C
-                    Which number has 4 tens and 1 one?	14	40	1	41	D
-                    What comes after 47?	48	46	49	45	A
-                    How many tens and ones in 39?	9 tens 3 ones	3 tens 9 ones	30 tens 9 ones	39 tens 0 ones	B
-                    Which is smaller: 43 or 48?	48	45	43	46	C
-                    Write the number: twenty-one?	20	22	12	21	D
-                    What is 10 less than 45?	35	44	46	34	A
-                    Which number is between 35 and 37?	34	36	38	35	B
-                    How many ones in 26?	2	20	6	26	C
-                    What comes before 39?	37	40	36	38	D
-                    Which has more ones: 41 or 35?	35	41	38	39	B
-                    Write the number: forty-four?	43	45	444	44	D
-                    What is 30 + 12?	42	32	52	40	A
-                    Which number has 2 tens and 5 ones?	52	25	20	5	B
-                    What comes after 32?	31	34	33	30	C
-                    How many tens in 46?	6	40	46	4	C
-                    Which is greater: 34 or 39?	34	36	37	39	D
-                    Write the number: twenty-seven?	27	26	28	72	A
-                    What is 10 more than 33?	34	43	42	32	B
-                    Which number is between 42 and 44?	41	45	43	42	C
-                    How many ones in 49?	4	40	49	9	D
-                    What comes before 33?	32	31	34	30	A
-                    Which has more tens: 35 or 28?	28	35	32	30	B
-                    Write the number: thirty-nine?	38	40	39	93	C
-                    What is 20 + 28?	38	58	42	48	D
-                    Which number has 4 tens and 6 ones?	46	64	40	6	A
-                    What comes after 43?	42	44	45	41	B
-                    How many tens and ones in 24?	4 tens 2 ones	20 tens 4 ones	2 tens 4 ones	24 tens 0 ones	C
-                    Which is smaller: 37 or 42?	42	39	40	37	D
-                    Write the number: twenty-four?	24	23	25	42	A
-                    What is 10 less than 38?	37	28	39	27	B
-                    Which number is between 31 and 33?	30	34	32	31	C
-                    How many ones in 42?	4	40	42	2	D
-                    What comes before 46?	45	44	47	43	A
-                    Which has more ones: 34 or 48?	34	48	41	40	B
-                    Write the number: forty-six?	45	47	46	64	C
-                    What is 35 + 10?	36	44	34	45	D
-                    Which number has 3 tens and 2 ones?	32	23	30	2	A
-                    What comes after 38?	37	39	40	36	B
-                    How many tens in 27?	7	20	2	27	C
-                    Which is greater: 41 or 38?	38	39	40	41	D
-                    Write the number: thirty-two?	32	31	33	23	A
-                    What is 10 more than 44?	45	54	53	43	B
-                    Which number is between 45 and 47?	44	48	46	45	C
-                    How many ones in 31?	3	30	31	1	D
-                    What comes before 41?	40	39	42	38	A
-                    Which has more tens: 49 or 34?	34	49	42	40	B
-                    Write the number: twenty-six?	25	27	26	62	C
-                    What is 40 + 3?	42	44	33	43	D
-                    Which number has 4 tens and 8 ones?	48	84	40	8	A
-                    What comes after 46?	45	47	48	44	B
-                    How many tens and ones in 41?	1 ten 4 ones	40 tens 1 one	4 tens 1 one	41 tens 0 ones	C
-                    Which is smaller: 45 or 49?	49	47	46	45	D
-                    Write the number: thirty-seven?	37	36	38	73	A
-                    What is 10 less than 42?	41	32	43	31	B
-                    Which number is between 37 and 39?	36	40	38	37	C
-                    How many ones in 48?	4	40	48	8	D
-                    What comes before 37?	36	35	38	34	A
-                    Which has more ones: 29 or 43?	29	43	36	40	B
-                    Write the number: forty-three?	42	44	43	34	C
-                    What is 22 + 20?	32	52	40	42	D
-                    Which number has 2 tens and 8 ones?	28	82	20	8	A
-                    What comes after 31?	30	32	33	29	B
-                    How many tens in 43?	3	40	4	43	C
-                    Which is greater: 36 or 40?	36	38	37	40	D
-                    Write the number: twenty-two?	22	21	23	222	A
-                    What is 10 more than 36?	37	46	45	35	B
-                    Which number is between 48 and 50?	47	51	49	48	C
-                    How many ones in 34?	3	30	34	4	D
-                    What comes before 49?	48	47	50	46	A
-                    Which has more tens: 39 or 44?	39	44	41	42	B
-                    Write the number: thirty-five?	34	36	35	53	C
-                    What is 30 + 16?	36	56	42	46	D
-                    Which number has 4 tens and 2 ones?	42	24	40	2	A
-                    What comes after 44?	43	45	46	42	B
-                    How many tens and ones in 33?	33 tens 0 ones	30 tens 3 ones	3 tens 3 ones	3 tens 30 ones	C
-                    Which is smaller: 46 or 41?	46	43	44	41	D
-                    Write the number: twenty-nine?	29	28	30	92	A
-                    What is 10 less than 47?	46	37	48	36	B
-                    Which number is between 34 and 36?	33	37	35	34	C
-                    How many ones in 46?	4	40	46	6	D
-                    What comes before 34?	33	32	35	31	A
-                    Which has more ones: 37 or 44?	37	44	40	41	B
-                    Write the number: forty-eight?	47	49	48	84	C
-                    What is 26 + 20?	36	56	42	46	D
-                    Which number has 3 tens and 7 ones?	37	73	30	7	A
-                    What comes after 37?	36	38	39	35	B
-                    How many tens in 38?	8	30	3	38	C
-                    Which is greater: 45 or 42?	42	43	44	45	D
-                    Write the number: thirty?	30	29	31	3	A
-                    What is 10 more than 41?	42	51	50	40	B
-                    Which number is between 43 and 45?	42	46	44	43	C
-                    How many ones in 39?	3	30	39	9	D
-                    What comes before 43?	42	41	44	40	A
-                    Which has more tens: 32 or 47?	32	47	40	41	B
-                    Write the number: twenty?	19	21	20	2	C
-                    What is 40 + 6?	45	47	36	46	D
-                    Which number has 4 tens and 5 ones?	45	54	40	5	A
-                    What comes after 42?	41	43	44	40	B
-                    How many tens and ones in 47?	7 tens 4 ones	40 tens 7 ones	4 tens 7 ones	47 tens 0 ones	C
-                    Which is smaller: 38 or 43?	43	40	41	38	D
-                    Write the number: thirty-four?	34	33	35	43	A
-                    What is 10 less than 36?	35	26	37	25	B
-                    Which number is between 46 and 48?	45	49	47	46	C
-                    How many ones in 43?	4	40	43	3	D
-                    What comes before 38?	37	36	39	35	A
-                    Which has more ones: 42 or 36?	36	42	39	40	B
-                    Write the number: forty-one?	40	42	41	14	C
-                    What is 24 + 20?	34	54	40	44	D
-                    Which number has 2 tens and 6 ones?	26	62	20	6	A
-                    What comes after 35?	34	36	37	33	B
-                    How many tens in 44?	40	4	44	14	B
-                    Which is greater: 33 or 37?	33	35	37	36	C
-                    Write the number: twenty-three?	22	24	32	23	D
-                    What is 10 more than 39?	49	40	48	38	A
-                    Which number is between 39 and 41?	38	40	42	39	B
-                    How many ones in 45?	4	40	5	45	C
-                    What comes before 45?	43	46	42	44	D
-                    Which has more tens: 41 or 36?	41	36	38	39	A
-                    Write the number: forty-five?	44	45	46	54	B
-                    What is 30 + 14?	34	54	40	44	D
-                    Which number has 3 tens and 4 ones?	43	30	4	34	D
-                    What comes after 40?	41	39	42	38	A
-                    How many tens and ones in 26?	6 tens 2 ones	2 tens 6 ones	20 tens 6 ones	26 tens 0 ones	B
-                    Which is smaller: 44 or 47?	47	44	45	46	B
-                    Write the number: thirty-eight?	37	39	38	83	C
-                    What is 10 less than 49?	48	50	38	39	D
-                    Which number is between 32 and 34?	33	31	35	32	A
-                    How many ones in 32?	3	2	30	32	B
-                    What comes before 40?	38	41	39	37	C
-                    Which has more ones: 47 or 33?	33	40	41	47	D
-                    Write the number: forty-seven?	46	47	48	74	B`
-        },
+    "class1_maths_u2": {
+        "title": "MATHS 1 | UNIT 02",
+        "subtitle": "Basic Addition (Sum up to 20)",
+        "tsv": `1 + 1 = ?	1	2	3	0	B
+$2 + 3 = ?$	5	4	6	1	A
+$5 + 5 = ?$	0	10	15	55	B
+If you have 2 candies and get 1 more, you have?	1	2	3	4	C
+$10 + 2 = ?$	8	10	12	20	C
+$4 + 0 = ?$	0	40	4	None	C
+$3 + 3 = ?$	6	9	0	33	A
+$0 + 0 = ?$	0	1	None	None	A
+One more than 7 is?	6	7	8	9	C
+$6 + 1 = ?$	5	7	8	61	B
+$2 + 2 + 2 = ?$	4	6	8	10	B
+$9 + 1 = ?$	10	8	11	0	A
+$5 + 2 = ?$	3	6	7	8	C
+Sum of 4 and 1?	3	5	41	0	B
+$8 + 2 = ?$	6	10	12	82	B
+$1 + 5 = ?$	4	6	7	51	B
+Add 0 to 15?	0	1	15	150	C
+$7 + 7 = ?$	14	12	16	77	A
+$3 + 2 = ?$	5	1	6	4	A
+$10 + 10 = ?$	10	0	20	1010	C
+$1 + 0 = ?$	0	1	10	None	B
+$4 + 4 = ?$	8	44	0	1	A
+$2 + 8 = ?$	6	10	12	20	B
+$1 + 9 = ?$	10	8	11	1	A
+$5 + 1 = ?$	4	6	7	51	B`
+    },
 
-         "class1_maths_u3": {
-               "title": "MATHS 1 | UNIT 03",
-               "subtitle": "Numbers 51 to 100",
-               "description": "Counting to 100, skip counting, number patterns, place value",
-               "tsv": `What is 50 + 1?	50	51	52	49	B
-           Which number has 6 tens and 3 ones?	36	63	60	3	B
-           Count by 10s: 10,20,30,__?	35	40	45	39	B
-           What comes after 79?	78	80	81	77	B
-           How many tens in 90?	8	9	10	7	B
-           What is 5 more than 55?	56	60	59	54	B
-           Which number is between 64 and 66?	63	65	67	64	B
-           Count backwards: 70,69,68,__?	66	67	71	65	B
-           Which is greater: 82 or 78?	78	82	80	79	B
-           Write the number: seventy-three?	72	73	74	37	B
-           What comes before 91?	89	90	92	88	B
-           How many ones in 84?	8	4	80	84	B
-           Count by 5s: 50,55,60,__?	64	65	66	70	B
-           Which number has 9 tens and 2 ones?	29	92	90	2	B
-           What is 10 less than 100?	99	90	91	89	B
-           Which is smaller: 67 or 72?	72	67	69	70	B
-           Write the number: eighty-eight?	87	88	89	888	B
-           What comes after 99?	98	100	101	97	B
-           How many tens and ones in 76?	6 tens 7 ones	7 tens 6 ones	70 tens 6 ones	76 tens 0 ones	B
-           Count by 2s: 50,52,54,__?	55	56	57	58	B
-           Which number is between 88 and 90?	87	89	91	88	B
-           What is 50 + 20?	60	70	80	65	B
-           Which has more tens: 63 or 58?	58	63	60	59	B
-           Write the number: ninety-five?	94	95	96	59	B
-           What comes before 61?	59	60	62	58	B
-           How many ones in 97?	9	7	90	97	B
-           Count by 10s from 50: 50,60,70,__?	75	80	85	79	B
-           Which number has 5 tens and 9 ones?	95	59	50	9	B
-           What is 10 more than 85?	86	95	94	84	B
-           Which is greater: 93 or 89?	89	93	91	92	B
-           Write the number: sixty-two?	61	62	63	26	B
-           What comes after 84?	83	85	86	82	B
-           How many tens in 70?	0	7	70	17	B
-           Count backwards: 100,99,98,__?	96	97	101	95	B
-           Which number is between 71 and 73?	70	72	74	71	B
-           What is 5 less than 60?	56	55	59	54	B
-           Which has more ones: 78 or 83?	78	83	80	81	B
-           Write the number: fifty-four?	53	54	55	45	B
-           What comes before 75?	73	74	76	72	B
-           How many ones in 66?	60	6	66	16	B
-           Count by 5s: 75,80,85,__?	89	90	91	95	B
-           Which number has 8 tens and 1 one?	18	81	80	1	B
-           What is 10 less than 72?	71	62	73	61	B
-           Which is smaller: 94 or 87?	94	87	90	91	B
-           Write the number: one hundred?	99	100	101	10	B
-           What comes after 69?	68	70	71	67	B
-           How many tens and ones in 93?	3 tens 9 ones	9 tens 3 ones	90 tens 3 ones	93 tens 0 ones	B
-           Count by 2s: 90,92,94,__?	95	96	97	98	B
-           Which number is between 96 and 98?	95	97	99	96	B
-           What is 60 + 10?	61	70	69	59	B
-           Which has more tens: 85 or 79?	79	85	82	80	B
-           Write the number: sixty-eight?	67	68	69	86	B
-           What comes before 88?	86	87	89	85	B
-           How many ones in 71?	7	1	70	17	B
-           Count by 10s: 60,70,80,__?	85	90	95	89	B
-           Which number has 7 tens and 5 ones?	57	75	70	5	B
-           What is 10 more than 67?	68	77	76	66	B
-           Which is greater: 74 or 79?	74	79	76	77	B
-           Write the number: ninety-one?	90	91	92	19	B
-           What comes after 95?	94	96	97	93	B
-           How many tens in 80?	0	8	80	18	B
-           Count backwards: 85,84,83,__?	81	82	86	80	B
-           Which number is between 55 and 57?	54	56	58	55	B
-           What is 5 more than 90?	91	95	94	89	B
-           Which has more ones: 62 or 69?	62	69	65	66	B
-           Write the number: seventy-seven?	76	77	78	777	B
-           What comes before 100?	98	99	101	97	B
-           How many ones in 88?	80	8	88	18	B
-           Count by 5s: 60,65,70,__?	74	75	76	80	B
-           Which number has 6 tens and 8 ones?	86	68	60	8	B
-           What is 10 less than 95?	94	85	96	84	B
-           Which is smaller: 73 or 78?	78	73	75	76	B
-           Write the number: eighty-three?	82	83	84	38	B
-           What comes after 77?	76	78	79	75	B
-           How many tens and ones in 58?	8 tens 5 ones	5 tens 8 ones	50 tens 8 ones	58 tens 0 ones	B
-           Count by 2s: 70,72,74,__?	75	76	77	78	B
-           Which number is between 81 and 83?	80	82	84	81	B
-           What is 50 + 30?	70	80	90	75	B
-           Which has more tens: 92 or 86?	86	92	89	90	B
-           Write the number: fifty-nine?	58	59	60	95	B
-           What comes before 66?	64	65	67	63	B
-           How many ones in 94?	9	4	90	49	B
-           Count by 10s: 70,80,90,__?	95	100	105	99	B
-           Which number has 9 tens and 7 ones?	79	97	90	7	B
-           What is 10 more than 92?	93	102	101	91	C
-           Which is greater: 65 or 61?	61	65	63	64	C
-           Write the number: sixty-five?	64	65	66	56	C
-           What comes after 89?	88	90	91	87	C
-           How many tens in 100?	9	10	11	8	C
-           Count backwards: 95,94,93,__?	91	92	96	90	C
-           Which number is between 92 and 94?	91	93	95	92	C
-           What is 5 less than 75?	71	70	74	69	C
-           Which has more ones: 81 or 87?	81	87	84	85	C
-           Write the number: seventy?	69	70	71	7	C
-           What comes before 54?	52	53	55	51	C
-           How many ones in 63?	6	3	60	36	C
-           Count by 5s: 85,90,95,__?	99	100	101	94	C
-           Which number has 5 tens and 2 ones?	25	52	50	2	C
-           What is 10 less than 68?	67	58	69	57	C
-           Which is smaller: 98 or 91?	98	91	94	95	C
-           Write the number: eighty?	79	80	81	8	C
-           What comes after 51?	50	52	53	49	C
-           How many tens and ones in 100?	1 ten 0 ones	10 tens 0 ones	100 tens 0 ones	0 tens 100 ones	C
-           Count by 2s: 96,98,100,__?	101	102	103	99	C
-           Which number is between 59 and 61?	58	60	62	59	C
-           What is 60 + 20?	70	80	90	75	C
-           Which has more tens: 74 or 68?	68	74	71	70	C
-           Write the number: ninety-nine?	98	99	100	999	C
-           What comes before 71?	69	70	72	68	C
-           How many ones in 57?	5	7	50	75	C
-           Count by 10s: 50,60,70,80,__?	85	90	95	89	C
-           Which number has 8 tens and 5 ones?	58	85	80	5	C
-           What is 10 more than 58?	59	68	67	57	C
-           Which is greater: 86 or 83?	83	86	84	85	C
-           Write the number: sixty?	59	60	61	6	C
-           What comes after 93?	92	94	95	91	C
-           How many tens in 55?	50	5	55	15	C
-           Count backwards: 78,77,76,__?	74	75	79	73	C
-           Which number is between 67 and 69?	66	68	70	67	C
-           What is 5 more than 85?	86	90	89	84	C
-           Which has more ones: 92 or 96?	92	96	94	95	C
-           Write the number: fifty-one?	50	51	52	15	C
-           What comes before 82?	80	81	83	79	C
-           How many ones in 79?	7	9	70	97	C
-           Count by 5s: 55,60,65,__?	69	70	71	75	C
-           Which number has 7 tens and 2 ones?	27	72	70	2	C
-           What is 10 less than 81?	80	71	82	70	C
-           Which is smaller: 56 or 63?	63	56	59	60	C
-           Write the number: ninety-three?	92	93	94	39	C
-           What comes after 64?	63	65	66	62	C
-           How many tens and ones in 87?	7 tens 8 ones	8 tens 7 ones	80 tens 7 ones	87 tens 0 ones	C
-           Count by 2s: 52,54,56,__?	57	58	59	60	C
-           Which number is between 74 and 76?	73	75	77	74	C
-           What is 70 + 10?	71	80	79	69	C
-           Which has more tens: 61 or 55?	55	61	58	59	C
-           Write the number: eighty-one?	80	81	82	18	C
-           What comes before 96?	94	95	97	93	C
-           How many ones in 100?	1	0	10	100	C
-           Count by 10s: 80,90,100,__?	105	110	115	99	D
-           Which number has 6 tens and 1 one?	16	61	60	1	D
-           What is 10 more than 73?	74	83	82	72	D
-           Which is greater: 97 or 94?	94	97	95	96	D
-           Write the number: seventy-two?	71	72	73	27	D
-           What comes after 58?	57	59	60	56	D
-           How many tens in 95?	5	9	90	59	D
-           Count backwards: 63,62,61,__?	59	60	64	58	D
-           Which number is between 85 and 87?	84	86	88	85	D
-           What is 5 less than 95?	91	90	94	89	D
-           Which has more ones: 73 or 77?	73	77	75	76	D
-           Write the number: sixty-nine?	68	69	70	96	D
-           What comes before 59?	57	58	60	56	D
-           How many ones in 82?	8	2	80	28	D
-           Count by 5s: 90,95,100,__?	104	105	106	110	D
-           Which number has 9 tens and 4 ones?	49	94	90	4	D
-           What is 10 less than 65?	64	55	66	54	D
-           Which is smaller: 88 or 92?	92	88	90	91	D
-           Write the number: fifty-seven?	56	57	58	75	D
-           What comes after 72?	71	73	74	70	D
-           How many tens and ones in 64?	4 tens 6 ones	6 tens 4 ones	60 tens 4 ones	64 tens 0 ones	D
-           Count by 2s: 60,62,64,__?	63	65	66	67	D
-           Which number is between 90 and 92?	89	91	93	90	D
-           What is 40 + 30?	60	70	80	65	D
-           Which has more tens: 53 or 48?	48	53	50	51	D
-           Write the number: eighty-six?	85	86	87	68	D
-           What comes before 67?	66	65	68	64	D
-           How many ones in 51?	5	1	50	15	D
-           Count by 10s: 40,50,60,__?	55	65	70	59	D
-           Which number has 4 tens and 9 ones?	94	49	40	9	D
-           What is 10 more than 46?	47	56	55	45	D
-           Which is greater: 52 or 58?	52	58	55	56	D
-           Write the number: ninety-seven?	96	97	98	79	D
-           What comes after 81?	80	82	83	79	D
-           How many tens in 62?	2	6	60	26	D
-           Count backwards: 91,90,89,__?	88	87	92	86	D
-           Which number is between 76 and 78?	75	77	79	76	D
-           What is 5 more than 70?	71	75	74	69	D
-           Which has more ones: 64 or 68?	64	68	66	67	D
-           Write the number: fifty-three?	52	53	54	35	D
-           What comes before 78?	77	76	79	75	D
-           How many ones in 99?	9	90	99	19	D
-           Count by 5s: 70,75,80,__?	79	84	85	90	D
-           Which number has 3 tens and 8 ones?	83	38	30	8	D
-           What is 10 less than 54?	53	44	55	43	D
-           Which is smaller: 61 or 66?	66	61	63	64	D
-           Write the number: seventy-nine?	78	79	80	97	D
-           What comes after 97?	96	98	99	95	D
-           How many tens and ones in 52?	2 tens 5 ones	5 tens 2 ones	50 tens 2 ones	52 tens 0 ones	D
-           Count by 2s: 80,82,84,__?	83	85	86	87	D
-           Which number is between 62 and 64?	61	63	65	62	D
-           What is 30 + 40?	60	70	80	65	D
-           Which has more tens: 71 or 65?	65	71	68	69	D
-           Write the number: sixty-four?	63	64	65	46	D
-           What comes before 85?	84	83	86	82	D
-           How many ones in 74?	7	4	70	47	D
-           Count by 10s: 90,100,110,__?	95	115	120	109	D
-           Which number has 2 tens and 7 ones?	72	27	20	7	D
-           What is 10 more than 39?	40	49	48	38	D
-           Which is greater: 45 or 49?	45	49	47	46	D
-           Write the number: eighty-nine?	88	89	90	98	D
-           What comes after 46?	45	47	48	44	D
-           How many tens in 37?	7	3	30	73	D
-           Count backwards: 55,54,53,__?	52	51	56	50	D
-           Which number is between 48 and 50?	47	49	51	48	D
-           What is 5 less than 50?	46	45	49	44	D
-           Which has more ones: 42 or 47?	42	47	44	45	D`
-           },
+    "class1_maths_u3": {
+        "title": "MATHS 1 | UNIT 03",
+        "subtitle": "Basic Subtraction",
+        "tsv": `2 - 1 = ?	1	2	0	3	A
+$5 - 2 = ?$	7	3	2	0	B
+$10 - 1 = ?$	11	9	10	0	B
+If you have 3 apples and eat 1, how many left?	1	2	3	4	B
+$4 - 4 = ?$	4	8	0	1	C
+$8 - 0 = ?$	0	80	8	None	C
+$6 - 3 = ?$	3	9	0	6	A
+Take away 2 from 5?	7	3	2	1	B
+$9 - 5 = ?$	4	5	14	0	A
+$7 - 1 = ?$	8	6	7	0	B
+$3 - 0 = ?$	3	0	1	None	A
+$10 - 5 = ?$	5	15	10	0	A
+$12 - 2 = ?$	14	10	12	0	B
+Subtract 1 from 20?	21	19	18	10	B
+$15 - 5 = ?$	10	20	5	15	A
+$5 - 0 = ?$	0	5	50	None	B
+$8 - 4 = ?$	12	4	8	0	B
+$2 - 2 = ?$	0	2	4	None	A
+$10 - 10 = ?$	20	0	10	None	B
+$6 - 1 = ?$	7	5	6	1	B
+$7 - 0 = ?$	0	7	70	None	B
+$9 - 9 = ?$	9	18	0	1	C
+$6 - 2 = ?$	4	8	3	2	A
+$5 - 5 = ?$	10	5	0	None	C
+$8 - 1 = ?$	9	7	8	1	B`
+    },
 
-            "class1_maths_u4": {
-                "title": "MATHS 1 | UNIT 04",
-                "subtitle": "Addition Within 20",
-                "description": "Basic addition facts, word problems, number bonds",
-                "tsv": `3 + 4 = ?	7	6	8	5   A
-        What is 5 + 5?	10	9	11	8   A`
-            },
+    "class1_maths_u4": {
+        "title": "MATHS 1 | UNIT 04",
+        "subtitle": "Shapes and Space",
+        "tsv": `A ball is?	Square	Round	Triangle	None	B
+How many sides does a square have?	3	4	0	1	B
+A triangle has ____ corners?	4	2	3	0	C
+Which shape is like an egg?	Circle	Square	Oval	Triangle	C
+A box is a?	Square	Circle	Rectangle	None	C
+A ring is?	Round	Straight	Square	None	A
+How many sides does a circle have?	4	1	0	3	C
+A roof of a house looks like a?	Circle	Square	Triangle	None	C
+Which is a flat shape?	Circle	Ball	Box	None	A
+Opposite of 'In' is?	Under	Out	Above	Near	B
+The sun looks like a?	Rectangle	Triangle	Circle	Star	C
+A pencil is?	Long	Round	Square	Short	A
+Where is the ceiling?	Below	Above	Under	Near	B
+Which is 'Under' the table?	The Floor	The Fan	The Sky	None	A
+A door is?	Round	Rectangle	Triangle	None	B
+A dice looks like a?	Circle	Cube	Triangle	None	B
+Corners of a rectangle?	3	4	5	None	B
+Which is 'Near' you?	The Moon	The Desk	The Sun	The Clouds	B
+A wheel is?	Square	Circular	Triangular	None	B
+A sandwich cut in half looks like a?	Square	Circle	Triangle	None	C
+Which is 'On' the table?	A book	The floor	A rug	None	A
+A triangle has ____ sides.	3	4	0	2	A
+An orange is like a?	Square	Sphere/Circle	Triangle	None	B
+Which is 'Far' from you?	The Stars	The Desk	Your Chair	None	A
+Opposite of 'Up' is?	Down	Near	In	Out	A`
+    },
 
-            "class1_maths_u5": {
-                "title": "MATHS 1 | UNIT 05",
-                "subtitle": "Subtraction Within 20",
-                "description": "Basic subtraction, taking away, comparison",
-                "tsv": `8 - 3 = ?	5	4	6	7   A`
-            },
+    "class1_maths_u5": {
+        "title": "MATHS 1 | UNIT 05",
+        "subtitle": "Measurement (Long/Short, Heavy/Light)",
+        "tsv": `Which is longer?	Pencil	Eraser	Sharpener	None	A
+An elephant is?	Light	Heavy	Small	Thin	B
+Which is taller?	A Tree	A Flower	Grass	None	A
+A feather is?	Heavy	Light	Hard	Long	B
+Which is shorter?	Your Leg	Your Finger	Your Arm	None	B
+We measure milk in?	Meters	Cups/Liters	Grams	None	B
+A school bus is?	Long	Short	Tiny	None	A
+Which is heavier?	A Stone	A Leaf	Paper	None	A
+A mouse is ____ than a cat?	Bigger	Smaller	Taller	None	B
+A ruler is used to measure?	Weight	Length	Time	Water	B
+Which holds more water?	A Spoon	A Bucket	A Cup	None	B
+A giraffe has a ____ neck?	Short	Long	Round	None	B
+Which is faster?	Snail	Cycle	Car	None	C
+A heavy bag is hard to?	Lift	See	Drop	None	A
+Your bed is ____ than your pillow?	Lighter	Smaller	Bigger	None	C
+Which is colder?	Sun	Ice	Soup	Fire	B
+A mountain is?	High	Low	Short	None	A
+A thick book is?	Heavy	Light	Thin	None	A
+Empty bottle is ____ than full bottle?	Heavier	Lighter	Bigger	None	B
+Which is 'Big'?	Ant	Bee	Elephant	Spider	C
+A giraffe is?	Short	Tall	Tiny	None	B
+Which is lighter?	A Balloon	A Brick	A Bag	None	A
+A road is?	Short	Long	Circle	None	B
+We use a scale to?	Eat	Draw lines	Sleep	None	B
+Which is bigger?	A Watermelon	An Apple	A Cherry	None	A`
+    },
 
-            "class1_maths_u6": {
-                "title": "MATHS 1 | UNIT 06",
-                "subtitle": "Shapes & Patterns",
-                "description": "2D shapes, symmetry, repeating patterns",
-                "tsv": `How many sides does a triangle have?	3	4	2	5   A
-        Which shape has 4 equal sides?	Square	Rectangle	Triangle	Circle  A
-        Complete the pattern: △ ○ △ ○ __?	△	○	□	⭐   A
-        [... 147 more questions ...]`
-            },
+    "class1_maths_u6": {
+        "title": "MATHS 1 | UNIT 06",
+        "subtitle": "Time and Days",
+        "tsv": `When does the sun rise?	Night	Evening	Morning	Noon	C
+How many days in a week?	5	6	7	10	C
+We go to sleep at?	Morning	Noon	Night	Afternoon	C
+What comes after Monday?	Sunday	Tuesday	Friday	Wednesday	B
+Which is a weekend day?	Monday	Wednesday	Sunday	Thursday	C
+How many hands does a clock have?	1	2	0	5	B
+Breakfast is eaten in the?	Evening	Night	Morning	Afternoon	C
+Dinner is eaten in the?	Morning	Night	Afternoon	None	B
+What day is before Sunday?	Monday	Saturday	Friday	Tuesday	B
+Which is the first day of the week?	Monday	Friday	Sunday	Saturday	A
+Lunch is at?	Morning	Night	Afternoon	Midnight	C
+A clock shows us?	Weight	Time	Money	Length	B
+How many months in a year?	7	10	12	30	C
+Shadows are long in the?	Noon	Morning/Evening	Midnight	None	B
+What comes after Friday?	Thursday	Saturday	Sunday	Monday	B
+School usually starts at?	8 AM	8 PM	Midnight	None	A
+Stars come out at?	Day	Night	Noon	Morning	B
+Yesterday means?	Day before today	Day after today	Today	None	A
+Tomorrow means?	Day before today	Day after today	Today	None	B
+How many days do we go to school?	2	7	5	0	C
+How many months in a year?	10	12	30	7	B
+The day after Saturday is?	Friday	Sunday	Monday	None	B
+Which month comes after June?	May	August	July	April	C
+We see the sun in the?	Night	Day	Evening	None	B
+Clock has numbers from 1 to?	10	12	24	60	B`
+    },
 
-            "class1_maths_u7": {
-                "title": "MATHS 1 | UNIT 07",
-                "subtitle": "Measurement",
-                "description": "Length, weight, capacity, comparison words",
-                "tsv": `Which is longer: pencil or ruler?	Ruler	Pencil	Same	None    A
-        What do we use to measure weight?	Scale	Ruler	Clock	Thermometer A`
-            },
+    "class1_maths_u7": {
+        "title": "MATHS 1 | UNIT 07",
+        "subtitle": "Money (Coins and Notes)",
+        "tsv": `Money is used to?	Play	Buy things	Eat	Sleep	B
+Currency of Pakistan is?	Dollar	Rupee	Euro	Taka	B
+A coin is?	Square	Round	Triangle	None	B
+Rs 1 + Rs 1 = ?	Rs 3	Rs 2	Rs 0	None	B
+Which is more?	Rs 10	Rs 5	Rs 2	Rs 1	A
+Paper money is called?	Coins	Notes	Metal	None	B
+Which is the smallest coin?	Rs 1	Rs 10	Rs 50	None	A
+To buy a candy, we need?	Water	Money	Stone	Leaves	B
+Symbol for Rupee is?	$	Rs	£	None	B
+Rs 5 + Rs 5 = ?	Rs 10	Rs 55	Rs 0	None	A
+Can we buy things with stones?	Yes	No	Sometimes	None	B
+Where do we keep money?	In fire	In Wallet	In water	None	B
+Rs 10 - Rs 5 = ?	Rs 15	Rs 5	Rs 10	None	B
+Which note is green in Pakistan?	Rs 10	Rs 500	Rs 20	None	B
+Is Rs 100 bigger than Rs 10?	Yes	No	Equal	None	A
+Who issues money?	School	Bank	Hospital	Shop	B
+What is on a coin?	Numbers	Pictures	Both	None	C
+Rs 20 + Rs 10 = ?	Rs 10	Rs 30	Rs 2010	None	B
+A 'Piggy Bank' is for?	Spending	Saving	Eating	None	B
+If a toy costs Rs 50, and you have Rs 20?	You can buy	Cannot buy	Need more	B
+Rs 10 + Rs 10 = ?	Rs 10	Rs 0	Rs 20	Rs 100	C
+Smallest paper note in Pakistan?	Rs 10	Rs 20	Rs 50	Rs 100	A
+Which is a coin?	Rs 500	Rs 5	Rs 1000	None	B
+We get change from a?	Bank/Shop	School	Park	None	A
+A wallet is for?	Water	Money	Food	None	B`
+    },
 
-            "class1_maths_u8": {
-                "title": "MATHS 1 | UNIT 08",
-                "subtitle": "Time & Calendar",
-                "description": "Days, months, clock reading, sequencing",
-                "tsv": `How many days in a week?	7	5	6	8   A
-        What comes after Monday?	Tuesday	Wednesday	Sunday	Monday  A`
-            },
+    "class1_maths_u8": {
+        "title": "MATHS 1 | UNIT 08",
+        "subtitle": "Patterns and Logic",
+        "tsv": `Next in pattern: 1, 2, 1, 2, __?	1	2	3	0	A
+Next shape: Circle, Square, Circle, __?	Triangle	Square	Oval	None	B
+Color pattern: Red, Blue, Red, __?	Red	Blue	Green	None	B
+Complete: A, B, A, B, __?	C	A	B	D	B
+Pattern: 10, 20, 30, __?	31	40	50	0	B
+Which comes next: Up, Down, Up, __?	Up	Left	Down	Right	C
+Next in: 5, 10, 5, 10, __?	15	5	10	0	B
+Logic: Big, Small, Big, __?	Big	Tall	Small	Long	C
+Pattern: Sun, Moon, Sun, __?	Star	Moon	Sun	None	B
+Next: Apple, Orange, Apple, __?	Banana	Orange	Apple	None	B
+Pattern: 2, 2, 4, 4, 6, __?	6	7	8	10	A
+What's missing: 1, _, 3, 4?	0	2	5	10	B
+Pattern: 1, 3, 1, 3, __?	1	3	4	0	A
+Logic: Happy, Sad, Happy, __?	Angry	Sad	Happy	None	B
+Next: Hand, Foot, Hand, __?	Head	Foot	Hand	None	B
+Pattern: Triangle, Square, Triangle, __?	Circle	Square	Star	None	B
+Complete: 10, 9, 8, __?	7	10	6	0	A
+Pattern: Left, Right, Left, __?	Left	Up	Right	Down	C
+Next: Boy, Girl, Boy, __?	Man	Girl	Boy	None	B
+Logic: Cold, Hot, Cold, __?	Ice	Water	Hot	None	C
+Pattern: A, B, C, A, B, __?	A	B	C	D	C
+Logic: Tall, Short, Tall, __?	Long	Short	Big	None	B
+Next in: 10, 9, 8, 7, __?	6	5	9	10	A
+Complete: Cat, Dog, Cat, __?	Bird	Dog	Mouse	None	B
+Pattern: 1, 1, 2, 2, 3, __?	3	4	5	6	A`
+    },
 
-            "class1_maths_u9": {
-                "title": "MATHS 1 | UNIT 09",
-                "subtitle": "Money Basics",
-                "description": "Coin recognition, counting money, simple transactions",
-                "tsv": `Which coin is worth 1 rupee?	₹1 coin	₹5 coin	₹10 coin	₹2 coin,A
-        How many 1-rupee coins make ₹5?	5	4	6	3   A`
-            },
+    "class1_maths_u9": {
+        "title": "MATHS 1 | UNIT 09",
+        "subtitle": "Data Handling (Counting Groups)",
+        "tsv": `How many apples: 🍎🍎🍎?	1	2	3	4	C
+If group A has 2 birds and group B has 3?	A is more	B is more	Equal	None	B
+How many stars in [**] [**]?	2	4	6	0	B
+Which set has more: (1,2) or (1,2,3)?	First	Second	Equal	None	B
+How many wheels on 2 bikes?	2	4	6	8	B
+If I have 5 pens and give 5 to you?	I have 5	I have 10	I have 0	None	C
+How many eyes do 3 kids have?	3	6	2	9	B
+Count the dots: .... ?	2	3	4	5	C
+Which is the tallest bar? (2cm, 5cm, 1cm)	2cm	5cm	1cm	None	B
+How many legs on 2 chairs?	4	6	8	10	C
+If a box has 10 balls and 2 are red?	8 are not red	2 are not red	10 are red	None	A
+Which color is most in: (R, R, B, G)?	Red	Blue	Green	None	A
+How many sides in 2 triangles?	3	6	9	4	B
+If there are 4 cats and 4 mats?	More cats	More mats	Equal	None	C
+How many fingers on 2 hands?	5	10	15	20	B
+Count the bells: 🔔🔔?	1	2	3	4	B
+If group A has 5 and group B has 0?	A is more	B is more	Equal	None	A
+How many corners in 2 squares?	4	8	12	6	B
+Which group is 'Empty'?	(1,2)	(5)	()	(0)	C
+How many 1s are in 11?	1	2	11	0	B
+Count: 🍎🍎	2	3	1	4	A
+Which group has 1 item?	(O)	(O,O)	()	(O,O,O)	A
+How many legs on 3 kids?	3	6	2	1	B
+If box A has 10 and B has 10?	A > B	B > A	Equal	None	C
+How many hands do 5 people have?	5	10	20	1	B`
+    },
 
-            "class1_maths_u10": {
-                "title": "MATHS 1 | UNIT 10",
-                "subtitle": "Data Handling",
-                "description": "Sorting, simple graphs, tally marks, interpreting pictures",
-                "tsv": `How many 🍎 in: 🍎🍎🍎?	3	2	4	1   A`
-            }
+    "class1_maths_u10": {
+        "title": "MATHS 1 | UNIT 10",
+        "subtitle": "Ordinal Numbers & Revision",
+        "tsv": `Who comes first?	1st	2nd	3rd	None	A
+What is the position after 1st?	3rd	2nd	4th	Last	B
+In 'ABC', which letter is 3rd?	A	B	C	D	C
+Last day of the week is?	Monday	Friday	Sunday	Saturday	C
+Which is an even number?	1	2	3	5	B
+Which is an odd number?	2	4	1	6	C
+Ordinal number for 5?	Five	Fifth	Fifty	None	B
+Who is at the top of a ladder?	1st step	Last step	Middle	None	B
+Position of 'O' in 'DOG'?	1st	2nd	3rd	None	B
+What is $5 + 5 - 2$?	10	8	7	5	B
+How many days in a weekend?	1	2	3	7	B
+Shape with no corners?	Square	Triangle	Circle	Rectangle	C
+$20 - 10 = ?$	5	10	15	20	B
+Half of 2 is?	1	2	0	4	A
+Double of 2 is?	1	2	4	0	C
+Smallest 2-digit number?	1	10	99	11	B
+Number after 49?	48	51	50	40	C
+Which is heavier, 1kg or 2kg?	1kg	2kg	Equal	None	B
+What time is lunch?	Morning	Afternoon	Night	None	B
+Count by 10s: 10, 20, 30, __?	31	40	50	60	B
+Number name for 50?	Five	Fifteen	Fifty	None	B
+Largest 2-digit number?	10	90	99	100	C
+Position of 'A' in 'APPLE'?	1st	2nd	3rd	None	A
+$2 + 2 - 1 = ?$	4	3	5	0	B
+Which is even?	1	3	5	4	D`
+    },
 
+    "class1_english_u1": {
+        "title": "ENGLISH 1 | UNIT 01",
+        "subtitle": "Letters, Sounds & Vowels",
+        "tsv": `Which letter comes after 'B'?	A	C	D	E	B
+Which of these is a Vowel?	B	F	A	G	C
+What is the first letter of 'Apple'?	B	A	P	L	B
+Small letter for 'G' is?	p	q	g	j	C
+Which word starts with 'S'?	Ball	Sun	Cat	Dog	B
+How many vowels are there?	3	5	7	26	B
+Pick the vowel:	M	N	E	T	C
+'Ant' starts with which sound?	/b/	/a/	/t/	/s/	B
+Which letter is a consonant?	A	E	B	I	C
+Capital letter for 'r' is?	P	R	Q	S	B
+Pick the capital letter:	a	b	C	d	C
+Pick the small letter:	A	B	c	D	C
+'Ball' starts with?	A	B	C	D	B
+How many letters in 'CAT'?	2	3	4	5	B
+What is the last letter of 'DOG'?	D	O	G	A	C
+A, E, I, O, __ are vowels.	U	B	C	D	A
+Which is NOT a vowel?	A	E	F	I	C
+Identify the vowel in 'PEN':	P	E	N	None	B
+Small letter for 'D' is?	b	p	d	q	C
+Capital letter for 'm' is?	N	M	W	V	B
+'Egg' starts with?	A	E	I	O	B
+Which letter is between X and Z?	W	Y	A	B	B
+'Hat' starts with?	H	A	T	S	A
+Vowel in 'FISH' is?	F	I	S	H	B
+How many alphabets are there?	20	25	26	30	C`
+    },
 
+    "class1_english_u2": {
+        "title": "ENGLISH 1 | UNIT 02",
+        "subtitle": "Naming Words (Nouns)",
+        "tsv": `Which is a naming word for a person?	Boy	Apple	Run	Big	A
+'Cat' is the name of an?	Object	Animal	Place	Person	B
+Which of these is a Place?	Ball	School	Eat	Happy	B
+'Table' is a?	Person	Place	Thing	Action	C
+Find the noun:	Jump	Fast	Book	Sing	C
+A 'Doctor' is a?	Thing	Place	Person	Animal	C
+Name of a fruit:	Onion	Mango	Potato	Rose	B
+Identify the animal:	Lion	Table	Pen	Bus	A
+Which is a thing you write with?	Plate	Pencil	Shoe	Bed	B
+'Park' is a name of a?	Fruit	Thing	Place	Person	C
+'Teacher' is a?	Person	Place	Thing	Animal	A
+'Masjid' is a?	Person	Place	Thing	Animal	B
+'Lion' is an?	Person	Place	Thing	Animal	D
+'Book' is a?	Person	Place	Thing	Animal	C
+A baby is a?	Thing	Person	Place	Animal	B
+A desk is a?	Person	Place	Thing	Animal	C
+Identify the place:	Boy	Girl	Park	Toy	C
+Identify the person:	Mother	House	Apple	Cat	A
+Identify the thing:	Doctor	Classroom	Pencil	Tiger	C
+Identify the animal:	Table	Chair	Horse	School	C
+Your home is a?	Person	Thing	Place	Animal	B
+A ball is a?	Person	Thing	Place	Animal	B
+Is 'Happy' a naming word?	Yes	No	Maybe	None	B
+A 'Friend' is a?	Thing	Place	Person	Animal	C
+The 'Sun' is a?	Person	Place	Thing	Animal	C`
+    },
+
+    "class1_english_u3": {
+        "title": "ENGLISH 1 | UNIT 03",
+        "subtitle": "Action Words (Verbs)",
+        "tsv": `What do you do with a book?	Eat	Sleep	Read	Run	C
+Which is an action word?	Pen	Play	Red	Girl	B
+Birds ____ in the sky.	swim	fly	crawl	sit	B
+Fish ____ in water.	fly	jump	swim	walk	C
+What do you do when you are hungry?	Sleep	Eat	Sing	Dance	B
+Identify the action:	Chair	Walking	Blue	Table	B
+We ____ with our eyes.	hear	smell	see	taste	C
+We ____ with our ears.	see	hear	run	eat	B
+Opposite of 'Sit' is?	Run	Stand	Sleep	Walk	B
+A baby ____ for milk.	flies	cries	sings	dances	B
+We ____ with a pen.	eat	write	jump	run	B
+We ____ on a chair.	fly	sit	swim	read	B
+Dogs ____ at strangers.	sing	dance	bark	cry	C
+A ____ can fly.	cat	dog	bird	fish	B
+We ____ with our teeth.	hear	see	chew	smell	C
+Identifying action:	Book	Pen	Running	Table	B
+Identifying action:	Sleeping	Bed	Pillow	Night	A
+Identifying action:	Eating	Food	Plate	Spoon	A
+The boy ____ the ball.	eats	kicks	reads	flies	B
+We ____ to school.	fly	swim	go	sleep	B
+Singing is which action?	Singing	Song	Mic	Radio	A
+Dancing is which action?	Dancing	Music	Floor	Stage	A
+Drinking is which action?	Drinking	Water	Glass	Jug	A
+Clapping is which action?	Clapping	Hand	Finger	Arm	A
+Laughing is which action?	Laughing	Sad	Angry	Cry	A`
+    },
+
+    "class1_islamiat_u1": {
+        "title": "ISLAMIAT 1 | UNIT 01",
+        "subtitle": "Allah and His Creation",
+        "tsv": `Who created the Sun and Moon?	Angels	Humans	Allah	Kings	C
+Who is our Creator?	Allah	Parents	Teachers	Prophets	A
+Allah is ____.	Two	Three	One	Four	C
+Where is Allah?	Everywhere	Nowhere	In the sky only	In a house	A
+Who made the beautiful flowers?	Scientists	Allah	Gardeners	Robots	B
+Should we thank Allah?	No	Yes	Never	Sometimes	B
+What should we say before eating?	Alhamdulillah	Bismillah	Allah hu Akbar	SubhanAllah	B
+Allah loves those who are?	Mean	Clean & Kind	Noisy	Rude	B
+The name of our Deen is?	Islam	Music	Art	Maths	A
+We are ____.	English	Muslims	Angels	Stars	B
+Allah is the ____ of everything.	Friend	Creator	Enemy	King	B
+Allah made the rain for?	Plants/Us	Fire	Rocks	Toys	A
+Who made the mountains?	Kings	Allah	Builders	Robots	B
+Allah is most ____.	Cruel	Kind	Angry	Mean	B
+We should obey ____.	Satan	Allah	Enemies	Bad people	B
+Allah sees everything. True?	No	Yes	Maybe	None	B
+Allah hears us when we pray. True?	No	Yes	Maybe	None	B
+The earth belongs to?	Humans	Kings	Allah	Nobody	C
+Who made the stars?	Allah	Moon	Scientists	Aliens	A
+Allah loves those who tell the ____.	Lie	Truth	Stories	Jokes	B
+Everything happens by the will of ____.	Angels	Allah	Luck	Kings	B
+Allah created us to ____ Him.	Play with	Worship	Ignore	Fight	B
+Can we see Allah in this world?	Yes	No	Sometimes	Maybe	B
+Allah has no ____.	Power	Partners	Creation	Names	B
+Allah is the Greatest. True?	Yes	No	Maybe	None	A`
+    },
+
+    "class1_islamiat_u2": {
+        "title": "ISLAMIAT 1 | UNIT 02",
+        "subtitle": "The Pillars of Islam",
+        "tsv": `How many pillars of Islam are there?	3	4	5	6	C
+What is the first pillar?	Zakat	Salah	Kalimah	Hajj	C
+How many times do we pray Salah daily?	2	3	5	10	C
+The holy book of Muslims is?	Bible	Torah	Quran	Gita	C
+Fasting (Sawm) is in the month of?	Shawwal	Ramadan	Rajab	Safar	B
+Where do Muslims go for Hajj?	London	Makkah	Madina	Paris	B
+Giving money to the poor is?	Hajj	Zakat	Salah	Sawm	B
+Who is the last Prophet of Allah?	Adam (AS)	Musa (AS)	Muhammad (PBUH)	Isa (AS)	C
+We pray in the ____.	Church	Temple	Masjid	Park	C
+Facing which direction do we pray?	East	West	Qibla	North	C
+How many Kalimahs are basic?	1	2	6	10	C
+Second pillar of Islam is?	Salah	Zakat	Hajj	Fasting	A
+Salah is performed ____ times a day.	2	3	5	10	D
+Zakat is given to the ____.	Rich	Poor	Kings	Friends	B
+Hajj is performed in which city?	Madina	Makkah	Lahore	Dubai	B
+Fasting means not eating from ____.	Dawn to Sunset	Morning to Noon	Night to Day	All day	A
+When do we pray Fajr?	Night	Noon	Morning	Evening	C
+When do we pray Isha?	Morning	Noon	Afternoon	Night	D
+The call to prayer is?	Azan	Song	Music	Alarm	A
+Person who gives Azan is?	Imam	Muazzin	Teacher	Student	B
+The leader of Salah is?	Muazzin	Imam	Haji	King	B
+The direction of Qibla is towards?	Kaaba	Sun	Moon	North	A
+First house of Allah is?	Masjid-e-Nabwi	Kaaba	Aqsa	None	B
+Who built the Kaaba?	Prophet Ibrahim(AS) & Ismail(AS)	Kings	Angels	None	A
+We go to Hajj in the month of?	Ramadan	Zul-Hijjah	Rajab	Safar	B`
+    },
+
+    "class1_english_u4": {
+        "title": "ENGLISH 1 | UNIT 04",
+        "subtitle": "Opposites & Rhyming Words",
+        "tsv": `Opposite of 'Big' is?	Tall	Small	Fat	Long	B
+Opposite of 'Happy' is?	Sad	Angry	Good	Cold	B
+What rhymes with 'Cat'?	Dog	Bat	Sun	Ten	B
+What rhymes with 'Pin'?	Pan	Bin	Pen	Pot	B
+Opposite of 'Hot' is?	Warm	Cold	Sun	Fire	B
+What rhymes with 'Toy'?	Boy	Bag	Bed	Big	A
+Opposite of 'Up' is?	High	Down	Near	Left	B
+What rhymes with 'Red'?	Bad	Bed	Rod	Run	B
+Opposite of 'Day' is?	Light	Night	Sun	Morning	B
+What rhymes with 'Sun'?	Run	Sit	Sad	Say	A
+Opposite of 'Boy' is?	Man	Girl	Woman	Child	B
+Opposite of 'In' is?	Out	Above	Under	Near	B
+Opposite of 'Yes' is?	No	Okay	Sure	Maybe	B
+Opposite of 'Cold' is?	Ice	Hot	Cool	Winter	B
+Opposite of 'Fast' is?	Slow	Quick	Run	Stop	A
+Opposite of 'Clean' is?	New	Old	Dirty	Fresh	C
+Opposite of 'Tall' is?	Big	Short	Fat	High	B
+Opposite of 'Fat' is?	Thin	Big	Short	Large	A
+Opposite of 'Good' is?	Bad	Nice	Happy	Fine	A
+Opposite of 'Laugh' is?	Smile	Cry	Sing	Eat	B
+Opposite of 'Sit' is?	Stand	Lie	Walk	Run	B
+Opposite of 'Black' is?	Blue	White	Red	Dark	B
+Opposite of 'New' is?	Big	Old	Fresh	Cool	B
+What rhymes with 'Bed'?	Red	Bad	Rod	Run	A
+What rhymes with 'Pig'?	Big	Bag	Dog	Log	A`
+    },
+
+    "class1_english_u5": {
+        "title": "ENGLISH 1 | UNIT 05",
+        "subtitle": "Pronouns (He, She, It) & Basic Sentences",
+        "tsv": `We use 'He' for a?	Girl	Boy	Dog	Chair	B
+We use 'She' for a?	Boy	Girl	Cat	Table	B
+We use 'It' for a?	Man	Woman	Thing	Teacher	C
+____ is my mother.	He	She	It	I	B
+____ is a big tree.	He	She	It	They	C
+____ am a student.	He	She	It	I	D
+____ is my brother.	He	She	It	You	A
+This ____ a ball.	is	am	are	be	A
+I ____ six years old.	is	am	are	was	B
+The birds ____ flying.	is	am	are	was	C
+____ is a cute kitten.	He	She	It	I	C
+____ are playing.	He	She	It	They	D
+____ am happy.	He	She	It	I	D
+____ is my sister.	He	She	It	I	B
+____ is my father.	He	She	It	I	A
+____ is a big tree.	He	She	It	They	C
+The girls ____ singing.	is	am	are	was	C
+A dog ____ four legs.	has	have	am	are	A
+I ____ two hands.	has	have	is	are	B
+They ____ my friends.	is	am	are	was	C
+This is ____ apple.	a	an	the	none	B
+This is ____ bag.	a	an	the	none	A
+____ names are Ali and Sara.	His	Her	Their	Your	C
+This is ____ book. (I have it)	my	your	his	her	A
+That is ____ house. (He lives there)	my	your	his	her	C`
+    },
+
+    "class1_islamiat_u3": {
+        "title": "ISLAMIAT 1 | UNIT 03",
+        "subtitle": "Good Manners (Akhlaq)",
+        "tsv": `We should always speak the?	Lie	Truth	Loudly	Rudely	B
+When we meet someone, we say?	Hello	Bye	Assalamu Alaikum	Good	C
+Respect your ____.	Toys	Parents	Enemies	Money	B
+Keep your body and clothes ____.	Dirty	Wet	Clean	Old	C
+Helping others is a ____ deed.	Bad	Good	Hard	Sad	B
+Always say 'Please' when?	Crying	Asking for help	Sleeping	Running	B
+We should share our things with?	Nobody	Friends/Needy	Walls	None	B
+Waste of water is?	Good	Sunnah	Disliked by Allah	Fun	C
+Eating with the right hand is?	Sunnah	Bad	Wrong	Hard	A
+Chewing food with mouth closed is?	Rude	Good manners	Bad	Hard	B
+Always greet with ____.	Angry face	Smile	Crying	Shouting	B
+Love your brothers and sisters.	Older	Younger	Both	None	C
+Help your ____ at home.	Friends	Parents	Strangers	Enemies	B
+Keep your school ____.	Dirty	Clean	Noisy	Messy	B
+Truthfulness is a ____ habit.	Bad	Good	Hard	Sad	B
+Do not ____.	Help	Steal	Pray	Share	B
+Always say the ____.	Lie	Truth	Mean words	Loud words	B
+Be ____ to animals.	Mean	Kind	Cruel	Scared	B
+Sharing toys is?	Bad	Good	Boring	Mean	B
+Washing hands before eating is?	Bad	Sunnah	Hard	Useless	B
+Do not ____ anyone.	Help	Hurt	Love	Greet	B
+Obey your ____.	Enemies	Teachers	Bad friends	None	B
+Listen to your ____.	Elders	TV	Music	Noise	A
+Say ____ when you do something wrong.	Thank you	Sorry	Please	Hello	B
+Say ____ when someone helps you.	Sorry	Thank you	Please	Bye	B`
+    },
+
+    "class1_islamiat_u4": {
+        "title": "ISLAMIAT 1 | UNIT 04",
+        "subtitle": "Stories of Prophets",
+        "tsv": `The first human and Prophet was?	Idrees (AS)	Adam (AS)	Nuh (AS)	Isa (AS)	B
+Prophet Nuh (AS) built a big?	House	Boat (Ark)	Car	Wall	B
+Who was given the miracle of the staff?	Musa (AS)	Isa (AS)	Adam (AS)	None	A
+Which Prophet could talk to animals?	Musa (AS)	Sulaiman (AS)	Isa (AS)	None	B
+Prophet Ibrahim (AS) is the 'Friend of'?	Kings	Allah	Angels	People	B
+Prophet Muhammad (PBUH) was born in?	Madina	Makkah	Taif	Quds	B
+Who brought the Quran to the Prophet?	Jibrail (AS)	Mikail (AS)	Israfil (AS)	None	A
+Prophet Yunus (AS) was inside a?	Cave	Big Fish	Well	House	B
+Which Prophet is known for patience?	Musa (AS)	Ayyub (AS)	Isa (AS)	None	B
+Who is the last Prophet?	Adam (AS)	Muhammad (PBUH)	Musa (AS)	Isa (AS)	B
+Prophet Muhammad (PBUH) is the ____ Prophet.	First	Second	Middle	Last	D
+Prophet Ibrahim (AS) was thrown into?	Water	Fire	Well	Pit	B
+Prophet Musa (AS) went to?	Egypt	China	America	London	A
+Prophet Isa (AS) could heal the ____.	Sick	Robots	Toys	Walls	A
+Prophet Muhammad (PBUH)'s father name?	Abdullah	Abu Talib	Hamza	Abbas	A
+Prophet Muhammad (PBUH)'s mother name?	Amina	Halima	Fatima	Khadija	A
+Which Prophet was swallowed by a whale?	Musa (AS)	Yunus (AS)	Isa (AS)	None	B
+Who was the first Prophet?	Muhammad (PBUH)	Adam (AS)	Nuh (AS)	None	B
+Which Prophet built the Ark?	Musa (AS)	Nuh (AS)	Isa (AS)	None	B
+Prophet Ibrahim (AS) had a son named?	Ismail (AS)	Yusuf (AS)	Musa (AS)	None	A
+Which Prophet could understand birds?	Sulaiman (AS)	Adam (AS)	Isa (AS)	None	A
+Prophet Yusuf (AS) was very ____.	Mean	Beautiful	Angry	Small	B
+Prophet Muhammad (PBUH) loved ____.	Children	Fighting	Noise	Lies	A
+The companions of Prophet are called?	Sahaba	Friends	Students	Kings	A
+Islam was completed by Prophet ____.	Adam (AS)	Muhammad (PBUH)	Musa (AS)	None	B`
+    },
+
+    "class1_islamiat_u5": {
+        "title": "ISLAMIAT 1 | UNIT 05",
+        "subtitle": "Basic Duas & Kalimas",
+        "tsv": `What to say when we sneeze?	Bismillah	Alhamdulillah	SubhanAllah	None	B
+What to say when we finish eating?	Bismillah	Alhamdulillah	Allahu Akbar	None	B
+The first Kalimah is?	Kalimah Tayyabah	Kalimah Shahadat	Kalimah Tamjeed	None	A
+'SubhanAllah' means?	Allah is Great	Glory be to Allah	Praise Allah	None	B
+'Allahu Akbar' means?	Allah is Greatest	Allah is One	Thank Allah	None	A
+Dua for increasing knowledge?	Rabbi Zidni 'Ilma	Bismillah	Alhamdulillah	None	A
+Where do we find the words of Allah?	Story books	Quran	Newspaper	None	B
+How many names does Allah have?	10	50	99	100	C
+Before sleeping, we should?	Run	Read Dua	Dance	Eat	B
+Islam teaches us to be?	Angry	Kind	Selfish	Lazy	B
+What to say before entering toilet?	Bismillah	Dua	Azan	None	B
+What to say when entering home?	Bye	Assalamu Alaikum	Hello	None	B
+'Alhamdulillah' means?	All praise to Allah	Allah is Great	Praise me	None	A
+When starting any work, say ____.	Alhamdulillah	Bismillah	Bye	None	B
+Dua for parents starts with:	Rabbi irhamhuma	Bismillah	Alhamdulillah	None	A
+We ask help from ____ only.	Idols	Allah	Kings	Friends	B
+The Quran is in ____ language.	English	Urdu	Arabic	Sindhi	C
+The first Surah of Quran is?	Surah Ikhlas	Surah Fatiha	Surah Nas	None	B
+How many Surahs in Quran?	10	100	114	1000	C
+'Bismillah' means?	In the name of Allah	Allah is One	Thank Allah	None	A
+Who is the Messenger of Allah?	Angels	Prophet Muhammad (PBUH)	Kings	Scientists	B
+What to say when we meet a Muslim?	Hi	Assalamu Alaikum	Hello	Bye	B
+What is the reply to Assalamu Alaikum?	Walaikum Assalam	Bye	Hello	Hi	A
+Surah Ikhlas is about?	Oneness of Allah	Food	Animals	Stars	A
+Surah Nas protects us from?	Rain	Evil	Sun	Cold	B`
+    }
 });
