@@ -291,11 +291,24 @@
             max-width: 320px;
             max-height: 28vh;
             overflow-y: auto;
+            touch-action: pan-y;
             color: white;
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .leaderboard::-webkit-scrollbar {
+            width: 5px;
+        }
+        .leaderboard::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        .leaderboard::-webkit-scrollbar-thumb {
+            background: rgba(249, 202, 36, 0.4);
+            border-radius: 10px;
         }
 
         .leaderboard table {
@@ -405,7 +418,7 @@
             <button class="btn" id="howToPlayBtn" style="flex: 0.8; margin: 0; padding: 10px 5px; font-size: 13px; background: linear-gradient(45deg, #00b894, #55efc4);">📖 Guide</button>
         </div>
 
-        <div class="leaderboard" style="margin-top: 12px; max-height: 35vh; overflow-y: auto;">
+        <div class="leaderboard" style="margin-top: 12px; max-height: 38vh; overflow-y: auto; touch-action: pan-y;">
             <h3 style="text-align: center; margin-bottom: 8px; font-size: 13px; color: #f9ca24; text-transform: uppercase;">🏆 Top 15 Leaders 🏆</h3>
             <div style="display: flex; gap: 5px; margin-bottom: 8px;">
                 <button id="btnTop15" onclick="loadScoresFromFirebase('top')" style="flex:1; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); color:white; font-size:9px; font-weight:bold; padding:6px; border-radius:8px; cursor:pointer;">🏆 TOP 15</button>
@@ -1352,7 +1365,10 @@
         }).join('');
     }
 
-    document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+    document.addEventListener('touchmove', (e) => {
+        if (e.target.closest('.leaderboard')) return;
+        e.preventDefault();
+    }, { passive: false });
     document.addEventListener('gesturestart', (e) => e.preventDefault());
     document.addEventListener('dblclick', (e) => e.preventDefault());
 
