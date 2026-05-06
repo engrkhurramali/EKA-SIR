@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Physics Class 10 Summaries - EKA SIR</title>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-heavy: rgba(255, 255, 255, 0.4);
+            --sky-blue: #87CEEB;
+            --mint-green: #98FF98;
+            --text-dark: #1a5f7a;
+            --border: rgba(255, 255, 255, 0.5);
+            --accent: #ff6b6b;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 15px;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            margin-bottom: 30px;
+        }
+
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            background: var(--glass-heavy);
+            padding: 8px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: bold;
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+
+        .chapter-selector {
+            width: 100%;
+            padding: 12px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text-dark);
+            font-weight: bold;
+            margin-bottom: 20px;
+            outline: none;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        h1 { font-size: 1.2rem; text-align: center; margin: 0; text-transform: uppercase; color: var(--text-dark); }
+        h2 { font-size: 1.1rem; color: #fff; background: var(--text-dark); padding: 10px; border-radius: 10px; margin-top: 25px; text-align: center; }
+        h3 { font-size: 1rem; margin-top: 20px; color: #b71c1c; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 5px; }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .content-section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .summary-card {
+            background: rgba(255, 255, 255, 0.4);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 15px;
+            line-height: 1.6;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .key-term { font-weight: bold; color: #1a5f7a; }
+        .exam-note { background: rgba(255, 215, 0, 0.2); border-left: 4px solid #d4af37; padding: 8px 10px; border-radius: 6px; margin-top: 12px; font-size: 0.9rem; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+        strong { color: #000; }
+
+        .formula-box {
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border: 1px dashed var(--text-dark);
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        .sub-text { font-size: 0.85rem; color: #333; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="nav-header">
+        <a href="physics10_exercises.html" class="back-btn">⬅ Back</a>
+        <h1>Physics Class 10 Notes</h1>
+    </div>
+
+    <select class="chapter-selector" id="chapterSelect" onchange="showChapter(this.value)">
+        <option value="10">Chapter 10: Simple Harmonic Motion & Waves</option>
+        <option value="11">Chapter 11: Sound</option>
+        <option value="12">Chapter 12: Geometrical Optics</option>
+        <option value="13">Chapter 13: Electrostatics</option>
+        <option value="14">Chapter 14: Current Electricity</option>
+        <option value="15">Chapter 15: Electromagnetism</option>
+        <option value="16">Chapter 16: Basic Electronics</option>
+        <option value="17">Chapter 17: Information & Comm. Tech</option>
+        <option value="18">Chapter 18: Atomic & Nuclear Physics</option>
+    </select>
+
+    <!-- CHAPTER 10 -->
+    <div id="chapter10" class="content-section active">
+        <h2>CHAPTER 10: SIMPLE HARMONIC MOTION AND WAVES</h2>
+        <div class="summary-card">
+            <h3>1. Simple Harmonic Motion (SHM)</h3>
+            <p>A periodic motion where the restoring acceleration is directly proportional to displacement and always directed toward the mean position[cite: 1].</p>
+            <ul>
+                <li><span class="key-term">Hooke's Law:</span> F = -kx. The negative sign indicates the force is restorative (opposing displacement).</li>
+                <li><strong>Mass-Spring System:</strong> Time Period T = 2&pi;&radic;(m/k). Restoring force is provided by the elasticity of the spring.</li>
+                <li><strong>Simple Pendulum:</strong> Time Period T = 2&pi;&radic;(l/g). Restoring force is the component of gravity (mg sin&theta;). Note that mass does not affect the time period of a pendulum.</li>
+                <li><strong>Kinematics of SHM:</strong> At the mean position, velocity is maximum and acceleration is zero. At extreme positions, velocity is zero and acceleration is maximum.</li>
+                <li><strong>Damped Oscillations:</strong> The gradual reduction of amplitude of an oscillator due to resistive forces (like friction). Example: Shock absorbers in a car.</li>
+            </ul>
+            <div class="formula-box">a &prop; -x &nbsp; | &nbsp; T = 2&pi;&radic;(m/k) &nbsp; | &nbsp; T = 2&pi;&radic;(l/g)</div>
+
+            <h3>2. Wave Motion</h3>
+            <p>A disturbance that transfers energy through matter or space without net matter transport[cite: 1].</p>
+            <ul>
+                <li><span class="key-term">Mechanical Waves:</span> Require a material medium to propagate (e.g., sound waves, water waves)[cite: 1].</li>
+                <li><span class="key-term">Electromagnetic Waves:</span> Do not require any medium; can travel through a vacuum (e.g., light, X-rays, radio waves)[cite: 1].</li>
+                <li><strong>Transverse Waves:</strong> Particle vibration is perpendicular (&perp;) to the wave's direction of propagation. Composed of crests (highest points) and troughs (lowest points).</li>
+                <li><strong>Longitudinal Waves:</strong> Particle vibration is parallel (||) to the wave's direction. Composed of compressions (particles close together) and rarefactions (particles spread apart).</li>
+            </ul>
+            <div class="formula-box">v = f&lambda; &nbsp; (Wave Equation)</div>
+
+            <h3>3. Properties of Waves (Ripple Tank)</h3>
+            <p>The Ripple Tank is an experimental device used to study water wave characteristics.</p>
+            <ul>
+                <li><strong>Reflection:</strong> When waves hit a barrier, they bounce back at the same angle (angle of incidence = angle of reflection)[cite: 1].</li>
+                <li><strong>Refraction:</strong> Waves change speed and direction when moving from deep to shallow water (wavelength decreases, frequency remains constant)[cite: 1].</li>
+                <li><strong>Diffraction:</strong> The bending of waves around the edges of an obstacle or slit. Most prominent when slit width is comparable to the wavelength[cite: 1].</li>
+            </ul>
+            <div class="exam-note">📌 <strong>Board Focus:</strong> Derivation of v = f&lambda;. Differentiating between transverse and longitudinal waves with examples. Explanation of damped oscillations. Ripple tank diagrams for reflection and diffraction.</div>
+        </div>
+    </div>
+
+    <!-- CHAPTER 11 -->
+    <div id="chapter11" class="content-section">
+        <h2>CHAPTER 11: SOUND</h2>
+        <div class="summary-card">
+            <h3>1. Nature & Propagation of Sound</h3>
+            <p>Sound is a <span class="key-term">mechanical longitudinal wave</span> produced by vibrating bodies[cite: 1]. It propagates outward in all directions via alternating regions of compressions (high pressure) and rarefactions (low pressure)[cite: 1]. It absolutely requires a material medium and cannot travel in a vacuum[cite: 1].</p>
+
+            <h3>2. Characteristics of Sound</h3>
+            <ul>
+                <li><strong>Loudness:</strong> The subjective perception of sound magnitude[cite: 1]. It depends on the amplitude of the vibrating body, surface area, and distance from the source.</li>
+                <li><strong>Intensity of Sound:</strong> The acoustic energy passing per second through unit area held perpendicular to the direction of propagation. Unit: Watt per square meter (W/m&sup2;).</li>
+                <li><strong>Sound Intensity Level:</strong> Measured in decibels (dB). &beta; = 10 log(I / I&#8320;), where I&#8320; is the faintest audible sound (10&#8315;&sup1;&sup2; W/m&sup2;).</li>
+                <li><strong>Pitch:</strong> The characteristic that distinguishes a shrill sound from a grave one[cite: 1]. It depends strictly on frequency. (e.g., Women and children have higher pitch than adult men).</li>
+                <li><strong>Quality (Timbre):</strong> Distinguishes two sounds of the same loudness and pitch due to the difference in their complex waveforms[cite: 1].</li>
+            </ul>
+
+            <h3>3. Speed of Sound</h3>
+            <p>The speed of sound depends on the elasticity and inertia of the medium.</p>
+            <ul>
+                <li><strong>By Phase:</strong> Fastest in solids (highest elasticity), slower in liquids, and slowest in gases (v<sub>solid</sub> > v<sub>liquid</sub> > v<sub>gas</sub>)[cite: 1].</li>
+                <li><strong>Temperature Effect:</strong> Speed increases with an increase in temperature (v &prop; &radic;T)[cite: 1]. In air at 0&deg;C, v &approx; 332 m/s; at 20&deg;C, v &approx; 340 m/s[cite: 1].</li>
+            </ul>
+            <div class="formula-box">s = vt &nbsp; &rarr; &nbsp; v = s/t</div>
+
+            <h3>4. Echo, Reverberation, & Acoustics</h3>
+            <ul>
+                <li><strong>Echo:</strong> A distinct reflected sound[cite: 1]. For the human ear to distinguish an echo, the time delay must be &ge; 0.1s. Thus, the minimum distance to a reflecting surface must be &approx; 17m.</li>
+                <li><strong>Reverberation:</strong> Multiple reflections of sound in a closed room causing the sound to persist[cite: 1]. Managed via acoustic materials (porous boards, heavy curtains).</li>
+            </ul>
+
+            <h3>5. Audible Range and Ultrasound</h3>
+            <ul>
+                <li><strong>Audible Range:</strong> 20 Hz to 20,000 Hz for the average healthy human ear[cite: 1].</li>
+                <li><strong>Ultrasound (Ultrasonics):</strong> Frequencies > 20,000 Hz[cite: 1]. Applications include SONAR (Sound Navigation and Ranging) to measure ocean depth, medical diagnostics (fetal imaging), removing kidney stones, and industrial flaw detection[cite: 1].</li>
+            </ul>
+            <div class="exam-note">📌 <strong>Board Focus:</strong> Calculate distance using echo method (d = vt/2). Sound intensity level formula. Explain how factors like temperature change the speed of sound. Medical applications of ultrasound.</div>
+        </div>
+    </div>
+
+    <!-- CHAPTER 12 -->
+    <div id="chapter12" class="content-section">
+        <h2>CHAPTER 12: GEOMETRICAL OPTICS</h2>
+        <div class="summary-card">
+            <h3>1. Reflection & Spherical Mirrors</h3>
+            <p>Reflection is the bouncing back of light into the same medium. <span class="key-term">Laws of Reflection:</span> 1. Angle of incidence (i) = Angle of reflection (r). 2. Incident ray, reflected ray, and normal lie in the same plane[cite: 1].</p>
+            <ul>
+                <li><strong>Concave Mirror:</strong> Converging mirror. The inner curved surface is reflecting. Can form real/inverted images (if object is beyond principal focus F) or virtual/erect/magnified images (if object is inside F)[cite: 1].</li>
+                <li><strong>Convex Mirror:</strong> Diverging mirror. The outer curved surface is reflecting. Always forms virtual, upright, and diminished images. Used as rear-view mirrors due to a wider field of view[cite: 1].</li>
+                <li><strong>Mirror Formula & Magnification:</strong> Relates focal length (f), object distance (p), and image distance (q). f is positive for concave and negative for convex.</li>
+            </ul>
+            <div class="formula-box">1/f = 1/p + 1/q &nbsp; | &nbsp; M = q/p = h<sub>i</sub> / h<sub>o</sub></div>
+
+            <h3>2. Refraction & Snell's Law</h3>
+            <p>The bending of light as it passes from one transparent medium to another due to a change in speed[cite: 1]. Light bends toward the normal when entering a denser medium, and away from the normal when entering a rarer medium[cite: 1].</p>
+            <ul>
+                <li><span class="key-term">Snell's Law:</span> The ratio of the sine of the angle of incidence to the sine of the angle of refraction is a constant called the Refractive Index (n).</li>
+                <li><strong>Refractive Index:</strong> n = sin(i) / sin(r). Also, n = (Speed of light in vacuum c) / (Speed of light in medium v)[cite: 1].</li>
+            </ul>
+
+            <h3>3. Total Internal Reflection (TIR) & Optical Fibers</h3>
+            <p>When light travels from a denser to a rarer medium and the angle of incidence exceeds the <span class="key-term">Critical Angle (C)</span>, no refraction occurs; all light is reflected back[cite: 1].</p>
+            <ul>
+                <li><strong>Critical Angle Formula:</strong> sin C = 1/n[cite: 1].</li>
+                <li><strong>Applications:</strong> Optical fibers (telecommunications), total reflecting prisms (periscopes, binoculars), and mirages (optical illusion in deserts)[cite: 1].</li>
+            </ul>
+
+            <h3>4. Lenses & Defects of Vision</h3>
+            <ul>
+                <li><strong>Convex Lens:</strong> Thicker at the center. Converges parallel light rays to a real focus.</li>
+                <li><strong>Concave Lens:</strong> Thinner at the center. Diverges light rays from a virtual focus.</li>
+                <li><strong>Power of a Lens:</strong> Reciprocal of focal length in meters. P = 1/f(in m). Unit: Diopter (D).</li>
+                <li><strong>Myopia (Short-sightedness):</strong> Cannot see distant objects. Image forms in front of the retina. Corrected using a Concave lens[cite: 1].</li>
+                <li><strong>Hypermetropia (Long-sightedness):</strong> Cannot see close objects. Image forms behind the retina. Corrected using a Convex lens[cite: 1].</li>
+            </ul>
+            <div class="exam-note">📌 <strong>Board Focus:</strong> Drawing accurate ray diagrams for object placement at 2F, between F and 2F, and within F. Numericals applying the lens/mirror formula with proper sign conventions. Conditions for TIR.</div>
+        </div>
+    </div>
+
+    <!-- CHAPTER 13 -->
+    <div id="chapter13" class="content-section">
+        <h2>CHAPTER 13: ELECTROSTATICS</h2>
+        <div class="summary-card">
+            <h3>1. Electric Charge & Electrostatic Induction</h3>
+            <p>Charge is a fundamental property of matter. Like charges repel, unlike charges attract[cite: 1]. Charge is conserved in isolated systems[cite: 1].</p>
+            <ul>
+                <li><span class="key-term">Electrostatic Induction:</span> The temporary redistribution of charges in an object caused by the presence of a nearby charged body, without any physical contact.</li>
+                <li><strong>Gold Leaf Electroscope:</strong> A sensitive instrument used to detect the presence of charge, identify the nature of the charge, and test the nature of conductors/insulators.</li>
+            </ul>
+
+            <h3>2. Coulomb's Law</h3>
+            <p>The electrostatic force of attraction or repulsion between two point charges is directly proportional to the product of the magnitudes of charges and inversely proportional to the square of the distance between their centers[cite: 1].</p>
+            <div class="formula-box">F = k&middot;(q&sub1;q&sub2;)/r&sup2; &nbsp; (where k = 9&times;10&sup9; Nm&sup2;/C&sup2; in air/vacuum)[cite: 1]</div>
+
+            <h3>3. Electric Field & Potential</h3>
+            <ul>
+                <li><strong>Electric Field (E):</strong> The region around a charge where it exerts an electrostatic force on another charge. Field intensity E = F/q&#8320;. Unit: N/C[cite: 1].</li>
+                <li><strong>Electric Field Lines:</strong> Imaginary lines indicating the direction of the field. They originate from positive charges and end on negative charges. They never intersect[cite: 1].</li>
+                <li><strong>Electric Potential (V):</strong> The work done in bringing a unit positive charge from infinity to a point in an electric field. V = W/q. Unit: Volt (V)[cite: 1].</li>
+            </ul>
+
+            <h3>4. Capacitors & Dielectrics</h3>
+            <p>A device used to store electric charge and electrical energy[cite: 1]. Consists of two parallel metallic plates separated by an insulator (dielectric).</p>
+            <ul>
+                <li><strong>Capacitance (C):</strong> C = Q/V. Unit: Farad (F). Depends on plate area, distance between plates, and the dielectric material[cite: 1].</li>
+                <li><strong>Capacitors in Parallel:</strong> Potential difference is the same across all. Equivalent Capacitance C<sub>eq</sub> = C&sub1; + C&sub2; + ...[cite: 1].</li>
+                <li><strong>Capacitors in Series:</strong> Charge is the same on all plates. Equivalent Capacitance 1/C<sub>eq</sub> = 1/C&sub1; + 1/C&sub2; + ...[cite: 1].</li>
+                <li><strong>Energy Stored:</strong> U = &frac12;CV&sup2; = &frac12;QV[cite: 1].</li>
+            </ul>
+
+            <h3>5. Applications & Hazards of Static Electricity</h3>
+            <p><strong>Applications:</strong> Photocopiers (Xerography), electrostatic air precipitators (to clean factory smoke), and car painting. <br>
+                <strong>Hazards:</strong> Lightning strikes, fires during refueling due to sparks. Mitigated by proper earthing and lightning conductors[cite: 1].</p>
+            <div class="exam-note">📌 <strong>Board Focus:</strong> Derivation of equivalent capacitance for series and parallel circuits. Principle of electroscope. Coulomb's law mathematical problems. Properties of electric field lines.</div>
+        </div>
+    </div>
+
+    <!-- CHAPTER 14 -->
+    <div id="chapter14" class="content-section">
+        <h2>CHAPTER 14: CURRENT ELECTRICITY</h2>
+        <div class="summary-card">
+            <h3>1. Electric Current & Electromotive Force</h3>
+            <ul>
+                <li><span class="key-term">Electric Current (I):</span> The rate of flow of electric charges through a cross-section of a conductor. I = Q/t. Unit: Ampere (A)[cite: 1].</li>
+                <li><strong>Conventional Current:</strong> Flowing from high potential (+ terminal) to low potential (- terminal), equivalent to the flow of positive charges[cite: 1].</li>
+                <li><strong>Electromotive Force (EMF):</strong> The energy supplied by a battery/cell to move a unit positive charge completely around the circuit. EMF = W/Q. Unit: Volt (V)[cite: 1].</li>
+            </ul>
+
+            <h3>2. Ohm's Law & Resistance</h3>
+            <p>The current flowing through a conductor is directly proportional to the potential difference across its ends, provided the physical state and temperature remain constant[cite: 1].</p>
+            <ul>
+                <li><strong>Formula:</strong> V = IR[cite: 1].</li>
+                <li><strong>Ohmic vs Non-Ohmic:</strong> Ohmic conductors (metals) obey Ohm's law (linear V-I graph). Non-ohmic conductors (filament bulbs, thermistors, semiconductor diodes) do not[cite: 1].</li>
+                <li><strong>Resistance (R) Factors:</strong> Resistance opposes current flow. R is directly proportional to length (L) and inversely proportional to cross-sectional area (A). R = &rho;(L/A), where &rho; is resistivity (specific resistance)[cite: 1].</li>
+            </ul>
+
+            <h3>3. Resistors in Series and Parallel</h3>
+            <ul>
+                <li><strong>Series Combination:</strong> Current remains the same, voltage divides. R<sub>eq</sub> = R&sub1; + R&sub2; + R&sub3;[cite: 1].</li>
+                <li><strong>Parallel Combination:</strong> Voltage remains the same, current divides. 1/R<sub>eq</sub> = 1/R&sub1; + 1/R&sub2; + 1/R&sub3;[cite: 1].</li>
+            </ul>
+
+            <h3>4. Electrical Energy & Joule's Law</h3>
+            <p><span class="key-term">Joule's Law:</span> The heat generated in a resistor is directly proportional to the square of the current, the resistance, and the time. W = I&sup2;Rt.</p>
+            <ul>
+                <li><strong>Electric Power (P):</strong> Rate of doing electrical work. P = VI = I&sup2;R = V&sup2;/R. Unit: Watt (W)[cite: 1].</li>
+                <li><strong>Commercial Unit (Kilowatt-hour):</strong> The energy consumed by a 1000W appliance acting for 1 hour. 1 kWh = 3.6 &times; 10&#8306; Joules. Used for calculating electricity bills[cite: 1].</li>
+            </ul>
+
+            <h3>5. Electrical Hazards & Safety</h3>
+            <p>Hazards include short circuits (low resistance paths drawing huge current) and overloading. Safety devices: Fuses (melt on excess current), MCBs (Miniature Circuit Breakers), Earthing wires (drain leakage current to the ground), and double insulation[cite: 1].</p>
+            <div class="exam-note">📌 <strong>Board Focus:</strong> Calculation of electricity bills using kWh. Series and parallel equivalent resistance derivations. Ohmic vs non-ohmic graph comparisons. Joule's Law.</div>
+        </div>
+    </div>
+
+    <!-- CHAPTER 15 -->
+    <div id="chapter15" class="content-section">
+        <h2>CHAPTER 15: ELECTROMAGNETISM</h2>
+        <div class="summary-card">
+            <h3>1. Magnetic Effects of Steady Current</h3>
+            <p>Oersted discovered that an electric current produces a magnetic field[cite: 1].</p>
+            <ul>
+                <li><strong>Straight Wire:</strong> Magnetic field lines are concentric circles. Direction found by the <span class="key-term">Right-Hand Grip Rule</span>: Point thumb in direction of conventional current, curled fingers show magnetic field direction[cite: 1].</li>
+                <li><strong>Solenoid:</strong> A coil of many turns. When current flows, it acts like a bar magnet. The field inside is strong and uniform. Strength increases by increasing current (I) or number of turns (n)[cite: 1].</li>
+            </ul>
+
+            <h3>2. Force on a Current-Carrying Conductor & DC Motor</h3>
+            <p>A conductor carrying current placed in a magnetic field experiences a force: F = BIL sin&theta;.</p>
+            <ul>
+                <li><strong>Fleming's Left-Hand Rule:</strong> Used to find force direction. Forefinger = Magnetic Field, Middle finger = Current, Thumb = Force/Motion[cite: 1].</li>
+                <li><strong>DC Motor:</strong> Converts electrical energy into mechanical energy. Uses a split-ring commutator to reverse current direction every half cycle, ensuring continuous rotation[cite: 1].</li>
+            </ul>
+
+            <h3>3. Electromagnetic Induction (EMI)</h3>
+            <p>The phenomenon of producing an induced EMF (and current) in a circuit due to a changing magnetic flux[cite: 1].</p>
+            <ul>
+                <li><span class="key-term">Faraday's Law:</span> The magnitude of induced EMF is directly proportional to the rate of change of magnetic flux linkage[cite: 1].</li>
+                <li><span class="key-term">Lenz's Law:</span> The direction of the induced current is such that it opposes the very cause that produced it. It is a consequence of the Law of Conservation of Energy[cite: 1].</li>
+                <li><strong>AC Generator:</strong> Converts mechanical energy to electrical energy using EMI. Uses slip rings for continuous alternating output[cite: 1].</li>
+            </ul>
+
+            <h3>4. Mutual Induction & Transformers</h3>
+            <p>Mutual induction is the production of an induced EMF in a secondary coil due to changing current in a nearby primary coil.</p>
+            <ul>
+                <li><strong>Transformer:</strong> Operates on mutual induction to step up or step down AC voltages[cite: 1].</li>
+                <li><strong>Equation:</strong> V<sub>s</sub> / V<sub>p</sub> = N<sub>s</sub> / N<sub>p</sub> = I<sub>p</sub> / I<sub>s</sub>[cite: 1].</li>
+                <li><strong>Step-Up:</strong> N<sub>s</sub> > N<sub>p</sub> (Increases voltage, decreases current)[cite: 1].</li>
+                <li><strong>Step-Down:</strong> N<sub>s</sub> < N<sub>p</sub> (Decreases voltage, increases current)[cite: 1].</li>
+            </ul>
+            <div class="exam-note">📌 <strong>Board Focus:</strong> Difference between AC Generator and DC Motor (slip rings vs split rings). Transformer numericals. Explanation of Lenz's Law and Right-Hand Grip Rule.</div>
+        </div>
+    </div>
+
+    <!-- CHAPTER 16 -->
+    <div id="chapter16" class="content-section">
+        <h2>CHAPTER 16: BASIC ELECTRONICS</h2>
+        <div class="summary-card">
+            <h3>1. Thermionic Emission & Cathode Rays</h3>
+            <ul>
+                <li><span class="key-term">Thermionic Emission:</span> The process of emitting electrons from the surface of a hot metal (e.g., a tungsten filament heated by an electric current).</li>
+                <li><strong>Cathode Rays:</strong> Beams of fast-moving electrons. They travel in straight lines, cast shadows, can be deflected by electric and magnetic fields, and produce fluorescence.</li>
+                <li><strong>Cathode Ray Oscilloscope (CRO):</strong> An instrument used to display rapidly changing electrical signals. Components include: Electron Gun (produces electrons), Deflecting Plates (sweep the beam horizontally/vertically), and a Fluorescent Screen[cite: 1].</li>
+            </ul>
+
+            <h3>2. Analogue and Digital Electronics</h3>
+            <ul>
+                <li><span class="key-term">Analogue Quantities:</span> Vary continuously with time (e.g., temperature, time, pressure, analogue voltage). Susceptible to signal degradation[cite: 1].</li>
+                <li><span class="key-term">Digital Quantities:</span> Have discrete values, typically represented as binary states (0 and 1, Low and High, Off and On). Digital circuits are robust against noise and form the basis of computers[cite: 1].</li>
+                <li><strong>ADC and DAC:</strong> Analogue-to-Digital Converters and Digital-to-Analogue Converters act as bridges between the physical (analogue) world and digital processors.</li>
+            </ul>
+
+            <h3>3. Logic Gates & Boolean Algebra</h3>
+            <p>Logic gates are fundamental digital circuits that perform basic logical operations based on Boolean algebra.</p>
+            <ul>
+                <li><strong>AND Gate:</strong> Output is 1 (True) ONLY if all inputs are 1. Boolean equation: Y = A &middot; B[cite: 1].</li>
+                <li><strong>OR Gate:</strong> Output is 1 if AT LEAST ONE input is 1. Boolean equation: Y = A + B[cite: 1].</li>
+                <li><strong>NOT Gate (Inverter):</strong> Has one input. It inverts the input (1 becomes 0, 0 becomes 1). Boolean equation: Y = A&#772;[cite: 1].</li>
+                <li><strong>NAND Gate:</strong> An AND gate followed by a NOT gate. Output is 0 only when both inputs are 1. Known as a universal gate[cite: 1]. Y = (A &middot; B)&#772;.</li>
+                <li><strong>NOR Gate:</strong> An OR gate followed by a NOT gate. Output is 1 only when both inputs are 0. Universal gate[cite: 1]. Y = (A + B)&#772;.</li>
+            </ul>
+            <div class="exam-note">📌 <strong>Board Focus:</strong> Construction of Truth Tables for all 5 basic gates. Drawing logical circuit diagrams based on Boolean expressions. Explaining the workings of the CRO.</div>
+        </div>
+    </div>
+
+    <!-- CHAPTER 17 -->
+    <div id="chapter17" class="content-section">
+        <h2>CHAPTER 17: INFORMATION & COMMUNICATION TECHNOLOGY</h2>
+        <div class="summary-card">
+            <h3>1. Introduction to ICT</h3>
+            <p>ICT is the scientific method used to store, arrange, transmit, and receive data globally[cite: 1]. Data refers to raw facts, while Information is processed, organized, and meaningful data[cite: 1].</p>
+
+            <h3>2. Computer Based Information System (CBIS)</h3>
+            <p>A CBIS has five critical components[cite: 1]:</p>
+            <ul>
+                <li><strong>Hardware:</strong> Physical parts of the computer (CPU, monitor, keyboard).</li>
+                <li><strong>Software:</strong> Programs that direct the hardware (OS, applications).</li>
+                <li><strong>Data:</strong> The raw figures entered into the system.</li>
+                <li><strong>Procedures:</strong> The set of rules and guidelines for using the system.</li>
+                <li><strong>People:</strong> Users and administrators of the system.</li>
+            </ul>
+
+            <h3>3. Transmission of Information</h3>
+            <ul>
+                <li><strong>Electrical Signals:</strong> Transmitted via copper wires (e.g., landline telephones). Prone to resistance and energy loss.</li>
+                <li><strong>Radio/Microwaves:</strong> Wireless transmission via space/atmosphere (e.g., cell networks, satellites). Used for long-distance communication[cite: 1].</li>
+                <li><strong>Optical Fibers:</strong> Use Total Internal Reflection (TIR) to transmit data as pulses of light[cite: 1]. Advantages include massive bandwidth, no electromagnetic interference, and low signal loss over long distances[cite: 1].</li>
+            </ul>
+
+            <h3>4. Storage Devices</h3>
+            <ul>
+                <li><strong>Primary Memory:</strong> RAM (Volatile, temporary storage for active tasks) and ROM (Non-volatile, stores boot firmware)[cite: 1].</li>
+                <li><strong>Secondary Storage:</strong> Hard Disk Drives (magnetic), SSDs (flash memory, faster/no moving parts), and Optical Disks (CD/DVD utilizing lasers)[cite: 1].</li>
+            </ul>
+
+            <h3>5. Internet and Cyber Ethics</h3>
+            <p>The <span class="key-term">Internet</span> is a global network of computers communicating via TCP/IP protocols[cite: 1]. Services include the WWW (World Wide Web), e-mail, and e-commerce[cite: 1].</p>
+            <p><strong>Risks & Ethics:</strong> Includes hacking, malware (viruses, worms), piracy, and phishing. Cybersecurity measures include strong encryption, anti-virus software, firewalls, and managing one's digital footprint[cite: 1].</p>
+            <div class="exam-note">📌 <strong>Board Focus:</strong> Block diagram of CBIS. Differentiate between RAM and ROM. Explain why optical fibers are superior to copper wires. Risks associated with ICT and mitigating them.</div>
+        </div>
+    </div>
+
+    <!-- CHAPTER 18 -->
+    <div id="chapter18" class="content-section">
+        <h2>CHAPTER 18: ATOMIC & NUCLEAR PHYSICS</h2>
+        <div class="summary-card">
+            <h3>1. Atomic Structure & Isotopes</h3>
+            <p>The atom consists of a dense, positively charged nucleus (containing protons and neutrons) orbited by negative electrons[cite: 1].</p>
+            <ul>
+                <li><strong>Atomic Number (Z):</strong> The number of protons in the nucleus[cite: 1].</li>
+                <li><strong>Mass Number (A):</strong> The total number of protons + neutrons (nucleons)[cite: 1].</li>
+                <li><span class="key-term">Isotopes:</span> Atoms of the same element with the same Atomic Number (Z) but different Mass Numbers (A) due to different numbers of neutrons (e.g., Hydrogen has Protium &sup1;H, Deuterium &sup2;H, Tritium &sup3;H)[cite: 1].</li>
+            </ul>
+
+            <h3>2. Natural Radioactivity</h3>
+            <p>The spontaneous emission of radiation from unstable nuclei (typically heavy elements with Z > 82)[cite: 1].</p>
+            <ul>
+                <li><strong>Alpha (&alpha;) Particles:</strong> Helium nuclei (&#8308;He&sup2;&#8314;). Charge: +2. Highly ionizing, but low penetrating power (stopped by a sheet of paper)[cite: 1].</li>
+                <li><strong>Beta (&beta;) Particles:</strong> Fast-moving electrons (e&#8315;). Charge: -1. Moderate ionizing and penetrating power (stopped by aluminum foil)[cite: 1].</li>
+                <li><strong>Gamma (&gamma;) Rays:</strong> High-energy electromagnetic photons. Charge: 0. Low ionizing ability but extremely high penetrating power (requires thick lead or concrete to stop)[cite: 1].</li>
+            </ul>
+            <p><strong>Background Radiation:</strong> Low-level radiation naturally present in the environment (from cosmic rays, rocks, soil).</p>
+
+            <h3>3. Half-Life & Nuclear Transmutation</h3>
+            <ul>
+                <li><span class="key-term">Half-Life (T<sub>&frac12;</sub>):</span> The time required for half of the unstable radioactive atoms in a sample to decay[cite: 1].</li>
+                <li><strong>Decay Formula:</strong> N = N&#8320; &times; (1/2)&#8319;, where 'n' is the number of half-lives elapsed (n = t / T<sub>&frac12;</sub>)[cite: 1].</li>
+                <li><strong>Transmutation:</strong> Changing one element into another via radioactive decay. (e.g., Alpha decay decreases A by 4 and Z by 2).</li>
+            </ul>
+
+            <h3>4. Fission and Fusion</h3>
+            <ul>
+                <li><span class="key-term">Nuclear Fission:</span> Splitting a heavy nucleus (like U-235) into two lighter nuclei upon absorbing a slow neutron. Releases massive energy and 2-3 more neutrons, which can trigger a chain reaction. Controlled in nuclear reactors, uncontrolled in atomic bombs[cite: 1].</li>
+                <li><span class="key-term">Nuclear Fusion:</span> Combining two light nuclei (like Deuterium and Tritium) to form a heavier nucleus (Helium), releasing huge amounts of energy. Powers the stars/Sun. Very difficult to achieve on Earth due to extreme temperature and pressure requirements[cite: 1].</li>
+            </ul>
+
+            <h3>5. Uses of Radioisotopes & Safety</h3>
+            <p><strong>Uses:</strong> Carbon-14 for radiometric dating of fossils. Cobalt-60 for cancer radiotherapy. Iodine-131 for thyroid imaging. Tracers in agriculture and pipelines[cite: 1].</p>
+            <p><strong>Hazards:</strong> Radiation burns, genetic mutations, cancer. <strong>Safety:</strong> Use lead shielding, limit exposure time (ALARA principle), wear dosimeters, and handle with remote tongs[cite: 1].</p>
+            <div class="exam-note">📌 <strong>Board Focus:</strong> Compare properties of &alpha;, &beta;, and &gamma; radiations. Calculate remaining mass using the half-life formula. Differences between Fission and Fusion. Practical uses of radioisotopes.</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function showChapter(chId) {
+        const sections = document.querySelectorAll('.content-section');
+        sections.forEach(s => s.classList.remove('active'));
+
+        const selected = document.getElementById('chapter' + chId);
+        if (selected) {
+            selected.classList.add('active');
+            document.getElementById('chapterSelect').value = chId;
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const chapter = urlParams.get('chapter');
+        if (chapter) {
+            document.getElementById('chapterSelect').value = chapter;
+            showChapter(chapter);
+        }
+    }
+</script>
+
+</body>
+</html>
