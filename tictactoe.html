@@ -676,8 +676,8 @@
         }
 
         try {
-            const q = query(ref(db, "tictactoe_leaderboard"), orderByChild("score"), limitToLast(15));
-            const snap = await get(q);
+            // Fetch entire node to avoid indexing issues with small datasets
+            const snap = await get(ref(db, "tictactoe_leaderboard"));
 
             if(!snap.exists()) {
                 tbody.innerHTML = '<tr><td colspan="3">📭 No scores yet - Be first!</td></tr>';
@@ -685,17 +685,23 @@
             }
 
             const data = [];
-            snap.forEach(child => data.push(child.val()));
-            data.sort((a, b) => b.score - a.score);
+            snap.forEach(child => {
+                const val = child.val();
+                if (val) data.push(val);
+            });
+
+            // Sort by score descending (handle potential string scores)
+            data.sort((a, b) => (parseInt(b.score) || 0) - (parseInt(a.score) || 0));
 
             tbody.innerHTML = '';
-            data.forEach((d, i) => {
+            // Display top 15
+            data.slice(0, 15).forEach((d, i) => {
                 const isMe = d.name === state.player;
                 tbody.innerHTML += `
                     <tr style="${isMe ? 'background:rgba(59,130,246,0.15); font-weight:600;' : ''}">
                         <td>${i+1}</td>
-                        <td>${d.name}${isMe ? ' ⭐' : ''}</td>
-                        <td style="color:var(--primary); font-weight:700;">${d.score}</td>
+                        <td>${d.name || 'Anonymous'}${isMe ? ' ⭐' : ''}</td>
+                        <td style="color:var(--primary); font-weight:700;">${d.score || 0}</td>
                     </tr>`;
             });
         } catch(err) {
