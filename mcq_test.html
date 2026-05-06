@@ -597,6 +597,8 @@
         timeLeft: 50,
         timerDuration: 50,
         timerInterval: null,
+        startTime: null,
+        timeTaken: 0,
         isLocked: false,
         studentName: '',
         activeQuiz: null,
@@ -763,6 +765,8 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
         state.answeredCount = 0;
         state.timeLeft = duration;
         state.timerDuration = duration;
+        state.startTime = Date.now();
+        state.timeTaken = 0;
 
         DOM.qTotal.innerText = state.quizLimit;
         showScreen('quiz');
@@ -852,6 +856,12 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
 
     function endQuiz() {
         clearInterval(state.timerInterval);
+
+        // Calculate time taken in seconds
+        if (state.startTime) {
+            state.timeTaken = Math.floor((Date.now() - state.startTime) / 1000);
+        }
+
         showScreen('result');
         const total = state.quizLimit;
         const percent = total > 0 ? Math.round((state.score / total) * 100) : 0;
@@ -885,6 +895,8 @@ What is the decimal expansion of 2/7?	Terminating	Recurring	Non-terminating	Both
             testCode: state.quizKey,
             score: state.score,
             totalQuestions: total,
+            totalTimeAllocated: state.timerDuration,
+            timeUsed: state.timeTaken,
             percentage: percent,
             correct: state.correctCount,
             wrong: state.wrongCount,
