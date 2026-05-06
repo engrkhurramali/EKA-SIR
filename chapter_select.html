@@ -5,115 +5,211 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Select Chapters - EKA SIR</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
         :root {
             --glass: rgba(255, 255, 255, 0.25);
-            --glass-heavy: rgba(255, 255, 255, 0.4);
-            --sky-blue: #87CEEB;
-            --mint-green: #98FF98;
-            --text-dark: #1a5f7a;
-            --border: rgba(255, 255, 255, 0.5);
+            --glass-heavy: rgba(255, 255, 255, 0.35);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --sky-blue: #6a9ab0;
+            --sky-blue-dark: #4a7c94;
+            --mint-green: #a8e6cf;
+            --mint-green-dark: #7fcdbb;
+            --text-dark: #0f2b3a;
+            --accent: #ff6b6b;
+            --accent-glow: rgba(255, 107, 107, 0.5);
+            --success: #4ade80;
+            --success-glow: rgba(74, 222, 128, 0.4);
+            --shadow-dark: rgba(0, 30, 60, 0.15);
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
-            background-attachment: fixed;
-            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Poppins', 'Segoe UI', Roboto, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             color: var(--text-dark);
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .particles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: -1; overflow: hidden;
+        }
+        .particle {
+            position: absolute; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            animation: float 12s infinite linear;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-20vh); opacity: 0; }
         }
 
         .main-container {
-            width: 100%;
-            max-width: 500px;
+            width: 100%; max-width: 520px;
             background: var(--glass);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 30px;
-            padding: 25px;
-            border: 1px solid var(--border);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 20px 18px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 25px var(--shadow-dark);
+            margin: 10px 0;
         }
 
         .home-nav {
-            display: flex;
-            align-items: center;
+            display: flex; align-items: center; gap: 8px;
             background: var(--glass-heavy);
-            padding: 10px 15px;
+            padding: 12px 20px;
             border-radius: 50px;
             text-decoration: none;
             color: var(--text-dark);
-            font-weight: bold;
+            font-weight: 600;
             margin-bottom: 20px;
-            border: 1px solid var(--border);
+            border: 1px solid var(--glass-border);
             align-self: flex-start;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        .home-nav:hover {
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+            background: rgba(255,255,255,0.45);
         }
 
-        h1 { font-size: 1.4rem; text-align: center; margin-bottom: 5px; }
-        h2 { font-size: 1rem; text-align: center; opacity: 0.8; margin-top: 0; }
-
-        .chapter-list {
-            margin: 20px 0;
-            max-height: 400px;
-            overflow-y: auto;
-            background: rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 10px;
+        h1 {
+            text-align: center; font-size: 1.3rem; margin: 0 0 5px 0;
+            text-transform: uppercase; letter-spacing: 1px;
+            color: var(--text-dark); font-weight: 700;
+            position: relative;
         }
-
-        .chapter-item {
-            display: flex;
-            align-items: center;
-            background: var(--glass-heavy);
-            margin-bottom: 8px;
-            padding: 12px 15px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: 0.2s;
-            border: 1px solid transparent;
+        h1::after {
+            content: ''; position: absolute; bottom: -6px; left: 50%;
+            transform: translateX(-50%); width: 50px; height: 2px;
+            background: var(--accent); border-radius: 2px;
         }
-
-        .chapter-item:active { transform: scale(0.98); }
-        .chapter-item.selected {
-            background: white;
-            border-color: var(--text-dark);
-        }
-
-        .chapter-item input {
-            margin-right: 15px;
-            transform: scale(1.3);
+        h2 {
+            font-size: 0.9rem; text-align: center; opacity: 0.85;
+            margin: 5px 0 20px 0; font-weight: 500;
         }
 
         .controls {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+            display: flex; gap: 10px; margin-bottom: 15px;
         }
-
         .btn {
-            flex: 1;
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
+            flex: 1; padding: 12px; border-radius: 14px;
+            border: 1px solid var(--glass-border);
             background: var(--glass-heavy);
-            color: var(--text-dark);
-            font-weight: bold;
-            cursor: pointer;
+            color: var(--text-dark); font-weight: 600;
+            cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            box-shadow: 0 4px 12px var(--shadow-dark);
+            font-size: 0.9rem;
         }
-
+        .btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.8), 0 0 15px var(--accent-glow);
+            background: rgba(255,255,255,0.5);
+        }
+        .btn:active { transform: scale(0.98); }
         .btn-primary {
-            background: var(--text-dark);
-            color: white;
-            font-size: 1.1rem;
+            background: var(--text-dark); color: white;
+            font-size: 1rem; font-weight: 700;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.8), 0 0 20px var(--accent-glow);
         }
 
-        .btn:active { opacity: 0.8; }
+        .chapter-list {
+            margin: 15px 0; max-height: 420px; overflow-y: auto;
+            background: rgba(255,255,255,0.15);
+            border-radius: 18px; padding: 12px;
+            border: 1px solid var(--glass-border);
+        }
+        .chapter-list::-webkit-scrollbar { width: 6px; }
+        .chapter-list::-webkit-scrollbar-track { background: transparent; }
+        .chapter-list::-webkit-scrollbar-thumb {
+            background: var(--text-dark); border-radius: 10px; opacity: 0.4;
+        }
+
+        .chapter-item {
+            display: flex; align-items: center;
+            background: var(--glass-heavy);
+            margin-bottom: 8px; padding: 12px 15px;
+            border-radius: 14px; cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            border: 1px solid transparent;
+        }
+        .chapter-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.8), 0 0 12px var(--accent-glow);
+            background: rgba(255,255,255,0.5);
+        }
+        .chapter-item.selected {
+            background: rgba(255,255,255,0.75);
+            border-color: var(--success);
+            box-shadow: 0 0 0 2px var(--success), 0 0 15px rgba(74,222,128,0.3);
+        }
+        .chapter-item input {
+            margin-right: 12px; transform: scale(1.2);
+            accent-color: var(--success); cursor: pointer;
+        }
+        .chapter-item input:hover { transform: scale(1.3); }
+
+        .chapter-item span:first-child {
+            font-size: 0.7rem; opacity: 0.75; font-weight: 700;
+            color: var(--sky-blue-dark); text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .chapter-item span:last-child {
+            font-size: 0.95rem; font-weight: 600; color: var(--text-dark);
+        }
+
+        .final-btn {
+            width: 100%; padding: 14px; border-radius: 16px;
+            border: none; background: linear-gradient(135deg, var(--sky-blue-dark), var(--mint-green-dark));
+            color: white; font-weight: 700; font-size: 1.05rem;
+            cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 6px 20px rgba(0,30,60,0.2);
+            margin-top: 10px;
+        }
+        .final-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,30,60,0.3), 0 0 25px var(--accent-glow);
+        }
+        .final-btn:active { transform: translateY(1px); }
+
+        @media (max-width: 480px) {
+            .main-container { padding: 18px 15px; border-radius: 20px; }
+            .controls { flex-direction: column; gap: 8px; }
+            .btn { padding: 10px; font-size: 0.85rem; }
+            h1 { font-size: 1.2rem; }
+            h2 { font-size: 0.85rem; }
+            .chapter-item { padding: 10px 12px; }
+            .final-btn { padding: 12px; font-size: 1rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+            .chapter-item:hover, .btn:hover, .home-nav:hover { transform: none; }
+            .particle { animation: none !important; }
+        }
     </style>
 </head>
 <body>
+
+<div class="particles" id="particles"></div>
 
 <a href="test.html" class="home-nav">⬅ Back</a>
 
@@ -131,25 +227,89 @@
         <!-- Chapters loaded via JS -->
     </div>
 
-    <button class="btn btn-primary" style="width: 100%;" onclick="startQuiz()">START CUSTOM QUIZ 🚀</button>
+    <button class="final-btn" onclick="startQuiz()">START CUSTOM QUIZ 🚀</button>
 </div>
 
-<script src="quiz_data_kg1.js"></script>
-<script src="quiz_data_kg2.js"></script>
-<script src="quiz_data_class1.js"></script>
-<script src="quiz_data_class2.js"></script>
-<script src="quiz_data_class3.js"></script>
-<script src="quiz_data_class4.js"></script>
-<script src="quiz_data_class5.js"></script>
-<script src="quiz_data_class6.js"></script>
-<script src="quiz_data_class7.js"></script>
-<script src="quiz_data_class8.js"></script>
-<script src="quiz_data_class9.js"></script>
-<script src="quiz_data_class10.js"></script>
+<!-- 🎒 KG1 - Subject-wise Files -->
+<script src="quiz_data_kg1/kg1_english.js"></script>
+<script src="quiz_data_kg1/kg1_islamiat.js"></script>
+<script src="quiz_data_kg1/kg1_maths.js"></script>
+<script src="quiz_data_kg1/kg1_urdu.js"></script>
+
+<!-- 🎒 KG2 - Subject-wise Files -->
+<script src="quiz_data_kg2/kg2_english.js"></script>
+<script src="quiz_data_kg2/kg2_islamiat.js"></script>
+<script src="quiz_data_kg2/kg2_maths.js"></script>
+<script src="quiz_data_kg2/kg2_urdu.js"></script>
+
+<!-- 📚 Class 1 - Subject-wise Files -->
+<script src="quiz_data_class1/class1_english.js"></script>
+<script src="quiz_data_class1/class1_islamiat.js"></script>
+<script src="quiz_data_class1/class1_maths.js"></script>
+
+<!-- 📚 Class 2 - Subject-wise Files -->
+<script src="quiz_data_class2/class2_english.js"></script>
+<script src="quiz_data_class2/class2_islamiat.js"></script>
+<script src="quiz_data_class2/class2_maths.js"></script>
+
+<!-- 📚 Class 3 - Subject-wise Files -->
+<script src="quiz_data_class3/class3_english.js"></script>
+<script src="quiz_data_class3/class3_islamiat.js"></script>
+<script src="quiz_data_class3/class3_maths.js"></script>
+
+<!-- 📚 Class 4 - Subject-wise Files -->
+<script src="quiz_data_class4/class4_english.js"></script>
+<script src="quiz_data_class4/class4_islamiat.js"></script>
+<script src="quiz_data_class4/class4_maths.js"></script>
+
+<!-- 📚 Class 5 - Subject-wise Files -->
+<script src="quiz_data_class5/class5_english.js"></script>
+<script src="quiz_data_class5/class5_islamiat.js"></script>
+<script src="quiz_data_class5/class5_maths.js"></script>
+
+<!-- 📚 Class 6 - Subject-wise Files -->
+<script src="quiz_data_class6/class6_english.js"></script>
+<script src="quiz_data_class6/class6_islamiat.js"></script>
+<script src="quiz_data_class6/class6_maths.js"></script>
+
+<!-- 📚 Class 7 - Subject-wise Files -->
+<script src="quiz_data_class7/class7_english.js"></script>
+<script src="quiz_data_class7/class7_islamiat.js"></script>
+<script src="quiz_data_class7/class7_maths.js"></script>
+
+<!-- 📚 Class 8 - Subject-wise Files -->
+<script src="quiz_data_class8/class8_english.js"></script>
+<script src="quiz_data_class8/class8_islamiat.js"></script>
+<script src="quiz_data_class8/class8_maths.js"></script>
+
+<!-- 📗 Class 9 - All Subjects -->
+<script src="quiz_data_class9/class9_maths.js"></script>
+<script src="quiz_data_class9/class9_physics.js"></script>
+<script src="quiz_data_class9/class9_chemistry.js"></script>
+<script src="quiz_data_class9/class9_biology.js"></script>
+<script src="quiz_data_class9/class9_computer.js"></script>
+<script src="quiz_data_class9/class9_english.js"></script>
+<script src="quiz_data_class9/class9_pst.js"></script>
+<script src="quiz_data_class9/class9_urdu.js"></script>
+<script src="quiz_data_class9/class9_islamiat.js"></script>
+<script src="quiz_data_class9/class9_sindhi.js"></script>
+
+<!-- 📗 Class 10 - All Subjects -->
+<script src="quiz_data_class10/class10_maths.js"></script>
+<script src="quiz_data_class10/class10_physics.js"></script>
+<script src="quiz_data_class10/class10_chemistry.js"></script>
+<script src="quiz_data_class10/class10_biology.js"></script>
+<script src="quiz_data_class10/class10_computer.js"></script>
+<script src="quiz_data_class10/class10_english.js"></script>
+<script src="quiz_data_class10/class10_pst.js"></script>
+<script src="quiz_data_class10/class10_urdu.js"></script>
+<script src="quiz_data_class10/class10_islamiat.js"></script>
+<script src="quiz_data_class10/class10_sindhi.js"></script>
+
 <script>
     const params = new URLSearchParams(window.location.search);
-    const subject = params.get('subject'); // e.g., maths9
-    const grade = params.get('grade'); // e.g., 9
+    const subject = params.get('subject');
+    const grade = params.get('grade');
 
     function generateFromData(prefix) {
         console.log("Filtering for prefix:", prefix);
@@ -166,7 +326,6 @@
 
         console.log("Found keys:", keys);
 
-        // Sort keys naturally (u1, u2, ... u10, u11)
         keys.sort((a, b) => {
             const numA = parseInt(a.match(/\d+$/)) || 0;
             const numB = parseInt(b.match(/\d+$/)) || 0;
@@ -186,19 +345,17 @@
 
     function init() {
         if (!subject) {
-            document.body.innerHTML = "<h1>Error: No subject specified</h1>";
+            document.body.innerHTML = "<h1 style='text-align:center;color:var(--text-dark);'>Error: No subject specified</h1>";
             return;
         }
 
-        // Handle subject names like 'maths9' -> 'MATHS 9'
         const displaySubject = subject.replace(/(\d+)/, ' $1').toUpperCase();
         document.getElementById('subjectTitle').innerText = displaySubject;
         document.getElementById('classLabel').innerText = "Sindh Textbook Board (STBB)";
 
         const list = document.getElementById('chapterList');
-        list.innerHTML = "<div style='text-align:center; padding:20px;'>Searching for units...</div>";
+        list.innerHTML = "<div style='text-align:center; padding:20px; opacity:0.8;'>Searching for units...</div>";
 
-        // Dynamic generation based on quiz_data.js
         setTimeout(() => {
             const availableChapters = generateFromData(subject);
 
@@ -211,7 +368,7 @@
                 return;
             }
 
-            list.innerHTML = ""; // Clear loader
+            list.innerHTML = "";
             availableChapters.forEach(ch => {
                 const div = document.createElement('div');
                 div.className = 'chapter-item';
@@ -221,15 +378,14 @@
                     div.classList.toggle('selected', cb.checked);
                 };
 
-                // Extract Unit Number for display, e.g., "maths9_u1" -> "U-1"
                 const unitMatch = ch.id.match(/_u(\d+)$/);
                 const unitDisplay = unitMatch ? `U-${unitMatch[1]}` : "";
 
                 div.innerHTML = `
                     <input type="checkbox" value="${ch.id}" onclick="event.stopPropagation()">
                     <div style="display: flex; flex-direction: column;">
-                        <span style="font-size: 0.7rem; opacity: 0.7; font-weight: bold;">${unitDisplay}</span>
-                        <span style="font-size: 0.95rem;">${ch.title}</span>
+                        <span>${unitDisplay}</span>
+                        <span>${ch.title}</span>
                     </div>
                 `;
                 list.appendChild(div);
@@ -237,19 +393,10 @@
         }, 500);
     }
 
-    function generateFromData_OLD(prefix) {
-        // Fallback: Find all keys in QUIZ_DATA that start with the subject prefix
-        const keys = Object.keys(QUIZ_DATA).filter(k => k.startsWith(prefix));
-        return keys.map(k => ({
-            id: k,
-            title: QUIZ_DATA[k].subtitle || QUIZ_DATA[k].title
-        }));
-    }
-
     function toggleAll(check) {
         document.querySelectorAll('.chapter-item input').forEach(cb => {
             cb.checked = check;
-            cb.parentElement.classList.toggle('selected', check);
+            cb.closest('.chapter-item').classList.toggle('selected', check);
         });
     }
 
@@ -264,6 +411,27 @@
 
         window.location.href = `mcq_test.html?quizzes=${selected.join(',')}`;
     }
+
+    // ✅ Lightweight particles: Desktop only
+    document.addEventListener('DOMContentLoaded', () => {
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        const particlesContainer = document.getElementById('particles');
+
+        if (!isMobile && window.matchMedia('(hover: hover)').matches) {
+            for (let i = 0; i < 8; i++) {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                const size = Math.random() * 25 + 12;
+                p.style.width = p.style.height = size + 'px';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 5 + 's';
+                p.style.animationDuration = Math.random() * 8 + 12 + 's';
+                particlesContainer.appendChild(p);
+            }
+        } else {
+            particlesContainer.style.display = 'none';
+        }
+    });
 
     init();
 </script>

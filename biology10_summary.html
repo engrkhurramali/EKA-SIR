@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Biology Class 10 Summaries - EKA SIR</title>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-heavy: rgba(255, 255, 255, 0.4);
+            --sky-blue: #87CEEB;
+            --mint-green: #98FF98;
+            --text-dark: #1a5f7a;
+            --border: rgba(255, 255, 255, 0.5);
+            --accent: #ff6b6b;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 15px;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            margin-bottom: 30px;
+        }
+
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            background: var(--glass-heavy);
+            padding: 8px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: bold;
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+
+        .chapter-selector {
+            width: 100%;
+            padding: 12px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text-dark);
+            font-weight: bold;
+            margin-bottom: 20px;
+            outline: none;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        h1 { font-size: 1.2rem; text-align: center; margin: 0; text-transform: uppercase; color: var(--text-dark); }
+        h2 { font-size: 1.1rem; color: #fff; background: var(--text-dark); padding: 10px; border-radius: 10px; margin-top: 25px; text-align: center; }
+        h3 { font-size: 1rem; margin-top: 20px; color: #b71c1c; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 5px; }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .content-section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .summary-card {
+            background: rgba(255, 255, 255, 0.4);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 15px;
+            line-height: 1.6;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="nav-header">
+        <a href="biology10_exercises.html" class="back-btn">⬅ Back</a>
+        <h1>Biology Class 10 Notes</h1>
+    </div>
+
+    <select class="chapter-selector" id="chapterSelect" onchange="showChapter(this.value)">
+        <option value="10">Chapter 10: Gaseous Exchange</option>
+        <option value="11">Chapter 11: Homeostasis</option>
+        <option value="12">Chapter 12: Coordination and Control</option>
+        <option value="13">Chapter 13: Support and Movement</option>
+        <option value="14">Chapter 14: Reproduction</option>
+        <option value="15">Chapter 15: Inheritance</option>
+        <option value="16">Chapter 16: Man and His Environment</option>
+        <option value="17">Chapter 17: Biotechnology</option>
+        <option value="18">Chapter 18: Pharmacology</option>
+    </select>
+
+    <div id="chapter10" class="content-section active">
+        <h2>CHAPTER 10: GASEOUS EXCHANGE</h2>
+        <div class="summary-card">
+            <h3>10.1 Gaseous Exchange in Plants</h3>
+            <p>Occurs through stomata in leaves, lenticels in stems, and general surface of roots.</p>
+            <h3>10.2 Human Respiratory System</h3>
+            <p>Air passes through: Nasal cavity → Pharynx → Larynx → Trachea → Bronchi → Bronchioles → Alveoli (site of exchange).</p>
+            <h3>10.3 Respiratory Disorders</h3>
+            <p>Bronchitis, Emphysema, Pneumonia, Asthma, Lung Cancer.</p>
+        </div>
+    </div>
+
+    <div id="chapter11" class="content-section">
+        <h2>CHAPTER 11: HOMEOSTASIS</h2>
+        <div class="summary-card">
+            <h3>11.1 Definition</h3>
+            <p>Maintenance of internal body conditions at equilibrium despite changes in the external environment.</p>
+            <h3>11.2 Osmoregulation</h3>
+            <p>Maintenance of water and salt balance in body fluids.</p>
+            <h3>11.3 Human Urinary System</h3>
+            <p>Kidneys, Ureters, Urinary Bladder, Urethra. The functional unit is the <strong>Nephron</strong>.</p>
+        </div>
+    </div>
+
+    <div id="chapter12" class="content-section">
+        <h2>CHAPTER 12: COORDINATION AND CONTROL</h2>
+        <div class="summary-card">
+            <h3>12.1 Coordination Types</h3>
+            <p><strong>Nervous Coordination:</strong> Rapid, electrical signals via neurons. <strong>Chemical Coordination:</strong> Slower, chemical signals via hormones.</p>
+            <h3>12.2 Human Brain</h3>
+            <p>Divided into Forebrain (Cerebrum, Thalamus, Hypothalamus), Midbrain, and Hindbrain (Cerebellum, Pons, Medulla Oblongata).</p>
+            <h3>12.3 Reflex Action</h3>
+            <p>Immediate and involuntary response to a stimulus. The pathway is called a <strong>Reflex Arc</strong>.</p>
+            <h3>12.4 Endocrine System</h3>
+            <p>Endocrine glands secrete hormones directly into blood (e.g., Insulin for glucose, Adrenaline for emergency).</p>
+        </div>
+    </div>
+    <div id="chapter13" class="content-section">
+        <h2>CHAPTER 13: SUPPORT AND MOVEMENT</h2>
+        <div class="summary-card">
+            <h3>13.1 Human Skeleton</h3>
+            <p>Provides support, protection, and movement. Consists of 206 bones divided into Axial and Appendicular skeletons.</p>
+            <h3>13.2 Bone and Cartilage</h3>
+            <p><strong>Bone:</strong> Hard, calcified connective tissue. <strong>Cartilage:</strong> Flexible and soft connective tissue found at joints.</p>
+            <h3>13.3 Joints</h3>
+            <p>Points where bones meet. Types include Hinge joints (elbow) and Ball-and-socket joints (shoulder).</p>
+            <h3>13.4 Muscles and Movement</h3>
+            <p>Skeletal muscles work in pairs called <strong>antagonists</strong> (e.g., Biceps and Triceps).</p>
+        </div>
+    </div>
+    <div id="chapter14" class="content-section">
+        <h2>CHAPTER 14: REPRODUCTION</h2>
+        <div class="summary-card">
+            <h3>14.1 Asexual Reproduction</h3>
+            <p>Involves one parent. Types: Binary fission, Budding, Spore formation, and Vegetative propagation.</p>
+            <h3>14.2 Sexual Reproduction in Plants</h3>
+            <p>Involves flowers. Pollination is the transfer of pollen grains. Fertilization leads to seed formation.</p>
+            <h3>14.3 Human Reproduction</h3>
+            <p>Involves the production of gametes (Sperm and Egg). Fertilization results in a Zygote.</p>
+        </div>
+    </div>
+    <div id="chapter15" class="content-section">
+        <h2>CHAPTER 15: INHERITANCE</h2>
+        <div class="summary-card">
+            <h3>15.1 Genetics</h3>
+            <p>Study of heredity. Genes are segments of DNA located on chromosomes that carry traits.</p>
+            <h3>15.2 Mendel's Laws</h3>
+            <p><strong>Law of Segregation:</strong> Alleles separate during gamete formation. <strong>Law of Independent Assortment:</strong> Different traits are inherited independently.</p>
+            <h3>15.3 DNA and Variations</h3>
+            <p>DNA is a double helix. Variations are differences among individuals of the same species.</p>
+        </div>
+    </div>
+    <div id="chapter16" class="content-section">
+        <h2>CHAPTER 16: MAN AND HIS ENVIRONMENT</h2>
+        <div class="summary-card">
+            <h3>16.1 Ecosystem</h3>
+            <p>A community of living organisms interacting with their physical environment.</p>
+            <h3>16.2 Flow of Energy</h3>
+            <p>Energy flows from Producers (plants) to Consumers (animals). Food chains and webs illustrate this.</p>
+            <h3>16.3 Biogeochemical Cycles</h3>
+            <p>Cycles like Carbon and Nitrogen cycles ensure the recycling of nutrients in nature.</p>
+            <h3>16.4 Ecological Issues</h3>
+            <p>Pollution, Deforestation, Global Warming, and the Greenhouse Effect.</p>
+        </div>
+    </div>
+    <div id="chapter17" class="content-section">
+        <h2>CHAPTER 17: BIOTECHNOLOGY</h2>
+        <div class="summary-card">
+            <h3>17.1 Introduction</h3>
+            <p>The use of living organisms or biological systems to develop products for human benefit.</p>
+            <h3>17.2 Fermentation</h3>
+            <p>Process using microbes to produce food (yogurt, bread) and industrial products (alcohol, vitamins).</p>
+            <h3>17.3 Genetic Engineering</h3>
+            <p>Technique of altering the DNA of an organism to introduce desirable traits.</p>
+            <h3>17.4 Single Cell Protein</h3>
+            <p>Protein-rich food produced by microorganisms like bacteria, algae, or fungi.</p>
+        </div>
+    </div>
+    <div id="chapter18" class="content-section">
+        <h2>CHAPTER 18: PHARMACOLOGY</h2>
+        <div class="summary-card">
+            <h3>18.1 Medicinal Drugs</h3>
+            <p>Used to treat or prevent diseases. Sources include plants, animals, minerals, and synthetics.</p>
+            <h3>18.2 Addictive Drugs</h3>
+            <p>Drugs that cause physical or mental dependence, such as Narcotics and Sedatives.</p>
+            <h3>18.3 Antibiotics and Vaccines</h3>
+            <p><strong>Antibiotics:</strong> Kill or inhibit bacteria. <strong>Vaccines:</strong> Stimulate immunity against specific diseases.</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function showChapter(chId) {
+        const sections = document.querySelectorAll('.content-section');
+        sections.forEach(s => s.classList.remove('active'));
+
+        const selected = document.getElementById('chapter' + chId);
+        if (selected) {
+            selected.classList.add('active');
+            document.getElementById('chapterSelect').value = chId;
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const chapter = urlParams.get('chapter');
+        if (chapter) {
+            showChapter(chapter);
+        }
+    }
+</script>
+
+</body>
+</html>

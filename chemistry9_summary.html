@@ -75,6 +75,7 @@
 
         h1 { font-size: 1.2rem; text-align: center; margin: 0; text-transform: uppercase; color: var(--text-dark); }
         h2 { font-size: 1.1rem; color: #fff; background: var(--text-dark); padding: 10px; border-radius: 10px; margin-top: 25px; text-align: center; }
+        h3 { font-size: 1rem; margin-top: 20px; color: #b71c1c; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 5px; }
 
         .content-section {
             display: none;
@@ -94,8 +95,38 @@
             margin-top: 15px;
             line-height: 1.6;
             border: 1px solid rgba(255,255,255,0.5);
-            text-align: center;
         }
+
+        .key-term { font-weight: bold; color: #1a5f7a; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+        strong { color: #000; }
+
+        .formula-box {
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border: 1px dashed var(--text-dark);
+            font-weight: bold;
+        }
+
+        .page-break {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            opacity: 0.5;
+            margin: 30px 0 15px;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .page-break::before, .page-break::after { content: ""; flex: 1; height: 1px; background: var(--text-dark); opacity: 0.2; }
     </style>
 </head>
 <body>
@@ -109,7 +140,7 @@
     <select class="chapter-selector" id="chapterSelect" onchange="showChapter(this.value)">
         <option value="1">Chapter 1: Fundamentals of Chemistry</option>
         <option value="2">Chapter 2: Atomic Structure</option>
-        <option value="3">Chapter 3: Periodic Table and Periodicity</option>
+        <option value="3">Chapter 3: Periodic Table & Periodicity</option>
         <option value="4">Chapter 4: Structure of Molecules</option>
         <option value="5">Chapter 5: Physical States of Matter</option>
         <option value="6">Chapter 6: Solutions</option>
@@ -117,14 +148,199 @@
         <option value="8">Chapter 8: Chemical Reactivity</option>
     </select>
 
-    <div id="chapter1" class="content-section active"><h2>CHAPTER 1: FUNDAMENTALS OF CHEMISTRY</h2><div class="summary-card"><p>Coming Soon...</p></div></div>
-    <div id="chapter2" class="content-section"><h2>CHAPTER 2: ATOMIC STRUCTURE</h2><div class="summary-card"><p>Coming Soon...</p></div></div>
-    <div id="chapter3" class="content-section"><h2>CHAPTER 3: PERIODIC TABLE</h2><div class="summary-card"><p>Coming Soon...</p></div></div>
-    <div id="chapter4" class="content-section"><h2>CHAPTER 4: STRUCTURE OF MOLECULES</h2><div class="summary-card"><p>Coming Soon...</p></div></div>
-    <div id="chapter5" class="content-section"><h2>CHAPTER 5: PHYSICAL STATES OF MATTER</h2><div class="summary-card"><p>Coming Soon...</p></div></div>
-    <div id="chapter6" class="content-section"><h2>CHAPTER 6: SOLUTIONS</h2><div class="summary-card"><p>Coming Soon...</p></div></div>
-    <div id="chapter7" class="content-section"><h2>CHAPTER 7: ELECTROCHEMISTRY</h2><div class="summary-card"><p>Coming Soon...</p></div></div>
-    <div id="chapter8" class="content-section"><h2>CHAPTER 8: CHEMICAL REACTIVITY</h2><div class="summary-card"><p>Coming Soon...</p></div></div>
+    <!-- CHAPTER 1 -->
+    <div id="chapter1" class="content-section active">
+        <h2>CHAPTER 1: FUNDAMENTALS OF CHEMISTRY</h2>
+        <div class="summary-card">
+            <h3>Basic Definitions</h3>
+            <ul>
+                <li><span class="key-term">Matter:</span> Anything that has mass and occupies space.</li>
+                <li><span class="key-term">Substance:</span> A piece of matter in pure form.</li>
+                <li><span class="key-term">Mixture:</span> Impure matter containing two or more substances.</li>
+                <li><span class="key-term">Element:</span> A substance made of same type of atoms, having same atomic number and cannot be decomposed into simple substances.</li>
+                <li><span class="key-term">Compound:</span> A substance made of two or more elements chemically combined in a fixed ratio by mass.</li>
+            </ul>
+
+            <h3>Atomic Number & Mass Number</h3>
+            <p><strong>Atomic Number (Z):</strong> The number of protons in the nucleus of an atom.</p>
+            <p><strong>Mass Number (A):</strong> The sum of the number of protons and neutrons in the nucleus.</p>
+            <div class="formula-box">A = Z + n</div>
+
+            <h3>Empirical vs Molecular Formula</h3>
+            <ul>
+                <li><strong>Empirical Formula:</strong> Simplest whole-number ratio of atoms present in a compound.</li>
+                <li><strong>Molecular Formula:</strong> Shows the actual number of atoms of each element in a molecule.</li>
+            </ul>
+
+            <h3>Mole & Avogadro's Number</h3>
+            <p><span class="key-term">Avogadro's Number (N<sub>A</sub>):</span> 6.022 x 10<sup>23</sup> particles per mole.</p>
+            <p><span class="key-term">Mole:</span> The amount of substance that contains Avogadro's number of particles.</p>
+            <div class="formula-box">Number of Moles = Mass / Molar Mass</div>
+        </div>
+    </div>
+
+    <!-- CHAPTER 2 -->
+    <div id="chapter2" class="content-section">
+        <h2>CHAPTER 2: ATOMIC STRUCTURE</h2>
+        <div class="summary-card">
+            <h3>Early Theories</h3>
+            <ul>
+                <li><strong>Dalton's Atomic Theory:</strong> Atoms are indivisible, hard, dense spheres.</li>
+                <li><strong>Rutherford's Model:</strong> Atoms have a small, dense, positively charged nucleus. Electrons revolve around it.</li>
+                <li><strong>Bohr's Atomic Theory:</strong> Electrons revolve in fixed circular orbits called energy levels or shells.</li>
+            </ul>
+
+            <h3>Subatomic Particles</h3>
+            <ul>
+                <li><strong>Electrons:</strong> Negatively charged, discovered by J.J. Thomson (Cathode Rays).</li>
+                <li><strong>Protons:</strong> Positively charged, discovered by Goldstein (Canal Rays).</li>
+                <li><strong>Neutrons:</strong> Neutral, discovered by James Chadwick in 1932.</li>
+            </ul>
+
+            <h3>Isotopes</h3>
+            <p>Atoms of the same element having the same atomic number but different mass numbers (due to different number of neutrons).</p>
+            <p><strong>Examples:</strong> Protium, Deuterium, Tritium (Isotopes of Hydrogen).</p>
+            <p><strong>Uses:</strong> Radiotherapy (Co-60), Carbon dating (C-14).</p>
+        </div>
+    </div>
+
+    <!-- CHAPTER 3 -->
+    <div id="chapter3" class="content-section">
+        <h2>CHAPTER 3: PERIODIC TABLE & PERIODICITY</h2>
+        <div class="summary-card">
+            <h3>Evolution of Periodic Table</h3>
+            <ul>
+                <li><strong>Dobereiner's Triads:</strong> Groups of 3 elements with similar properties.</li>
+                <li><strong>Newlands' Octaves:</strong> Every 8th element had similar properties.</li>
+                <li><strong>Mendeleev's Periodic Table:</strong> Arranged elements based on increasing atomic masses.</li>
+                <li><strong>Modern Periodic Table:</strong> Arranged elements based on increasing <strong>atomic numbers</strong> (Moseley).</li>
+            </ul>
+
+            <h3>Structure of Periodic Table</h3>
+            <ul>
+                <li><strong>Periods:</strong> Horizontal rows (7 in total).</li>
+                <li><strong>Groups:</strong> Vertical columns (18 in total). Elements in a group have similar valence shell configurations.</li>
+            </ul>
+
+            <h3>Periodic Trends</h3>
+            <ul>
+                <li><strong>Atomic Size:</strong> Decreases across a period, increases down a group.</li>
+                <li><strong>Ionization Energy:</strong> Energy required to remove an electron. Increases across a period, decreases down a group.</li>
+                <li><strong>Electronegativity:</strong> Ability of an atom to attract shared pair of electrons. Increases across a period, decreases down a group.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- CHAPTER 4 -->
+    <div id="chapter4" class="content-section">
+        <h2>CHAPTER 4: STRUCTURE OF MOLECULES</h2>
+        <div class="summary-card">
+            <h3>Chemical Bonding</h3>
+            <p>Atoms bond to achieve stability by attaining the electronic configuration of noble gases (Octet/Duplet rule).</p>
+
+            <h3>Types of Bonds</h3>
+            <ul>
+                <li><strong>Ionic Bond:</strong> Formed by complete transfer of electrons (e.g., NaCl).</li>
+                <li><strong>Covalent Bond:</strong> Formed by mutual sharing of electrons (e.g., H<sub>2</sub>, O<sub>2</sub>).</li>
+                <li><strong>Dative (Coordinate) Covalent Bond:</strong> One atom provides both electrons for the shared pair.</li>
+                <li><strong>Metallic Bond:</strong> Formed due to attraction between metal cations and mobile electrons.</li>
+            </ul>
+
+            <h3>Intermolecular Forces</h3>
+            <p>Forces of attraction between molecules (e.g., Dipole-dipole interactions, Hydrogen bonding).</p>
+            <p><strong>Hydrogen Bonding:</strong> Special dipole-dipole attraction between H and highly electronegative atoms (N, O, F).</p>
+        </div>
+    </div>
+
+    <!-- CHAPTER 5 -->
+    <div id="chapter5" class="content-section">
+        <h2>CHAPTER 5: PHYSICAL STATES OF MATTER</h2>
+        <div class="summary-card">
+            <h3>Gaseous State</h3>
+            <ul>
+                <li><strong>Diffusion:</strong> Spontaneous mixing of gas molecules.</li>
+                <li><strong>Effusion:</strong> Escape of gas through a tiny hole.</li>
+                <li><strong>Boyle's Law:</strong> V \u221d 1/P (at constant T). P<sub>1</sub>V<sub>1</sub> = P<sub>2</sub>V<sub>2</sub>.</li>
+                <li><strong>Charles's Law:</strong> V \u221d T (at constant P). V<sub>1</sub>/T<sub>1</sub> = V<sub>2</sub>/T<sub>2</sub>.</li>
+            </ul>
+
+            <h3>Liquid State</h3>
+            <ul>
+                <li><strong>Evaporation:</strong> Cooling process, conversion of liquid to gas at surface.</li>
+                <li><strong>Vapor Pressure:</strong> Pressure exerted by vapors in equilibrium with liquid.</li>
+                <li><strong>Boiling Point:</strong> Temperature at which vapor pressure equals atmospheric pressure.</li>
+            </ul>
+
+            <h3>Solid State</h3>
+            <ul>
+                <li><strong>Melting Point:</strong> Temperature at which solid and liquid coexist in equilibrium.</li>
+                <li><strong>Allotropy:</strong> Existence of an element in more than one physical form (e.g., Carbon as Diamond and Graphite).</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- CHAPTER 6 -->
+    <div id="chapter6" class="content-section">
+        <h2>CHAPTER 6: SOLUTIONS</h2>
+        <div class="summary-card">
+            <h3>Types of Solutions</h3>
+            <ul>
+                <li><strong>Saturated:</strong> Contains maximum amount of solute at a given temperature.</li>
+                <li><strong>Unsaturated:</strong> Can dissolve more solute.</li>
+                <li><strong>Supersaturated:</strong> More concentrated than saturated solution.</li>
+            </ul>
+
+            <h3>Concentration Units</h3>
+            <ul>
+                <li><strong>Percentage (%):</strong> Mass/Mass, Mass/Volume, Volume/Mass, Volume/Volume.</li>
+                <li><strong>Molarity (M):</strong> Number of moles of solute per liter of solution.</li>
+            </ul>
+            <div class="formula-box">Molarity = Moles of solute / Liters of solution</div>
+
+            <h3>Solubility</h3>
+            <p>The amount of solute in grams that dissolves in 100g of solvent at a specific temperature. <strong>"Like dissolves like"</strong> is the general rule.</p>
+        </div>
+    </div>
+
+    <!-- CHAPTER 7 -->
+    <div id="chapter7" class="content-section">
+        <h2>CHAPTER 7: ELECTROCHEMISTRY</h2>
+        <div class="summary-card">
+            <h3>Redox Reactions</h3>
+            <ul>
+                <li><strong>Oxidation:</strong> Loss of electrons or addition of oxygen.</li>
+                <li><strong>Reduction:</strong> Gain of electrons or addition of hydrogen.</li>
+            </ul>
+
+            <h3>Electrochemical Cells</h3>
+            <ul>
+                <li><strong>Electrolytic Cell:</strong> Uses electricity to drive a non-spontaneous reaction (e.g., Nelson's cell).</li>
+                <li><strong>Galvanic (Voltaic) Cell:</strong> Uses spontaneous chemical reactions to produce electricity (e.g., Daniel cell).</li>
+            </ul>
+
+            <h3>Corrosion</h3>
+            <p>Slow eating away of metal by environment. <strong>Rusting of Iron</strong> requires both oxygen and water.</p>
+            <p><strong>Prevention:</strong> Painting, Greasing, Galvanizing, Electroplating.</p>
+        </div>
+    </div>
+
+    <!-- CHAPTER 8 -->
+    <div id="chapter8" class="content-section">
+        <h2>CHAPTER 8: CHEMICAL REACTIVITY</h2>
+        <div class="summary-card">
+            <h3>Metals</h3>
+            <p>Electropositive elements that lose electrons to form cations. Properties include luster, malleability, ductility, and high conductivity.</p>
+            <ul>
+                <li><strong>Alkali Metals (Group 1):</strong> Highly reactive, soft.</li>
+                <li><strong>Alkaline Earth Metals (Group 2):</strong> Reactive, harder than group 1.</li>
+            </ul>
+
+            <h3>Non-metals</h3>
+            <p>Electronegative elements that gain electrons to form anions. Poor conductors of heat and electricity.</p>
+            <p><strong>Halogens (Group 17):</strong> Very reactive non-metals (F, Cl, Br, I).</p>
+            <p><strong>Noble Gases (Group 18):</strong> Non-reactive due to complete valence shells.</p>
+        </div>
+    </div>
 
 </div>
 

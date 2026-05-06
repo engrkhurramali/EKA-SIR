@@ -5,113 +5,151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Academic Notes - EKA SIR</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
         :root {
             --glass: rgba(255, 255, 255, 0.25);
-            --glass-heavy: rgba(255, 255, 255, 0.4);
-            --sky-blue: #87CEEB;
-            --mint-green: #98FF98;
-            --text-dark: #1a5f7a;
-            --border: rgba(255, 255, 255, 0.5);
+            --glass-heavy: rgba(255, 255, 255, 0.35);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --sky-blue: #6a9ab0;
+            --sky-blue-dark: #4a7c94;
+            --mint-green: #a8e6cf;
+            --mint-green-dark: #7fcdbb;
+            --text-dark: #0f2b3a;
+            --accent: #ff6b6b;
+            --accent-glow: rgba(255, 107, 107, 0.5);
+            --success: #4ade80;
+            --success-glow: rgba(74, 222, 128, 0.4);
+            --shadow-dark: rgba(0, 30, 60, 0.15);
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
-            background-attachment: fixed;
-            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Poppins', 'Segoe UI', Roboto, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             color: var(--text-dark);
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .particles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: -1; overflow: hidden;
+        }
+        .particle {
+            position: absolute; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            animation: float 12s infinite linear;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-20vh); opacity: 0; }
         }
 
         .main-container {
-            width: 100%;
-            max-width: 500px;
+            width: 100%; max-width: 520px;
             background: var(--glass);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 30px;
-            padding: 25px;
-            border: 1px solid var(--border);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), inset 0 0 15px rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 20px 18px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 25px var(--shadow-dark);
+            margin: 10px 0;
+            will-change: transform;
         }
 
         .home-nav {
-            display: flex;
-            align-items: center;
+            display: flex; align-items: center; gap: 8px;
             background: var(--glass-heavy);
             padding: 12px 20px;
             border-radius: 50px;
             text-decoration: none;
             color: var(--text-dark);
-            font-weight: bold;
-            margin-bottom: 25px;
-            border: 1px solid var(--border);
-            transition: 0.3s;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid var(--glass-border);
             align-self: flex-start;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        .home-nav:hover {
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+            background: rgba(255,255,255,0.45);
         }
 
-        .home-nav:active { transform: scale(0.95); }
-
         h1 {
-            text-align: center;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            text-align: center; font-size: 1.3rem; margin: 0 0 20px 0;
+            text-transform: uppercase; letter-spacing: 1px;
+            color: var(--text-dark); font-weight: 700;
+            position: relative;
+        }
+        h1::after {
+            content: ''; position: absolute; bottom: -6px; left: 50%;
+            transform: translateX(-50%); width: 50px; height: 2px;
+            background: var(--accent); border-radius: 2px;
         }
 
         .class-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 30px;
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 10px; margin-bottom: 25px;
         }
 
         .class-btn {
             background: var(--glass-heavy);
-            border: 1px solid var(--border);
-            padding: 10px;
-            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            padding: 12px 8px;
+            border-radius: 16px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 800;
+            font-weight: 600;
             color: var(--text-dark);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            box-shadow: 0 4px 12px var(--shadow-dark);
+        }
+        .class-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.8), 0 0 15px var(--accent-glow);
+            background: rgba(255,255,255,0.5);
+        }
+        .class-btn.active {
+            background: rgba(255,255,255,0.7);
+            box-shadow: 0 0 0 2px var(--success), 0 0 15px rgba(74,222,128,0.4);
         }
 
-        .class-btn:hover, .class-btn.active {
-            background: #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .subject-section {
-            display: none;
-            animation: fadeIn 0.4s ease forwards;
-        }
-
-        .subject-section.active { display: block; }
+        .subject-section { display: none; }
+        .subject-section.active { display: block; animation: fadeIn 0.4s ease; }
 
         .note-card {
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.35);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             text-decoration: none;
             color: var(--text-dark);
             font-weight: 600;
-            transition: 0.2s;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            box-shadow: 0 4px 12px var(--shadow-dark);
         }
-
-        .note-card:active { background: #fff; }
+        .note-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.8), 0 0 15px var(--accent-glow);
+            background: rgba(255,255,255,0.5);
+        }
 
         .math-list {
             margin-top: 15px;
@@ -120,55 +158,81 @@
             gap: 8px;
         }
         .math-item {
-            background: rgba(255, 255, 255, 0.4);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
             padding: 10px 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .math-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.8), 0 0 12px var(--accent-glow);
+            background: rgba(255,255,255,0.5);
         }
         .math-item span {
             font-size: 0.85rem;
-            font-weight: 700;
+            font-weight: 600;
             color: var(--text-dark);
             flex: 1;
             padding-right: 10px;
         }
-        .math-btns {
-            display: flex;
-            gap: 5px;
-        }
+        .math-btns { display: flex; gap: 5px; }
         .math-btns a {
             text-decoration: none;
             font-size: 0.7rem;
-            font-weight: 800;
+            font-weight: 700;
             padding: 5px 8px;
-            border-radius: 6px;
+            border-radius: 8px;
             background: var(--text-dark);
             color: white;
-            transition: 0.2s;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             text-align: center;
             min-width: 45px;
         }
-        .math-btns a:active { transform: scale(0.9); }
+        .math-btns a:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.8), 0 0 10px var(--accent-glow);
+        }
         .math-btns a.ex { background: #ff6b6b; }
 
         .tag {
             font-size: 0.7rem;
             background: var(--text-dark);
             color: white;
-            padding: 3px 8px;
-            border-radius: 10px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 600;
         }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        @media (max-width: 480px) {
+            .main-container { padding: 18px 15px; border-radius: 20px; }
+            .class-grid { gap: 8px; }
+            .class-btn { padding: 10px 6px; font-size: 0.8rem; }
+            h1 { font-size: 1.2rem; }
+            .note-card { padding: 12px 14px; font-size: 0.9rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+            .class-btn:hover, .note-card:hover, .math-item:hover { transform: none; }
+            .particle { animation: none !important; }
+        }
     </style>
 </head>
 <body>
+
+<div class="particles" id="particles"></div>
 
 <a href="index.html" class="home-nav">🏠 Dashboard</a>
 
@@ -190,11 +254,11 @@
         <div class="class-btn" onclick="showClass(10, this)">Class 10</div>
     </div>
 
-    <hr style="border: 0; height: 1px; background: var(--border); margin-bottom: 20px;">
+    <hr style="border: 0; height: 1px; background: var(--glass-border); margin-bottom: 20px;">
 
     <!-- KG-1 -->
     <div id="classKG1" class="subject-section">
-        <h3>📚 KG-1 RESOURCES</h3>
+        <h3 style="margin-bottom:12px;font-size:1rem;">📚 KG-1 RESOURCES</h3>
         <a href="#" class="note-card">Maths Workbook <span class="tag">PDF</span></a>
         <a href="#" class="note-card">English Alphabets <span class="tag">VIEW</span></a>
         <a href="#" class="note-card">Urdu Qaida <span class="tag">VIEW</span></a>
@@ -203,35 +267,98 @@
 
     <!-- KG-2 -->
     <div id="classKG2" class="subject-section">
-        <h3>📚 KG-2 RESOURCES</h3>
+        <h3 style="margin-bottom:12px;font-size:1rem;">📚 KG-2 RESOURCES</h3>
         <a href="#" class="note-card">Maths (Numbers) <span class="tag">PDF</span></a>
         <a href="#" class="note-card">English (Words) <span class="tag">VIEW</span></a>
         <a href="#" class="note-card">Urdu Phonics <span class="tag">VIEW</span></a>
         <a href="#" class="note-card">Islamic Stories <span class="tag">VIEW</span></a>
     </div>
 
-    <!-- Primary & Middle (1-8) placeholder generation -->
-    <script>
-        const grades = [1, 2, 3, 4, 6, 7];
-        grades.forEach(g => {
-            document.write(`
-                <div id="class${g}" class="subject-section">
-                    <h3>📚 CLASS ${g} NOTES</h3>
-                    <a href="maths${g}_exercises.html" class="note-card">Mathematics <span class="tag">STBB</span></a>
-                    <a href="mcq-practice.html?subject=class${g}_english&grade=${g}" class="note-card">English <span class="tag">QUIZ</span></a>
-                    <a href="mcq-practice.html?subject=class${g}_urdu&grade=${g}" class="note-card">Urdu <span class="tag">QUIZ</span></a>
-                    <a href="mcq-practice.html?subject=class${g}_science&grade=${g}" class="note-card">Science <span class="tag">QUIZ</span></a>
-                    <a href="mcq-practice.html?subject=class${g}_sstudies&grade=${g}" class="note-card">Social Studies <span class="tag">QUIZ</span></a>
-                    <a href="mcq-practice.html?subject=class${g}_islamiat&grade=${g}" class="note-card">Islamiat <span class="tag">QUIZ</span></a>
-                    <a href="#" class="note-card">Computer <span class="tag">STBB</span></a>
-                </div>
-            `);
-        });
-    </script>
+    <!-- Class 1 -->
+    <div id="class1" class="subject-section">
+        <h3 style="margin-bottom:12px;font-size:1rem;">📚 CLASS 1 NOTES</h3>
+        <a href="maths1_exercises.html" class="note-card">Mathematics <span class="tag">STBB</span></a>
+        <a href="mcq-practice.html?subject=class1_english&grade=1" class="note-card">English <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class1_urdu&grade=1" class="note-card">Urdu <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class1_science&grade=1" class="note-card">Science <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class1_sstudies&grade=1" class="note-card">Social Studies <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class1_islamiat&grade=1" class="note-card">Islamiat <span class="tag">QUIZ</span></a>
+        <a href="#" class="note-card">Computer <span class="tag">STBB</span></a>
+    </div>
+
+    <!-- Class 2 -->
+    <div id="class2" class="subject-section">
+        <h3 style="margin-bottom:12px;font-size:1rem;">📚 CLASS 2 NOTES</h3>
+        <a href="maths2_exercises.html" class="note-card">Mathematics <span class="tag">STBB</span></a>
+        <a href="mcq-practice.html?subject=class2_english&grade=2" class="note-card">English <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class2_urdu&grade=2" class="note-card">Urdu <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class2_science&grade=2" class="note-card">Science <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class2_sstudies&grade=2" class="note-card">Social Studies <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class2_islamiat&grade=2" class="note-card">Islamiat <span class="tag">QUIZ</span></a>
+        <a href="#" class="note-card">Computer <span class="tag">STBB</span></a>
+    </div>
+
+    <!-- Class 3 -->
+    <div id="class3" class="subject-section">
+        <h3 style="margin-bottom:12px;font-size:1rem;">📚 CLASS 3 NOTES</h3>
+        <a href="maths3_exercises.html" class="note-card">Mathematics <span class="tag">STBB</span></a>
+        <a href="mcq-practice.html?subject=class3_english&grade=3" class="note-card">English <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class3_urdu&grade=3" class="note-card">Urdu <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class3_science&grade=3" class="note-card">Science <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class3_sstudies&grade=3" class="note-card">Social Studies <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class3_islamiat&grade=3" class="note-card">Islamiat <span class="tag">QUIZ</span></a>
+        <a href="#" class="note-card">Computer <span class="tag">STBB</span></a>
+    </div>
+
+    <!-- Class 4 -->
+    <div id="class4" class="subject-section">
+        <h3 style="margin-bottom:12px;font-size:1rem;">📚 CLASS 4 NOTES</h3>
+        <a href="maths4_exercises.html" class="note-card">Mathematics <span class="tag">STBB</span></a>
+        <a href="mcq-practice.html?subject=class4_english&grade=4" class="note-card">English <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class4_urdu&grade=4" class="note-card">Urdu <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class4_science&grade=4" class="note-card">Science <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class4_sstudies&grade=4" class="note-card">Social Studies <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class4_islamiat&grade=4" class="note-card">Islamiat <span class="tag">QUIZ</span></a>
+        <a href="#" class="note-card">Computer <span class="tag">STBB</span></a>
+    </div>
+
+    <!-- Class 5 -->
+    <div id="class5" class="subject-section">
+        <h3 style="margin-bottom:12px;font-size:1rem;">📚 CLASS 5 RESOURCES</h3>
+        <a href="maths5_exercises.html" class="note-card">Mathematics <span class="tag">STBB</span></a>
+        <a href="mcq-practice.html?subject=class5_science&grade=5" class="note-card">General Science <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class5_english&grade=5" class="note-card">English <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class5_urdu&grade=5" class="note-card">Urdu <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class5_islamiat&grade=5" class="note-card">Islamiat <span class="tag">QUIZ</span></a>
+    </div>
+
+    <!-- Class 6 -->
+    <div id="class6" class="subject-section">
+        <h3 style="margin-bottom:12px;font-size:1rem;">📚 CLASS 6 NOTES</h3>
+        <a href="maths6_exercises.html" class="note-card">Mathematics <span class="tag">STBB</span></a>
+        <a href="mcq-practice.html?subject=class6_english&grade=6" class="note-card">English <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class6_urdu&grade=6" class="note-card">Urdu <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class6_science&grade=6" class="note-card">Science <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class6_sstudies&grade=6" class="note-card">Social Studies <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class6_islamiat&grade=6" class="note-card">Islamiat <span class="tag">QUIZ</span></a>
+        <a href="#" class="note-card">Computer <span class="tag">STBB</span></a>
+    </div>
+
+    <!-- Class 7 -->
+    <div id="class7" class="subject-section">
+        <h3 style="margin-bottom:12px;font-size:1rem;">📚 CLASS 7 NOTES</h3>
+        <a href="maths7_exercises.html" class="note-card">Mathematics <span class="tag">STBB</span></a>
+        <a href="mcq-practice.html?subject=class7_english&grade=7" class="note-card">English <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class7_urdu&grade=7" class="note-card">Urdu <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class7_science&grade=7" class="note-card">Science <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class7_sstudies&grade=7" class="note-card">Social Studies <span class="tag">QUIZ</span></a>
+        <a href="mcq-practice.html?subject=class7_islamiat&grade=7" class="note-card">Islamiat <span class="tag">QUIZ</span></a>
+        <a href="#" class="note-card">Computer <span class="tag">STBB</span></a>
+    </div>
 
     <!-- Class 8 -->
     <div id="class8" class="subject-section">
-        <h3>📚 CLASS 8 RESOURCES</h3>
+        <h3 style="margin-bottom:12px;font-size:1rem;">📚 CLASS 8 RESOURCES</h3>
         <a href="maths8_exercises.html" class="note-card">Mathematics <span class="tag">MCQs</span></a>
         <a href="english8_exercises.html" class="note-card">English <span class="tag">MCQs</span></a>
         <a href="mcq-practice.html?subject=class8_urdu&grade=8" class="note-card">Urdu <span class="tag">QUIZ</span></a>
@@ -240,19 +367,9 @@
         <a href="mcq-practice.html?subject=class8_islamiat&grade=8" class="note-card">Islamiat <span class="tag">QUIZ</span></a>
     </div>
 
-    <!-- Class 5 Specific -->
-    <div id="class5" class="subject-section">
-        <h3>📚 CLASS 5 RESOURCES</h3>
-        <a href="maths5_exercises.html" class="note-card">Mathematics <span class="tag">STBB</span></a>
-        <a href="mcq-practice.html?subject=class5_science&grade=5" class="note-card">General Science <span class="tag">QUIZ</span></a>
-        <a href="mcq-practice.html?subject=class5_english&grade=5" class="note-card">English <span class="tag">QUIZ</span></a>
-        <a href="mcq-practice.html?subject=class5_urdu&grade=5" class="note-card">Urdu <span class="tag">QUIZ</span></a>
-        <a href="mcq-practice.html?subject=class5_islamiat&grade=5" class="note-card">Islamiat <span class="tag">QUIZ</span></a>
-    </div>
-
     <!-- Class 9 -->
     <div id="class9" class="subject-section active">
-        <h3>📚 CLASS 9 (STBB)</h3>
+        <h3 style="margin-bottom:12px;font-size:1rem;">📚 CLASS 9 (STBB)</h3>
         <a href="maths9_exercises.html" class="note-card">Mathematics <span class="tag">VIDEO</span></a>
         <a href="physics9_exercises.html" class="note-card">Physics <span class="tag">VIDEO</span></a>
         <a href="chemistry9_exercises.html" class="note-card">Chemistry <span class="tag">VIDEO</span></a>
@@ -265,7 +382,7 @@
 
     <!-- Class 10 -->
     <div id="class10" class="subject-section">
-        <h3>📚 CLASS 10 (STBB)</h3>
+        <h3 style="margin-bottom:12px;font-size:1rem;">📚 CLASS 10 (STBB)</h3>
         <a href="maths10_exercises.html" class="note-card">Mathematics <span class="tag">VIDEO</span></a>
         <a href="physics10_exercises.html" class="note-card">Physics <span class="tag">VIDEO</span></a>
         <a href="chemistry10_exercises.html" class="note-card">Chemistry <span class="tag">VIDEO</span></a>
@@ -277,11 +394,32 @@
     </div>
 
     <div id="generic" class="subject-section">
-        <p style="text-align: center; font-style: italic; opacity: 0.7;">Resources coming soon...</p>
+        <p style="text-align: center; font-style: italic; opacity: 0.7; padding: 20px;">Resources coming soon...</p>
     </div>
 </div>
 
 <script>
+    // ✅ Lightweight particles: Desktop only, max 8
+    document.addEventListener('DOMContentLoaded', () => {
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        const particlesContainer = document.getElementById('particles');
+
+        if (!isMobile && window.matchMedia('(hover: hover)').matches) {
+            for (let i = 0; i < 8; i++) {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                const size = Math.random() * 25 + 12;
+                p.style.width = p.style.height = size + 'px';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 5 + 's';
+                p.style.animationDuration = Math.random() * 8 + 12 + 's';
+                particlesContainer.appendChild(p);
+            }
+        } else {
+            particlesContainer.style.display = 'none';
+        }
+    });
+
     function showClass(num, btn) {
         document.querySelectorAll('.class-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');

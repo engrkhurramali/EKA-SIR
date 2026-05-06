@@ -5,102 +5,157 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CBT Tests - EKA SIR</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
         :root {
             --glass: rgba(255, 255, 255, 0.25);
-            --glass-heavy: rgba(255, 255, 255, 0.4);
-            --sky-blue: #87CEEB;
-            --mint-green: #98FF98;
-            --text-dark: #1a5f7a;
-            --border: rgba(255, 255, 255, 0.5);
+            --glass-heavy: rgba(255, 255, 255, 0.35);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --sky-blue: #6a9ab0;
+            --sky-blue-dark: #4a7c94;
+            --mint-green: #a8e6cf;
+            --mint-green-dark: #7fcdbb;
+            --text-dark: #0f2b3a;
+            --accent: #ff6b6b;
+            --accent-glow: rgba(255, 107, 107, 0.5);
+            --success: #4ade80;
+            --shadow-dark: rgba(0, 30, 60, 0.15);
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
-            background-attachment: fixed;
-            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Poppins', 'Segoe UI', Roboto, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             color: var(--text-dark);
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
         .main-container {
-            width: 100%;
-            max-width: 500px;
+            width: 100%; max-width: 520px;
             background: var(--glass);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 30px;
-            padding: 25px;
-            border: 1px solid var(--border);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 20px 18px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 25px var(--shadow-dark);
+            margin: 10px 0;
         }
 
         .home-nav {
-            display: flex;
-            align-items: center;
+            display: flex; align-items: center; gap: 8px;
             background: var(--glass-heavy);
             padding: 12px 20px;
             border-radius: 50px;
             text-decoration: none;
             color: var(--text-dark);
-            font-weight: bold;
-            margin-bottom: 25px;
-            border: 1px solid var(--border);
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid var(--glass-border);
             align-self: flex-start;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        .home-nav:hover {
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+            background: rgba(255,255,255,0.45);
         }
 
-        h1 { text-align: center; font-size: 1.5rem; margin-bottom: 20px; }
+        h1 {
+            text-align: center; font-size: 1.3rem; margin: 0 0 20px 0;
+            text-transform: uppercase; letter-spacing: 1px;
+            color: var(--text-dark); font-weight: 700;
+        }
+        h1::after {
+            content: ''; position: absolute; bottom: -6px; left: 50%;
+            transform: translateX(-50%); width: 50px; height: 2px;
+            background: var(--accent); border-radius: 2px;
+        }
 
         .class-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 30px;
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 10px; margin-bottom: 25px;
         }
 
         .class-btn {
             background: var(--glass-heavy);
-            border: 1px solid var(--border);
-            padding: 10px;
-            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            padding: 12px 8px;
+            border-radius: 16px;
             text-align: center;
             cursor: pointer;
-            font-weight: 800;
+            font-weight: 600;
             color: var(--text-dark);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            box-shadow: 0 4px 12px var(--shadow-dark);
         }
-
-        .class-btn.active { background: #fff; }
+        .class-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.8), 0 0 15px var(--accent-glow);
+            background: rgba(255,255,255,0.5);
+        }
+        .class-btn.active {
+            background: rgba(255,255,255,0.7);
+            box-shadow: 0 0 0 2px var(--success), 0 0 15px rgba(74,222,128,0.4);
+        }
 
         .subject-section { display: none; }
         .subject-section.active { display: block; animation: fadeIn 0.4s; }
 
         .note-card {
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.35);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             text-decoration: none;
             color: var(--text-dark);
             font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            box-shadow: 0 4px 12px var(--shadow-dark);
+        }
+        .note-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.8), 0 0 15px var(--accent-glow);
+            background: rgba(255,255,255,0.5);
         }
 
         .tag {
             font-size: 0.7rem;
             background: var(--text-dark);
             color: white;
-            padding: 3px 8px;
-            border-radius: 10px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 600;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 480px) {
+            .main-container { padding: 18px 15px; border-radius: 20px; }
+            .class-grid { gap: 8px; }
+            .class-btn { padding: 10px 6px; font-size: 0.8rem; }
+            h1 { font-size: 1.2rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -120,53 +175,78 @@
         </script>
     </div>
 
-    <hr style="border: 0; height: 1px; background: var(--border); margin-bottom: 20px;">
+    <hr style="border: 0; height: 1px; background: var(--glass-border); margin-bottom: 20px;">
 
-    <!-- KG1 to 10 Sections -->
+    <!-- KG1 -->
     <div id="classKG1" class="subject-section active">
-        <h3>📝 KG-1 SUBJECTS</h3>
-        <a href="chapter_select.html?subject=kg1_maths&grade=KG1" class="note-card">Mathematics <span class="tag">SELECT</span></a>
-        <a href="chapter_select.html?subject=kg1_english&grade=KG1" class="note-card">English <span class="tag">SELECT</span></a>
-        <a href="chapter_select.html?subject=kg1_urdu&grade=KG1" class="note-card">Urdu <span class="tag">SELECT</span></a>
-        <a href="chapter_select.html?subject=kg1_islamiat&grade=KG1" class="note-card">Islamiat <span class="tag">SELECT</span></a>
+        <h3 style="margin-bottom:12px;font-size:1rem;">📝 KG-1 SUBJECTS</h3>
+        <a href="chapter_select.html?subject=kg1_maths&grade=KG1&file=quiz_data_kg1/kg1_maths" class="note-card">Mathematics <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=kg1_english&grade=KG1&file=quiz_data_kg1/kg1_english" class="note-card">English <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=kg1_urdu&grade=KG1&file=quiz_data_kg1/kg1_urdu" class="note-card">Urdu <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=kg1_islamiat&grade=KG1&file=quiz_data_kg1/kg1_islamiat" class="note-card">Islamiat <span class="tag">SELECT</span></a>
     </div>
 
+    <!-- KG2 -->
     <div id="classKG2" class="subject-section">
-        <h3>📝 KG-2 SUBJECTS</h3>
-        <a href="chapter_select.html?subject=kg2_maths&grade=KG2" class="note-card">Mathematics <span class="tag">SELECT</span></a>
-        <a href="chapter_select.html?subject=kg2_english&grade=KG2" class="note-card">English <span class="tag">SELECT</span></a>
-        <a href="chapter_select.html?subject=kg2_urdu&grade=KG2" class="note-card">Urdu <span class="tag">SELECT</span></a>
-        <a href="chapter_select.html?subject=kg2_islamiat&grade=KG2" class="note-card">Islamiat <span class="tag">SELECT</span></a>
+        <h3 style="margin-bottom:12px;font-size:1rem;">📝 KG-2 SUBJECTS</h3>
+        <a href="chapter_select.html?subject=kg2_maths&grade=KG2&file=quiz_data_kg2/kg2_maths" class="note-card">Mathematics <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=kg2_english&grade=KG2&file=quiz_data_kg2/kg2_english" class="note-card">English <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=kg2_urdu&grade=KG2&file=quiz_data_kg2/kg2_urdu" class="note-card">Urdu <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=kg2_islamiat&grade=KG2&file=quiz_data_kg2/kg2_islamiat" class="note-card">Islamiat <span class="tag">SELECT</span></a>
     </div>
 
+    <!-- Classes 1-8 -->
     <script>
-        const subjects = ['maths', 'english', 'urdu', 'science', 'sstudies', 'islamiat', 'computer', 'sindhi'];
-        const gradeNames = [1,2,3,4,5,6,7,8];
-        gradeNames.forEach(g => {
-            document.write(`<div id="class${g}" class="subject-section"><h3>📝 CLASS ${g} SUBJECTS</h3>`);
+        const subjects = [
+            {id:'maths', name:'Mathematics'},
+            {id:'english', name:'English'},
+            {id:'urdu', name:'Urdu'},
+            {id:'islamiat', name:'Islamiat'},
+            {id:'sindhi', name:'Sindhi'},
+            {id:'science', name:'Science'},
+            {id:'sstudies', name:'Social Studies'},
+            {id:'computer', name:'Computer'}
+        ];
+
+        for(let g=1; g<=8; g++) {
+            document.write(`<div id="class${g}" class="subject-section"><h3 style="margin-bottom:12px;font-size:1rem;">📝 CLASS ${g} SUBJECTS</h3>`);
             subjects.forEach(s => {
-                document.write(`<a href="chapter_select.html?subject=class${g}_${s}&grade=${g}" class="note-card">${s.charAt(0).toUpperCase()+s.slice(1)} <span class="tag">SELECT</span></a>`);
+                document.write(`<a href="chapter_select.html?subject=class${g}_${s.id}&grade=${g}&file=quiz_data_class${g}/class${g}_${s.id}" class="note-card">${s.name} <span class="tag">SELECT</span></a>`);
             });
             document.write(`</div>`);
-        });
-
-        // 9 and 10
-        const highSubs = ['maths', 'physics', 'chem', 'bio', 'comp', 'eng', 'urdu', 'isl', 'pst', 'sindhi'];
-        [9, 10].forEach(g => {
-            document.write(`<div id="class${g}" class="subject-section"><h3>📝 CLASS ${g} SUBJECTS</h3>`);
-            highSubs.forEach(s => {
-                let subCode = s + g; // Consistent naming: chem9, bio10, etc.
-
-                if (s === 'maths' && (g === 9 || g === 10)) {
-                    // Reverting to new page UI for Maths 9 & 10 as requested
-                    document.write(`<a href="chapter_select.html?subject=maths${g}&grade=${g}" class="note-card">Mathematics (Multi-Select) <span class="tag">SELECT</span></a>`);
-                } else {
-                    document.write(`<a href="chapter_select.html?subject=${subCode}&grade=${g}" class="note-card">${s.charAt(0).toUpperCase()+s.slice(1)} <span class="tag">SELECT</span></a>`);
-                }
-            });
-            document.write(`</div>`);
-        });
+        }
     </script>
+
+    <!-- Class 9 -->
+    <div id="class9" class="subject-section">
+        <h3 style="margin-bottom:12px;font-size:1rem;">📝 CLASS 9 SUBJECTS</h3>
+        <a href="maths9_exercises.html" class="note-card">Mathematics <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=physics9&grade=9&file=quiz_data_class9/class9_physics" class="note-card">Physics <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=chem9&grade=9&file=quiz_data_class9/class9_chemistry" class="note-card">Chemistry <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=biology9&grade=9&file=quiz_data_class9/class9_biology" class="note-card">Biology <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=computer9&grade=9&file=quiz_data_class9/class9_computer" class="note-card">Computer <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=english9&grade=9&file=quiz_data_class9/class9_english" class="note-card">English <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=urdu9&grade=9&file=quiz_data_class9/class9_urdu" class="note-card">Urdu <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=islamiat9&grade=9&file=quiz_data_class9/class9_islamiat" class="note-card">Islamiat <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=pst9&grade=9&file=quiz_data_class9/class9_pst" class="note-card">PST <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=sindhi9&grade=9&file=quiz_data_class9/class9_sindhi" class="note-card">Sindhi <span class="tag">SELECT</span></a>
+    </div>
+
+    <!-- Class 10 -->
+    <div id="class10" class="subject-section">
+        <h3 style="margin-bottom:12px;font-size:1rem;">📝 CLASS 10 SUBJECTS</h3>
+        <a href="maths10_exercises.html" class="note-card">Mathematics <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=physics10&grade=10&file=quiz_data_class10/class10_physics" class="note-card">Physics <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=chem10&grade=10&file=quiz_data_class10/class10_chemistry" class="note-card">Chemistry <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=biology10&grade=10&file=quiz_data_class10/class10_biology" class="note-card">Biology <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=computer10&grade=10&file=quiz_data_class10/class10_computer" class="note-card">Computer <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=english10&grade=10&file=quiz_data_class10/class10_english" class="note-card">English <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=urdu10&grade=10&file=quiz_data_class10/class10_urdu" class="note-card">Urdu <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=islamiat10&grade=10&file=quiz_data_class10/class10_islamiat" class="note-card">Islamiat <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=pst10&grade=10&file=quiz_data_class10/class10_pst" class="note-card">PST <span class="tag">SELECT</span></a>
+        <a href="chapter_select.html?subject=sindhi10&grade=10&file=quiz_data_class10/class10_sindhi" class="note-card">Sindhi <span class="tag">SELECT</span></a>
+    </div>
+
 </div>
 
 <script>

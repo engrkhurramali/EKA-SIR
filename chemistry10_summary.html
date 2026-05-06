@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chemistry Class 10 Summaries - EKA SIR</title>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-heavy: rgba(255, 255, 255, 0.4);
+            --sky-blue: #87CEEB;
+            --mint-green: #98FF98;
+            --text-dark: #1a5f7a;
+            --border: rgba(255, 255, 255, 0.5);
+            --accent: #ff6b6b;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 15px;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            margin-bottom: 30px;
+        }
+
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            background: var(--glass-heavy);
+            padding: 8px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: bold;
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+
+        .chapter-selector {
+            width: 100%;
+            padding: 12px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text-dark);
+            font-weight: bold;
+            margin-bottom: 20px;
+            outline: none;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        h1 { font-size: 1.2rem; text-align: center; margin: 0; text-transform: uppercase; color: var(--text-dark); }
+        h2 { font-size: 1.1rem; color: #fff; background: var(--text-dark); padding: 10px; border-radius: 10px; margin-top: 25px; text-align: center; }
+        h3 { font-size: 1rem; margin-top: 20px; color: #b71c1c; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 5px; }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .content-section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .summary-card {
+            background: rgba(255, 255, 255, 0.4);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 15px;
+            line-height: 1.6;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .key-term { font-weight: bold; color: #1a5f7a; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+        strong { color: #000; }
+
+        .formula-box {
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border: 1px dashed var(--text-dark);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="nav-header">
+        <a href="chemistry10_exercises.html" class="back-btn">⬅ Back</a>
+        <h1>Chemistry Class 10 Notes</h1>
+    </div>
+
+    <select class="chapter-selector" id="chapterSelect" onchange="showChapter(this.value)">
+        <option value="9">Chapter 9: Chemical Equilibrium</option>
+        <option value="10">Chapter 10: Acids, Bases and Salts</option>
+        <option value="11">Chapter 11: Organic Chemistry</option>
+        <option value="12">Chapter 12: Hydrocarbons</option>
+        <option value="13">Chapter 13: Biochemistry</option>
+        <option value="14">Chapter 14: Atmosphere</option>
+        <option value="15">Chapter 15: Water</option>
+        <option value="16">Chapter 16: Chemical Industries</option>
+    </select>
+
+    <!-- CHAPTER 9 -->
+    <div id="chapter9" class="content-section active">
+        <h2>CHAPTER 9: CHEMICAL EQUILIBRIUM</h2>
+        <div class="summary-card">
+            <h3>Reversible Reactions</h3>
+            <p>Reactions that go both ways. Equilibrium is when the forward rate equals the reverse rate.</p>
+            <h3>Law of Mass Action</h3>
+            <p>Rate is proportional to the product of molar concentrations of reactants.</p>
+            <div class="formula-box">K\u2092 = [Products] / [Reactants]</div>
+            <h3>Importance of K\u2092</h3>
+            <ul>
+                <li>Predicting direction: Q\u2092 \u003c K\u2092 (Forward), Q\u2092 \u003e K\u2092 (Reverse).</li>
+                <li>Predicting extent: Large K\u2092 means reaction is almost complete.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- CHAPTER 10 -->
+    <div id="chapter10" class="content-section">
+        <h2>CHAPTER 10: ACIDS, BASES AND SALTS</h2>
+        <div class="summary-card">
+            <h3>Concepts</h3>
+            <ul>
+                <li><strong>Arrhenius:</strong> Acids give H\u207a, Bases give OH\u207b in water.</li>
+                <li><strong>Bronsted-Lowry:</strong> Acids are proton donors, Bases are proton acceptors.</li>
+                <li><strong>Lewis:</strong> Acids are electron-pair acceptors, Bases are electron-pair donors.</li>
+            </ul>
+            <h3>pH Scale</h3>
+            <p>pH = -log[H\u207a]. Range is 0-14. Neutral is 7.</p>
+            <h3>Salts</h3>
+            <p>Formed by neutralization of acid and base. Types: Normal, Acidic, Basic.</p>
+        </div>
+    </div>
+
+    <!-- CHAPTER 11 -->
+    <div id="chapter11" class="content-section">
+        <h2>CHAPTER 11: ORGANIC CHEMISTRY</h2>
+        <div class="summary-card">
+            <h3>Organic Compounds</h3>
+            <p>Compounds of carbon (except CO, CO\u2082, carbonates). Characterized by catenation (carbon-carbon bonding).</p>
+            <h3>Functional Groups</h3>
+            <ul>
+                <li><strong>Alcohol:</strong> -OH</li>
+                <li><strong>Aldehyde:</strong> -CHO</li>
+                <li><strong>Ketone:</strong> \u003eC=O</li>
+                <li><strong>Carboxylic Acid:</strong> -COOH</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- CHAPTER 12 -->
+    <div id="chapter12" class="content-section">
+        <h2>CHAPTER 12: HYDROCARBONS</h2>
+        <div class="summary-card">
+            <h3>Alkanes (Saturated)</h3>
+            <p>Single bonds. General formula: C\u2099H\u2082\u2099\u208a\u2082. Undergo substitution reactions.</p>
+            <h3>Alkenes (Unsaturated)</h3>
+            <p>Double bond. General formula: C\u2099H\u2082\u2099. Undergo addition reactions.</p>
+            <h3>Alkynes (Unsaturated)</h3>
+            <p>Triple bond. General formula: C\u2099H\u2082\u2099\u208b\u2082.</p>
+        </div>
+    </div>
+
+    <!-- CHAPTER 13 -->
+    <div id="chapter13" class="content-section">
+        <h2>CHAPTER 13: BIOCHEMISTRY</h2>
+        <div class="summary-card">
+            <h3>Carbohydrates</h3>
+            <p>Monosaccharides (Glucose), Oligosaccharides (Sucrose), Polysaccharides (Starch, Cellulose).</p>
+            <h3>Proteins</h3>
+            <p>Polymers of amino acids. Essential for growth and repair.</p>
+            <h3>Lipids & Vitamins</h3>
+            <p>Vitamins are either Fat-soluble (A, D, E, K) or Water-soluble (B-complex, C).</p>
+        </div>
+    </div>
+
+    <!-- CHAPTER 14 -->
+    <div id="chapter14" class="content-section">
+        <h2>CHAPTER 14: ATMOSPHERE</h2>
+        <div class="summary-card">
+            <h3>Layers</h3>
+            <p>Troposphere (0-12km, weather), Stratosphere (12-50km, Ozone layer), Mesosphere, Thermosphere.</p>
+            <h3>Pollutants</h3>
+            <ul>
+                <li><strong>Primary:</strong> CO, CO\u2082, SO\u2082, NO\u2093.</li>
+                <li><strong>Secondary:</strong> H\u2082SO\u2084, HNO\u2083 (Acid rain).</li>
+            </ul>
+            <p><span class="key-term">Greenhouse Effect:</span> Global warming due to CO\u2082 trapping heat.</p>
+        </div>
+    </div>
+
+    <!-- CHAPTER 15 -->
+    <div id="chapter15" class="content-section">
+        <h2>CHAPTER 15: WATER</h2>
+        <div class="summary-card">
+            <h3>Properties</h3>
+            <p>Universal solvent due to polarity and hydrogen bonding.</p>
+            <h3>Hardness of Water</h3>
+            <ul>
+                <li><strong>Temporary:</strong> Due to bicarbonates of Ca and Mg. Removed by boiling or Clark's method.</li>
+                <li><strong>Permanent:</strong> Due to chlorides and sulfates of Ca and Mg. Removed by washing soda or Ion-exchange resins.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- CHAPTER 16 -->
+    <div id="chapter16" class="content-section">
+        <h2>CHAPTER 16: CHEMICAL INDUSTRIES</h2>
+        <div class="summary-card">
+            <h3>Metallurgy</h3>
+            <p>Process of extracting metals from ores. Steps: Crushing, Concentration, Extraction, Refining.</p>
+            <h3>Solvay Process</h3>
+            <p>Manufacture of Sodium Carbonate (Washing Soda) using Ammonia and Brine.</p>
+            <h3>Urea</h3>
+            <p>Fertilizer made from Ammonia and CO\u2082.</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function showChapter(chId) {
+        const sections = document.querySelectorAll('.content-section');
+        sections.forEach(s => s.classList.remove('active'));
+
+        const selected = document.getElementById('chapter' + chId);
+        if (selected) {
+            selected.classList.add('active');
+            document.getElementById('chapterSelect').value = chId;
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const chapter = urlParams.get('chapter');
+        if (chapter) {
+            showChapter(chapter);
+        }
+    }
+</script>
+
+</body>
+</html>

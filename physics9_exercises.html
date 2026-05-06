@@ -5,232 +5,432 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Physics Class 9 Exercises - EKA SIR</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
         :root {
             --glass: rgba(255, 255, 255, 0.25);
-            --glass-heavy: rgba(255, 255, 255, 0.4);
-            --sky-blue: #87CEEB;
-            --mint-green: #98FF98;
-            --text-dark: #1a5f7a;
-            --border: rgba(255, 255, 255, 0.5);
+            --glass-heavy: rgba(255, 255, 255, 0.35);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --sky-blue: #6a9ab0;
+            --sky-blue-dark: #4a7c94;
+            --mint-green: #a8e6cf;
+            --mint-green-dark: #7fcdbb;
+            --text-dark: #0f2b3a;
             --accent: #ff6b6b;
+            --accent-glow: rgba(255, 107, 107, 0.5);
+            --success: #4ade80;
+            --success-glow: rgba(74, 222, 128, 0.4);
+            --shadow-dark: rgba(0, 30, 60, 0.15);
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
-            background-attachment: fixed;
-            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Poppins', 'Segoe UI', Roboto, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             color: var(--text-dark);
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .particles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: -1; overflow: hidden;
+        }
+        .particle {
+            position: absolute; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            animation: float 12s infinite linear;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-20vh); opacity: 0; }
         }
 
         .main-container {
-            width: 100%;
-            max-width: 500px;
+            width: 100%; max-width: 520px;
             background: var(--glass);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 30px;
-            padding: 25px;
-            border: 1px solid var(--border);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), inset 0 0 15px rgba(255, 255, 255, 0.3);
-            box-sizing: border-box;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 20px 18px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 25px var(--shadow-dark);
+            margin: 10px 0;
+            will-change: transform;
         }
 
         .nav-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 20px; padding: 0 5px;
         }
 
         .back-btn {
             background: var(--glass-heavy);
-            padding: 10px 15px;
-            border-radius: 50px;
-            text-decoration: none;
-            color: var(--text-dark);
-            font-weight: bold;
-            border: 1px solid var(--border);
-            transition: 0.3s;
-            font-size: 0.9rem;
+            padding: 10px 18px; border-radius: 50px;
+            text-decoration: none; color: var(--text-dark);
+            font-weight: 600; border: 1px solid var(--glass-border);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-size: 0.9rem; display: flex; align-items: center; gap: 5px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        .back-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+            background: rgba(255,255,255,0.45);
         }
 
-        .back-btn:active { transform: scale(0.9); }
-
         h1 {
-            text-align: center;
-            font-size: 1.2rem;
-            margin: 0;
-            text-transform: uppercase;
+            text-align: center; font-size: 1.3rem; margin: 0;
+            text-transform: uppercase; letter-spacing: 1px;
+            color: var(--text-dark); font-weight: 700;
+        }
+        h1::after {
+            content: ''; position: absolute; bottom: -6px; left: 50%;
+            transform: translateX(-50%); width: 50px; height: 2px;
+            background: var(--accent); border-radius: 2px;
+        }
+
+        .subtitle {
+            text-align: center; font-size: 0.8rem; margin: 12px 0 20px;
+            font-weight: 600; color: var(--text-dark); opacity: 0.9;
+            padding: 6px 14px; background: rgba(255,255,255,0.3);
+            border-radius: 40px; border: 1px solid var(--glass-border);
         }
 
         .chapter-title {
-            background: var(--text-dark);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 10px;
-            margin: 20px 0 10px 0;
-            font-size: 0.9rem;
-            font-weight: bold;
+            background: linear-gradient(135deg, var(--sky-blue-dark), var(--mint-green-dark));
+            color: white; padding: 10px 18px; border-radius: 14px;
+            margin: 22px 0 12px; font-size: 1rem; font-weight: 700;
+            text-align: center; box-shadow: 0 5px 15px rgba(0,30,60,0.15);
+            position: relative; overflow: hidden;
+        }
+        .chapter-title::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at top, rgba(255,255,255,0.15) 0%, transparent 60%);
+            pointer-events: none;
         }
 
         .exercise-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 25px;
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 14px; margin-bottom: 8px;
         }
 
         .ex-btn {
             background: var(--glass-heavy);
-            border: 1px solid var(--border);
-            padding: 15px 10px;
-            border-radius: 18px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: bold;
-            color: var(--text-dark);
-            text-decoration: none;
-            font-size: 0.95rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 1px solid var(--glass-border);
+            padding: 16px 12px; border-radius: 20px;
+            text-align: center; cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            font-weight: 600; color: var(--text-dark);
+            text-decoration: none; font-size: 0.95rem;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 5px;
+            box-shadow: 0 4px 12px var(--shadow-dark);
+            position: relative; overflow: hidden;
+            will-change: transform, box-shadow;
+        }
+
+        .ex-btn::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease; z-index: 1;
+        }
+        .ex-btn:hover::before { left: 100%; }
+
+        .ex-btn:hover {
+            transform: scale(1.04);
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.8), 0 0 15px var(--accent-glow);
+            background: rgba(255,255,255,0.5);
+            z-index: 5;
         }
 
         .ex-btn:active {
-            background: #fff;
-            transform: scale(0.95);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transform: scale(1.01);
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.6);
+            transition: transform 0.1s ease;
         }
 
         .ex-btn span {
-            font-size: 0.7rem;
-            opacity: 0.7;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 0.72rem; opacity: 0.85;
+            text-transform: uppercase; letter-spacing: 0.8px;
+            font-weight: 600; color: var(--sky-blue-dark);
         }
 
-        /* Video Icon styling */
-        .ex-btn::after {
-            content: "▶ Watch Video";
-            font-size: 0.65rem;
-            color: var(--accent);
-            margin-top: 4px;
-            font-weight: 800;
-        }
-
+        .ex-btn[data-type="mcq"] { border-color: rgba(74,222,128,0.5); }
         .ex-btn[data-type="mcq"]::after {
-            content: "📝 Start Practice";
-            color: #22c55e;
+            content: "📝 Practice"; color: var(--success);
+            font-size: 0.68rem; font-weight: 600; margin-top: 3px;
+        }
+        .ex-btn[data-type="sum"] { border-color: rgba(255,107,107,0.4); }
+
+        a[href^="https://youtu.be"] { position: relative; }
+        a[href^="https://youtu.be"]::after {
+            content: "▶"; position: absolute; right: 10px; top: 50%;
+            transform: translateY(-50%); font-size: 0.75rem;
+            opacity: 0; transition: opacity 0.2s ease; color: var(--accent);
+        }
+        a[href^="https://youtu.be"]:hover::after { opacity: 1; }
+
+        .ripple {
+            position: absolute; border-radius: 50%;
+            background: rgba(255,255,255,0.6);
+            transform: scale(0); animation: ripple 0.5s linear;
+            pointer-events: none; z-index: 3;
+        }
+        @keyframes ripple { to { transform: scale(3); opacity: 0; } }
+
+        @media (max-width: 480px) {
+            .main-container { padding: 18px 15px; border-radius: 20px; }
+            .exercise-grid { gap: 12px; }
+            .ex-btn { padding: 14px 10px; font-size: 0.9rem; }
+            .chapter-title { font-size: 0.95rem; padding: 9px 16px; }
+            .chapter-title::before { display: none; }
+            h1 { font-size: 1.2rem; }
         }
 
-        .ex-btn[data-type="sum"]::after {
-            content: none;
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .ex-btn:hover { transform: none; box-shadow: 0 0 0 2px rgba(255,255,255,0.8); }
+            .particle { animation: none !important; }
         }
     </style>
 </head>
 <body>
+
+<div class="particles" id="particles"></div>
 
 <div class="main-container">
     <div class="nav-header">
         <a href="notes.html" class="back-btn">⬅ Back</a>
         <h1>Physics Class 9</h1>
     </div>
+    <div class="subtitle">Sindh Text Book Board (Video Solutions)</div>
 
-    <p style="text-align:center; font-size: 0.8rem; margin-bottom: 20px; font-weight: 600;">Sindh Text Book Board (Video Solutions)</p>
-
+    <!-- Chapter 1: Physical Quantities & Measurement -->
     <div class="chapter-title">Chapter 1: Physical Quantities & Measurement</div>
-    <div class="exercise-grid" id="ch1-grid"></div>
+    <div class="exercise-grid">
+        <a href="https://youtu.be/PLACEHOLDER_CH1_THEORY" target="_blank" class="ex-btn ripple-btn">
+            <span>Chapter 1</span>Theory Solution
+        </a>
+        <a href="https://youtu.be/PLACEHOLDER_CH1_NUM" target="_blank" class="ex-btn ripple-btn">
+            <span>Chapter 1</span>Numericals
+        </a>
+        <a href="mcq-practice.html?subject=physics9_u1&file=quiz_data_class9/class9_physics" class="ex-btn ripple-btn" data-type="mcq">
+            <span>Chapter 1</span>MCQs Prep
+        </a>
+        <a href="physics9_summary_u1.html?chapter=1" class="ex-btn ripple-btn" data-type="sum">
+            <span>Chapter 1</span>Summary
+        </a>
+    </div>
 
+    <!-- Chapter 2: Kinematics -->
     <div class="chapter-title">Chapter 2: Kinematics</div>
-    <div class="exercise-grid" id="ch2-grid"></div>
+    <div class="exercise-grid">
+        <a href="https://youtu.be/PLACEHOLDER_CH2_THEORY" target="_blank" class="ex-btn ripple-btn">
+            <span>Chapter 2</span>Theory Solution
+        </a>
+        <a href="https://youtu.be/PLACEHOLDER_CH2_NUM" target="_blank" class="ex-btn ripple-btn">
+            <span>Chapter 2</span>Numericals
+        </a>
+        <a href="mcq-practice.html?subject=physics9_u2&file=quiz_data_class9/class9_physics" class="ex-btn ripple-btn" data-type="mcq">
+            <span>Chapter 2</span>MCQs Prep
+        </a>
+        <a href="physics9_summary_u1.html?chapter=2" class="ex-btn ripple-btn" data-type="sum">
+            <span>Chapter 2</span>Summary
+        </a>
+    </div>
 
+    <!-- Chapter 3: Dynamics -->
     <div class="chapter-title">Chapter 3: Dynamics</div>
-    <div class="exercise-grid" id="ch3-grid"></div>
+    <div class="exercise-grid">
+        <a href="https://youtu.be/PLACEHOLDER_CH3_THEORY" target="_blank" class="ex-btn ripple-btn">
+            <span>Chapter 3</span>Theory Solution
+        </a>
+        <a href="https://youtu.be/PLACEHOLDER_CH3_NUM" target="_blank" class="ex-btn ripple-btn">
+            <span>Chapter 3</span>Numericals
+        </a>
+        <a href="mcq-practice.html?subject=physics9_u3&file=quiz_data_class9/class9_physics" class="ex-btn ripple-btn" data-type="mcq">
+            <span>Chapter 3</span>MCQs Prep
+        </a>
+        <a href="physics9_summary_u1.html?chapter=3" class="ex-btn ripple-btn" data-type="sum">
+            <span>Chapter 3</span>Summary
+        </a>
+    </div>
 
+    <!-- Chapter 4: Turning Effect of Forces -->
     <div class="chapter-title">Chapter 4: Turning Effect of Forces</div>
-    <div class="exercise-grid" id="ch4-grid"></div>
+    <div class="exercise-grid">
+        <a href="https://youtu.be/PLACEHOLDER_CH4_THEORY" target="_blank" class="ex-btn ripple-btn">
+            <span>Chapter 4</span>Theory Solution
+        </a>
+        <a href="https://youtu.be/PLACEHOLDER_CH4_NUM" target="_blank" class="ex-btn ripple-btn">
+            <span>Chapter 4</span>Numericals
+        </a>
+        <a href="mcq-practice.html?subject=physics9_u4&file=quiz_data_class9/class9_physics" class="ex-btn ripple-btn" data-type="mcq">
+            <span>Chapter 4</span>MCQs Prep
+        </a>
+        <a href="physics9_summary_u1.html?chapter=4" class="ex-btn ripple-btn" data-type="sum">
+            <span>Chapter 4</span>Summary
+        </a>
+    </div>
 
+    <!-- Chapter 5: Forces and Matter -->
     <div class="chapter-title">Chapter 5: Forces and Matter</div>
-    <div class="exercise-grid" id="ch5-grid"></div>
+    <div class="exercise-grid">
+        <a href="https://youtu.be/PLACEHOLDER_CH5_THEORY" target="_blank" class="ex-btn ripple-btn">
+            <span>Chapter 5</span>Theory Solution
+        </a>
+        <a href="https://youtu.be/PLACEHOLDER_CH5_NUM" target="_blank" class="ex-btn ripple-btn">
+            <span>Chapter 5</span>Numericals
+        </a>
+        <a href="mcq-practice.html?subject=physics9_u5&file=quiz_data_class9/class9_physics" class="ex-btn ripple-btn" data-type="mcq">
+            <span>Chapter 5</span>MCQs Prep
+        </a>
+        <a href="physics9_summary_u1.html?chapter=5" class="ex-btn ripple-btn" data-type="sum">
+            <span>Chapter 5</span>Summary
+        </a>
+    </div>
 
+    <!-- Chapter 6: Gravitation -->
     <div class="chapter-title">Chapter 6: Gravitation</div>
-    <div class="exercise-grid" id="ch6-grid"></div>
+    <div class="exercise-grid">
+        <a href="https://youtu.be/PLACEHOLDER_CH6_THEORY" target="_blank" class="ex-btn ripple-btn">
+            <span>Chapter 6</span>Theory Solution
+        </a>
+        <a href="https://youtu.be/PLACEHOLDER_CH6_NUM" target="_blank" class="ex-btn ripple-btn">
+            <span>Chapter 6</span>Numericals
+        </a>
+        <a href="mcq-practice.html?subject=physics9_u6&file=quiz_data_class9/class9_physics" class="ex-btn ripple-btn" data-type="mcq">
+            <span>Chapter 6</span>MCQs Prep
+        </a>
+        <a href="physics9_summary_u1.html?chapter=6" class="ex-btn ripple-btn" data-type="sum">
+            <span>Chapter 6</span>Summary
+        </a>
+    </div>
 
+    <!-- Chapter 7: Properties of Matter -->
     <div class="chapter-title">Chapter 7: Properties of Matter</div>
-    <div class="exercise-grid" id="ch7-grid"></div>
+    <div class="exercise-grid">
+        <a href="https://youtu.be/PLACEHOLDER_CH7_THEORY" target="_blank" class="ex-btn ripple-btn">
+            <span>Chapter 7</span>Theory Solution
+        </a>
+        <a href="https://youtu.be/PLACEHOLDER_CH7_NUM" target="_blank" class="ex-btn ripple-btn">
+            <span>Chapter 7</span>Numericals
+        </a>
+        <a href="mcq-practice.html?subject=physics9_u7&file=quiz_data_class9/class9_physics" class="ex-btn ripple-btn" data-type="mcq">
+            <span>Chapter 7</span>MCQs Prep
+        </a>
+        <a href="physics9_summary_u1.html?chapter=7" class="ex-btn ripple-btn" data-type="sum">
+            <span>Chapter 7</span>Summary
+        </a>
+    </div>
 
+    <!-- Chapter 8: Thermal Properties of Matter -->
     <div class="chapter-title">Chapter 8: Thermal Properties of Matter</div>
-    <div class="exercise-grid" id="ch8-grid"></div>
+    <div class="exercise-grid">
+        <a href="https://youtu.be/PLACEHOLDER_CH8_THEORY" target="_blank" class="ex-btn ripple-btn">
+            <span>Chapter 8</span>Theory Solution
+        </a>
+        <a href="https://youtu.be/PLACEHOLDER_CH8_NUM" target="_blank" class="ex-btn ripple-btn">
+            <span>Chapter 8</span>Numericals
+        </a>
+        <a href="mcq-practice.html?subject=physics9_u8&file=quiz_data_class9/class9_physics" class="ex-btn ripple-btn" data-type="mcq">
+            <span>Chapter 8</span>MCQs Prep
+        </a>
+        <a href="physics9_summary_u1.html?chapter=8" class="ex-btn ripple-btn" data-type="sum">
+            <span>Chapter 8</span>Summary
+        </a>
+    </div>
 
+    <!-- Chapter 9: Transfer of Heat -->
     <div class="chapter-title">Chapter 9: Transfer of Heat</div>
-    <div class="exercise-grid" id="ch9-grid"></div>
-
+    <div class="exercise-grid">
+        <a href="https://youtu.be/PLACEHOLDER_CH9_THEORY" target="_blank" class="ex-btn ripple-btn">
+            <span>Chapter 9</span>Theory Solution
+        </a>
+        <a href="https://youtu.be/PLACEHOLDER_CH9_NUM" target="_blank" class="ex-btn ripple-btn">
+            <span>Chapter 9</span>Numericals
+        </a>
+        <a href="mcq-practice.html?subject=physics9_u9&file=quiz_data_class9/class9_physics" class="ex-btn ripple-btn" data-type="mcq">
+            <span>Chapter 9</span>MCQs Prep
+        </a>
+        <a href="physics9_summary_u1.html?chapter=9" class="ex-btn ripple-btn" data-type="sum">
+            <span>Chapter 9</span>Summary
+        </a>
+    </div>
 </div>
 
 <script>
-    const chapters = [
-        { id: 1, title: "Physical Quantities" },
-        { id: 2, title: "Kinematics" },
-        { id: 3, title: "Dynamics" },
-        { id: 4, title: "Turning Effect" },
-        { id: 5, title: "Forces & Matter" },
-        { id: 6, title: "Gravitation" },
-        { id: 7, title: "Properties of Matter" },
-        { id: 8, title: "Thermal Properties" },
-        { id: 9, title: "Transfer of Heat" }
-    ];
+    document.addEventListener('DOMContentLoaded', () => {
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        const particlesContainer = document.getElementById('particles');
 
-    const categories = [
-        { id: 'theory', label: 'Theory Solution' },
-        { id: 'num', label: 'Numericals' },
-        { id: 'mcq', label: 'MCQs Prep' },
-        { id: 'sum', label: 'Summary' }
-    ];
+        if (!isMobile && window.matchMedia('(hover: hover)').matches) {
+            for (let i = 0; i < 8; i++) {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                const size = Math.random() * 25 + 12;
+                p.style.width = p.style.height = size + 'px';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 5 + 's';
+                p.style.animationDuration = Math.random() * 8 + 12 + 's';
+                particlesContainer.appendChild(p);
+            }
+        } else {
+            particlesContainer.style.display = 'none';
+        }
 
-    const channelLink = "https://www.youtube.com/@engineerkhurramali";
-
-    // Specific video links mapping: "chID_catID"
-    const videoLinks = {
-        // Example: "1_theory": "https://youtu.be/..."
-    };
-
-    function generateButtons() {
-        chapters.forEach(ch => {
-            const grid = document.getElementById(`ch${ch.id}-grid`);
-            if (!grid) return;
-
-            categories.forEach(cat => {
-                const btn = document.createElement('a');
-                btn.className = 'ex-btn';
-
-                if (cat.id === 'mcq') {
-                    btn.href = `mcq-practice.html?subject=physics9_u${ch.id}`;
-                    btn.dataset.type = 'mcq';
-                } else if (cat.id === 'sum') {
-                    btn.href = `physics9_summary_u1.html?chapter=${ch.id}`;
-                    btn.dataset.type = 'sum';
-                } else {
-                    const linkKey = `${ch.id}_${cat.id}`;
-                    btn.href = videoLinks[linkKey] || channelLink;
-                    btn.target = "_blank";
-                }
-
-                btn.innerHTML = `<span>Chapter ${ch.id}</span>${cat.label}`;
-                grid.appendChild(btn);
+        document.querySelectorAll('.ripple-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                this.appendChild(ripple);
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+                ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+                setTimeout(() => ripple.remove(), 500);
             });
         });
-    }
 
-    generateButtons();
+        if (window.matchMedia('(hover: hover)').matches && !/Android|iPhone|iPad/i.test(navigator.userAgent)) {
+            const container = document.querySelector('.main-container');
+            let ticking = false;
+
+            container.addEventListener('mousemove', (e) => {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        const rect = container.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        const cx = rect.width / 2, cy = rect.height / 2;
+                        const rx = (y - cy) / 50, ry = (cx - x) / 50;
+                        container.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+
+            container.addEventListener('mouseleave', () => {
+                container.style.transform = 'rotateX(0) rotateY(0)';
+            });
+        }
+    });
 </script>
 
 </body>
