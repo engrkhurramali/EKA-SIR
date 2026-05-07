@@ -128,13 +128,13 @@
     <div class="eng-list" id="eng-list"></div>
 </div>
 
-<script src="quiz_data_class8/quiz_data_class8.js"></script>
+<script src="quiz_data_class8/class8_english.js"></script>
 <script>
     const grade = 8;
     const list = document.getElementById('eng-list');
 
     if (window.QUIZ_DATA) {
-        const prefix = `class${grade}_eng_u`;
+        const prefix = `class${grade}_english_u`;
         const units = Object.keys(window.QUIZ_DATA)
             .filter(k => k.startsWith(prefix))
             .sort((a, b) => {
