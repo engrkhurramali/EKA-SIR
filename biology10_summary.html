@@ -13,6 +13,7 @@
             --text-dark: #1a5f7a;
             --border: rgba(255, 255, 255, 0.5);
             --accent: #ff6b6b;
+            --heading-bg: rgba(26, 95, 122, 0.9);
         }
 
         body {
@@ -25,16 +26,17 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
         }
 
         .main-container {
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
             background: var(--glass);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border-radius: 30px;
-            padding: 20px;
+            padding: 25px;
             border: 1px solid var(--border);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             box-sizing: border-box;
@@ -45,37 +47,64 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .back-btn {
             background: var(--glass-heavy);
-            padding: 8px 15px;
+            padding: 8px 18px;
             border-radius: 50px;
             text-decoration: none;
             color: var(--text-dark);
             font-weight: bold;
             border: 1px solid var(--border);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
+
+        .back-btn:hover { background: white; }
+
+        h1 { font-size: 1.3rem; text-align: center; margin: 0; text-transform: uppercase; color: var(--text-dark); font-weight: 800; letter-spacing: 1px; }
 
         .chapter-selector {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             border-radius: 15px;
             border: 1px solid var(--border);
-            background: white;
+            background: rgba(255, 255, 255, 0.8);
             color: var(--text-dark);
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             outline: none;
-            font-size: 0.95rem;
+            font-size: 1rem;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
         }
 
-        h1 { font-size: 1.2rem; text-align: center; margin: 0; text-transform: uppercase; color: var(--text-dark); }
-        h2 { font-size: 1.1rem; color: #fff; background: var(--text-dark); padding: 10px; border-radius: 10px; margin-top: 25px; text-align: center; }
-        h3 { font-size: 1rem; margin-top: 20px; color: #b71c1c; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 5px; }
+        h2 {
+            font-size: 1.2rem;
+            color: #fff;
+            background: var(--heading-bg);
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        h3 {
+            font-size: 1.05rem;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            color: #0c4a6e;
+            border-bottom: 2px solid rgba(255,255,255,0.5);
+            padding-bottom: 5px;
+            font-weight: 700;
+        }
 
         .content-section {
             display: none;
@@ -84,17 +113,37 @@
         .content-section.active { display: block; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .summary-card {
-            background: rgba(255, 255, 255, 0.4);
-            padding: 15px;
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 20px;
+            border-radius: 20px;
             margin-top: 15px;
-            line-height: 1.6;
-            border: 1px solid rgba(255,255,255,0.5);
+            line-height: 1.7;
+            border: 1px solid rgba(255,255,255,0.6);
+            font-size: 0.95rem;
+        }
+
+        .summary-card p { margin-bottom: 10px; }
+
+        .key-term {
+            background-color: rgba(255, 107, 107, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #8b0000;
+        }
+
+        ul { padding-left: 20px; margin-bottom: 10px; }
+        li { margin-bottom: 5px; }
+
+        /* Mobile optimization */
+        @media (max-width: 480px) {
+            .main-container { padding: 15px; }
+            h2 { font-size: 1.1rem; }
         }
     </style>
 </head>
@@ -102,8 +151,8 @@
 
 <div class="main-container">
     <div class="nav-header">
-        <a href="biology10_exercises.html" class="back-btn">⬅ Back</a>
-        <h1>Biology Class 10 Notes</h1>
+        <a href="biology10_exercises.html" class="back-btn">⬅ Exercises</a>
+        <h1>Biology Class 10</h1>
     </div>
 
     <select class="chapter-selector" id="chapterSelect" onchange="showChapter(this.value)">
@@ -118,113 +167,268 @@
         <option value="18">Chapter 18: Pharmacology</option>
     </select>
 
+    <!-- Chapter 10 -->
     <div id="chapter10" class="content-section active">
         <h2>CHAPTER 10: GASEOUS EXCHANGE</h2>
         <div class="summary-card">
             <h3>10.1 Gaseous Exchange in Plants</h3>
-            <p>Occurs through stomata in leaves, lenticels in stems, and general surface of roots.</p>
+            <p><strong>Definition:</strong> The exchange of gases (Oxygen and Carbon Dioxide) between an organism and its environment.</p>
+            <p>Plants exchange gases through:</p>
+            <ul>
+                <li><span class="key-term">Stomata:</span> Tiny pores in leaves surrounded by guard cells. They open during the day for photosynthesis.</li>
+                <li><span class="key-term">Lenticels:</span> Small openings in the bark of stems and roots of older plants.</li>
+            </ul>
             <h3>10.2 Human Respiratory System</h3>
-            <p>Air passes through: Nasal cavity → Pharynx → Larynx → Trachea → Bronchi → Bronchioles → Alveoli (site of exchange).</p>
+            <p>The pathway of air: <strong>Nasal Cavity → Pharynx → Larynx → Trachea → Bronchi → Bronchioles → Alveoli</strong>.</p>
+            <ul>
+                <li><strong>Lungs:</strong> Paired organs where gaseous exchange occurs. Left lung has 2 lobes, Right lung has 3.</li>
+                <li><strong>Alveoli:</strong> Microscopic air sacs where blood capillaries exchange O₂ and CO₂ via diffusion.</li>
+                <li><strong>Breathing Mechanism:</strong> Involves the contraction and relaxation of the diaphragm and intercostal muscles.</li>
+            </ul>
             <h3>10.3 Respiratory Disorders</h3>
-            <p>Bronchitis, Emphysema, Pneumonia, Asthma, Lung Cancer.</p>
+            <ul>
+                <li><strong>Bronchitis:</strong> Inflammation of bronchi caused by viruses or bacteria.</li>
+                <li><strong>Emphysema:</strong> Destruction of alveolar walls, reducing surface area for gas exchange (often caused by smoking).</li>
+                <li><strong>Pneumonia:</strong> Infection of lung tissues, usually caused by bacteria.</li>
+                <li><strong>Asthma:</strong> Inflammation and narrowing of airways causing difficulty in breathing.</li>
+            </ul>
         </div>
     </div>
 
+    <!-- Chapter 11 -->
     <div id="chapter11" class="content-section">
         <h2>CHAPTER 11: HOMEOSTASIS</h2>
         <div class="summary-card">
-            <h3>11.1 Definition</h3>
-            <p>Maintenance of internal body conditions at equilibrium despite changes in the external environment.</p>
+            <h3>11.1 Concept of Homeostasis</h3>
+            <p><strong>Definition:</strong> The maintenance of a constant internal environment of the body. This includes temperature regulation, water balance, and salt balance.</p>
+
             <h3>11.2 Osmoregulation</h3>
-            <p>Maintenance of water and salt balance in body fluids.</p>
+            <p>Maintenance of water and salt balance in body fluids. In humans, this is primarily performed by the kidneys.</p>
+
             <h3>11.3 Human Urinary System</h3>
-            <p>Kidneys, Ureters, Urinary Bladder, Urethra. The functional unit is the <strong>Nephron</strong>.</p>
+            <ul>
+                <li><strong>Kidneys:</strong> Bean-shaped organs that filter blood to remove urea, salts, and excess water.</li>
+                <li><strong>Ureters:</strong> Tubes carrying urine from kidneys to the bladder.</li>
+                <li><strong>Urinary Bladder:</strong> Sac-like structure that stores urine.</li>
+                <li><strong>Urethra:</strong> Tube through which urine is expelled from the body.</li>
+            </ul>
+            <p><span class="key-term">Nephron:</span> The structural and functional unit of the kidney. It consists of the renal corpuscle (Bowman's capsule + Glomerulus) and renal tubule.</p>
+
+            <h3>11.4 Kidney Disorders</h3>
+            <ul>
+                <li><strong>Kidney Stones:</strong> Hard deposits of minerals and salts that form inside the kidneys.</li>
+                <li><strong>Kidney Failure:</strong> When kidneys can no longer filter waste, treated by Dialysis or Transplant.</li>
+            </ul>
         </div>
     </div>
 
+    <!-- Chapter 12 -->
     <div id="chapter12" class="content-section">
         <h2>CHAPTER 12: COORDINATION AND CONTROL</h2>
         <div class="summary-card">
-            <h3>12.1 Coordination Types</h3>
-            <p><strong>Nervous Coordination:</strong> Rapid, electrical signals via neurons. <strong>Chemical Coordination:</strong> Slower, chemical signals via hormones.</p>
-            <h3>12.2 Human Brain</h3>
-            <p>Divided into Forebrain (Cerebrum, Thalamus, Hypothalamus), Midbrain, and Hindbrain (Cerebellum, Pons, Medulla Oblongata).</p>
+            <h3>12.1 Types of Coordination</h3>
+            <ul>
+                <li><strong>Nervous Coordination:</strong> Fast, electrical signals transmitted by the Nervous System.</li>
+                <li><strong>Chemical Coordination:</strong> Slower, chemical signals transmitted by Hormones (Endocrine System).</li>
+            </ul>
+
+            <h3>12.2 Human Nervous System</h3>
+            <p><strong>Neuron:</strong> The basic unit of the nervous system consisting of Cell Body, Dendrites, and Axon.</p>
+            <p><strong>Central Nervous System (CNS):</strong> Brain and Spinal Cord.</p>
+            <ul>
+                <li><strong>Forebrain:</strong> Cerebrum (Thinking, voluntary actions), Thalamus, Hypothalamus (Homeostasis center).</li>
+                <li><strong>Hindbrain:</strong> Cerebellum (Balance/Coordination), Medulla Oblongata (Involuntary functions like heartbeat).</li>
+            </ul>
+
             <h3>12.3 Reflex Action</h3>
-            <p>Immediate and involuntary response to a stimulus. The pathway is called a <strong>Reflex Arc</strong>.</p>
+            <p>An automatic, involuntary response to a stimulus (e.g., pulling hand from fire). The pathway is called the <strong>Reflex Arc</strong>.</p>
+
             <h3>12.4 Endocrine System</h3>
-            <p>Endocrine glands secrete hormones directly into blood (e.g., Insulin for glucose, Adrenaline for emergency).</p>
+            <p>Ductless glands that secrete hormones directly into the blood.</p>
+            <ul>
+                <li><strong>Pituitary Gland:</strong> Master gland (Growth hormone, etc.).</li>
+                <li><strong>Thyroid:</strong> Thyroxin (Metabolism).</li>
+                <li><strong>Adrenal:</strong> Adrenaline (Fight or flight response).</li>
+                <li><strong>Pancreas:</strong> Insulin (Lowers blood sugar) and Glucagon (Raises blood sugar).</li>
+            </ul>
         </div>
     </div>
+
+    <!-- Chapter 13 -->
     <div id="chapter13" class="content-section">
         <h2>CHAPTER 13: SUPPORT AND MOVEMENT</h2>
         <div class="summary-card">
             <h3>13.1 Human Skeleton</h3>
-            <p>Provides support, protection, and movement. Consists of 206 bones divided into Axial and Appendicular skeletons.</p>
+            <p>Provides support, protection, and aids movement. It consists of 206 bones.</p>
+            <ul>
+                <li><strong>Axial Skeleton:</strong> Skull, vertebral column, ribs (Protects CNS and organs).</li>
+                <li><strong>Appendicular Skeleton:</strong> Pectoral girdle, Pelvic girdle, Limbs (Aids locomotion).</li>
+            </ul>
+
             <h3>13.2 Bone and Cartilage</h3>
-            <p><strong>Bone:</strong> Hard, calcified connective tissue. <strong>Cartilage:</strong> Flexible and soft connective tissue found at joints.</p>
+            <ul>
+                <li><strong>Bone:</strong> Hard, non-flexible connective tissue with calcium deposits.</li>
+                <li><strong>Cartilage:</strong> Soft, flexible connective tissue found at joints and nose.</li>
+            </ul>
+
             <h3>13.3 Joints</h3>
-            <p>Points where bones meet. Types include Hinge joints (elbow) and Ball-and-socket joints (shoulder).</p>
-            <h3>13.4 Muscles and Movement</h3>
-            <p>Skeletal muscles work in pairs called <strong>antagonists</strong> (e.g., Biceps and Triceps).</p>
+            <p>The point where two or more bones meet.</p>
+            <ul>
+                <li><strong>Fibrous Joints:</strong> Immovable (Skull sutures).</li>
+                <li><strong>Cartilaginous Joints:</strong> Slightly movable (Vertebrae).</li>
+                <li><strong>Synovial Joints:</strong> Freely movable (Knee, Elbow). Types include Hinge, Ball-and-Socket, Pivot.</li>
+            </ul>
+
+            <h3>13.4 Muscles</h3>
+            <p>Muscles work in antagonistic pairs (one contracts while the other relaxes) to move bones. E.g., Biceps and Triceps.</p>
         </div>
     </div>
+
+    <!-- Chapter 14 -->
     <div id="chapter14" class="content-section">
         <h2>CHAPTER 14: REPRODUCTION</h2>
         <div class="summary-card">
             <h3>14.1 Asexual Reproduction</h3>
-            <p>Involves one parent. Types: Binary fission, Budding, Spore formation, and Vegetative propagation.</p>
+            <p>Involves one parent; offspring are genetically identical. Common in plants and lower animals.</p>
+            <ul>
+                <li><strong>Methods:</strong> Binary Fission, Budding, Spore Formation, Fragmentation, Vegetative Propagation (Cuttings, Grafting).</li>
+            </ul>
+
             <h3>14.2 Sexual Reproduction in Plants</h3>
-            <p>Involves flowers. Pollination is the transfer of pollen grains. Fertilization leads to seed formation.</p>
+            <ul>
+                <li><strong>Pollination:</strong> Transfer of pollen grains from anther to stigma. Types: Self-pollination, Cross-pollination (Wind/Insect).</li>
+                <li><strong>Fertilization:</strong> Fusion of male and female gametes to form a zygote.</li>
+            </ul>
+
             <h3>14.3 Human Reproduction</h3>
-            <p>Involves the production of gametes (Sperm and Egg). Fertilization results in a Zygote.</p>
+            <p><strong>Male System:</strong> Testes produce sperm. <strong>Female System:</strong> Ovaries produce eggs. <strong>Ovulation:</strong> Release of an egg from the ovary.</p>
+            <p>Fertilization occurs in the oviduct (Fallopian tube). The developing embryo implants in the uterus.</p>
+
+            <h3>14.4 Reproductive Health</h3>
+            <ul>
+                <li><strong>STDs:</strong> Sexually Transmitted Diseases (e.g., AIDS, Hepatitis, Syphilis).</li>
+                <li><strong>Family Planning:</strong> Methods to control birth rates (Contraceptives).</li>
+            </ul>
         </div>
     </div>
+
+    <!-- Chapter 15 -->
     <div id="chapter15" class="content-section">
         <h2>CHAPTER 15: INHERITANCE</h2>
         <div class="summary-card">
-            <h3>15.1 Genetics</h3>
-            <p>Study of heredity. Genes are segments of DNA located on chromosomes that carry traits.</p>
+            <h3>15.1 Genetics and Mendel</h3>
+            <p><strong>Gregor Mendel:</strong> Father of Genetics. He worked on pea plants.</p>
+            <ul>
+                <li><strong>Gene:</strong> Unit of heredity controlling a trait.</li>
+                <li><strong>Allele:</strong> Alternative form of a gene.</li>
+                <li><strong>Genotype:</strong> Genetic makeup (e.g., TT, Tt, tt).</li>
+                <li><strong>Phenotype:</strong> Physical appearance (e.g., Tall, Dwarf).</li>
+                <li><strong>Dominant:</strong> Trait that masks the other (Tall).</li>
+                <li><strong>Recessive:</strong> Trait that is masked (Dwarf).</li>
+            </ul>
+
             <h3>15.2 Mendel's Laws</h3>
-            <p><strong>Law of Segregation:</strong> Alleles separate during gamete formation. <strong>Law of Independent Assortment:</strong> Different traits are inherited independently.</p>
-            <h3>15.3 DNA and Variations</h3>
-            <p>DNA is a double helix. Variations are differences among individuals of the same species.</p>
+            <ul>
+                <li><strong>Law of Segregation:</strong> Alleles separate during gamete formation.</li>
+                <li><strong>Law of Independent Assortment:</strong> Genes for different traits are inherited independently.</li>
+            </ul>
+
+            <h3>15.3 Sex Determination</h3>
+            <p>Humans have 46 chromosomes. Sex is determined by the 23rd pair (XX = Female, XY = Male). Since males produce X and Y sperm, the father determines the sex of the child.</p>
+
+            <h3>15.4 Co-Dominance</h3>
+            <p>When neither allele is dominant, and both are expressed (e.g., Blood group AB).</p>
         </div>
     </div>
+
+    <!-- Chapter 16 -->
     <div id="chapter16" class="content-section">
         <h2>CHAPTER 16: MAN AND HIS ENVIRONMENT</h2>
         <div class="summary-card">
-            <h3>16.1 Ecosystem</h3>
-            <p>A community of living organisms interacting with their physical environment.</p>
+            <h3>16.1 Ecosystem Components</h3>
+            <ul>
+                <li><strong>Abiotic Factors:</strong> Non-living (Light, Water, Temperature, Soil).</li>
+                <li><strong>Biotic Factors:</strong> Living organisms classified as:</li>
+                <ul>
+                    <li><strong>Producers:</strong> Autotrophs (Plants) making food via photosynthesis.</li>
+                    <li><strong>Consumers:</strong> Heterotrophs (Herbivores, Carnivores, Omnivores).</li>
+                    <li><strong>Decomposers:</strong> Bacteria and Fungi that break down dead matter.</li>
+                </ul>
+            </ul>
+
             <h3>16.2 Flow of Energy</h3>
-            <p>Energy flows from Producers (plants) to Consumers (animals). Food chains and webs illustrate this.</p>
+            <ul>
+                <li><strong>Food Chain:</strong> Linear sequence of feeding (Grass → Rabbit → Fox).</li>
+                <li><strong>Food Web:</strong> Interconnected food chains.</li>
+                <li><strong>Pyramid of Biomass:</strong> Energy decreases as we move up trophic levels.</li>
+            </ul>
+
             <h3>16.3 Biogeochemical Cycles</h3>
-            <p>Cycles like Carbon and Nitrogen cycles ensure the recycling of nutrients in nature.</p>
+            <ul>
+                <li><strong>Water Cycle:</strong> Evaporation, Transpiration, Condensation, Precipitation.</li>
+                <li><strong>Carbon Cycle:</strong> Carbon moves between atmosphere (CO₂), plants, animals, and soil.</li>
+                <li><strong>Nitrogen Cycle:</strong> Nitrogen fixation (by bacteria), Nitrification, Denitrification.</li>
+            </ul>
+
             <h3>16.4 Ecological Issues</h3>
-            <p>Pollution, Deforestation, Global Warming, and the Greenhouse Effect.</p>
+            <p>Pollution (Air, Water, Soil), Deforestation, Global Warming (Greenhouse effect due to increased CO₂ and Methane), and Acid Rain.</p>
         </div>
     </div>
+
+    <!-- Chapter 17 -->
     <div id="chapter17" class="content-section">
         <h2>CHAPTER 17: BIOTECHNOLOGY</h2>
         <div class="summary-card">
             <h3>17.1 Introduction</h3>
-            <p>The use of living organisms or biological systems to develop products for human benefit.</p>
+            <p><strong>Definition:</strong> The use of living organisms or biological systems to create useful products for humans.</p>
+            <p><strong>Traditional Biotech:</strong> Fermentation (Yogurt, Bread, Alcohol). <strong>Modern Biotech:</strong> Genetic Engineering.</p>
+
             <h3>17.2 Fermentation</h3>
-            <p>Process using microbes to produce food (yogurt, bread) and industrial products (alcohol, vitamins).</p>
+            <p>An anaerobic process by microbes to convert carbohydrates into alcohol or acids. Used in making cheese, yogurt, vinegar, and bread.</p>
+
             <h3>17.3 Genetic Engineering</h3>
-            <p>Technique of altering the DNA of an organism to introduce desirable traits.</p>
-            <h3>17.4 Single Cell Protein</h3>
-            <p>Protein-rich food produced by microorganisms like bacteria, algae, or fungi.</p>
+            <p>Techniques to alter DNA.</p>
+            <ul>
+                <li><strong>Recombinant DNA:</strong> DNA formed by combining genetic material from different sources.</li>
+                <li><strong>Transgenic Organisms:</strong> Organisms containing foreign DNA (e.g., Golden Rice, Bt Cotton, Transgenic mice).</li>
+            </ul>
+
+            <h3>17.4 Single Cell Protein (SCP)</h3>
+            <p>Protein-rich food produced from microorganisms like algae, bacteria, and fungi. High in protein and vitamins; used to combat malnutrition.</p>
+
+            <h3>17.5 Applications in Medicine</h3>
+            <p>Production of Insulin (for diabetics), Growth Hormone, and Hepatitis vaccines using genetically modified bacteria.</p>
         </div>
     </div>
+
+    <!-- Chapter 18 -->
     <div id="chapter18" class="content-section">
         <h2>CHAPTER 18: PHARMACOLOGY</h2>
         <div class="summary-card">
             <h3>18.1 Medicinal Drugs</h3>
-            <p>Used to treat or prevent diseases. Sources include plants, animals, minerals, and synthetics.</p>
+            <p><strong>Definition:</strong> A substance used to treat, cure, or prevent diseases. Sources include Plants, Animals, Minerals, and Synthetics.</p>
+
             <h3>18.2 Addictive Drugs</h3>
-            <p>Drugs that cause physical or mental dependence, such as Narcotics and Sedatives.</p>
-            <h3>18.3 Antibiotics and Vaccines</h3>
-            <p><strong>Antibiotics:</strong> Kill or inhibit bacteria. <strong>Vaccines:</strong> Stimulate immunity against specific diseases.</p>
+            <p>Drugs that cause physical or psychological dependence.</p>
+            <ul>
+                <li><strong>Narcotics:</strong> Painkillers derived from Opium (Morphine, Heroin). Highly addictive, cause drowsiness and respiratory depression.</li>
+                <li><strong>Sedatives:</strong> Depress the central nervous system to induce sleep (Barbiturates, Diazepam).</li>
+            </ul>
+
+            <h3>18.3 Antibiotics</h3>
+            <p>Medicines that kill or inhibit the growth of bacteria.</p>
+            <ul>
+                <li><strong>Broad Spectrum:</strong> Effective against many types of bacteria.</li>
+                <li><strong>Narrow Spectrum:</strong> Effective against specific bacteria.</li>
+                <li><em>Example:</em> Penicillin (from Penicillium fungus), Cephalosporins.</li>
+            </ul>
+
+            <h3>18.4 Vaccines</h3>
+            <p><strong>Definition:</strong> Biological preparation that provides active acquired immunity to a particular infectious disease. It contains a killed or weakened form of the germ.</p>
+            <p><strong>Examples:</strong> Polio vaccine, BCG (Tuberculosis), Measles vaccine, Hepatitis B vaccine.</p>
+
+            <h3>18.5 Drug Misuse</h3>
+            <p>Using drugs inappropriately without prescription or taking overdose leads to toxicity and organ failure.</p>
         </div>
     </div>
 
@@ -232,17 +436,23 @@
 
 <script>
     function showChapter(chId) {
+        // Hide all sections
         const sections = document.querySelectorAll('.content-section');
         sections.forEach(s => s.classList.remove('active'));
 
+        // Show selected section
         const selected = document.getElementById('chapter' + chId);
         if (selected) {
             selected.classList.add('active');
+            // Update dropdown to match
             document.getElementById('chapterSelect').value = chId;
         }
+
+        // Scroll to top smoothly
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // Check URL for direct chapter link on load
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
         const chapter = urlParams.get('chapter');

@@ -164,6 +164,13 @@
             transition: background 0.4s ease;
         }
 
+        /* Apply this to Urdu text containers */
+.urdu-text {
+    font-family: 'Jameel Noori Nastaleeq', 'Urdu Typesetting', serif;
+    direction: rtl;
+    line-height: 1.8;
+}
+
         .main-container {
             width: 100%;
             max-width: 600px;
@@ -648,19 +655,30 @@ function planAutoAdvance() {
     }, delayValue);
 }
 
-function loadQuestion(index) {
-    if (isFinished) return;
-    if (!questions || questions.length === 0) return;
-    if (index < 0 || index >= questions.length) return;
+    function loadQuestion(index) {
+        if (isFinished) return;
+        if (!questions || questions.length === 0) return;
+        if (index < 0 || index >= questions.length) return;
 
-    currentQuestion = index;
-    const q = questions[index];
+        currentQuestion = index;
+        const q = questions[index];
 
-    // Update UI
-    document.getElementById('questionText').textContent = `${index + 1}. ${q.question}`;
+        const isUrdu = subjectParam.toLowerCase().includes('urdu') || subjectParam.toLowerCase().includes('sindhi');
+        const questionText = document.getElementById('questionText');
+        const optionsList = document.getElementById('optionsList');
 
-    const optionsList = document.getElementById('optionsList');
-    optionsList.innerHTML = '';
+        if (isUrdu) {
+            questionText.classList.add('urdu-text');
+            optionsList.classList.add('urdu-text');
+        } else {
+            questionText.classList.remove('urdu-text');
+            optionsList.classList.remove('urdu-text');
+        }
+
+        // Update UI
+        questionText.textContent = `${index + 1}. ${q.question}`;
+
+        optionsList.innerHTML = '';
 
     q.options.forEach((opt, i) => {
         const btn = document.createElement('button');

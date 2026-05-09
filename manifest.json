@@ -1,0 +1,21 @@
+{
+  "name": "EKA SIR",
+  "short_name": "EKA SIR",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#1e3c72",
+  "theme_color": "#1e3c72",
+  "description": "Educational App for Grades KG to 10 - Notes, MCQs and Games.",
+  "icons": [
+    {
+      "src": "eks_sir_logo_92.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "eks_sir_logo_512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
