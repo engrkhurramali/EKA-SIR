@@ -1,93 +1,93 @@
 window.QUIZ_DATA = window.QUIZ_DATA || {};
 Object.assign(window.QUIZ_DATA, {
     "urdu10_u1": {
-        "title": "URDU 10 | UNIT 01",
-        "subtitle": "Hamd",
-        "tsv": `Urdu Hamd ke shair?	Hafeez Jalandhari	Iqbal	Ghalib	None	A
-Allah ki shan?	Be-misal	Mamoli	None	None	A
-Hamd mein kis ki tareef hoti hai?	Allah ki	Nabi ki	Watan ki	None	A
-Do jahan ka malik?	Allah	Insan	Farishta	None	A
-Khaliq-e-kainat?	Allah	Suraj	Chand	None	A`
+        "title": "اردو 10 | یونٹ 01",
+        "subtitle": "حمد",
+        "tsv": `اردو حمد کے شاعر کون ہیں؟	حفیظ جالندھری	علامہ اقبال	مرزا غالب	کوئی نہیں	A
+اللہ کی شان کیسی ہے؟	بے مثال	معمولی	کوئی نہیں	کوئی نہیں	A
+حمد میں کس کی تعریف ہوتی ہے؟	اللہ کی	نبی کی	وطن کی	کوئی نہیں	A
+دو جہاں کا مالک کون ہے؟	اللہ تعالیٰ	انسان	فرشتہ	کوئی نہیں	A
+خالقِ کائنات کون ہے؟	اللہ تعالیٰ	سورج	چاند	کوئی نہیں	A`
     },
     "urdu10_u2": {
-        "title": "URDU 10 | UNIT 02",
-        "subtitle": "Naat",
-        "tsv": `Naat mein tareef hoti hai?	Hazrat Muhammad (SAW) ki	Allah ki	Walidain ki	None	A
-Nabi (SAW) ka mukan?	Sab se ooncha	Mamoli	None	None	A
-Hadi-e-bar-haq?	Nabi Muhammad (SAW)	Abu Jahal	None	None	A
-Rehmat-e-alam?	Nabi Muhammad (SAW)	Insaan	None	None	A
-Naat-khwan?	Naat parhne wala	Ghazal khan	None	None	A`
+        "title": "اردو 10 | یونٹ 02",
+        "subtitle": "نعت",
+        "tsv": `نعت میں کس کی تعریف ہوتی ہے؟	حضرت محمد ﷺ کی	اللہ کی	والدین کی	کوئی نہیں	A
+نبی ﷺ کا مکان کیسا ہے؟	سب سے اونچا	معمولی	کوئی نہیں	کوئی نہیں	A
+ہادیِ برحق کون ہیں؟	نبی کریم ﷺ	ابوجہل	کوئی نہیں	کوئی نہیں	A
+رحمتِ عالم کون ہیں؟	نبی کریم ﷺ	انسان	کوئی نہیں	کوئی نہیں	A
+نعت خواں کسے کہتے ہیں؟	نعت پڑھنے والا	غزل خواں	کوئی نہیں	کوئی نہیں	A`
     },
     "urdu10_u3": {
-        "title": "URDU 10 | UNIT 03",
-        "subtitle": "Nazria-e-Pakistan",
-        "tsv": `Pakistan ka nazria?	Islam	Sarmayadari	Ishtirakiat	None	A
-Do-Qaumi Nazria?	Sir Syed Ahmed Khan	Gandhi	Nehru	None	A
-Pakistan kyun bana?	Islami tarz-e-hayat ke liye	Sair ke liye	Jung ke liye	None	A
-Musulmano ki alag pehchan?	Mazhab	Zuban	Libaas	None	A
-Watan ki hifazat?	Farz hai	Mana hai	None	None	A`
+        "title": "اردو 10 | یونٹ 03",
+        "subtitle": "نظریہ پاکستان",
+        "tsv": `پاکستان کا نظریہ کیا ہے؟	اسلام	سرمایہ داری	اشتراکیت	کوئی نہیں	A
+دو قومی نظریہ کس نے پیش کیا؟	سر سید احمد خان	گاندھی	نہرو	کوئی نہیں	A
+پاکستان کیوں بنا؟	اسلامی طرزِ حیات کے لیے	سیر کے لیے	جنگ کے لیے	کوئی نہیں	A
+مسلمانوں کی الگ پہچان کیا ہے؟	مذہب	زبان	لباس	کوئی نہیں	A
+وطن کی حفاظت کرنا کیا ہے؟	فرض ہے	منع ہے	کوئی نہیں	کوئی نہیں	A`
     },
     "urdu10_u4": {
-        "title": "URDU 10 | UNIT 04",
-        "subtitle": "Paristan ki Shahzadi",
-        "tsv": `Paristan ki Shahzadi kis ne likha?	Ashraf Saboohi	Ghalib	Iqbal	None	A
-Sayyidani Bi kon thi?	Ek dunya-dar aurat	Ustadni	Daik-dar	None	A
-Paristan mein kya tha?	Ajaibat	Sehra	Darya	None	A
-Shahzadi ka naam?	Gul-nar	Zeb-un-Nisa	None	None	A
-Sayyidani Bi kahan gai thi?	Paristan	Lahore	Karachi	None	A`
+        "title": "اردو 10 | یونٹ 04",
+        "subtitle": "پرستان کی شہزادی",
+        "tsv": `پرستان کی شہزادی کس نے لکھا؟	اشرف صبوحی	غالب	اقبال	کوئی نہیں	A
+سیدانی بی کون تھیں؟	ایک تجربہ کار خاتون	استانی	دیگ دار	کوئی نہیں	A
+پرستان میں کیا تھا؟	عجائبات	صحرا	دریا	کوئی نہیں	A
+شہزادی کا نام کیا تھا؟	گل نار	زیب النساء	کوئی نہیں	کوئی نہیں	A
+سیدانی بی کہاں گئی تھیں؟	پرستان	لاہور	کراچی	کوئی نہیں	A`
     },
     "urdu10_u5": {
-        "title": "URDU 10 | UNIT 05",
-        "subtitle": "Mujhe Mere Doston se Bachao",
-        "tsv": `Ye afsana kis ne likha?	Sajjad Haider Yaldram	Prem Chand	Hali	None	A
-Musannif ko kis se shikayat hai?	Doston se	Dushmano se	Bachon se	None	A
-Dost musannif ka kya zaya karte hain?	Waqt	Paisa	Sehat	None	A
-Ahmed Mirza kaise dost hain?	Bohot bolne wale	Khamosh	Dushman	None	A
-Afsane ka markazi khayal?	Dost aur waqt ki qadar	Dushmani	None	None	A`
+        "title": "اردو 10 | یونٹ 05",
+        "subtitle": "مجھے میرے دوستوں سے بچاؤ",
+        "tsv": `یہ افسانہ کس نے لکھا ہے؟	سجاد حیدر یلدرم	پریم چند	حالی	کوئی نہیں	A
+مصنف کو کس سے شکایت ہے؟	دوستوں سے	دشمنوں سے	بچوں سے	کوئی نہیں	A
+دوست مصنف کا کیا ضائع کرتے ہیں؟	وقت	پیسہ	صحت	کوئی نہیں	A
+احمد مرزا کیسے دوست ہیں؟	بہت بولنے والے	خاموش طبع	دشمن	کوئی نہیں	A
+افسانے کا مرکزی خیال کیا ہے؟	دوست اور وقت کی قدر	دشمنی	کوئی نہیں	کوئی نہیں	A`
     },
     "urdu10_u6": {
-        "title": "URDU 10 | UNIT 06",
-        "subtitle": "Nam Deo Mali",
-        "tsv": `Nam Deo Mali kis ne likha?	Molvi Abdul Haq	Ghalib	Iqbal	None	A
-Nam Deo ka kaam kya تھا?	Baghbani	Darzi	Lohar	None	A
-Mali apne kaam se?	Mohabbat karta tha	Nafrat	Thak jata tha	None	A
-Nam Deo ki maut kaise hui?	Shahad ki makkhiyo se	Beemari se	Burehape se	None	A
-Nam Deo ko 'Baba-e-Urdu' ne kya kaha?	Nek insan	Bura	Sust	None	A`
+        "title": "اردو 10 | یونٹ 06",
+        "subtitle": "نام دیو مالی",
+        "tsv": `نام دیو مالی کس نے لکھا ہے؟	مولوی عبدالحق	غالب	اقبال	کوئی نہیں	A
+نام دیو کا کام کیا تھا؟	باغبانی	درزی	لوہار	کوئی نہیں	A
+ملی اپنے کام سے کیا کرتا تھا؟	محبت کرتا تھا	نفرت	تھک جاتا تھا	کوئی نہیں	A
+نام دیو کی موت کیسے ہوئی؟	شہد کی مکھیوں سے	بیماری سے	بڑھاپے سے	کوئی نہیں	A
+نام دیو کو 'بابائے اردو' نے کیا کہا؟	نیک انسان	برا	سست	کوئی نہیں	A`
     },
     "urdu10_u7": {
-        "title": "URDU 10 | UNIT 07",
-        "subtitle": "Ali Bakhsh",
-        "tsv": `Ali Bakhsh kon تھا?	Allama Iqbal ka khadim	Shair	Ustad	None	A
-Ye khaka kis ne likha?	Qudratullah Shahab	Ghalib	Iqbal	None	A
-Ali Bakhsh Iqbal ko kya kehte the?	Dr. Sahab	Ustad	Bhai	None	A
-Iqbal ki sadgi ka zikr hai?	Han	Nahi	Pata nahi	None	A
-Ali Bakhsh kahan ka rehne wala tha?	Punjab	Sindh	Kashmir	None	A`
+        "title": "اردو 10 | یونٹ 07",
+        "subtitle": "علی بخش",
+        "tsv": `علی بخش کون تھا؟	علامہ اقبال کا خادم	شاعر	استاد	کوئی نہیں	A
+یہ خاکہ کس نے لکھا ہے؟	قدرت اللہ شہاب	غالب	اقبال	کوئی نہیں	A
+علی بخش اقبال کو کیا کہتے تھے؟	ڈاکٹر صاحب	استاد	بھائی	کوئی نہیں	A
+اقبال کی سادگی کا ذکر ہے؟	ہاں	نہیں	پتہ نہیں	کوئی نہیں	A
+علی بخش کہاں کا رہنے والا تھا؟	پنجاب	سندھ	کشمیر	کوئی نہیں	A`
     },
     "urdu10_u8": {
-        "title": "URDU 10 | UNIT 08",
-        "subtitle": "Fatima Bint-e-Abdullah",
-        "tsv": `Ye nazam kis ne likhi?	Allama Iqbal	Hali	Akbar Allahabadi	None	A
-Fatima kahan shaheed hui?	Jung-e-Trablus	Badr	Uhud	None	A
-Fatima kya kar rahi thi?	Ghaziyo ko pani pila rahi thi	Jung	Parhai	None	A
-Iqbal ne Fatima ko kya kaha?	Ummat ki abru	Beti	Behen	None	A
-Fatima ki umer kya thi?	Choti umer	Bari umer	None	None	A`
+        "title": "اردو 10 | یونٹ 08",
+        "subtitle": "فاطمہ بنتِ عبداللہ",
+        "tsv": `یہ نظم کس نے لکھی ہے؟	علامہ اقبال	حالی	اکبر الہ آبادی	کوئی نہیں	A
+فاطمہ کہاں شہید ہوئی؟	جنگِ طرابلس	بدر	احد	کوئی نہیں	A
+فاطمہ کیا کر رہی تھی؟	غازیوں کو پانی پلا رہی تھی	جنگ	پڑھائی	کوئی نہیں	A
+اقبال نے فاطمہ کو کیا کہا؟	امت کی آبرو	بیٹی	بہن	کوئی نہیں	A
+فاطمہ کی عمر کیا تھی؟	چھوٹی عمر	بڑی عمر	کوئی نہیں	کوئی نہیں	A`
     },
     "urdu10_u9": {
-        "title": "URDU 10 | UNIT 09",
-        "subtitle": "Kisaan",
-        "tsv": `Kisaan nazam kis ki hai?	Josh Malihabadi	Iqbal	Hali	None	A
-Kisaan ko kya kaha gaya?	Irtiqaa ka peshwa	Sust	Ghareeb	None	A
-Kisaan kahan kaam karta hai?	Khet mein	Daftar	Ghar	None	A
-Kisaan ki mehnat?	Zindgi ki alamat	Fazool	None	None	A
-Subah sawere kisan kahan jata hai?	Khet	Bazar	Sone	None	A`
+        "title": "اردو 10 | یونٹ 09",
+        "subtitle": "کسان",
+        "tsv": `کسان نظم کس کی ہے؟	جوش ملیح آبادی	اقبال	حالی	کوئی نہیں	A
+کسان کو کیا کہا گیا ہے؟	ارتقاء کا پیشوا	سست	غریب	کوئی نہیں	A
+کسان کہاں کام کرتا ہے؟	کھیت میں	دفتر	گھر	کوئی نہیں	A
+کسان کی محنت کیا ہے؟	زندگی کی علامت	فضول	کوئی نہیں	کوئی نہیں	A
+صبح سویرے کسان کہاں جاتا ہے؟	کھیت	بازار	سونے	کوئی نہیں	A`
     },
     "urdu10_u10": {
-        "title": "URDU 10 | UNIT 10",
-        "subtitle": "Ghazal (Jigar Muradabadi)",
-        "tsv": `Jigar Muradabadi ki ghazal ka mauzu?	Ishq-o-Muhabbat	Jung	Siasat	None	A
-Jigar ka asal naam?	Ali Sikandar	Ahmed	Ali	None	A
-Ghazal ka pehla sher?	Matla	Maqta	Radeef	None	A
-Ghazal ka akhri sher?	Maqta	Matla	Qafia	None	A
-Jigar kis daur ke shair hain?	Jadeed	Qadeem	None	None	A`
+        "title": "اردو 10 | یونٹ 10",
+        "subtitle": "غزل (جگر مراد آبادی)",
+        "tsv": `جگر مراد آبادی کی غزل کا موضوع؟	عشق و محبت	جنگ	سیاست	کوئی نہیں	A
+جگر کا اصل نام کیا ہے؟	علی سکندر	احمد	علی	کوئی نہیں	A
+غزل کا پہلا شعر کیا کہلاتا ہے؟	مطلع	مقطع	ردیف	کوئی نہیں	A
+غزل کا آخری شعر کیا کہلاتا ہے؟	مقطع	مطلع	قافیہ	کوئی نہیں	A
+جگر کس دور کے شاعر ہیں؟	جدید	قدیم	کوئی نہیں	کوئی نہیں	A`
     }
 });
