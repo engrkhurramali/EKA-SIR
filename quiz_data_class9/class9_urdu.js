@@ -1,33 +1,32 @@
 window.QUIZ_DATA = window.QUIZ_DATA || {};
 Object.assign(window.QUIZ_DATA, {
-       "urdu9_u1": {
-           "title": "URDU 9 | UNIT 01",
-           "subtitle": "Hamd",
-           "tsv": `Hamd ke shair?	Altaf Hussain Hali	Iqbal	Ghalib	None	A
-   Khuda ki tareef?	Hamd	Naat	Ghazal	None	A
-   Kainat ka nizam?	Allah chala raha hai	Insaan	Farishta	None	A
-   Hamd mein pehli cheez?	Allah ki wahdaniat	Nabi ki tareef	None	None	A
-   Hali ka tarz-e-tehreer?	Sada aur asar-angeez	Mushkil	None	None	A`
-       },
+    "urdu9_u1": {
+        "title": "اردو 9 | یونٹ 01",
+        "subtitle": "حمد",
+        "tsv": `حمد کے شاعر کون ہیں؟	الطاف حسین حالی	علامہ اقبال	مرزا غالب	کوئی نہیں	A
+جس نظم میں اللہ تعالیٰ کی تعریف کی جائے اسے کیا کہتے ہیں؟	حمد	نعت	غزل	قصیدہ	A
+کائنات کا نظام کون چلا رہا ہے؟	اللہ تعالیٰ	انسان	فرشتے	بادشاہ	A
+حمد میں پہلی چیز کیا بیان کی گئی ہے؟	اللہ کی وحدانیت	نبی کی تعریف	خلقِ خدا	کوئی نہیں	A
+حالی کا طرزِ تحریر کیسا ہے؟	سادہ اور اثر انگیز	مشکل	پیچیدہ	قدیم	A`
+    },
 
-       "urdu9_u2": {
-           "title": "URDU 9 | UNIT 02",
-           "subtitle": "Naat",
-           "tsv": `Naat ke shair?	Amir Meenai	Hali	Iqbal	None	A
-   Saba kahan se aati hai?	Madina se	Makkah se	Lahore se	None	A
-   Nabi (SAW) ka rasta?	Sidha rasta	Mushkil	None	None	A
-   Gham-khwar?	Nabi Muhammad (SAW)	Dushman	None	None	A
-   Naat mein saba ka zikr?	Khush-khabri ke liye	Jung ke liye	None	None	A`
-       },
+    "urdu9_u2": {
+        "title": "اردو 9 | یونٹ 02",
+        "subtitle": "نعت",
+        "tsv": `نعت کے شاعر کون ہیں؟	امیر مینائی	حالی	اقبال	غالب	A
+صبا کہاں سے آتی ہے؟	مدینہ سے	مکہ سے	طائف سے	یمن سے	A
+نبی ﷺ کا راستہ کیسا ہے؟	سیدھا راستہ	مشکل راستہ	ٹیڑھا راستہ	کوئی نہیں	A
+غم خوار سے کون مراد ہے؟	نبی کریم ﷺ	دشمن	عام انسان	فرشتہ	A
+نعت میں صبا کا ذکر کس لیے ہے؟	خوشخبری کے لیے	جنگ کے لیے	بارش کے لیے	خوف کے لیے	A`
+    },
 
-       "urdu9_u3": {
-           "title": "URDU 9 | UNIT 03",
-           "subtitle": "Hijrat-e-Nabwi (SAW)",
-           "tsv": `Hijrat kahan ki taraf hui?	Madina	Makkah	Taif	Habsha	A
-   Sura-e-Saur mein kon tha?	Abu Bakr (RA)	Umar (RA)	Ali (RA)	None	A
-   Hazrat Ali (RA) kahan soye?	Nabi (SAW) ke bistar par	Ghaar mein	None	None	A
-   Kuffar ne kya kiya?	Qatal ki sazish	Khamosh rahe	Madad ki	None	A
-   Suraqa bin Malik?	Pichha karne wala	Dost	None	None	A`
-       }
-
+    "urdu9_u3": {
+        "title": "اردو 9 | یونٹ 03",
+        "subtitle": "ہجرتِ نبوی ﷺ",
+        "tsv": `ہجرت کہاں کی طرف ہوئی؟	مدینہ منورہ	مکہ مکرمہ	طائف	حبشہ	A
+غارِ ثور میں آپ ﷺ کے ساتھ کون تھا؟	حضرت ابوبکر صدیقؓ	حضرت عمرؓ	حضرت علیؓ	حضرت عثمانؓ	A
+حضرت علیؓ ہجرت کی رات کہاں سوئے؟	نبی ﷺ کے بستر پر	غار میں	مسجد میں	گھر کے باہر	A
+کفار نے دارالندوہ میں کیا کیا؟	قتل کی سازش	خاموش رہے	مدد کی	صلح کی	A
+سراقہ بن مالک کون تھا؟	پیچھا کرنے والا	قریبی دوست	رہنما	خادم	A`
+    }
 });
