@@ -1,43 +1,67 @@
-const CACHE_NAME = 'ekasir-v1';
-const ASSETS = [
+const CACHE_NAME = 'ekasir-cache-v3';
+
+// Core assets to cache immediately
+const PRE_CACHE_ASSETS = [
     './',
     './index.html',
+    './manifest.json',
     './notes.html',
     './test.html',
     './games.html',
     './mcq-practice.html',
     './mcq_test.html',
+    './chapter_select.html',
+    './vocabulary.js',
+    './info.html',
     './calculator.html',
     './unitconverter.html',
-    './info.html',
-    './manifest.json'
+    './eks_sir_logo_92.png',
+    './eks_sir_logo_512.png'
 ];
 
 // Install Event
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            return cache.addAll(ASSETS);
+            return cache.addAll(PRE_CACHE_ASSETS);
         })
     );
+    self.skipWaiting();
 });
 
-// Activate Event
+// Activate Event: Cleanup old caches
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((keys) => {
             return Promise.all(
-                keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+                keys.map((key) => {
+                    if (key !== CACHE_NAME) return caches.delete(key);
+                })
             );
         })
     );
 });
 
-// Fetch Event
+// Fetch Event: Stale-While-Revalidate Strategy
 self.addEventListener('fetch', (event) => {
+    if (event.request.method !== 'GET') return;
+
     event.respondWith(
-        caches.match(event.request).then((response) => {
-            return response || fetch(event.request);
+        caches.open(CACHE_NAME).then((cache) => {
+            return cache.match(event.request).then((cachedResponse) => {
+                const fetchPromise = fetch(event.request).then((networkResponse) => {
+                    // Update cache with the new version from network
+                    if (networkResponse.status === 200) {
+                        cache.put(event.request, networkResponse.clone());
+                    }
+                    return networkResponse;
+                }).catch(() => {
+                    // If network fails, we already have the cachedResponse
+                });
+
+                // Return cached version immediately, or wait for network if not in cache
+                return cachedResponse || fetchPromise;
+            });
         })
     );
 });
