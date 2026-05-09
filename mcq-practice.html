@@ -1,159 +1,428 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="3d-glass">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>EKA - MCQ PRACTICE</title>
+
     <style>
-        :root {
-          --bg: #f8fafc; --surface: #ffffff; --text: #0f172a; --text-muted: #64748b;
-          --primary: #3b82f6; --primary-hover: #2563eb; --correct: #22c55e; --wrong: #ef4444;
-          --border: #e2e8f0; --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); --radius: 12px;
-          --font: system-ui, -apple-system, sans-serif; --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        /* ========== THEME VARIABLES ========== */
+        :root, [data-theme="3d-glass"] {
+            --bg-gradient: linear-gradient(135deg, #e0e7ff 0%, #dbeafe 100%);
+            --glass: rgba(255, 255, 255, 0.45);
+            --glass-heavy: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.7);
+            --text-primary: #334155;
+            --text-secondary: #64748b;
+            --accent: #60a5fa;
+            --accent-glow: rgba(96, 165, 250, 0.25);
+            --success: #34d399;
+            --shadow: rgba(0, 0, 0, 0.06);
+            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
         }
 
-        /* 15 THEMES */
-        [data-theme="3d-glass"] { --bg: #e0e7ff; --surface: rgba(255,255,255,0.65); --border: rgba(255,255,255,0.4); --shadow: 0 8px 32px rgba(31,38,135,0.15); backdrop-filter: blur(12px); }
-        [data-theme="neumorphic-soft"] { --bg: #e0e0e0; --surface: #e0e0e0; --text: #4a4a4a; --border: transparent; --shadow: 8px 8px 16px #bebebe, -8px -8px 16px #ffffff; --radius: 16px; }
-        [data-theme="neumorphic-pressed"] { --bg: #e0e0e0; --surface: #e0e0e0; --shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff; --radius: 12px; }
-        [data-theme="modern-2x2"] { --bg: #0f172a; --surface: #1e293b; --text: #f1f5f9; --primary: #06b6d4; --radius: 8px; }
-        [data-theme="vibrant-gradient"] { --bg: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #feada6 100%); --surface: #fff; --primary: #ff4757; --radius: 20px; }
-        [data-theme="industrial-steel"] { --bg: #1e293b; --surface: #334155; --text: #e2e8f0; --primary: #3b82f6; --border: #475569; --radius: 4px; }
-        [data-theme="dark-neon"] { --bg: #0a0a0a; --surface: #111; --text: #00ff9d; --primary: #00ff9d; --border: #00ff9d; --shadow: 0 0 15px #00ff9d44; }
-        [data-theme="paper-sketch"] { --bg: #fdfbf7; --surface: #fff; --text: #333; --border: #333; --radius: 2px; --font: 'Courier New', monospace; --shadow: 2px 3px 0 #333; }
-        [data-theme="royal-gold"] { --bg: #0f172a; --surface: #1e1b4b; --text: #fde047; --primary: #f59e0b; --border: #fbbf24; }
-        [data-theme="retro-8bit"] { --bg: #21252b; --surface: #3a3f4b; --text: #abb2bf; --primary: #98c379; --border: #5c6370; --radius: 0; --font: monospace; }
-        [data-theme="hacker-terminal"] { --bg: #000; --surface: #000; --text: #00ff00; --primary: #00ff00; --border: #00ff00; --font: monospace; }
-        [data-theme="pastel-dream"] { --bg: #fff0f5; --surface: #ffe4e1; --text: #5c5470; --primary: #b8a9c9; --border: #d8bfd8; }
-        [data-theme="minimalist-mono"] { --bg: #fff; --surface: #fff; --text: #000; --primary: #000; --border: #000; --radius: 0; }
-        [data-theme="translucent-frosted"] { --bg: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%); --surface: rgba(255,255,255,0.8); --border: rgba(255,255,255,0.5); --shadow: 0 10px 30px rgba(0,0,0,0.2); backdrop-filter: blur(10px); }
-        [data-theme="sky-high"] { --bg: linear-gradient(to bottom, #87ceeb, #ffffff); --surface: rgba(255,255,255,0.9); --primary: #0077b6; --radius: 18px; }
+        [data-theme="modern-2x2"] {
+            --bg-gradient: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            --glass: rgba(255, 255, 255, 0.5);
+            --glass-heavy: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.75);
+            --text-primary: #44403c;
+            --text-secondary: #78716c;
+            --accent: #fb923c;
+            --accent-glow: rgba(251, 146, 60, 0.25);
+            --success: #4ade80;
+            --shadow: rgba(0, 0, 0, 0.06);
+            --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        [data-theme="pastel-dream"] {
+            --bg-gradient: linear-gradient(135deg, #fae0f3 0%, #e8d5f5 100%);
+            --glass: rgba(255, 255, 255, 0.55);
+            --glass-heavy: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --text-primary: #4a4a4a;
+            --text-secondary: #7a7a7a;
+            --accent: #c084fc;
+            --accent-glow: rgba(192, 132, 252, 0.25);
+            --success: #86efac;
+            --shadow: rgba(0, 0, 0, 0.05);
+            --card-shadow: 0 6px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="sky-high"] {
+            --bg-gradient: linear-gradient(135deg, #d4f1f4 0%, #a8e6cf 100%);
+            --glass: rgba(255, 255, 255, 0.4);
+            --glass-heavy: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.65);
+            --text-primary: #2d4a5a;
+            --text-secondary: #5a7a8a;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.25);
+            --success: #2dd4bf;
+            --shadow: rgba(0, 0, 0, 0.07);
+            --card-shadow: 0 12px 45px rgba(0, 0, 0, 0.09);
+        }
+
+        [data-theme="dark-neon"] {
+            --bg-gradient: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            --glass: rgba(30, 41, 59, 0.8);
+            --glass-heavy: rgba(51, 65, 85, 0.9);
+            --glass-border: rgba(148, 163, 184, 0.2);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent: #60a5fa;
+            --accent-glow: rgba(96, 165, 250, 0.3);
+            --success: #34d399;
+            --shadow: rgba(0, 0, 0, 0.2);
+            --card-shadow: 0 8px 35px rgba(0, 0, 0, 0.35);
+        }
+
+        [data-theme="ocean-breeze"] {
+            --bg-gradient: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            --glass: rgba(255, 255, 255, 0.45);
+            --glass-heavy: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.7);
+            --text-primary: #134e4a;
+            --text-secondary: #2d6a65;
+            --accent: #2dd4bf;
+            --accent-glow: rgba(45, 212, 191, 0.25);
+            --success: #4ade80;
+            --shadow: rgba(0, 0, 0, 0.06);
+            --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+        }
+
+        [data-theme="sunset-glow"] {
+            --bg-gradient: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
+            --glass: rgba(255, 255, 255, 0.4);
+            --glass-heavy: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.65);
+            --text-primary: #5a3e28;
+            --text-secondary: #8b6b54;
+            --accent: #fb923c;
+            --accent-glow: rgba(251, 146, 60, 0.25);
+            --success: #fbbf24;
+            --shadow: rgba(0, 0, 0, 0.07);
+            --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        [data-theme="midnight-dark"] {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --glass: rgba(30, 41, 59, 0.7);
+            --glass-heavy: rgba(15, 23, 42, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.2);
+            --success: #22c55e;
+            --shadow: rgba(0, 0, 0, 0.4);
+            --card-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="emerald-glass"] {
+            --bg-gradient: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+            --glass: rgba(6, 78, 59, 0.7);
+            --glass-heavy: rgba(4, 120, 87, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text-primary: #ecfdf5;
+            --text-secondary: #a7f3d0;
+            --accent: #10b981;
+            --accent-glow: rgba(16, 185, 129, 0.3);
+            --success: #34d399;
+            --shadow: rgba(0, 0, 0, 0.2);
+            --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="royal-purple"] {
+            --bg-gradient: linear-gradient(135deg, #4c1d95 0%, #5b21b6 100%);
+            --glass: rgba(76, 29, 149, 0.7);
+            --glass-heavy: rgba(91, 33, 182, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text-primary: #f5f3ff;
+            --text-secondary: #ddd6fe;
+            --accent: #8b5cf6;
+            --accent-glow: rgba(139, 92, 246, 0.3);
+            --success: #a78bfa;
+            --shadow: rgba(0, 0, 0, 0.2);
+            --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ========== BASE STYLES ========== */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-          font-family: var(--font); background: var(--bg); color: var(--text);
-          height: 100vh; display: flex; flex-direction: column; overflow: hidden;
-          transition: background var(--transition);
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 10px;
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            transition: background 0.4s ease;
         }
 
-        header {
-          background: var(--surface); padding: 10px; box-shadow: var(--shadow);
-          display: flex; flex-direction: column; gap: 8px; z-index: 10;
-        }
-        .top-row { display: flex; justify-content: space-between; align-items: center; }
-        h1 { font-size: 1rem; font-weight: 800; }
-
-        .controls-row { display: flex; gap: 6px; align-items: center; }
-        #search-box {
-          flex: 1; padding: 8px 12px; border: 2px solid var(--border); border-radius: var(--radius);
-          background: var(--bg); color: var(--text); font-size: 0.85rem;
-        }
-
-        #mcq-container {
-          flex: 1; position: relative; display: flex; align-items: center; justify-content: center;
-          padding: 15px; perspective: 1000px; overflow: hidden;
+        .main-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 15px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--card-shadow);
+            margin: 5px 0;
         }
 
-        .question-card {
-          width: 100%; max-width: 500px; background: var(--surface);
-          border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow);
-          display: flex; flex-direction: column; gap: 15px;
-          position: absolute; transition: transform 0.4s ease, opacity 0.4s ease;
-          opacity: 0; pointer-events: none; transform: translateX(100%);
-        }
-        .question-card.active { opacity: 1; pointer-events: all; transform: translateX(0); }
-        .question-card.prev { transform: translateX(-100%); }
-
-        .q-text { font-size: 1.5rem; font-weight: 650; line-height: 1.5; color: var(--text); }
-        .q-meta { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; display: flex; justify-content: space-between; }
-
-        .options { display: grid; gap: 10px; }
-        .option {
-          display: flex; align-items: center; gap: 12px; padding: 14px;
-          border: 2px solid var(--border); border-radius: var(--radius); cursor: pointer;
-          transition: all 0.2s; background: var(--surface); font-size: 1.1rem;
-        }
-        .option.selected { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 10%, transparent); }
-        .option.correct { border-color: var(--correct); background: color-mix(in srgb, var(--correct) 15%, transparent); }
-        .option.wrong { border-color: var(--wrong); background: color-mix(in srgb, var(--wrong) 12%, transparent); }
-
-        .radio-dot {
-          width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border);
-          position: relative; flex-shrink: 0;
-        }
-        .option.selected .radio-dot { border-color: var(--primary); }
-        .option.selected .radio-dot::after { content: ''; position: absolute; inset: 3px; background: var(--primary); border-radius: 50%; }
-        .option.correct .radio-dot::after { background: var(--correct); }
-        .option.wrong .radio-dot::after { background: var(--wrong); }
-
-        .slide-nav {
-          display: flex; align-items: center; justify-content: space-between;
-          padding: 15px; background: var(--surface); border-top: 1px solid var(--border);
-          gap: 10px;
-        }
-        .slide-nav button {
-          flex: 1; padding: 12px; border: none; border-radius: var(--radius);
-          background: var(--primary); color: white; font-weight: 700; font-size: 1rem;
-          box-shadow: 0 4px 0 color-mix(in srgb, var(--primary) 80%, black);
-        }
-        .slide-nav button:active { transform: translateY(2px); box-shadow: none; }
-        .slide-nav button:disabled { background: var(--border); box-shadow: none; opacity: 0.5; }
-
-        .jump-box {
-          display: flex; align-items: center; gap: 5px; font-size: 0.9rem; font-weight: 700;
-        }
-        .jump-box input {
-          width: 50px; padding: 5px; border: 1px solid var(--border); border-radius: 5px; text-align: center;
+        .header {
+            text-align: center;
+            margin-bottom: 12px;
         }
 
-        .loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--bg); z-index: 5; }
+        .header h1 { font-size: 1.2rem; margin-bottom: 2px; color: var(--text-primary); }
+        .header h2 { font-size: 0.85rem; opacity: 0.85; color: var(--text-secondary); font-weight: 500; }
+
+        /* ========== COMPACT TOP CONTROLS ========== */
+        .top-controls {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 15px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .theme-wrapper { position: relative; flex: 1.2; }
+
+        .themes-toggle {
+            background: var(--glass-heavy);
+            border: 1px solid var(--glass-border);
+            padding: 8px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        .themes-menu {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0; right: 0;
+            background: var(--glass-heavy);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 8px;
+            box-shadow: 0 10px 30px var(--shadow);
+            border: 1px solid var(--glass-border);
+            display: none;
+            z-index: 1000;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5px;
+        }
+        .themes-menu.show { display: grid; }
+
+        .theme-option {
+            display: flex; align-items: center; gap: 6px; padding: 6px;
+            border-radius: 8px; cursor: pointer; transition: 0.2s;
+            background: rgba(255,255,255,0.1);
+        }
+        .theme-option:hover { background: rgba(255,255,255,0.2); }
+        .theme-option.active { border: 1px solid var(--accent); background: rgba(255,255,255,0.3); }
+        .theme-preview { width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0; }
+        .theme-name { font-size: 0.7rem; font-weight: 600; }
+
+        .control-btn {
+            flex: 1;
+            padding: 8px 4px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-heavy);
+            color: var(--text-primary);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-align: center;
+            transition: 0.2s;
+        }
+        .control-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+        .auto-group {
+            flex: 1.5;
+            display: flex;
+            background: var(--glass-heavy);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            overflow: hidden;
+            align-items: center;
+        }
+        .auto-btn {
+            border: none; background: transparent; padding: 8px;
+            font-weight: 700; cursor: pointer; color: var(--text-primary);
+            flex: 1; font-size: 0.8rem;
+        }
+        .auto-btn.active { background: var(--accent); color: white; }
+        .auto-input {
+            width: 45px; border: none; background: rgba(0,0,0,0.05);
+            padding: 8px 2px; text-align: center; font-size: 0.75rem;
+            color: var(--text-primary); outline: none;
+        }
+
+        .timer-display {
+            flex: 0.8;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-align: right;
+            color: var(--text-primary);
+            font-family: monospace;
+            padding-right: 5px;
+        }
+
+        /* ========== QUESTION AREA ========== */
+        .question-area {
+            background: var(--glass-heavy);
+            border-radius: 18px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid var(--glass-border);
+            min-height: 120px;
+        }
+
+        .question-text {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .options-list { display: flex; flex-direction: column; gap: 8px; }
+
+        .option-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid var(--glass-border);
+            padding: 10px 12px;
+            border-radius: 12px;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-primary);
+        }
+
+        .option-btn:hover { transform: translateX(3px); background: rgba(255,255,255,0.3); }
+        .option-btn.selected { background: var(--accent); color: white; }
+        .option-btn.correct { background: var(--success); color: white; }
+        .option-btn.incorrect { background: #ff6b6b; color: white; }
+        .option-letter { font-weight: 700; min-width: 20px; }
+
+        /* ========== NAVIGATION ========== */
+        .quiz-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 15px; padding-top: 10px; border-top: 1px solid var(--glass-border);
+        }
+
+        .nav-btn {
+            padding: 10px 20px; border-radius: 12px; border: 1px solid var(--glass-border);
+            background: var(--glass-heavy); color: var(--text-primary); font-weight: 600;
+            cursor: pointer; font-size: 0.85rem; transition: 0.2s;
+        }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .progress-info { font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); }
+
+        .overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 999; display: none; }
+        .overlay.show { display: block; }
 
         @media (max-width: 480px) {
-            .question-card { height: auto; max-height: 80vh; overflow-y: auto; }
+            .themes-menu.show {
+                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                width: 85%; max-height: 70vh; overflow-y: auto; grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
-<body data-theme="modern-2x2">
+<body>
 
-<header>
-    <div class="top-row">
-        <h1 id="subject-title">EKA MCQ PRACTICE</h1>
-        <select id="theme-selector">
-            <option value="3d-glass">3D Glass</option>
-            <option value="modern-2x2" selected>Modern 2x2</option>
-            <option value="pastel-dream">Pastel Dream</option>
-            <option value="sky-high">Sky High</option>
-            <option value="paper-sketch">Paper Sketch</option>
-        </select>
+<div class="main-container">
+    <div class="header">
+        <h1>EKA PRACTICE PORTAL</h1>
+        <h2 id="subjectDisplay">Select Subject</h2>
     </div>
-    <div class="controls-row">
-        <button id="toggle-answers" style="padding: 8px; font-size: 0.8rem; min-width: 100px;">Show Answers</button>
-        <div id="auto-next-ctrl" style="display: flex; align-items: center; gap: 4px; background: var(--bg); padding: 5px 8px; border-radius: var(--radius); border: 1px solid var(--border); font-size: 0.75rem; font-weight: 700; color: var(--text);">
-            <input type="checkbox" id="auto-next-check" style="width: 15px; height: 15px; cursor: pointer;">
-            <label for="auto-next-check" style="cursor: pointer; user-select: none;">Auto</label>
-            <input type="number" id="auto-next-delay" value="5000" min="500" max="10000" step="500" style="width: 50px; border: none; background: transparent; color: var(--text); text-align: center; font-weight: 800; font-family: inherit;">
-            <span style="opacity: 0.6; font-size: 0.65rem;">ms</span>
+
+    <!-- Compact Row: Themes, Answers, Auto, Timer -->
+    <div class="top-controls">
+        <div class="theme-wrapper">
+            <button class="themes-toggle" onclick="toggleThemesMenu(event)">
+                Themes <span style="font-size:0.6rem">▼</span>
+            </button>
+            <div class="themes-menu" id="themesMenu">
+                <div class="theme-option active" data-theme="3d-glass" onclick="selectTheme('3d-glass', event)">
+                    <span class="theme-preview" style="background:#e0e7ff"></span><span class="theme-name">3D Glass</span>
+                </div>
+                <div class="theme-option" data-theme="modern-2x2" onclick="selectTheme('modern-2x2', event)">
+                    <span class="theme-preview" style="background:#ffecd2"></span><span class="theme-name">Modern</span>
+                </div>
+                <div class="theme-option" data-theme="pastel-dream" onclick="selectTheme('pastel-dream', event)">
+                    <span class="theme-preview" style="background:#fae0f3"></span><span class="theme-name">Pastel</span>
+                </div>
+                <div class="theme-option" data-theme="sky-high" onclick="selectTheme('sky-high', event)">
+                    <span class="theme-preview" style="background:#d4f1f4"></span><span class="theme-name">Sky High</span>
+                </div>
+                <div class="theme-option" data-theme="dark-neon" onclick="selectTheme('dark-neon', event)">
+                    <span class="theme-preview" style="background:#1e293b"></span><span class="theme-name">Dark Neon</span>
+                </div>
+                <div class="theme-option" data-theme="ocean-breeze" onclick="selectTheme('ocean-breeze', event)">
+                    <span class="theme-preview" style="background:#d1fae5"></span><span class="theme-name">Ocean</span>
+                </div>
+                <div class="theme-option" data-theme="sunset-glow" onclick="selectTheme('sunset-glow', event)">
+                    <span class="theme-preview" style="background:#ffedd5"></span><span class="theme-name">Sunset</span>
+                </div>
+                <div class="theme-option" data-theme="midnight-dark" onclick="selectTheme('midnight-dark', event)">
+                    <span class="theme-preview" style="background:#0f172a"></span><span class="theme-name">Midnight</span>
+                </div>
+                <div class="theme-option" data-theme="emerald-glass" onclick="selectTheme('emerald-glass', event)">
+                    <span class="theme-preview" style="background:#064e3b"></span><span class="theme-name">Emerald</span>
+                </div>
+                <div class="theme-option" data-theme="royal-purple" onclick="selectTheme('royal-purple', event)">
+                    <span class="theme-preview" style="background:#4c1d95"></span><span class="theme-name">Royal</span>
+                </div>
+            </div>
         </div>
+
+        <button class="control-btn" id="showAnswersBtn" onclick="toggleAnswers()">Answers</button>
+
+        <div class="auto-group">
+            <button class="auto-btn" id="autoBtn" onclick="toggleAuto()">Auto</button>
+            <input type="number" id="autoDelay" class="auto-input" value="5000" min="500" max="15000" step="500">
+        </div>
+
+        <div class="timer-display" id="timerDisplay">00:00</div>
+    </div>
+    <div class="overlay" id="themeOverlay" onclick="closeThemesMenu(event)"></div>
+
+    <!-- Question Area -->
+    <div class="question-area">
+        <div class="question-text" id="questionText">Loading questions...</div>
+        <div class="options-list" id="optionsList"></div>
     </div>
 
-    <div class="controls-row">
-        <input type="search" id="search-box" placeholder="🔍 Find Question...">
+    <!-- Navigation -->
+    <div class="quiz-nav">
+        <button class="nav-btn" id="prevBtn" onclick="prevQuestion()" disabled>⬅ PREV</button>
+        <span class="progress-info" id="progressInfo">0/0</span>
+        <button class="nav-btn" id="nextBtn" onclick="nextQuestion()">NEXT ➡</button>
     </div>
-</header>
-
-<main id="mcq-container">
-    <div class="loading">Initializing...</div>
-</main>
-
-<nav class="slide-nav">
-    <button id="prev-btn">⬅ PREV</button>
-    <div class="jump-box">
-        <span id="counter">0/0</span>
-        <input type="number" id="jump-input" placeholder="Go">
-    </div>
-    <button id="next-btn">NEXT ➡</button>
-</nav>
+</div>
 
 <!-- 🎒 KG1 - Subject-wise Files -->
 <script src="quiz_data_kg1/kg1_english.js"></script>
@@ -233,188 +502,295 @@
 
 
 <script>
-    const params = new URLSearchParams(window.location.search);
-    const subjectParam = params.get('subject') || 'physics9';
-    let mcqData = [];
-    let filteredData = [];
-    let currentIndex = 0;
-    let autoNextTimeout = null;
-    let answersRevealed = true;
-    let userAnswers = {};
-
-    const container = document.getElementById('mcq-container');
-    const counterDisplay = document.getElementById('counter');
-    const jumpInput = document.getElementById('jump-input');
-    const subjectTitle = document.getElementById('subject-title');
-
-    function initData() {
-        if (!window.QUIZ_DATA) return;
-        const keys = Object.keys(QUIZ_DATA).filter(k => k === subjectParam || (k.startsWith(subjectParam + "_") && !subjectParam.includes('_u')));
-
-        let combinedTsv = "";
-        keys.forEach(k => combinedTsv += (combinedTsv ? "\n" : "") + QUIZ_DATA[k].tsv.trim());
-
-        if (combinedTsv) {
-            mcqData = combinedTsv.split('\n').map(line => {
-                const p = line.split('\t');
-                if (p.length < 6) return null;
-                const [q, a, b, c, d, ans] = p;
-                let correct = ans.trim();
-                if (correct === 'A') correct = a.trim();
-                else if (correct === 'B') correct = b.trim();
-                else if (correct === 'C') correct = c.trim();
-                else if (correct === 'D') correct = d.trim();
-                return { q: q.trim(), A: a.trim(), B: b.trim(), C: c.trim(), D: d.trim(), correct: correct };
-            }).filter(x => x !== null);
+    // ========== THEME SYSTEM (Remains Intact) ==========
+    function toggleThemesMenu(e) {
+        e?.stopPropagation();
+        const menu = document.getElementById('themesMenu');
+        const toggle = document.querySelector('.themes-toggle');
+        const overlay = document.getElementById('themeOverlay');
+        const isOpen = menu.classList.contains('show');
+        closeThemesMenu();
+        if (!isOpen) {
+            menu.classList.add('show');
+            toggle.classList.add('active');
+            overlay.classList.add('show');
         }
-        filteredData = [...mcqData];
-        subjectTitle.innerText = `EKA - ${subjectParam.toUpperCase()}`;
     }
 
-    function setupSwipe(card) {
-        let startX = 0;
-        card.ontouchstart = e => startX = e.touches[0].clientX;
-        card.ontouchend = e => {
-            const diff = startX - e.changedTouches[0].clientX;
-            if (Math.abs(diff) > 50) {
-                if (diff > 0 && currentIndex < filteredData.length - 1) renderSlide(currentIndex + 1);
-                else if (diff < 0 && currentIndex > 0) renderSlide(currentIndex - 1);
-            }
+    function closeThemesMenu(e) {
+        e?.stopPropagation();
+        const menu = document.getElementById('themesMenu');
+        const toggle = document.querySelector('.themes-toggle');
+        const overlay = document.getElementById('themeOverlay');
+        menu.classList.remove('show');
+        toggle.classList.remove('active');
+        overlay.classList.remove('show');
+    }
+
+    function selectTheme(themeName, e) {
+        e?.stopPropagation();
+        document.querySelectorAll('.theme-option').forEach(opt => opt.classList.remove('active'));
+        document.querySelector(`[data-theme="${themeName}"]`)?.classList.add('active');
+        document.documentElement.setAttribute('data-theme', themeName);
+        localStorage.setItem('eka_quiz_theme', themeName);
+        closeThemesMenu();
+        showNotification(`🎨 ${themeName.replace('-', ' ').toUpperCase()} theme applied!`);
+    }
+
+    function showNotification(message) {
+        const notification = document.createElement('div');
+        notification.textContent = message;
+        notification.style.cssText = `position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--glass-heavy); padding: 12px 24px; border-radius: 50px; font-weight: 600; font-size: 0.9rem; color: var(--text-primary); box-shadow: 0 4px 20px var(--shadow); z-index: 10000; animation: slideUp 0.3s ease; border: 1px solid var(--glass-border);`;
+        if (!document.getElementById('notif-keyframes')) {
+            const style = document.createElement('style');
+            style.id = 'notif-keyframes';
+            style.textContent = `@keyframes slideUp { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); }}`;
+            document.head.appendChild(style);
+        }
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 2000);
+    }
+
+let currentQuestion = 0;
+let questions = [];
+let userAnswers = [];
+let showAnswersMode = true;
+let autoMode = false;
+let isFinished = false;
+let timerInterval = null;
+let seconds = 0;
+let autoNextTimeout = null;
+
+const params = new URLSearchParams(window.location.search);
+const subjectParam = params.get('subject') || '';
+
+function initQuiz() {
+    if (!window.QUIZ_DATA) {
+        document.getElementById('questionText').textContent = 'Error: Data files not found.';
+        return;
+    }
+
+    if (!subjectParam) {
+        document.getElementById('questionText').textContent = 'No subject selected.';
+        return;
+    }
+
+    const keys = Object.keys(QUIZ_DATA).filter(k =>
+        k.includes(subjectParam) || k.startsWith(subjectParam)
+    );
+
+    let combinedTsv = '';
+    keys.forEach(k => {
+        const tsv = QUIZ_DATA[k]?.tsv || '';
+        if (tsv.trim()) combinedTsv += (combinedTsv ? '\n' : '') + tsv.trim();
+    });
+
+    questions = combinedTsv.split('\n').map(line => {
+        const p = line.split('\t');
+        if (p.length < 6) return null;
+
+        const [q, a, b, c, d, ans] = p;
+        const letterMap = { A: 0, B: 1, C: 2, D: 3 };
+        const correctIdx = letterMap[(ans || '').trim().toUpperCase()];
+
+        if (correctIdx === undefined) return null;
+
+        return {
+            question: q.trim(),
+            options: [a.trim(), b.trim(), c.trim(), d.trim()],
+            correct: correctIdx
         };
+    }).filter(Boolean);
+
+    if (questions.length === 0) {
+        document.getElementById('questionText').textContent = `No questions found for ${subjectParam}`;
+        return;
     }
 
-    function renderSlide(index) {
-        if (filteredData.length === 0) {
-            container.innerHTML = '<div style="color:white; padding: 20px;">No questions found.</div>';
-            return;
+    document.getElementById('subjectDisplay').textContent = `${subjectParam.toUpperCase()} PRACTICE`;
+    startTimer();
+    loadQuestion(0);
+    updateProgress();
+}
+
+    function startTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            seconds++;
+            const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const secs = (seconds % 60).toString().padStart(2, '0');
+            document.getElementById('timerDisplay').textContent = `${mins}:${secs}`;
+        }, 1000);
+    }
+
+function planAutoAdvance() {
+    if (autoNextTimeout) {
+        clearTimeout(autoNextTimeout);
+        autoNextTimeout = null;
+    }
+
+    if (!autoMode || isFinished) return;
+
+    // Get delay from input, fallback to 2000ms
+    const delayInput = document.getElementById('autoDelay');
+    let delayValue = 2000;
+    if (delayInput && delayInput.value) {
+        delayValue = parseInt(delayInput.value, 10);
+    }
+
+    // Ensure at least 500ms delay to prevent rapid looping
+    if (isNaN(delayValue) || delayValue < 500) delayValue = 2000;
+
+    autoNextTimeout = setTimeout(() => {
+        if (autoMode && !isFinished) {
+            nextQuestion();
+        }
+    }, delayValue);
+}
+
+function loadQuestion(index) {
+    if (isFinished) return;
+    if (!questions || questions.length === 0) return;
+    if (index < 0 || index >= questions.length) return;
+
+    currentQuestion = index;
+    const q = questions[index];
+
+    // Update UI
+    document.getElementById('questionText').textContent = `${index + 1}. ${q.question}`;
+
+    const optionsList = document.getElementById('optionsList');
+    optionsList.innerHTML = '';
+
+    q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `<span class="option-letter">${String.fromCharCode(65 + i)}.</span> ${opt}`;
+
+        // Highlight selection if user previously answered this question
+        if (userAnswers[index] === i) btn.classList.add('selected');
+
+        // Show feedback if Answers mode is ON
+        if (showAnswersMode) {
+            if (i === q.correct) btn.classList.add('correct');
+            else if (userAnswers[index] === i) btn.classList.add('incorrect');
         }
 
-        // Clear any existing auto-next timer
+        btn.onclick = () => selectOption(index, i);
+        optionsList.appendChild(btn);
+    });
+
+    // Update Navigation Buttons
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    if (prevBtn) prevBtn.disabled = (index === 0);
+    if (nextBtn) nextBtn.textContent = (index === questions.length - 1) ? 'FINISH' : 'NEXT ➡';
+
+    updateProgress();
+
+    // If autoMode is ON, schedule the next slide
+    planAutoAdvance();
+}
+
+// ========== FIXED AUTO-ADVANCE & TIMER LOGIC ==========
+
+function selectOption(qIndex, optIndex) {
+    if (isFinished) return;
+    userAnswers[qIndex] = optIndex;
+    loadQuestion(qIndex);
+}
+
+function toggleAuto() {
+    if (isFinished) return;
+    autoMode = !autoMode;
+
+    const autoBtn = document.getElementById('autoBtn');
+    if (autoBtn) {
+        if (autoMode) autoBtn.classList.add('active');
+        else autoBtn.classList.remove('active');
+    }
+
+    if (autoMode) {
+        planAutoAdvance();
+    } else {
         if (autoNextTimeout) {
             clearTimeout(autoNextTimeout);
             autoNextTimeout = null;
         }
-
-        const oldCard = container.querySelector('.question-card.active');
-        const isNewSlide = (currentIndex !== index) || !oldCard;
-
-        if (oldCard && isNewSlide) {
-            oldCard.classList.remove('active');
-            oldCard.classList.add('prev');
-            setTimeout(() => { if(oldCard && oldCard.parentNode && oldCard.classList.contains('prev')) oldCard.remove(); }, 400);
-        } else if (!oldCard) {
-            container.innerHTML = '';
-        }
-
-        // Update global index
-        currentIndex = index;
-
-        const item = filteredData[index];
-        const card = (!isNewSlide && oldCard) ? oldCard : document.createElement('div');
-        if (isNewSlide) card.className = 'question-card';
-
-        card.innerHTML = `
-            <div class="q-meta">
-                <span>QUESTION ${index + 1} OF ${filteredData.length}</span>
-                <span>ID: ${index + 1}</span>
-            </div>
-            <div class="q-text">${item.q}</div>
-            <div class="options"></div>
-        `;
-
-        const optsDiv = card.querySelector('.options');
-        ['A', 'B', 'C', 'D'].forEach(letter => {
-            const optText = item[letter];
-            const div = document.createElement('div');
-            div.className = 'option';
-            if (userAnswers[index] === letter) div.classList.add('selected');
-
-            if (answersRevealed) {
-                if (optText === item.correct) div.classList.add('correct');
-                else if (userAnswers[index] === letter) div.classList.add('wrong');
-            }
-
-            div.innerHTML = `<span class="radio-dot"></span><span><b>${letter}:</b> ${optText}</span>`;
-            div.onclick = (e) => {
-                e.stopPropagation();
-                userAnswers[index] = letter;
-                localStorage.setItem('eka-answers-' + subjectParam, JSON.stringify(userAnswers));
-                renderSlide(index);
-            };
-            optsDiv.appendChild(div);
-        });
-
-        if (isNewSlide) {
-            container.appendChild(card);
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    card.classList.add('active');
-                });
-            });
-            setupSwipe(card);
-        }
-
-        counterDisplay.innerText = `${index + 1}/${filteredData.length}`;
-        document.getElementById('prev-btn').disabled = index === 0;
-        document.getElementById('next-btn').disabled = index === filteredData.length - 1;
-
-        // Auto-next logic: Set timer if check box is checked
-        const autoCheck = document.getElementById('auto-next-check');
-        if (autoCheck && autoCheck.checked && index < filteredData.length - 1) {
-            let delay = parseInt(document.getElementById('auto-next-delay').value) || 3500;
-            delay = Math.max(500, Math.min(10000, delay));
-            autoNextTimeout = setTimeout(() => {
-                renderSlide(index + 1);
-            }, delay);
-        }
     }
 
-    document.getElementById('auto-next-check').onchange = (e) => {
-        if (e.target.checked) renderSlide(currentIndex);
-        else if (autoNextTimeout) {
-            clearTimeout(autoNextTimeout);
-            autoNextTimeout = null;
-        }
-    };
+    showNotification(autoMode ? '⚡ Auto-advance ON' : '⏸ Auto-advance OFF');
+}
 
-    document.getElementById('next-btn').onclick = () => { if(currentIndex < filteredData.length-1) renderSlide(currentIndex + 1); };
-    document.getElementById('prev-btn').onclick = () => { if(currentIndex > 0) renderSlide(currentIndex - 1); };
+function toggleAnswers() {
+    if (isFinished) return;
+    showAnswersMode = !showAnswersMode;
+    const btn = document.getElementById('showAnswersBtn');
+    if (btn) {
+        if (showAnswersMode) btn.classList.add('active');
+        else btn.classList.remove('active');
+    }
+    loadQuestion(currentQuestion);
+    showNotification(showAnswersMode ? '✅ Answers revealed' : '🔒 Answers hidden');
+}
 
-    jumpInput.onchange = (e) => {
-        let val = parseInt(e.target.value) - 1;
-        if (val >= 0 && val < filteredData.length) renderSlide(val);
-        e.target.value = '';
-    };
+function nextQuestion() {
+    if (autoNextTimeout) {
+        clearTimeout(autoNextTimeout);
+        autoNextTimeout = null;
+    }
 
-    document.getElementById('search-box').oninput = (e) => {
-        const term = e.target.value.toLowerCase();
-        filteredData = mcqData.filter(m => m.q.toLowerCase().includes(term));
-        currentIndex = 0;
-        renderSlide(0);
-    };
+    if (currentQuestion < questions.length - 1) {
+        loadQuestion(currentQuestion + 1);
+    } else {
+        finishQuiz();
+    }
+}
 
-    document.getElementById('toggle-answers').onclick = (e) => {
-        answersRevealed = !answersRevealed;
-        e.target.innerText = answersRevealed ? 'Hide Answers' : 'Show Answers';
-        renderSlide(currentIndex);
-    };
+function prevQuestion() {
+    if (autoNextTimeout) {
+        clearTimeout(autoNextTimeout);
+        autoNextTimeout = null;
+    }
 
-    document.getElementById('theme-selector').onchange = (e) => {
-        document.body.setAttribute('data-theme', e.target.value);
-        localStorage.setItem('eka-theme', e.target.value);
-    };
+    if (currentQuestion > 0) {
+        loadQuestion(currentQuestion - 1);
+    }
+}
 
-    window.onload = () => {
-        initData();
-        const saved = localStorage.getItem('eka-answers-' + subjectParam);
-        if (saved) userAnswers = JSON.parse(saved);
-        const savedTheme = localStorage.getItem('eka-theme');
+
+function updateProgress() {
+    document.getElementById('progressInfo').textContent = `${currentQuestion + 1}/${questions.length}`;
+}
+
+    function finishQuiz() {
+        isFinished = true;
+        clearInterval(timerInterval);
+        let score = 0;
+        questions.forEach((q, i) => { if (userAnswers[i] === q.correct) score++; });
+        const percentage = Math.round((score / questions.length) * 100);
+
+        document.getElementById('questionText').innerHTML = `
+            🎉 Quiz Complete!<br><br>
+            Score: <strong>${score}/${questions.length}</strong> (${percentage}%)
+        `;
+        document.getElementById('optionsList').innerHTML = `
+            <button class="control-btn primary" onclick="location.reload()" style="width: 100%;">🔄 Try Again</button>
+        `;
+        document.querySelector('.quiz-nav').style.display = 'none';
+    }
+
+    window.addEventListener('load', () => {
+        const savedTheme = localStorage.getItem('eka_quiz_theme');
         if (savedTheme) {
-            document.body.setAttribute('data-theme', savedTheme);
-            document.getElementById('theme-selector').value = savedTheme;
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.querySelectorAll('.theme-option').forEach(opt => {
+                opt.classList.toggle('active', opt.getAttribute('data-theme') === savedTheme);
+            });
         }
-        renderSlide(0);
-    };
+        setTimeout(initQuiz, 300);
+    });
 </script>
+
 </body>
 </html>

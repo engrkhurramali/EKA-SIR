@@ -85,134 +85,125 @@
 
     <style>
         /* ==================== 1. THEME VARIABLES ==================== */
-        :root {
-            --bg-gradient: linear-gradient(135deg, #e0f2f1, #80cbc4, #b2dfdb);
-            --glass-bg: rgba(255, 255, 255, 0.85);
-            --glass-border: #80cbc4;
-            --glass-shadow: 0 8px 32px 0 rgba(38, 166, 154, 0.2);
-            --accent-blue: #26a69a;
-            --accent-cyan: #00897b;
-            --text-light: #004d40;
-            --correct: #4caf50;
+        :root, [data-theme="3d-glass"] {
+            --bg-gradient: linear-gradient(135deg, #e0e7ff 0%, #dbeafe 100%);
+            --glass-bg: rgba(255, 255, 255, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.7);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            --accent-blue: #60a5fa;
+            --accent-cyan: #60a5fa;
+            --text-light: #334155;
+            --correct: #34d399;
             --wrong: #f44336;
             --font-main: 'Segoe UI', system-ui, sans-serif;
         }
 
-        /* Ice Blue (Old Default) Theme */
-        [data-theme="ice-blue"] {
-            --bg-gradient: linear-gradient(135deg, #0f172a, #1e3a8a, #064e3b, #0284c7);
-            --glass-bg: rgba(255, 255, 255, 0.12);
-            --glass-border: rgba(255, 255, 255, 0.3);
-            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25);
-            --accent-blue: #4facfe;
-            --accent-cyan: #00f2fe;
-            --text-light: #ffffff;
-            --correct: #2ecc71;
-            --wrong: #e74c3c;
-        }
-
-        /* Pastel Beige Theme */
-        [data-theme="pastel-beige"] {
-            --bg-gradient: linear-gradient(135deg, #f8f4e6, #e6d9b8, #fff9ec);
-            --glass-bg: rgba(255, 249, 236, 0.85);
-            --glass-border: #e6d9b8;
-            --glass-shadow: 0 8px 32px 0 rgba(201, 162, 39, 0.15);
-            --accent-blue: #c9a227;
-            --accent-cyan: #b88a1e;
-            --text-light: #3e2723;
-            --correct: #4caf50;
+        [data-theme="modern-2x2"] {
+            --bg-gradient: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            --glass-bg: rgba(255, 255, 255, 0.5);
+            --glass-border: rgba(255, 255, 255, 0.75);
+            --glass-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --accent-blue: #fb923c;
+            --accent-cyan: #fb923c;
+            --text-light: #44403c;
+            --correct: #4ade80;
             --wrong: #f44336;
         }
 
-        /* Vanilla Yellow Theme */
-        [data-theme="vanilla-yellow"] {
-            --bg-gradient: linear-gradient(135deg, #fff8e1, #ffe082, #fff176);
-            --glass-bg: rgba(255, 255, 255, 0.85);
-            --glass-border: #ffe082;
-            --glass-shadow: 0 8px 32px 0 rgba(251, 192, 45, 0.2);
-            --accent-blue: #fbc02d;
-            --accent-cyan: #f9a825;
-            --text-light: #3e2723;
-            --correct: #4caf50;
+        [data-theme="pastel-dream"] {
+            --bg-gradient: linear-gradient(135deg, #fae0f3 0%, #e8d5f5 100%);
+            --glass-bg: rgba(255, 255, 255, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --glass-shadow: 0 6px 25px rgba(0, 0, 0, 0.05);
+            --accent-blue: #c084fc;
+            --accent-cyan: #c084fc;
+            --text-light: #4a4a4a;
+            --correct: #86efac;
             --wrong: #f44336;
         }
 
-        /* Soft Lavender Theme */
-        [data-theme="soft-lavender"] {
-            --bg-gradient: linear-gradient(135deg, #f3e5f5, #e1bee7, #d1c4e9);
-            --glass-bg: rgba(255, 255, 255, 0.85);
-            --glass-border: #e1bee7;
-            --glass-shadow: 0 8px 32px 0 rgba(126, 87, 194, 0.2);
-            --accent-blue: #7e57c2;
-            --accent-cyan: #6a1b9a;
-            --text-light: #311b92;
-            --correct: #4caf50;
+        [data-theme="sky-high"] {
+            --bg-gradient: linear-gradient(135deg, #d4f1f4 0%, #a8e6cf 100%);
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.65);
+            --glass-shadow: 0 12px 45px rgba(0, 0, 0, 0.09);
+            --accent-blue: #38bdf8;
+            --accent-cyan: #38bdf8;
+            --text-light: #2d4a5a;
+            --correct: #2dd4bf;
             --wrong: #f44336;
         }
 
-        /* Mint Fresh Theme */
-        [data-theme="mint-fresh"] {
-            --bg-gradient: linear-gradient(135deg, #e0f2f1, #80cbc4, #b2dfdb);
-            --glass-bg: rgba(255, 255, 255, 0.85);
-            --glass-border: #80cbc4;
-            --glass-shadow: 0 8px 32px 0 rgba(38, 166, 154, 0.2);
-            --accent-blue: #26a69a;
-            --accent-cyan: #00897b;
-            --text-light: #004d40;
-            --correct: #4caf50;
+        [data-theme="dark-neon"] {
+            --bg-gradient: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            --glass-bg: rgba(30, 41, 59, 0.8);
+            --glass-border: rgba(148, 163, 184, 0.2);
+            --glass-shadow: 0 8px 35px rgba(0, 0, 0, 0.35);
+            --accent-blue: #60a5fa;
+            --accent-cyan: #60a5fa;
+            --text-light: #f1f5f9;
+            --correct: #34d399;
             --wrong: #f44336;
         }
 
-        /* Educational Theme */
-        [data-theme="educational"] {
-            --bg-gradient: linear-gradient(135deg, #f0f4f8, #d9e2ec, #bcccdc);
-            --glass-bg: rgba(255, 255, 255, 0.95);
-            --glass-border: #9fb3c8;
-            --glass-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --accent-blue: #102a43;
-            --accent-cyan: #334e68;
-            --text-light: #102a43;
-            --correct: #27ab5d;
-            --wrong: #cf1124;
-        }
-
-        /* Crystal Theme */
-        [data-theme="crystal"] {
-            --bg-gradient: linear-gradient(45deg, #00dbde 0%, #fc00ff 100%);
-            --glass-bg: rgba(255, 255, 255, 0.15);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            --accent-blue: #00dbde;
-            --accent-cyan: #fc00ff;
-            --text-light: #ffffff;
-            --correct: #00ff88;
-            --wrong: #ff0055;
-        }
-
-        /* Cubic 3D Theme */
-        [data-theme="cubic-3d"] {
-            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --glass-bg: #e0e0e0;
-            --glass-border: #bebebe;
-            --glass-shadow: 10px 10px 20px #bebebe, -10px -10px 20px #ffffff;
-            --accent-blue: #764ba2;
-            --accent-cyan: #667eea;
-            --text-light: #444444;
-            --correct: #4caf50;
+        [data-theme="ocean-breeze"] {
+            --bg-gradient: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            --glass-bg: rgba(255, 255, 255, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.7);
+            --glass-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+            --accent-blue: #2dd4bf;
+            --accent-cyan: #2dd4bf;
+            --text-light: #134e4a;
+            --correct: #4ade80;
             --wrong: #f44336;
         }
 
-        /* Dark Code Theme */
-        [data-theme="dark-code"] {
-            --bg-gradient: linear-gradient(135deg, #1e1e1e, #2d2d2d, #000000);
-            --glass-bg: rgba(30, 30, 30, 0.9);
-            --glass-border: #444;
-            --glass-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
-            --accent-blue: #00ff00;
-            --accent-cyan: #008800;
-            --text-light: #00ff00;
-            --correct: #00ff00;
-            --wrong: #ff0000;
+        [data-theme="sunset-glow"] {
+            --bg-gradient: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.65);
+            --glass-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --accent-blue: #fb923c;
+            --accent-cyan: #fb923c;
+            --text-light: #5a3e28;
+            --correct: #fbbf24;
+            --wrong: #f44336;
+        }
+
+        [data-theme="midnight-dark"] {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+            --accent-blue: #38bdf8;
+            --accent-cyan: #38bdf8;
+            --text-light: #f8fafc;
+            --correct: #22c55e;
+            --wrong: #f44336;
+        }
+
+        [data-theme="emerald-glass"] {
+            --bg-gradient: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+            --glass-bg: rgba(6, 78, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            --accent-blue: #10b981;
+            --accent-cyan: #10b981;
+            --text-light: #ecfdf5;
+            --correct: #34d399;
+            --wrong: #f44336;
+        }
+
+        [data-theme="royal-purple"] {
+            --bg-gradient: linear-gradient(135deg, #4c1d95 0%, #5b21b6 100%);
+            --glass-bg: rgba(76, 29, 149, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            --accent-blue: #8b5cf6;
+            --accent-cyan: #8b5cf6;
+            --text-light: #f5f3ff;
+            --correct: #a78bfa;
+            --wrong: #f44336;
         }
 
         /* ==================== 2. GLOBAL STYLES ==================== */
@@ -367,31 +358,26 @@
         .status-bar { display: flex; justify-content: space-between; width: 100%; margin-bottom: 10px; font-weight: 500; background: rgba(0,0,0,0.1); padding: 10px; border-radius: 8px; font-size: 1.1rem; }
         .score-box { color: var(--accent-cyan); font-size: 1.2rem; }
 
-        /* ==================== 5. THEME SELECTOR ==================== */
-        .theme-selector {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin: 15px 0;
-            width: 100%;
+        /* ==================== 5. COMPACT CONTROLS ==================== */
+        .compact-row {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.05);
+            padding: 12px;
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            flex-wrap: wrap;
         }
-        .theme-btn {
-            padding: 10px 2px;
-            border-radius: 10px;
-            border: 2px solid var(--glass-border);
-            background: rgba(0,0,0,0.1);
+        .compact-row select, .compact-row input {
+            background: var(--glass-bg);
             color: var(--text-light);
-            cursor: pointer;
-            font-size: 0.75rem;
-            font-weight: bold;
-            transition: 0.3s;
-            text-align: center;
-        }
-        .theme-btn:hover { background: rgba(0,0,0,0.2); }
-        .theme-btn.active {
-            background: var(--accent-blue);
-            color: white;
-            border-color: var(--accent-blue);
+            border: 1px solid var(--glass-border);
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 0.85rem;
         }
 
         /* Modal */
@@ -490,20 +476,29 @@
             <h1 id="startSubtitle">🎓 MATHS 9 | UNIT - 01</h1><br>
             <input type="text" id="studentName" placeholder="Enter Student Name" autocomplete="off" aria-label="Student Name">
 
-            <div class="theme-selector">
-                <button class="theme-btn active" onclick="App.setTheme('mint-fresh')" data-theme="mint-fresh">Mint</button>
-                <button class="theme-btn" onclick="App.setTheme('educational')" data-theme="educational">Edu</button>
-                <button class="theme-btn" onclick="App.setTheme('crystal')" data-theme="crystal">Crystal</button>
-                <button class="theme-btn" onclick="App.setTheme('cubic-3d')" data-theme="cubic-3d">3D Cubic</button>
-                <button class="theme-btn" onclick="App.setTheme('dark-code')" data-theme="dark-code">Code</button>
-                <button class="theme-btn" onclick="App.setTheme('soft-lavender')" data-theme="soft-lavender">Lavender</button>
-                <button class="theme-btn" onclick="App.setTheme('ice-blue')" data-theme="ice-blue">Ice Blue</button>
-                <button class="theme-btn" onclick="App.setTheme('pastel-beige')" data-theme="pastel-beige">Beige</button>
-            </div>
-
-            <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; color: white; font-size: 0.9rem;">
-                <label>Qs: <input type="number" id="quizLimit" value="25" min="5" max="200" style="width: 50px; border-radius: 5px; border: none; padding: 3px;"></label>
-                <label>Time (s): <input type="number" id="quizTimer" value="150" min="10" max="1800" style="width: 60px; border-radius: 5px; border: none; padding: 3px;"></label>
+            <div class="compact-row">
+                <div style="flex: 1.2; min-width: 90px;">
+                    <select id="themeSelect" onchange="App.setTheme(this.value)" style="width: 100%; font-weight: 600;">
+                        <option value="3d-glass">3D Glass</option>
+                        <option value="modern-2x2">Modern</option>
+                        <option value="pastel-dream">Pastel</option>
+                        <option value="sky-high">Sky High</option>
+                        <option value="dark-neon">Dark Neon</option>
+                        <option value="ocean-breeze">Ocean</option>
+                        <option value="sunset-glow">Sunset</option>
+                        <option value="midnight-dark">Midnight</option>
+                        <option value="emerald-glass">Emerald</option>
+                        <option value="royal-purple">Royal</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 8px; flex: 1; justify-content: center; align-items: center; white-space: nowrap;">
+                    <label style="font-size: 0.8rem; font-weight: 700;">Qs:
+                        <input type="number" id="quizLimit" value="25" min="5" max="200" style="width: 70px; text-align: center;">
+                    </label>
+                    <label style="font-size: 0.8rem; font-weight: 700;">Time:
+                        <input type="number" id="quizTimer" value="150" min="10" max="1800" style="width: 70px; text-align: center;">
+                    </label>
+                </div>
             </div>
 
             <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
