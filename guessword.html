@@ -290,11 +290,59 @@
 
     let state = {
         name: "", level: "Age 8-12", score: 0, stage: 1,
-        word: "", guessed: new Set(), wrong: 0, maxWrong: 10,
+        word: "", guessed: new Set(), wrong: 0, maxWrong: 12,
         time: 60, maxTime: 60, interval: null, active: false
     };
 
     const LEVEL_TIME = { "Age < 8": 90, "Age 8-12": 60, "Age 12-16": 45, "Age 16-20": 35, "Age 20+": 30 };
+
+    let audioCtx = null;
+    function initAudio() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function playSound(type) {
+        initAudio();
+        try {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
+            if (type === 'hit') {
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.1);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+                osc.start(now); osc.stop(now + 0.15);
+            } else if (type === 'miss') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, now);
+                osc.frequency.exponentialRampToValueAtTime(110, now + 0.2);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+                osc.start(now); osc.stop(now + 0.2);
+            } else if (type === 'win') {
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((f, i) => {
+                    const o = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    o.connect(g); g.connect(audioCtx.destination);
+                    o.frequency.setValueAtTime(f, now + i * 0.1);
+                    g.gain.setValueAtTime(0.1, now + i * 0.1);
+                    g.gain.exponentialRampToValueAtTime(0.01, now + i * 0.1 + 0.3);
+                    o.start(now + i * 0.1); o.stop(now + i * 0.1 + 0.3);
+                });
+            } else if (type === 'lose') {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.exponentialRampToValueAtTime(40, now + 0.5);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+                osc.start(now); osc.stop(now + 0.5);
+            }
+        } catch(e) {}
+    }
 
     function setTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
@@ -310,6 +358,7 @@
     function startGame() {
         const name = document.getElementById('playerName').value.trim();
         if (!name) { alert("Please enter your name!"); return; }
+        initAudio();
         state.name = name;
         state.level = document.getElementById('age-select').value;
         state.score = 0; state.stage = 1;
@@ -384,12 +433,14 @@
 
         if (state.word.includes(char)) {
             if (btn) btn.classList.add('hit');
+            if (!isAuto) playSound('hit');
             revealPositions(char);
             if (![...state.word].some(c => !state.guessed.has(c))) {
                 setTimeout(() => endGame(true), 400);
             }
         } else if (!isAuto) {
             if (btn) btn.classList.add('miss');
+            playSound('miss');
             state.wrong++;
             updateTracker();
             if (state.wrong >= state.maxWrong) endGame(false);
@@ -430,6 +481,7 @@
         const actionBtn = document.getElementById('btn-modal-action');
 
         if (won) {
+            playSound('win');
             const points = (state.word.length * 5) + state.time;
             state.score += points;
             title.textContent = "Word Found! 🎉";
@@ -437,6 +489,7 @@
             actionBtn.textContent = "Next Stage";
             actionBtn.onclick = () => { modal.classList.remove('active'); state.stage++; newRound(); };
         } else {
+            playSound('lose');
             title.textContent = "Game Over! ⏰";
             msg.textContent = `The word was: ${state.word}\nFinal Score: ${state.score}`;
             actionBtn.textContent = "Return to Menu";
