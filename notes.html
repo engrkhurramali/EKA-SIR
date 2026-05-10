@@ -68,23 +68,25 @@
         }
 
         .home-nav {
-            display: flex; align-items: center; gap: 8px;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+            display: flex; align-items: center; justify-content: center;
             background: var(--glass-heavy);
-            padding: 12px 20px;
-            border-radius: 50px;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
             text-decoration: none;
             color: var(--text-dark);
-            font-weight: 600;
-            margin-bottom: 20px;
             border: 1px solid var(--glass-border);
-            align-self: flex-start;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
         }
         .home-nav:hover {
-            transform: scale(1.03);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
-            background: rgba(255,255,255,0.45);
+            transform: scale(1.1);
+            background: rgba(255,255,255,0.5);
         }
 
         h1 {
@@ -234,7 +236,7 @@
 
 <div class="particles" id="particles"></div>
 
-<a href="index.html" class="home-nav">🏠 Dashboard</a>
+<a href="index.html" class="home-nav">⬅</a>
 
 <div class="main-container">
     <h1>Academic Notes Portal</h1>

@@ -663,42 +663,60 @@
         clearInterval(timerInterval);
         const finalScore = calculateScore(won);
 
-        if (won) {
-            saveScore(finalScore);
-            UI.btnSaveScore.style.display = 'block';
-            UI.btnSaveScore.onclick = async () => {
-                UI.btnSaveScore.disabled = true;
-                UI.btnSaveScore.textContent = "⏳ Saving...";
-                await saveScoreToFirebase(UI.playerName.value.trim(), finalScore, currentLevel);
-                UI.btnSaveScore.textContent = "✅ Saved!";
-                loadScoresFromFirebase();
-            };
-        } else {
-            UI.btnSaveScore.style.display = 'none';
-        }
+        const modal = document.getElementById('modal-end');
+        const title = document.getElementById('end-title');
+        const msg = document.getElementById('end-msg');
+        const actionBtn = document.getElementById('btn-restart');
+        const saveBtn = document.getElementById('btn-save-score');
 
-        const btnRestart = document.getElementById('btn-restart');
         if (won) {
-            btnRestart.textContent = "Next Level";
-            btnRestart.onclick = () => {
+            title.textContent = `🎉 Level ${levelCount} Clear!`;
+            msg.textContent = `Excellent! You found all words.\nBonus: +${Math.max(0, Math.floor(timer / 5))}\nTotal Score: ${finalScore}`;
+            actionBtn.textContent = "Next Level";
+            actionBtn.onclick = () => {
+                modal.classList.remove('active');
                 baseScore = finalScore;
                 levelCount++;
                 startLevel();
             };
-            document.getElementById('end-title').textContent = `🎉 Level ${levelCount} Clear!`;
+            saveBtn.style.display = 'none';
         } else {
-            btnRestart.textContent = "Play Again";
-            btnRestart.onclick = () => {
+            title.textContent = "⏰ Game Over!";
+            msg.textContent = `Time ran out!\nFound ${foundWords.size} of ${placedWords.length}\nFinal Score: ${finalScore}`;
+            actionBtn.textContent = "Try Again";
+            actionBtn.onclick = () => {
+                modal.classList.remove('active');
                 baseScore = 0;
                 levelCount = 1;
                 startLevel();
             };
-            document.getElementById('end-title').textContent = "⏰ Time's Up!";
+
+            // Show save button and auto-save
+            saveBtn.style.display = 'block';
+            saveBtn.disabled = true;
+            saveBtn.textContent = "⏳ Saving...";
+
+            saveScoreToFirebase(UI.playerName.value.trim(), finalScore, currentLevel).then(() => {
+                saveBtn.textContent = "✅ Saved to Leaderboard";
+                loadScoresFromFirebase();
+            }).catch(() => {
+                saveBtn.disabled = false;
+                saveBtn.textContent = "💾 Save to Global";
+            });
         }
 
-        document.getElementById('end-msg').textContent = (won ? `Excellent! You finished Level ${levelCount}.` : `Found ${foundWords.size} of ${placedWords.length}`) + `\nTotal Score: ${finalScore}`;
-        UI.modalEnd.classList.add('active');
+        modal.classList.add('active');
     }
+
+    // Remove the old btn-save-score onclick since we integrated it
+    UI.btnSaveScore.onclick = async () => {
+        const finalScore = calculateScore(false);
+        UI.btnSaveScore.disabled = true;
+        UI.btnSaveScore.textContent = "⏳ Saving...";
+        await saveScoreToFirebase(UI.playerName.value.trim(), finalScore, currentLevel);
+        UI.btnSaveScore.textContent = "✅ Saved!";
+        loadScoresFromFirebase();
+    };
 
     function populateLevels() {
         if (UI.level.options.length > 0) return;

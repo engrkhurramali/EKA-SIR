@@ -60,10 +60,33 @@
         }
 
         header {
-          padding: 10px 16px 6px; text-align: center; flex-shrink: 0;
+          padding: 10px 16px 6px; flex-shrink: 0;
           background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
-        header h1 { font-size: clamp(1rem, 4vw, 1.3rem); font-weight: 800; letter-spacing: 0.5px; }
+        .back-link {
+            position: absolute;
+            left: 12px;
+            top: 10px;
+            text-decoration: none;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 1.2rem;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+        .back-link:active { transform: scale(0.9); background: rgba(255,255,255,0.5); }
+        header h1 { font-size: clamp(1rem, 4vw, 1.3rem); font-weight: 800; letter-spacing: 0.5px; margin-top: 2px; }
         .stats-row {
           display: flex; justify-content: space-around; align-items: center;
           margin-top: 6px; font-size: 0.85rem; font-weight: 700; color: var(--text-sub);
@@ -186,6 +209,7 @@
 
 <div class="app-container">
     <header>
+        <a href="index.html" class="back-link">⬅</a>
         <h1>EKA Unit Pro</h1>
         <div class="stats-row">
             <span class="stat-badge" id="disp-level">CAT: LENGTH</span>

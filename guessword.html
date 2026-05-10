@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="3d-glass">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -7,26 +7,59 @@
     <meta name="theme-color" content="#a8edea">
     <title>EKA WordGuess</title>
     <style>
-        :root {
-          --bg-grad: linear-gradient(160deg, #a8edea 0%, #b5f0e0 50%, #88d8c0 100%);
-          --glass-bg: rgba(255, 255, 255, 0.32);
-          --glass-border: rgba(255, 255, 255, 0.65);
-          --glass-shadow: 0 8px 32px rgba(0, 70, 60, 0.12);
-          --text-main: #004d40;
-          --text-sub: #00695c;
-          --accent: #00b894;
-          --accent-light: #4db6ac;
-          --danger: #ff6b6b;
-          --success: #66bb6a;
-          --radius: 16px;
-          --nav-h: 62px;
-          --cell-bg: rgba(255,255,255,0.55);
-          --cell-active: rgba(0, 150, 136, 0.2);
+        /* ========== THEME VARIABLES ========== */
+        :root, [data-theme="3d-glass"] {
+            --bg-grad: linear-gradient(160deg, #e0e7ff 0%, #dbeafe 100%);
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.7);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            --text-main: #1e293b;
+            --text-sub: #475569;
+            --accent: #3b82f6;
+            --danger: #ef4444;
+            --success: #10b981;
+            --cell-bg: rgba(255,255,255,0.7);
+        }
+
+        [data-theme="modern-2x2"] {
+            --bg-grad: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            --glass-bg: rgba(255, 255, 255, 0.5);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --text-main: #44403c;
+            --text-sub: #78716c;
+            --accent: #fb923c;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --cell-bg: rgba(255,255,255,0.6);
+        }
+
+        [data-theme="dark-neon"] {
+            --bg-grad: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(148, 163, 184, 0.2);
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --accent: #60a5fa;
+            --danger: #f43f5e;
+            --success: #34d399;
+            --cell-bg: rgba(51, 65, 85, 0.9);
+        }
+
+        [data-theme="midnight-dark"] {
+            --bg-grad: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+            --glass-bg: rgba(15, 23, 42, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --accent: #38bdf8;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --cell-bg: rgba(30, 41, 59, 0.9);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body {
-          font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+          font-family: system-ui, -apple-system, sans-serif;
           background: var(--bg-grad);
           background-size: 100% 200%;
           animation: bgFloat 20s ease infinite;
@@ -35,341 +68,213 @@
           width: 100vw;
           display: flex; justify-content: center; align-items: center;
           overflow: hidden; touch-action: manipulation;
-          padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
         }
 
-        @keyframes bgFloat {
-          0% { background-position: 0% 0%; }
-          50% { background-position: 0% 100%; }
-          100% { background-position: 0% 0%; }
-        }
+        @keyframes bgFloat { 0% { background-position: 0% 0%; } 50% { background-position: 0% 100%; } 100% { background-position: 0% 0%; } }
 
-        /* === 9:16 PORTRAIT CONTAINER === */
         .app-container {
-          width: 100vw; max-width: 450px;
+          width: 100vw; max-width: 480px;
           height: 100vh; height: 100dvh;
-          aspect-ratio: 9 / 16;
-          margin: 0 auto;
-          overflow: hidden; display: flex; flex-direction: column;
-          background: rgba(255,255,255,0.12);
-          backdrop-filter: blur(14px);
-          border-radius: var(--radius);
-          box-shadow: 0 12px 35px rgba(0,0,0,0.18);
+          display: flex; flex-direction: column;
+          background: rgba(255,255,255,0.05);
+          backdrop-filter: blur(15px);
+          border-radius: 16px;
+          box-shadow: 0 12px 35px rgba(0,0,0,0.2);
           border: 1px solid var(--glass-border);
-        }
-        @media (min-width: 768px) {
-          .app-container { height: 92vh; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.22); }
+          position: relative;
         }
 
-        /* Header */
         header {
-          padding: 8px 12px 10px; text-align: center; flex-shrink: 0;
-          background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+          padding: 10px 12px; text-align: center; flex-shrink: 0;
+          background: linear-gradient(to bottom, rgba(255,255,255,0.2), transparent);
           border-bottom: 1px solid var(--glass-border);
+          position: relative;
         }
-        header h1 { font-size: 1.1rem; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 6px; }
-        .stats-row {
-          display: flex; justify-content: space-between; align-items: center;
-          margin-bottom: 8px; font-size: 0.85rem; font-weight: 700; color: var(--text-sub);
-        }
-        .timer-container { flex: 1; height: 8px; background: rgba(0,0,0,0.1); border-radius: 4px; margin: 0 8px; overflow: hidden; position: relative; }
-        #timer-bar { height: 100%; width: 100%; background: var(--accent); transition: width 1s linear; }
-        .stat-badge { background: var(--glass-bg); padding: 3px 8px; border-radius: 20px; white-space: nowrap; }
+        header h1 { font-size: 1.2rem; font-weight: 800; }
 
-        .header-controls { display: flex; flex-direction: column; gap: 6px; }
-        .header-btns { display: flex; gap: 4px; }
-        .btn-mini {
-          flex: 1; height: 36px; border: none; border-radius: 8px;
-          background: var(--cell-bg); color: var(--text-main);
-          font-size: 0.75rem; font-weight: 700; cursor: pointer;
-          display: flex; align-items: center; justify-content: center; gap: 3px;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        .back-btn {
+            position: absolute; left: 10px; top: 10px;
+            text-decoration: none; background: rgba(255,255,255,0.3);
+            width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; color: var(--text-main); font-weight: bold; border: 1px solid var(--glass-border);
         }
-        .btn-mini.danger { background: var(--danger); color: white; }
-        .btn-mini:active { transform: scale(0.95); }
 
-        /* Screens & Navigation */
-        .screens-wrapper { flex: 1; position: relative; overflow: hidden; display: flex; }
+        .screens-wrapper { flex: 1; position: relative; overflow: hidden; display: flex; width: 100%; }
         .screen {
-          position: absolute; inset: 0; padding: 12px 1%;
-          display: flex; flex-direction: column; gap: 10px;
-          opacity: 0; transform: translateX(40px) scale(0.98);
-          transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.35s;
-          pointer-events: none; overflow-y: auto;
+          position: absolute; inset: 0; padding: 10px;
+          display: none; flex-direction: column; gap: 15px;
+          animation: slideIn 0.3s ease forwards;
+          overflow-y: auto; align-items: center;
+          width: 100%;
         }
-        .screen.active {
-          opacity: 1; transform: translateX(0) scale(1); pointer-events: auto; position: relative;
-        }
-        .screen.exit { transform: translateX(-40px) scale(0.96); }
+        .screen.active { display: flex; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Bottom Nav */
-        .bottom-nav {
-          height: var(--nav-h); display: flex; justify-content: space-around; align-items: center;
-          background: rgba(255,255,255,0.65); backdrop-filter: blur(12px);
-          border-top: 1px solid var(--glass-border); flex-shrink: 0;
-          padding-bottom: env(safe-area-inset-bottom);
-        }
-        .nav-btn {
-          flex: 1; background: none; border: none; padding: 8px 4px;
-          font-size: 0.8rem; font-weight: 700; color: var(--text-sub);
-          cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px;
-          transition: color 0.2s, transform 0.1s;
-        }
-        .nav-btn:active { transform: scale(0.92); }
-        .nav-btn.active { color: var(--accent); }
-
-        /* Touch-Friendly Components (>= 44x44px) */
         .glass-card {
           background: var(--glass-bg); border: 1px solid var(--glass-border);
-          border-radius: var(--radius); padding: 16px;
+          border-radius: 20px; padding: 15px;
           box-shadow: var(--glass-shadow);
-          display: flex; flex-direction: column; align-items: center; gap: 12px;
-        }
-        .btn {
-          min-height: 48px; min-width: 48px; padding: 0 18px;
-          font-size: 0.95rem; font-weight: 700; border: none; border-radius: 12px;
-          background: var(--cell-bg); color: var(--text-main);
-          cursor: pointer; transition: transform 0.1s, background 0.15s, box-shadow 0.2s;
-          display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-          box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-        }
-        .btn.primary { background: var(--accent); color: white; }
-        .btn.danger { background: var(--danger); color: white; }
-        .btn:active { transform: scale(0.96); box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
-        .btn-group { display: flex; gap: 10px; width: 100%; }
-        .btn-group .btn { flex: 1; }
-
-        /* Word Display */
-        .word-display {
-          display: flex; flex-wrap: nowrap; justify-content: center; gap: 4px;
-          min-height: 52px; padding: 8px 2px; width: 100%;
-          overflow: hidden;
-        }
-        .letter-box {
-          flex: 1 1 0px; height: 52px; min-width: 0;
-          background: var(--cell-bg); border-radius: 8px;
-          display: flex; align-items: center; justify-content: center;
-          font-size: clamp(0.7rem, 5.5vw, 1.8rem); font-weight: 800; color: var(--accent);
-          border: 2px solid transparent;
-        }
-        .letter-box.revealed { background: rgba(129, 199, 132, 0.4); border-color: var(--success); }
-        .letter-box.empty { color: transparent; }
-
-        /* Wrong Guesses Tracker */
-        .wrong-tracker {
-          display: flex; gap: 4px; justify-content: center; height: 14px; width: 100%;
-        }
-        .wrong-dot {
-          width: 14px; height: 14px; border-radius: 50%;
-          background: rgba(0,0,0,0.08); transition: background 0.2s, transform 0.2s;
-        }
-        .wrong-dot.filled { background: var(--danger); transform: scale(1.2); }
-
-        /* Alphabet Grid */
-        .alpha-grid {
-          display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: 100%;
-          padding: 0 1%;
-        }
-        .alpha-btn {
-          min-height: 44px; aspect-ratio: 1/1; border-radius: 10px;
-          background: var(--cell-bg); font-size: 1.05rem; font-weight: 800;
-          border: none; cursor: pointer; transition: transform 0.1s, opacity 0.2s, background 0.2s;
-        }
-        .alpha-btn:active { transform: scale(0.92); }
-        .alpha-btn.disabled { opacity: 0.4; pointer-events: none; background: rgba(0,0,0,0.1); }
-        .alpha-btn.hit { background: rgba(129, 199, 132, 0.5); color: #1b5e20; }
-        .alpha-btn.miss { background: rgba(229, 115, 115, 0.5); color: #b71c1c; }
-
-        /* Modal Overlay */
-        .modal-overlay {
-          position: absolute; inset: 0; background: rgba(0,0,0,0.55);
-          display: none; justify-content: center; align-items: center;
-          z-index: 50; backdrop-filter: blur(5px);
-        }
-        .modal-overlay.active { display: flex; }
-        .modal-box {
-          background: var(--glass-bg); padding: 24px; border-radius: var(--radius);
-          text-align: center; max-width: 85%; box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-          transform: translateY(20px); opacity: 0; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-        }
-        .modal-overlay.active .modal-box { transform: translateY(0); opacity: 1; }
-        .modal-title { font-size: 1.6rem; font-weight: 900; margin-bottom: 8px; color: var(--accent); }
-        .modal-msg { margin-bottom: 16px; color: var(--text-sub); font-size: 1rem; }
-
-        /* Utility */
-        h2 { margin: 4px 0 8px; font-size: 1.2rem; font-weight: 800; }
-        p { line-height: 1.5; color: var(--text-sub); font-size: 0.95rem; }
-        .dict-list { text-align: left; width: 100%; max-height: 60vh; overflow-y: auto; padding-right: 4px; }
-        .dict-item { padding: 8px 10px; border-bottom: 1px dashed rgba(0,0,0,0.1); font-weight: 600; }
-
-        /* Level Selector */
-        .level-selector {
-          width: 100%; padding: 10px; border-radius: 12px; border: 1px solid var(--glass-border);
-          background: var(--cell-bg); color: var(--text-main); font-weight: 700; font-size: 1rem;
-          margin-bottom: 10px; outline: none; appearance: none;
-        }
-
-        /* Leaderboard Styles */
-        .leaderboard {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 12px;
-            border-radius: 15px;
-            margin-top: 10px;
-            width: 100%;
-            max-height: 25vh;
-            overflow-y: auto;
-            color: var(--text-main);
-            border: 1px solid var(--glass-border);
-        }
-
-        .leaderboard table { width: 100%; border-collapse: collapse; }
-        .leaderboard th, .leaderboard td {
-            padding: 8px; text-align: left;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            font-size: 13px;
-        }
-        .leaderboard th { color: var(--text-sub); font-size: 11px; text-transform: uppercase; font-weight: 800; }
-
-        .firebase-status {
-            font-size: 11px; color: var(--accent);
-            text-align: center; font-weight: bold; margin-bottom: 8px;
+          display: flex; flex-direction: column; align-items: center; gap: 15px;
+          width: 98%;
         }
 
         .input-glass {
-            width: 100%; padding: 10px 14px; border-radius: 12px;
+            width: 100%; padding: 14px; border-radius: 12px;
             border: 1px solid var(--glass-border);
-            background: rgba(255,255,255,0.4);
-            color: var(--text-main); font-size: 0.95rem;
-            margin-bottom: 10px; outline: none;
+            background: rgba(255,255,255,0.2);
+            color: var(--text-main); font-size: 1rem;
+            outline: none; text-align: center; font-weight: 600;
         }
+
+        .btn {
+          min-height: 50px; width: 100%; padding: 0 20px;
+          font-size: 1rem; font-weight: 700; border: none; border-radius: 12px;
+          background: var(--cell-bg); color: var(--text-main);
+          cursor: pointer; transition: all 0.2s;
+          display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .btn.primary { background: var(--accent); color: white; }
+        .btn:active { transform: scale(0.96); }
+
+        .stats-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; font-weight: 700; color: var(--text-sub); width: 100%; margin-top: 5px; }
+        .timer-container { flex: 1; height: 8px; background: rgba(0,0,0,0.1); border-radius: 4px; margin: 0 10px; overflow: hidden; }
+        #timer-bar { height: 100%; width: 100%; background: var(--success); transition: width 1s linear; }
+        .stat-badge { background: var(--glass-bg); padding: 4px 10px; border-radius: 20px; white-space: nowrap; border: 1px solid var(--glass-border); }
+
+        /* Word Display: 98% Width */
+        .word-display {
+            display: flex; flex-wrap: nowrap; justify-content: center;
+            gap: 4px; min-height: 60px; width: 98%; margin: 10px 0;
+        }
+        .letter-box {
+            flex: 1; height: 60px; background: var(--cell-bg); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: clamp(1.2rem, 8vw, 2.2rem); font-weight: 800; color: var(--accent);
+            border: 2px solid var(--glass-border); transition: all 0.3s;
+        }
+        .letter-box.revealed { background: rgba(16, 185, 129, 0.2); border-color: var(--success); color: var(--success); }
+        .letter-box.empty { color: transparent; border-style: dashed; }
+
+        /* Keyboard: 5 rows, Centered, 98% Width */
+        .alpha-grid {
+            display: flex; flex-direction: column; gap: 8px;
+            width: 98%; padding-bottom: 10px; margin-top: auto;
+        }
+        .keyboard-row { display: flex; justify-content: center; gap: 6px; width: 100%; }
+        .alpha-btn {
+            flex: 1; min-height: 52px; border-radius: 12px;
+            background: var(--cell-bg); font-size: 1.2rem; font-weight: 800;
+            border: 1px solid var(--glass-border); cursor: pointer; color: var(--text-main);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .alpha-btn.hit { background: var(--success) !important; color: white !important; border-color: transparent; }
+        .alpha-btn.miss { background: var(--danger) !important; color: white !important; border-color: transparent; }
+        .alpha-btn.disabled { opacity: 0.5; pointer-events: none; }
+
+        .wrong-tracker { display: flex; gap: 6px; justify-content: center; width: 100%; margin-bottom: 5px; }
+        .wrong-dot { width: 14px; height: 14px; border-radius: 50%; background: rgba(0,0,0,0.1); border: 1px solid var(--glass-border); }
+        .wrong-dot.filled { background: var(--danger); transform: scale(1.1); box-shadow: 0 0 8px var(--danger); }
+
+        .modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
+        .modal-overlay.active { display: flex; }
+        .modal-box { background: var(--glass-bg); padding: 30px; border-radius: 24px; text-align: center; width: 85%; border: 1px solid var(--glass-border); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+
+        .leaderboard {
+            width: 100%; max-height: 50vh; overflow-y: auto; background: rgba(255,255,255,0.1);
+            border-radius: 15px; border: 1px solid var(--glass-border);
+            -webkit-overflow-scrolling: touch;
+        }
+        .leaderboard table { width: 100%; border-collapse: collapse; }
+        .leaderboard th, .leaderboard td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; }
+        .leaderboard th { font-weight: 800; color: var(--accent); background: rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
+
 <div class="app-container">
     <header>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-            <a href="games.html" style="text-decoration:none; background:rgba(255,255,255,0.4); padding:4px 10px; border-radius:15px; color:var(--text-main); font-weight:bold; font-size:0.8rem;">⬅ Home</a>
-            <h1>EKA WordGuess</h1>
-            <div style="width:50px;"></div>
-        </div>
-        <div class="stats-row">
-            <span class="stat-badge" id="disp-timer">⏱️ 01:00</span>
-            <div class="timer-container"><div id="timer-bar"></div></div>
-            <span class="stat-badge" id="disp-level">#1</span>
-            <span class="stat-badge" id="disp-score">🌟 0</span>
-        </div>
-        <div class="header-controls">
-            <select id="level-select" class="level-selector" style="margin-bottom:0; padding:6px; font-size:0.85rem; height:34px;"></select>
-            <div class="header-btns">
-                <button id="btn-new" class="btn-mini">🆕 New</button>
-                <button id="btn-reveal" class="btn-mini danger">👁️ Reveal</button>
-                <button id="btn-sound" class="btn-mini">🔊 On</button>
-                <button id="btn-giveup" class="btn-mini danger">🏳️ Give Up</button>
+        <a href="index.html" class="back-btn">⬅</a>
+        <h1>EKA WordGuess</h1>
+        <div id="game-stats-container" style="display:none; padding: 0 10px;">
+            <div class="stats-row">
+                <span class="stat-badge" id="disp-timer">⏱️ 60s</span>
+                <div class="timer-container"><div id="timer-bar"></div></div>
+                <span class="stat-badge" id="disp-level">Stage 1</span>
+                <span class="stat-badge" id="disp-score">🌟 0</span>
             </div>
         </div>
     </header>
 
     <div class="screens-wrapper">
-        <!-- GAME SCREEN -->
-        <section id="screen-game" class="screen active">
-            <div class="glass-card" style="width: 100%; padding: 12px;">
-                <input type="text" id="playerName" class="input-glass" placeholder="Enter Player Name" maxlength="12">
+        <section id="screen-welcome" class="screen active">
+            <div style="font-size: 2.2rem; font-weight: 900; color: var(--accent); text-align: center; margin: 20px 0;">GUESS WORD</div>
+            <div class="glass-card">
+                <input type="text" id="playerName" class="input-glass" placeholder="Enter Your Name" maxlength="12">
+                <select id="age-select" class="input-glass">
+                    <option value="Age < 10">Easy (Child)</option>
+                    <option value="Age 10-15" selected>Medium (Standard)</option>
+                    <option value="Age 15-20">Difficult (Teen)</option>
+                    <option value="Age 20-30">Expert</option>
+                    <option value="Age 30+">Master</option>
+                </select>
+                <select id="theme-select" class="input-glass" onchange="setTheme(this.value)">
+                    <option value="3d-glass">🎨 3D Glass</option>
+                    <option value="modern-2x2">🎨 Modern Orange</option>
+                    <option value="dark-neon">🎨 Dark Neon</option>
+                    <option value="midnight-dark">🎨 Midnight</option>
+                </select>
+                <button class="btn primary" onclick="startGame()">▶ START GAME</button>
+                <button class="btn" onclick="showLeaderboard('top')">🏆 LEADERBOARD</button>
             </div>
-            <div class="glass-card" style="padding: 10px 2px; gap: 10px; width: 100%;">
+        </section>
+
+        <section id="screen-game" class="screen">
+            <div class="glass-card">
                 <div class="wrong-tracker" id="wrong-tracker"></div>
                 <div class="word-display" id="word-display"></div>
-                <div id="game-msg" class="stat-badge" style="min-height:24px; display:inline-block;">Pick a letter!</div>
+                <div id="game-msg" style="font-size: 0.8rem; font-weight: 800; opacity: 0.7;">First letter revealed!</div>
             </div>
 
             <div class="alpha-grid" id="alpha-grid"></div>
-        </section>
 
-        <!-- HELP SCREEN -->
-        <section id="screen-help" class="screen">
-            <div class="glass-card" style="width: 100%;">
-                <h2>🏆 Top 15 Leaderboard</h2>
-                <div id="firebaseStatus" class="firebase-status">Connecting to global server...</div>
-                <div class="leaderboard">
-                    <table>
-                        <thead><tr><th>Rank</th><th>Score</th><th>Name</th></tr></thead>
-                        <tbody id="leaderboardBody"><tr><td colspan="3" style="text-align:center">Loading...</td></tr></tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="glass-card" style="align-items:flex-start; margin-top: 10px;">
-                <h2>📖 How to Play</h2>
-                <p>1. Guess the hidden word by tapping letters A-Z.</p>
-                <p>2. Correct letters reveal their positions.</p>
-                <p>3. Wrong guesses fill the tracker. <strong>12 mistakes = Lose!</strong></p>
-                <p>4. Beat the <strong>countdown</strong> clock to win.</p>
-                <p style="margin-top:8px; font-weight:600;">💡 Tip: Time decreases as you reach higher levels!</p>
-                <button class="btn primary" style="width:100%; margin-top:12px;" onclick="navTo('screen-game')">Back to Game</button>
+            <div style="width:100%; display:flex; gap:10px; padding: 0 5px;">
+                <button class="btn" style="flex:1; min-height: 44px; font-size: 0.9rem;" onclick="revealWordHint()">👁️ HINT (-10s)</button>
+                <button class="btn" style="flex:1; min-height: 44px; font-size: 0.9rem;" onclick="endGame(false)">🏳️ GIVE UP</button>
             </div>
         </section>
 
-        <!-- DICTIONARY SCREEN -->
-        <section id="screen-dict" class="screen">
-            <div class="glass-card" style="align-items:flex-start; width:100%;">
-                <h2>📚 Word Dictionary</h2>
-                <p>Words found & played in this session:</p>
-                <div class="dict-list" id="dict-list"></div>
-                <button class="btn" style="width:100%; margin-top:10px;" onclick="navTo('screen-game')">Close</button>
+        <section id="screen-leaderboard" class="screen">
+            <h2 style="margin: 10px 0;">🏆 Global Rankings</h2>
+            <div style="display: flex; gap: 8px; margin-bottom: 10px; width: 98%;">
+                <button class="btn" style="flex: 1; min-height: 40px; font-size: 0.8rem;" id="btnTop15" onclick="showLeaderboard('top')">Top 15</button>
+                <button class="btn" style="flex: 1; min-height: 40px; font-size: 0.8rem; opacity: 0.6;" id="btnRecent60" onclick="showLeaderboard('recent')">Recent 60</button>
             </div>
+            <div class="leaderboard">
+                <table>
+                    <thead><tr><th>Player</th><th>Score</th><th>Date</th></tr></thead>
+                    <tbody id="leaderboardBody"></tbody>
+                </table>
+            </div>
+            <button class="btn primary" style="margin-top: 15px;" onclick="navTo('screen-welcome')">Back to Menu</button>
         </section>
     </div>
 
-    <nav class="bottom-nav">
-        <button class="nav-btn active" data-target="screen-game">🎮 Play</button>
-        <button class="nav-btn" data-target="screen-help">📖 Guide</button>
-        <button class="nav-btn" data-target="screen-dict">📚 Dict</button>
-    </nav>
-
-    <!-- WIN/LOSE MODAL -->
     <div class="modal-overlay" id="modal-end">
         <div class="modal-box">
-            <div class="modal-title" id="modal-title">You Win!</div>
-            <div class="modal-msg" id="modal-msg">Great job!</div>
-            <button class="btn primary" style="width:100%; margin-bottom: 10px; background: #6c5ce7;" id="btn-save-score">💾 Save Score</button>
-            <button class="btn primary" style="width:100%;" id="btn-play-again">Play Again</button>
+            <h2 id="modal-title">Game Over</h2>
+            <p id="modal-msg"></p>
+            <button class="btn primary" id="btn-modal-action"></button>
         </div>
     </div>
 </div>
 
-<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-
 <script src="vocabulary.js"></script>
-<script>
-    // --- HARDWARE OPTIMIZED DOM CACHING ---
-    const UI = {
-      levelSelect: document.getElementById('level-select'),
-      timer: document.getElementById('disp-timer'),
-      timerBar: document.getElementById('timer-bar'),
-      levelDisp: document.getElementById('disp-level'),
-      score: document.getElementById('disp-score'),
-      wordDisp: document.getElementById('word-display'),
-      wrongTrack: document.getElementById('wrong-tracker'),
-      msg: document.getElementById('game-msg'),
-      alphaGrid: document.getElementById('alpha-grid'),
-      btnNew: document.getElementById('btn-new'),
-      btnReveal: document.getElementById('btn-reveal'),
-      btnSound: document.getElementById('btn-sound'),
-      btnGiveup: document.getElementById('btn-giveup'),
-      btnAgain: document.getElementById('btn-play-again'),
-      modal: document.getElementById('modal-end'),
-      mTitle: document.getElementById('modal-title'),
-      mMsg: document.getElementById('modal-msg'),
-      dictList: document.getElementById('dict-list'),
-      playerName: document.getElementById('playerName'),
-      btnSaveScore: document.getElementById('btn-save-score'),
-      leaderboardBody: document.getElementById('leaderboardBody'),
-      firebaseStatus: document.getElementById('firebaseStatus')
-    };
 
-    // ============================================
-    // 🔥 FIREBASE CONFIGURATION
-    // ============================================
+<script>
     const firebaseConfig = {
         apiKey: "AIzaSyAEcPKE7n33wNUGxYpyqm5UWFjwXTT_x_c",
         authDomain: "eka-sir.firebaseapp.com",
@@ -377,432 +282,238 @@
         projectId: "eka-sir",
         storageBucket: "eka-sir.firebasestorage.app",
         messagingSenderId: "1022804634776",
-        appId: "1:1022804634776:web:4c547efa80d625885734ed",
-        measurementId: "G-5P543VP1EZ"
+        appId: "1:1022804634776:web:4c547efa80d625885734ed"
     };
 
-    let firebaseDB = null;
-    let firebaseInitialized = false;
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-    function initFirebase() {
-        try {
-            if (!firebaseConfig.apiKey || firebaseConfig.apiKey.includes("YOUR_API_KEY")) return;
-            const app = firebase.initializeApp(firebaseConfig);
-            firebaseDB = firebase.database();
-            firebaseInitialized = true;
-            UI.firebaseStatus.textContent = '✅ Global Server Ready';
-            loadScoresFromFirebase();
-        } catch (e) {
-            UI.firebaseStatus.textContent = '❌ Offline Mode';
+    let state = {
+        name: "", level: "Age 8-12", score: 0, stage: 1,
+        word: "", guessed: new Set(), wrong: 0, maxWrong: 10,
+        time: 60, maxTime: 60, interval: null, active: false
+    };
+
+    const LEVEL_TIME = { "Age < 8": 90, "Age 8-12": 60, "Age 12-16": 45, "Age 16-20": 35, "Age 20+": 30 };
+
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('eka_wordguess_theme', theme);
+    }
+
+    function navTo(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.getElementById('game-stats-container').style.display = (id === 'screen-game') ? 'block' : 'none';
+    }
+
+    function startGame() {
+        const name = document.getElementById('playerName').value.trim();
+        if (!name) { alert("Please enter your name!"); return; }
+        state.name = name;
+        state.level = document.getElementById('age-select').value;
+        state.score = 0; state.stage = 1;
+        localStorage.setItem('eka_player_name', name);
+        newRound();
+        navTo('screen-game');
+    }
+
+    function newRound() {
+        clearInterval(state.interval);
+        const dict = window.VOCABULARY[state.level] || window.VOCABULARY["Age 8-12"];
+        state.word = dict[Math.floor(Math.random() * dict.length)].toUpperCase();
+        state.guessed = new Set();
+        state.wrong = 0;
+        state.maxTime = Math.max(20, (LEVEL_TIME[state.level] || 60) - (state.stage * 2));
+        state.time = state.maxTime;
+        state.active = true;
+
+        document.getElementById('disp-level').textContent = `Stage ${state.stage}`;
+        document.getElementById('disp-score').textContent = `🌟 ${state.score}`;
+        document.getElementById('word-display').innerHTML = state.word.split('').map(() => '<div class="letter-box empty"></div>').join('');
+
+        buildKeyboard();
+        updateTracker();
+        updateTimerUI();
+
+        // REVEAL FIRST LETTER AUTOMATICALLY
+        handleGuess(state.word[0], true);
+
+        state.interval = setInterval(() => {
+            if (!state.active) return;
+            state.time--;
+            updateTimerUI();
+            if (state.time <= 0) endGame(false);
+        }, 1000);
+    }
+
+    function buildKeyboard() {
+        const grid = document.getElementById('alpha-grid');
+        grid.innerHTML = '';
+
+        // 5-Row Layout
+        const layout = [
+            "ABCDEF".split(''),
+            "GHIJKL".split(''),
+            "MNOPQ".split(''),
+            "RSTUV".split(''),
+            "WXYZ".split('')
+        ];
+
+        layout.forEach(rowChars => {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'keyboard-row';
+            rowChars.forEach(char => {
+                const btn = document.createElement('button');
+                btn.className = 'alpha-btn';
+                btn.textContent = char;
+                btn.id = `key-${char}`;
+                btn.onclick = () => handleGuess(char);
+                rowDiv.appendChild(btn);
+            });
+            grid.appendChild(rowDiv);
+        });
+    }
+
+    function handleGuess(char, isAuto = false) {
+        if (!state.active || (state.guessed.has(char) && !isAuto)) return;
+        state.guessed.add(char);
+
+        const btn = document.getElementById(`key-${char}`);
+        if (btn) btn.classList.add('disabled');
+
+        if (state.word.includes(char)) {
+            if (btn) btn.classList.add('hit');
+            revealPositions(char);
+            if (![...state.word].some(c => !state.guessed.has(c))) {
+                setTimeout(() => endGame(true), 400);
+            }
+        } else if (!isAuto) {
+            if (btn) btn.classList.add('miss');
+            state.wrong++;
+            updateTracker();
+            if (state.wrong >= state.maxWrong) endGame(false);
         }
     }
 
-    function saveScoreToFirebase(name, score, age) {
-        if (!firebaseInitialized || !firebaseDB) return Promise.resolve();
-        return firebaseDB.ref('scores_guessword').push().set({
-            name: name || 'Anonymous',
-            score: parseInt(score) || 0,
-            age: age,
+    function revealPositions(char) {
+        const boxes = document.getElementById('word-display').children;
+        state.word.split('').forEach((c, i) => {
+            if (c === char) {
+                boxes[i].textContent = char;
+                boxes[i].classList.remove('empty');
+                boxes[i].classList.add('revealed');
+            }
+        });
+    }
+
+    function updateTracker() {
+        const tracker = document.getElementById('wrong-tracker');
+        tracker.innerHTML = Array(state.maxWrong).fill(0).map((_, i) =>
+            `<div class="wrong-dot ${i < state.wrong ? 'filled' : ''}"></div>`
+        ).join('');
+    }
+
+    function updateTimerUI() {
+        document.getElementById('disp-timer').textContent = `⏱️ ${state.time}s`;
+        const pct = (state.time / state.maxTime) * 100;
+        document.getElementById('timer-bar').style.width = pct + '%';
+        document.getElementById('timer-bar').style.background = pct < 25 ? 'var(--danger)' : 'var(--success)';
+    }
+
+    function endGame(won) {
+        state.active = false;
+        clearInterval(state.interval);
+        const modal = document.getElementById('modal-end');
+        const title = document.getElementById('modal-title');
+        const msg = document.getElementById('modal-msg');
+        const actionBtn = document.getElementById('btn-modal-action');
+
+        if (won) {
+            const points = (state.word.length * 5) + state.time;
+            state.score += points;
+            title.textContent = "Word Found! 🎉";
+            msg.textContent = `Word: ${state.word}\nPoints: ${points}\nTotal: ${state.score}`;
+            actionBtn.textContent = "Next Stage";
+            actionBtn.onclick = () => { modal.classList.remove('active'); state.stage++; newRound(); };
+        } else {
+            title.textContent = "Game Over! ⏰";
+            msg.textContent = `The word was: ${state.word}\nFinal Score: ${state.score}`;
+            actionBtn.textContent = "Return to Menu";
+            actionBtn.onclick = () => { modal.classList.remove('active'); navTo('screen-welcome'); };
+            saveToLeaderboard();
+        }
+        modal.classList.add('active');
+    }
+
+    function saveToLeaderboard() {
+        if (state.score <= 0) return;
+        db.ref('scores_guessword').push({
+            name: state.name,
+            score: state.score,
+            level: state.level,
             timestamp: firebase.database.ServerValue.TIMESTAMP
         });
     }
 
-    function loadScoresFromFirebase() {
-        if (!firebaseInitialized || !firebaseDB) return;
-        firebaseDB.ref('scores_guessword').orderByChild('score').limitToLast(15).once('value')
-            .then(snapshot => {
-                const scores = [];
-                snapshot.forEach(child => { scores.push(child.val()); });
-                scores.sort((a, b) => b.score - a.score);
-                displayLeaderboard(scores);
+    function showLeaderboard(mode = 'top') {
+        navTo('screen-leaderboard');
+        const body = document.getElementById('leaderboardBody');
+        const btnTop = document.getElementById('btnTop15');
+        const btnRecent = document.getElementById('btnRecent60');
+
+        if (mode === 'top') {
+            btnTop.style.opacity = '1'; btnRecent.style.opacity = '0.6';
+        } else {
+            btnTop.style.opacity = '0.6'; btnRecent.style.opacity = '1';
+        }
+
+        body.innerHTML = '<tr><td colspan="3">Syncing...</td></tr>';
+
+        let q = db.ref('scores_guessword');
+        if (mode === 'top') {
+            q = q.orderByChild('score').limitToLast(15);
+        } else {
+            q = q.limitToLast(60);
+        }
+
+        q.once('value', s => {
+            let l = [];
+            s.forEach(c => {
+                let data = c.val();
+                data.key = c.key;
+                l.push(data);
             });
-    }
 
-    function displayLeaderboard(scores) {
-        if (!scores || scores.length === 0) {
-            UI.leaderboardBody.innerHTML = '<tr><td colspan="3" style="text-align:center">No scores yet.</td></tr>';
-            return;
-        }
-        const currentName = UI.playerName.value.trim();
-        UI.leaderboardBody.innerHTML = scores.map((s, i) => {
-            const isMe = s.name === currentName && s.score === state.baseScore;
-            return `
-                <tr style="${isMe ? 'background:rgba(0,184,148,0.2); font-weight:bold;' : ''}">
-                    <td>${i + 1}</td>
-                    <td style="font-weight:bold;color:var(--accent)">${s.score}</td>
-                    <td>${s.name} ${isMe ? '⭐' : ''}</td>
-                </tr>
-            `;
-        }).join('');
-    }
-
-    const LEVEL_CONFIGS = {
-        "Age < 8":   { time: 60 },
-        "Age 8-12":  { time: 90 },
-        "Age 12-16": { time: 120 },
-        "Age 16-20": { time: 150 },
-        "Age 20+":   { time: 180 }
-    };
-
-    let state = {
-      word: "", guessed: new Set(), wrong: 0, maxWrong: 12,
-      time: 60, maxTime: 60, interval: null, active: false, soundOn: true,
-      baseScore: 0, levelCount: 1, dict: new Set(),
-      currentLevel: "Age 12-16"
-    };
-
-    // --- INIT ---
-    function init() {
-      const savedName = localStorage.getItem('eka_player_name');
-      if (savedName) UI.playerName.value = savedName;
-      initFirebase();
-      populateLevels();
-      buildAlpha();
-      buildTracker();
-      newRound();
-      setupEvents();
-      renderDict();
-    }
-
-    function populateLevels() {
-      const levels = Object.keys(window.VOCABULARY);
-      UI.levelSelect.innerHTML = levels.map(l => `<option value="${l}" ${l === state.currentLevel ? 'selected' : ''}>${l}</option>`).join('');
-    }
-
-    function getWordList() {
-      return window.VOCABULARY[state.currentLevel] || window.VOCABULARY["Age 12-16"];
-    }
-
-    function buildAlpha() {
-      UI.alphaGrid.innerHTML = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('').map(c =>
-        `<button class="alpha-btn" data-c="${c}">${c}</button>`
-      ).join('');
-    }
-
-    function buildTracker() {
-      UI.wrongTrack.innerHTML = Array(state.maxWrong).fill('<div class="wrong-dot"></div>').join('');
-    }
-
-    function setupEvents() {
-      // Navigation
-      document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('pointerdown', e => {
-        e.preventDefault(); navTo(btn.dataset.target);
-      }));
-
-      // Controls (pointerdown for snappy mobile feel)
-      UI.btnNew.addEventListener('pointerdown', e => { e.preventDefault(); newRound(); });
-      UI.btnReveal.addEventListener('pointerdown', e => { e.preventDefault(); revealWord(); });
-      UI.btnSound.addEventListener('pointerdown', e => { e.preventDefault(); toggleSound(); });
-      UI.btnGiveup.addEventListener('pointerdown', e => { e.preventDefault(); endGame(false); });
-      UI.btnSaveScore.addEventListener('pointerdown', e => { e.preventDefault(); submitScore(); });
-
-      // Level Change
-      UI.levelSelect.addEventListener('change', e => {
-        state.currentLevel = e.target.value;
-        newRound();
-      });
-
-      // Alphabet Delegation (High Performance)
-      UI.alphaGrid.addEventListener('pointerdown', e => {
-        e.preventDefault();
-        const btn = e.target.closest('.alpha-btn');
-        if (btn && state.active && !btn.classList.contains('disabled')) guessLetter(btn.dataset.c, btn);
-      });
-
-      // Keyboard Support for Desktop
-      window.addEventListener('keydown', e => {
-        if (e.key.length === 1 && e.key.match(/[a-z]/i) && state.active) {
-          const btn = UI.alphaGrid.querySelector(`[data-c="${e.key.toUpperCase()}"]`);
-          if (btn && !btn.classList.contains('disabled')) guessLetter(e.key.toUpperCase(), btn);
-        }
-        if (e.key === 'Enter') {
-            if (UI.modal.classList.contains('active')) {
-                UI.btnAgain.click();
+            if (mode === 'top') {
+                l.sort((a, b) => b.score - a.score);
+            } else {
+                l.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
             }
-        }
-      });
+
+            body.innerHTML = l.length ? l.map((s, i) => {
+                const date = s.timestamp ? new Date(s.timestamp).toLocaleDateString() : 'N/A';
+                return `
+                <tr>
+                    <td><b>${s.name}</b><br><small>${s.level}</small></td>
+                    <td style="font-weight:bold;color:var(--accent)">${s.score}</td>
+                    <td style="font-size: 0.7rem; opacity: 0.7;">${date}</td>
+                </tr>`;
+            }).join('') : '<tr><td colspan="3">No records.</td></tr>';
+        });
     }
 
-    // --- NAVIGATION ---
-    function navTo(id) {
-      document.querySelectorAll('.screen').forEach(s => {
-        if (s.id === id) { s.classList.add('active'); s.classList.remove('exit'); }
-        else { s.classList.remove('active'); s.classList.add('exit'); }
-      });
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.target === id));
-    }
-
-    function toggleSound() {
-      state.soundOn = !state.soundOn;
-      UI.btnSound.textContent = state.soundOn ? '🔊 On' : '🔇 Off';
-      UI.btnSound.classList.toggle('danger', !state.soundOn);
-    }
-
-    // --- GAME LOGIC ---
-    function newRound(isNextLevel = false) {
-      clearInterval(state.interval);
-      if (!isNextLevel) {
-          state.baseScore = 0;
-          state.levelCount = 1;
-          state.dict.clear();
-      }
-
-      const cfg = LEVEL_CONFIGS[state.currentLevel] || LEVEL_CONFIGS["Age 12-16"];
-      state.maxTime = Math.max(30, cfg.time - (state.levelCount - 1) * 10);
-      state.time = state.maxTime;
-      state.wrong = 0; state.guessed.clear(); state.active = true;
-
-      const currentDict = getWordList();
-      state.word = currentDict[Math.floor(Math.random() * currentDict.length)].toUpperCase();
-
-      // Ensure it's not a word we just played if possible
-      let attempts = 0;
-      while (state.dict.has(state.word) && currentDict.length > 5 && attempts < 10) {
-        state.word = currentDict[Math.floor(Math.random() * currentDict.length)].toUpperCase();
-        attempts++;
-      }
-      state.dict.add(state.word);
-      renderDict();
-
-      // Reset Alpha Grid UI
-      UI.alphaGrid.querySelectorAll('.alpha-btn').forEach(b => { b.className = 'alpha-btn'; });
-
-      // Build Word Display
-      UI.wordDisp.innerHTML = state.word.split('').map(() => '<div class="letter-box empty">_</div>').join('');
-
-      // Auto-reveal first letter
-      const firstChar = state.word[0];
-      state.guessed.add(firstChar);
-      const firstBtn = UI.alphaGrid.querySelector(`[data-c="${firstChar}"]`);
-      if (firstBtn) firstBtn.classList.add('disabled', 'hit');
-      revealPositions(firstChar);
-
-      updateTracker();
-      updateTimerUI();
-      updateStatsUI();
-      UI.msg.textContent = `Level #${state.levelCount} - Start!`;
-      UI.msg.style.background = 'var(--cell-bg)';
-
-      state.interval = setInterval(() => {
+    function revealWordHint() {
         if (!state.active) return;
-        state.time--;
-        updateTimerUI();
-        if (state.time <= 0) endGame(false);
-      }, 1000);
+        const u = state.word.split('').filter(c => !state.guessed.has(c));
+        if (u.length > 1) { state.time = Math.max(1, state.time - 10); handleGuess(u[Math.floor(Math.random() * u.length)]); updateTimerUI(); }
+        else { state.word.split('').forEach(c => revealPositions(c)); setTimeout(() => endGame(false), 500); }
     }
 
-    function guessLetter(char, btn) {
-      if (state.guessed.has(char) || !state.active) return;
-      state.guessed.add(char);
-
-      const inWord = state.word.includes(char);
-      btn.classList.add('disabled', inWord ? 'hit' : 'miss');
-
-      if (inWord) {
-        if (navigator.vibrate) navigator.vibrate(40);
-        playSound('hit');
-        state.time = Math.min(state.maxTime, state.time + 3); // Bonus for correct letter
-        revealPositions(char);
-        UI.msg.textContent = "✅ Correct!";
-        UI.msg.style.background = 'rgba(102,187,106,0.3)';
-        if (checkWin()) endGame(true);
-      } else {
-        state.wrong++;
-        updateTracker();
-        playSound('miss');
-        UI.msg.textContent = `❌ Wrong! (${state.wrong}/${state.maxWrong})`;
-        UI.msg.style.background = 'rgba(229,115,115,0.3)';
-        if (state.wrong >= state.maxWrong) endGame(false);
-      }
-    }
-
-    function revealPositions(char) {
-      const boxes = UI.wordDisp.children;
-      let revealed = false;
-      state.word.split('').forEach((c, i) => {
-        if (c === char && boxes[i].classList.contains('empty')) {
-          boxes[i].textContent = c;
-          boxes[i].classList.remove('empty');
-          boxes[i].classList.add('revealed');
-          revealed = true;
-        }
-      });
-    }
-
-    function checkWin() {
-      return ![...state.word].some(c => !state.guessed.has(c));
-    }
-
-    function endGame(won) {
-      state.active = false;
-      clearInterval(state.interval);
-      playSound(won ? 'win' : 'lose');
-
-      let msg = "";
-      if (won) {
-          const wordPoints = state.word.length;
-          const timeBonus = Math.floor(Math.max(0, state.time) / 5);
-          const roundScore = wordPoints + timeBonus;
-          state.baseScore += roundScore;
-          saveScore(state.baseScore);
-          UI.btnSaveScore.style.display = 'block';
-          UI.btnSaveScore.disabled = false;
-          UI.btnSaveScore.textContent = '💾 Save Score';
-          msg = `Word: "${state.word}" (+${wordPoints} pts)\nTime Bonus: +${timeBonus} pts\nRound Total: +${roundScore} pts`;
-      } else {
-          msg = `The word was: ${state.word}`;
-          UI.btnSaveScore.style.display = 'none';
-      }
-
-      UI.mTitle.textContent = won ? '🎉 You Win!' : '⏰ Game Over';
-      UI.mMsg.style.whiteSpace = 'pre-line';
-      UI.mMsg.textContent = msg + `\n\nSession Total: ${state.baseScore}`;
-
-      UI.btnAgain.textContent = won ? "Next Level" : "Play Again";
-      UI.btnAgain.onclick = (e) => {
-          e.preventDefault();
-          closeModal();
-          if (won) {
-              state.levelCount++;
-              newRound(true);
-          } else {
-              newRound(false);
-          }
-      };
-
-      updateStatsUI();
-      setTimeout(() => UI.modal.classList.add('active'), 300);
-    }
-
-    function updateStatsUI() {
-        UI.levelDisp.textContent = `#${state.levelCount}`;
-        UI.score.textContent = `🌟 ${state.baseScore}`;
-    }
-
-    function saveScore(score) {
-        const key = 'eka_score_guessword';
-        const history = JSON.parse(localStorage.getItem(key) || '[]');
-        history.unshift({ score: score, date: new Date().toLocaleDateString(), level: state.levelCount });
-        localStorage.setItem(key, JSON.stringify(history.slice(0, 10)));
-    }
-
-    function revealWord() {
-      if (!state.active) return;
-      state.word.split('').forEach(c => state.guessed.add(c));
-      revealPositionsAll();
-      UI.msg.textContent = "👁️ Word revealed.";
-      setTimeout(() => endGame(false), 800);
-    }
-
-    function revealPositionsAll() {
-      const boxes = UI.wordDisp.children;
-      state.word.split('').forEach((c, i) => {
-        boxes[i].textContent = c;
-        boxes[i].classList.remove('empty');
-        boxes[i].classList.add('revealed');
-      });
-    }
-
-    function updateTracker() {
-      UI.wrongTrack.querySelectorAll('.wrong-dot').forEach((d, i) => d.classList.toggle('filled', i < state.wrong));
-    }
-
-    function updateTimerUI() {
-      const m = Math.floor(state.time / 60).toString().padStart(2, '0');
-      const s = (state.time % 60).toString().padStart(2, '0');
-      UI.timer.textContent = `⏱️ ${m}:${s}`;
-      UI.timer.style.color = state.time < 15 ? 'var(--danger)' : 'var(--text-main)';
-
-      const pct = (state.time / state.maxTime) * 100;
-      UI.timerBar.style.width = pct + "%";
-      UI.timerBar.style.backgroundColor = pct < 25 ? "var(--danger)" : "var(--accent)";
-    }
-
-    function renderDict() {
-      UI.dictList.innerHTML = [...state.dict].map(w => `<div class="dict-item">${w}</div>`).join('');
-      if (!state.dict.size) UI.dictList.innerHTML = '<div class="dict-item" style="color:#999;">No words played yet.</div>';
-    }
-
-    async function submitScore() {
-        const name = UI.playerName.value.trim() || 'Anonymous';
-        localStorage.setItem('eka_player_name', name);
-        UI.btnSaveScore.disabled = true;
-        UI.btnSaveScore.textContent = '⏳ Saving...';
-        try {
-            await saveScoreToFirebase(name, state.baseScore, state.currentLevel);
-            UI.btnSaveScore.textContent = '✅ Saved!';
-            loadScoresFromFirebase();
-            setTimeout(() => {
-                closeModal();
-                navTo('screen-help');
-            }, 1000);
-        } catch (e) {
-            UI.btnSaveScore.disabled = false;
-            UI.btnSaveScore.textContent = '❌ Failed';
-        }
-    }
-
-    function closeModal() { UI.modal.classList.remove('active'); }
-
-    // --- SOUND SYSTEM ---
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    let audioCtx = null;
-
-    function initAudio() {
-        if (!audioCtx) audioCtx = new AudioContext();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-    }
-
-    function playSound(type) {
-      if (!state.soundOn) return;
-      initAudio();
-
-      try {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        const now = audioCtx.currentTime;
-
-        if (type === 'hit') {
-            osc.frequency.setValueAtTime(523.25, now); // C5
-            osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.1); // G5
-            gain.gain.setValueAtTime(0.1, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
-            osc.start(now); osc.stop(now + 0.15);
-        }
-        else if (type === 'miss') {
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(220, now); // A3
-            osc.frequency.exponentialRampToValueAtTime(110, now + 0.2); // A2
-            gain.gain.setValueAtTime(0.1, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
-            osc.start(now); osc.stop(now + 0.2);
-        }
-        else if (type === 'win') {
-            const notes = [523.25, 659.25, 783.99, 1046.50]; // C-E-G-C
-            notes.forEach((f, i) => {
-                const o = audioCtx.createOscillator();
-                const g = audioCtx.createGain();
-                o.connect(g); g.connect(audioCtx.destination);
-                o.frequency.setValueAtTime(f, now + i * 0.1);
-                g.gain.setValueAtTime(0.1, now + i * 0.1);
-                g.gain.exponentialRampToValueAtTime(0.01, now + i * 0.1 + 0.3);
-                o.start(now + i * 0.1); o.stop(now + i * 0.1 + 0.3);
-            });
-        }
-        else if (type === 'lose') {
-            osc.type = 'square';
-            osc.frequency.setValueAtTime(150, now);
-            osc.frequency.exponentialRampToValueAtTime(40, now + 0.5);
-            gain.gain.setValueAtTime(0.1, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-            osc.start(now); osc.stop(now + 0.5);
-        }
-      } catch(e) { console.warn('Sound error:', e); }
-    }
-
-    // Boot
-    window.addEventListener('DOMContentLoaded', init);
+    window.onload = () => {
+        const sn = localStorage.getItem('eka_player_name'); if (sn) document.getElementById('playerName').value = sn;
+        const st = localStorage.getItem('eka_wordguess_theme'); if (st) setTheme(st);
+    };
 </script>
 </body>
 </html>

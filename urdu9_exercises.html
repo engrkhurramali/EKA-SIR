@@ -125,6 +125,15 @@
             margin-top: 4px;
             font-weight: 800;
         }
+
+        .ex-btn[data-type="mcq"]::after {
+            content: "📝 Start Practice";
+            color: #22c55e;
+        }
+
+        .ex-btn[data-type="sum"]::after {
+            content: none;
+        }
     </style>
 </head>
 <body>
@@ -176,13 +185,22 @@
             gridDiv.className = 'exercise-grid';
 
             categories.forEach(cat => {
-                const linkKey = `ch${ch.id}_${cat.id}`;
-                const link = videoLinks[linkKey] || channelLink;
-
                 const btn = document.createElement('a');
                 btn.className = 'ex-btn';
-                btn.href = link;
-                btn.target = "_blank";
+
+                if (cat.id === 'mcq') {
+                    btn.href = `mcq-practice.html?subject=urdu9_u${ch.id}&file=quiz_data_class9/class9_urdu`;
+                    btn.dataset.type = 'mcq';
+                } else if (cat.id === 'sum') {
+                    btn.href = `urdu9_summary.html?chapter=${ch.id}`;
+                    btn.dataset.type = 'sum';
+                } else {
+                    const linkKey = `ch${ch.id}_${cat.id}`;
+                    const link = videoLinks[linkKey] || channelLink;
+                    btn.href = link;
+                    btn.target = "_blank";
+                }
+
                 btn.innerHTML = `<span>Chapter ${ch.id}</span>${cat.label}`;
                 gridDiv.appendChild(btn);
             });

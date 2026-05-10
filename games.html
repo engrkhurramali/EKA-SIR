@@ -30,14 +30,24 @@
         }
 
         .home-btn {
-            text-decoration: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+            display: flex; align-items: center; justify-content: center;
             background: #fff;
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-weight: bold;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            text-decoration: none;
             color: var(--text-dark);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            font-size: 1.2rem;
+        }
+        .home-btn:hover {
+            transform: scale(1.1);
+            background: #f0f0f0;
         }
 
         .glass-panel {
@@ -160,8 +170,9 @@
 <body>
 
 <div class="header-row">
-    <a href="index.html" class="home-btn">🏠 HOME</a>
-    <div style="font-weight: 800; font-size: 0.8rem; opacity: 0.6;">EKA SIR v3.5</div>
+    <a href="index.html" class="home-btn">⬅</a>
+    <div style="width:40px"></div> <!-- Spacer to keep centered or balanced -->
+    <div style="font-weight: 800; font-size: 0.8rem; opacity: 0.6; flex: 1; text-align: right;">EKA SIR v3.5</div>
 </div>
 
 <div class="glass-panel">
