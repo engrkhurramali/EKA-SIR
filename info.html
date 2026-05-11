@@ -57,6 +57,81 @@
         }
         h1 { margin: 0 0 15px; font-size: 1.6rem; text-transform: uppercase; }
         p { line-height: 1.6; opacity: 0.9; }
+
+        /* Grid and Card Styles */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 20px 0;
+            width: 100%;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            height: 110px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .card:hover, .card:active {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .icon-box {
+            font-size: 35px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Animations */
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .ani-float { animation: floating 3s ease-in-out infinite; }
+
+        @keyframes pulsing {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .ani-pulse { animation: pulsing 2s infinite; }
+
+        @keyframes spinning {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .ani-spin { animation: spinning 4s linear infinite; }
+
+        @keyframes shaking {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+            100% { transform: rotate(0deg); }
+        }
+        .ani-shake { animation: shaking 0.5s infinite; }
     </style>
 </head>
 <body>
@@ -64,8 +139,51 @@
 <div class="glass-panel">
     <h1>ℹ️ Information Center</h1>
     <p>Welcome to the EKA SIR Educational Platform.</p>
-    <p>This application is designed to provide high-quality educational resources, including notes, CBT assessments, and interactive learning games for students.</p>
-    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 0.85rem;">
+
+    <div class="grid">
+        <!-- Web Tools & Links -->
+        <a href="https://www.youtube.com/@engineerkhurramali" class="card">
+            <div class="icon-box ani-pulse">📺</div>
+            <div class="label">YouTube</div>
+        </a>
+
+        <a href="https://www.google.com" class="card">
+            <div class="icon-box ani-float">🔍</div>
+            <div class="label">Search</div>
+        </a>
+
+        <a href="https://www.wikipedia.org" class="card">
+            <div class="icon-box ani-shake">📖</div>
+            <div class="label">Wikipedia</div>
+        </a>
+
+        <a href="https://translate.google.com" class="card">
+            <div class="icon-box ani-spin">🌐</div>
+            <div class="label">Translate</div>
+        </a>
+
+        <a href="https://phet.colorado.edu" class="card">
+            <div class="icon-box ani-float" style="animation-delay: -1s;">🔬</div>
+            <div class="label">Simulations</div>
+        </a>
+
+        <a href="https://www.khanacademy.org" class="card">
+            <div class="icon-box ani-pulse" style="animation-delay: -0.5s;">🎓</div>
+            <div class="label">Academy</div>
+        </a>
+
+        <a href="https://chat.openai.com" class="card">
+            <div class="icon-box ani-float">🤖</div>
+            <div class="label">AI Assistant</div>
+        </a>
+
+        <a href="https://ptable.com" class="card">
+            <div class="icon-box ani-shake" style="animation-delay: -0.2s;">🧪</div>
+            <div class="label">Periodic Table</div>
+        </a>
+    </div>
+
+    <div style="margin-top: 10px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 0.85rem;">
         <b>Version:</b> 3.5.0 (PWA)<br>
         <b>Developed by:</b> EKA SIR Team
     </div>
