@@ -4,140 +4,182 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>English Class 9 Exercises - EKA SIR</title>
+    <!-- Include the quiz data file -->
+    <script src="quiz_data_class9/class9_english.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
         :root {
             --glass: rgba(255, 255, 255, 0.25);
-            --glass-heavy: rgba(255, 255, 255, 0.4);
-            --sky-blue: #87CEEB;
-            --mint-green: #98FF98;
-            --text-dark: #1a5f7a;
-            --border: rgba(255, 255, 255, 0.5);
+            --glass-heavy: rgba(255, 255, 255, 0.35);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --sky-blue: #6a9ab0;
+            --sky-blue-dark: #4a7c94;
+            --mint-green: #a8e6cf;
+            --mint-green-dark: #7fcdbb;
+            --text-dark: #0f2b3a;
             --accent: #ff6b6b;
+            --accent-glow: rgba(255, 107, 107, 0.5);
+            --success: #4ade80;
+            --success-glow: rgba(74, 222, 128, 0.4);
+            --shadow-dark: rgba(0, 30, 60, 0.15);
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
-            background-attachment: fixed;
-            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Poppins', 'Segoe UI', Roboto, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             color: var(--text-dark);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; overflow-x: hidden;
+        }
+
+        .particles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: -1; overflow: hidden;
+        }
+        .particle {
+            position: absolute; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            animation: float 12s infinite linear;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-20vh); opacity: 0; }
         }
 
         .main-container {
-            width: 100%;
-            max-width: 500px;
+            width: 100%; max-width: 520px;
             background: var(--glass);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 30px;
-            padding: 25px;
-            border: 1px solid var(--border);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), inset 0 0 15px rgba(255, 255, 255, 0.3);
-            box-sizing: border-box;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 20px 18px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 25px var(--shadow-dark);
+            margin: 10px 0;
+            will-change: transform;
         }
 
         .nav-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 20px; padding: 0 5px;
         }
 
         .back-btn {
             background: var(--glass-heavy);
-            padding: 10px 15px;
-            border-radius: 50px;
-            text-decoration: none;
-            color: var(--text-dark);
-            font-weight: bold;
-            border: 1px solid var(--border);
-            transition: 0.3s;
-            font-size: 0.9rem;
+            padding: 10px 18px; border-radius: 50px;
+            text-decoration: none; color: var(--text-dark);
+            font-weight: 600; border: 1px solid var(--glass-border);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-size: 0.9rem; display: flex; align-items: center; gap: 5px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        .back-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+            background: rgba(255,255,255,0.45);
         }
 
-        .back-btn:active { transform: scale(0.9); }
-
         h1 {
-            text-align: center;
-            font-size: 1.2rem;
-            margin: 0;
-            text-transform: uppercase;
+            text-align: center; font-size: 1.3rem; margin: 0;
+            text-transform: uppercase; letter-spacing: 1px;
+            color: var(--text-dark); font-weight: 700;
+        }
+
+        .subtitle {
+            text-align: center; font-size: 0.8rem; margin: 12px 0 20px;
+            font-weight: 600; color: var(--text-dark); opacity: 0.9;
+            padding: 6px 14px; background: rgba(255,255,255,0.3);
+            border-radius: 40px; border: 1px solid var(--glass-border);
         }
 
         .chapter-title {
-            background: var(--text-dark);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 10px;
-            margin: 20px 0 10px 0;
-            font-size: 0.9rem;
-            font-weight: bold;
+            background: linear-gradient(135deg, var(--sky-blue-dark), var(--mint-green-dark));
+            color: white; padding: 10px 18px; border-radius: 14px;
+            margin: 22px 0 12px; font-size: 1rem; font-weight: 700;
+            text-align: center; box-shadow: 0 5px 15px rgba(0,30,60,0.15);
+            position: relative; overflow: hidden;
         }
 
         .exercise-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 25px;
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 14px; margin-bottom: 8px;
         }
 
         .ex-btn {
             background: var(--glass-heavy);
-            border: 1px solid var(--border);
-            padding: 15px 10px;
-            border-radius: 18px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: bold;
-            color: var(--text-dark);
-            text-decoration: none;
-            font-size: 0.95rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 1px solid var(--glass-border);
+            padding: 16px 12px; border-radius: 20px;
+            text-align: center; cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            font-weight: 600; color: var(--text-dark);
+            text-decoration: none; font-size: 0.9rem;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 5px;
+            box-shadow: 0 4px 12px var(--shadow-dark);
+            position: relative; overflow: hidden;
         }
 
-        .ex-btn:active {
-            background: #fff;
-            transform: scale(0.95);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        .ex-btn:hover {
+            transform: scale(1.04);
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.8), 0 0 15px var(--accent-glow);
+            background: rgba(255,255,255,0.5);
+            z-index: 5;
         }
 
         .ex-btn span {
-            font-size: 0.7rem;
-            opacity: 0.7;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 0.7rem; opacity: 0.85;
+            text-transform: uppercase; letter-spacing: 0.8px;
+            font-weight: 600; color: var(--sky-blue-dark);
         }
 
+        .ex-btn[data-type="mcq"] { border-color: rgba(74,222,128,0.5); }
+        .ex-btn[data-type="mcq"]::after {
+            content: "📝 Practice"; color: var(--success);
+            font-size: 0.65rem; font-weight: 600; margin-top: 3px;
+        }
         .ex-btn::after {
-            content: "▶ Watch Video";
-            font-size: 0.65rem;
-            color: var(--accent);
-            margin-top: 4px;
-            font-weight: 800;
+            content: "▶ Video Lesson";
+            font-size: 0.65rem; color: var(--accent);
+            margin-top: 3px; font-weight: 700;
+        }
+        .ex-btn[data-type="mcq"]::after {
+            content: "📝 Practice";
+        }
+
+        .ripple {
+            position: absolute; border-radius: 50%;
+            background: rgba(255,255,255,0.6);
+            transform: scale(0); animation: ripple 0.5s linear;
+            pointer-events: none;
+        }
+        @keyframes ripple { to { transform: scale(3); opacity: 0; } }
+
+        @media (max-width: 480px) {
+            .main-container { padding: 18px 15px; }
+            .ex-btn { padding: 14px 10px; font-size: 0.85rem; }
+            .chapter-title { font-size: 0.9rem; }
         }
     </style>
 </head>
 <body>
+
+<div class="particles" id="particles"></div>
 
 <div class="main-container">
     <div class="nav-header">
         <a href="notes.html" class="back-btn">⬅ Back</a>
         <h1>English Class 9</h1>
     </div>
+    <div class="subtitle">Sindh Text Book Board (Video Solutions)</div>
 
-    <p style="text-align:center; font-size: 0.8rem; margin-bottom: 20px; font-weight: 600;">Sindh Text Book Board (Video Solutions)</p>
-
-    <div id="content"></div>
+    <div id="unit-container"></div>
 </div>
 
 <script>
@@ -154,43 +196,74 @@
         { id: 10, title: "Abou Ben Adhem (Poem)" }
     ];
 
-    const categories = [
-        { id: 'sol', label: 'Lesson Solution' },
-        { id: 'gram', label: 'Grammar / Poetry' },
-        { id: 'mcq', label: 'MCQs Prep' },
-        { id: 'sum', label: 'Summary / Key' }
-    ];
+    const container = document.getElementById('unit-container');
+    const ytBase = "https://www.youtube.com/@engineerkhurramali/search?query=English+Class+9+Unit+";
 
-    const channelLink = "https://www.youtube.com/@engineerkhurramali";
-    const videoLinks = {};
+    units.forEach(u => {
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'chapter-title';
+        titleDiv.innerText = `Unit ${u.id}: ${u.title}`;
+        container.appendChild(titleDiv);
 
-    function generateContent() {
-        const container = document.getElementById('content');
-        units.forEach(unit => {
-            const titleDiv = document.createElement('div');
-            titleDiv.className = 'chapter-title';
-            titleDiv.innerText = `Unit ${unit.id}: ${unit.title}`;
-            container.appendChild(titleDiv);
+        const grid = document.createElement('div');
+        grid.className = 'exercise-grid';
 
-            const gridDiv = document.createElement('div');
-            gridDiv.className = 'exercise-grid';
+        // Lesson Solution
+        grid.innerHTML += `
+            <a href="${ytBase}${u.id}+Solution" target="_blank" class="ex-btn ripple-btn">
+                <span>Unit ${u.id}</span>Lesson Solution
+            </a>
+        `;
+        // Grammar / Poetry
+        grid.innerHTML += `
+            <a href="${ytBase}${u.id}+Grammar" target="_blank" class="ex-btn ripple-btn">
+                <span>Unit ${u.id}</span>Grammar / Poetry
+            </a>
+        `;
+        // MCQs Prep
+        grid.innerHTML += `
+            <a href="mcq-practice.html?subject=eng9_u${u.id}&file=quiz_data_class9/class9_english" class="ex-btn ripple-btn" data-type="mcq">
+                <span>Unit ${u.id}</span>MCQs Prep
+            </a>
+        `;
+        // Summary
+        grid.innerHTML += `
+            <a href="${ytBase}${u.id}+Summary" target="_blank" class="ex-btn ripple-btn" data-type="sum">
+                <span>Unit ${u.id}</span>Summary
+            </a>
+        `;
 
-            categories.forEach(cat => {
-                const linkKey = `u${unit.id}_${cat.id}`;
-                const link = videoLinks[linkKey] || channelLink;
+        container.appendChild(grid);
+    });
 
-                const btn = document.createElement('a');
-                btn.className = 'ex-btn';
-                btn.href = link;
-                btn.target = "_blank";
-                btn.innerHTML = `<span>Unit ${unit.id}</span>${cat.label}`;
-                gridDiv.appendChild(btn);
-            });
-            container.appendChild(gridDiv);
-        });
+    // Particle effect
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 8; i++) {
+        const p = document.createElement('div');
+        p.classList.add('particle');
+        const size = Math.random() * 25 + 12;
+        p.style.width = p.style.height = size + 'px';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDelay = Math.random() * 5 + 's';
+        p.style.animationDuration = Math.random() * 8 + 12 + 's';
+        particlesContainer.appendChild(p);
     }
 
-    generateContent();
+    // Ripple effect
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.ripple-btn')) {
+            const btn = e.target.closest('.ripple-btn');
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            btn.appendChild(ripple);
+            const rect = btn.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+            ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+            setTimeout(() => ripple.remove(), 500);
+        }
+    });
 </script>
 
 </body>

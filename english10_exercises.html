@@ -143,18 +143,14 @@
 
 <script>
     const units = [
-        { id: 1, title: "The Voice of God (Poem)" },
-        { id: 2, title: "The Wise Caliph" },
-        { id: 3, title: "Professions" },
-        { id: 4, title: "Little Things (Poem)" },
-        { id: 5, title: "A Visit" },
-        { id: 6, title: "King Faisal" },
-        { id: 7, title: "From a Railway Carriage (Poem)" },
-        { id: 8, title: "Dignity of Work" },
-        { id: 9, title: "A Nation's Strength (Poem)" },
-        { id: 10, title: "Beautiful Hands (Poem)" },
-        { id: 11, title: "Village Life in Pakistan" },
-        { id: 12, title: "Speak Gently (Poem)" }
+        { id: 1, title: "The Voice of God / The Wise Caliph" },
+        { id: 2, title: "Dignity of Work" },
+        { id: 3, title: "King Bruce and the Spider" },
+        { id: 4, title: "Social Media" },
+        { id: 5, title: "A bad dream" },
+        { id: 6, title: "Speak Gently (Poem)" },
+        { id: 7, title: "Journey to Gorakh Hills Station" },
+        { id: 8, title: "Safety Measures" }
     ];
 
     const categories = [
@@ -183,7 +179,7 @@
                 btn.className = 'ex-btn';
 
                 if (cat.id === 'mcq') {
-                    btn.href = `mcq-practice.html?subject=eng10_u${unit.id}`;
+                    btn.href = `mcq-practice.html?subject=eng10_u${unit.id}&file=quiz_data_class10/class10_english`;
                     btn.dataset.type = 'mcq';
                 } else {
                     const linkKey = `u${unit.id}_${cat.id}`;
