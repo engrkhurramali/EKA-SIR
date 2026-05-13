@@ -1,6 +1,6 @@
 window.QUIZ_DATA = window.QUIZ_DATA || {};
 Object.assign(window.QUIZ_DATA, {
-    "maths9_u1": {
+    "maths9_u01": {
         "title": "MATHS 9 | UNIT 01",
         "subtitle": "Real and Complex Numbers",
         "tsv": `√-25 = _______	5	-5i	±5	5i	D
@@ -204,9 +204,9 @@ Object.assign(window.QUIZ_DATA, {
                 Is √2 rational?	No	Yes	Maybe	None	A
                 Is 0 rational?	Yes	No	Maybe	None	A
                 (1+i) + (1+i) equals _______	2+2i	0	2	2i	A`
-    },
+                },
 
-"maths9_u2": {
+"maths9_u02": {
     "title": "MATHS 9 | UNIT 02",
     "subtitle": "Logarithms",
     "tsv": `
@@ -426,7 +426,7 @@ logₐ a =	0	Undefined	1	a	C
 log(10ⁿ) in base 10 =	n	n¹⁰	10	10ⁿ	A`
 },
 
-    "maths9_u3": {
+    "maths9_u03": {
         "title": "MATHS 9 | UNIT 03",
         "subtitle": "Algebraic Expressions",
         "tsv": `A polynomial of degree 2 is called a ______.	Linear expression	Quadratic expression	Cubic expression	Biquadratic	B
@@ -521,11 +521,10 @@ log(10ⁿ) in base 10 =	n	n¹⁰	10	10ⁿ	A`
                 The sum of two polynomials is always a ______.	Surd	Polynomial	Rational number	Constant	B`
     },
 
-    "maths9_u4": {
+    "maths9_u04": {
         "title": "MATHS 9 | UNIT 04",
         "subtitle": "Factorization",
-        "tsv": `Question	Option A	Option B	Option C	Option D	Answer
-                What are the factors of x² - 25?	(x-5)(x-5)	(x+5)(x+5)	(x+5)(x-5)	x(x-25)	C
+        "tsv": `What are the factors of x² - 25?	(x-5)(x-5)	(x+5)(x+5)	(x+5)(x-5)	x(x-25)	C
                 To factorize ax + ay + bx + by, we use the method of ______.	Middle term	Grouping	Formula	Division	B
                 The factors of x² + 7x + 12 are ______.	(x+3)(x+4)	(x+7)(x+1)	(x+6)(x+2)	(x-3)(x-4)	A
                 What must be added to x² + 6x to make it a complete square?	3	6	12	9	D
@@ -617,7 +616,7 @@ log(10ⁿ) in base 10 =	n	n¹⁰	10	10ⁿ	A`
                 Factors of x³ + 1 are ______.	(x+1)(x²-x+1)	(x-1)(x²+x+1)	(x+1)³	(x+1)(x-1)	A`
     },
 
-    "maths9_u5": {
+    "maths9_u05": {
         "title": "MATHS 9 | UNIT 05",
         "subtitle": "Algebraic Manipulation",
         "tsv": `The Highest Common Factor (HCF) is also known as ______.	Greatest Common Divisor	Least Common Multiple	Product of means	Remainder	A
@@ -712,11 +711,10 @@ log(10ⁿ) in base 10 =	n	n¹⁰	10	10ⁿ	A`
                 LCM of 4 and 8 is ______.	4	8	32	12	B`
     },
 
-    "maths9_u6": {
+    "maths9_u06": {
         "title": "MATHS 9 | UNIT 06",
         "subtitle": "Linear Equations and Inequalities",
-        "tsv": `Question	Option A	Option B	Option C	Option D	Answer
-                A linear equation in one variable has a degree of ______.	0	1	2	3	B
+        "tsv": `A linear equation in one variable has a degree of ______.	0	1	2	3	B
                 If x + 7 = 12, then the value of x is ______.	19	5	-5	84	B
                 The solution set of 3x - 5 = 10 is ______.	{5}	{15}	{3}	{-5}	A
                 In an inequality, if we multiply by a negative number, the sign ______.	Stays same	Reverses	Becomes equal	Disappears	B
@@ -808,11 +806,10 @@ log(10ⁿ) in base 10 =	n	n¹⁰	10	10ⁿ	A`
                 The solution set of 1/x = 1/2 is ______.	{1}	{2}	{1/2}	{0}	B`
     },
 
-    "maths9_u7": {
+    "maths9_u07": {
         "title": "MATHS 9 | UNIT 07",
         "subtitle": "Linear Graphs",
-        "tsv": `Question	Option A	Option B	Option C	Option D	Answer
-                The point of intersection of the x-axis and y-axis is called ______.	Vertex	Origin	Center	Null point	B
+        "tsv": `The point of intersection of the x-axis and y-axis is called ______.	Vertex	Origin	Center	Null point	B
                 In the ordered pair (x, y), the first element x is called the ______.	Ordinate	Slope	Abscissa	Origin	C
                 The horizontal line in a Cartesian plane is known as the ______.	Y-axis	Origin	X-axis	Normal	C
                 The vertical line in a Cartesian plane is known as the ______.	X-axis	Y-axis	Slope	Diagonal	B
@@ -904,7 +901,7 @@ log(10ⁿ) in base 10 =	n	n¹⁰	10	10ⁿ	A`
                 Linear graphs help in ______ between units.	Multiplying	Interpreting/Converting	Dividing	Adding	B`
     },
 
-    "maths9_u8": {
+    "maths9_u08": {
         "title": "MATHS 9 | UNIT 08",
         "subtitle": "Quadratic Equations",
         "tsv": `A quadratic equation in one variable has a degree of ______.	1	3	2	4	C
@@ -999,7 +996,7 @@ log(10ⁿ) in base 10 =	n	n¹⁰	10	10ⁿ	A`
                 The quadratic equation x² = x has roots ______.	{1}	{0, 1}	{0}	{1, -1}	B`
     },
 
-    "maths9_u9": {
+    "maths9_u09": {
         "title": "MATHS 9 | UNIT 09",
         "subtitle": "Congruent Triangles",
         "tsv": `The symbol used for 'congruent to' is ______.	~	≅	=	||	B
@@ -1192,7 +1189,8 @@ log(10ⁿ) in base 10 =	n	n¹⁰	10	10ⁿ	A`
     "maths9_u11": {
         "title": "MATHS 9 | UNIT 11",
         "subtitle": "Line Bisectors",
-        "tsv": `To 'bisect' a geometric figure means to divide it into ______ equal parts.	Four	Three	Two	Six	C
+        "tsv": `
+        To bisect a geometric figure means to divide it into ______ equal parts.	Four	Three	Two	Six	C
                 A line is a 'right bisector' of a segment if it is perpendicular to the segment and passes through its ______.	Endpoint	Vertex	Midpoint	Origin	C
                 Any point on the right bisector of a line segment is ______ from its endpoints.	Far	Equidistant	Perpendicular	Parallel	B
                 The ______ distance from a point to a line is the shortest distance.	Slant	Parallel	Perpendicular	Horizontal	C
@@ -1477,7 +1475,7 @@ log(10ⁿ) in base 10 =	n	n¹⁰	10	10ⁿ	A`
     "maths9_u14": {
         "title": "MATHS 9 | UNIT 14",
         "subtitle": "Theorems Related with Area",
-        "tsv": `Parallelograms on same base?	Equal in area	Equal in perimeter	Unequal	None	A
+        "tsv": `        Parallelograms on same base?	Equal in area	Equal in perimeter	Unequal	None	A
 Triangle area is ___ parallelogram?	Half	Double	Same	Triple	A
 Area of rectangle?	L * W	L + W	2(L+W)	L²	A
 Unit of area?	sq units	units	cubic units	None	A
@@ -1582,7 +1580,7 @@ Base and altitude are?	Perpendicular	Parallel	Horizontal	None	A`
     "maths9_u16": {
         "title": "MATHS 9 | UNIT 16",
         "subtitle": "Coordinate Geometry",
-        "tsv": `Question	Option A	Option B	Option C	Option D	Answer
+        "tsv": `
                 The horizontal line in a Cartesian plane is called the ______.	Y-axis	Origin	X-axis	Ordinate	C
                 The vertical line in a Cartesian plane is called the ______.	Abscissa	Y-axis	X-axis	Slope	B
                 The point where the X-axis and Y-axis intersect is known as the ______.	Vertex	Centroid	Origin	Midpoint	C
