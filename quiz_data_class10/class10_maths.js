@@ -127,7 +127,7 @@ Object.assign(window.QUIZ_DATA, {
 
    "maths10_u18": {
            "title": "MATHS 10 | UNIT 18",
-           "subtitle": "Variations - Set 01",
+           "subtitle": "Variations",
            "tsv": `The ratio a : b is called a/an?	Relation	Proportion	Comparison	Variation	C
    In the ratio a : b, 'a' is called?	Consequent	Antecedent	Extreme	Mean	B
    In the ratio a : b, 'b' is called?	Antecedent	Consequent	Mean	Extreme	B
@@ -447,9 +447,9 @@ Object.assign(window.QUIZ_DATA, {
        },
 
 
-"maths10_u21_part1": {
+"maths10_u21": {
         "title": "MATHS 10 | UNIT 21",
-        "subtitle": "Partial Fractions - Set 01",
+        "subtitle": "Partial Fractions",
         "tsv": `The quotient of two polynomials P(x)/Q(x) is called?	Rational Fraction	Irrational Fraction	Identity	Equation	A
 In P(x)/Q(x), Q(x) must be?	Zero	Non-zero	One	Negative	B
 A fraction where Degree of Num < Degree of Den is?	Proper	Improper	Complex	Identity	A
@@ -555,9 +555,9 @@ The final step in partial fractions is to ____ the constants?	Substitute	Ignore	
     },
 
 
-"maths10_u22_part1": {
+"maths10_u22": {
         "title": "MATHS 10 | UNIT 22",
-        "subtitle": "Basic Statistics - Set 01",
+        "subtitle": "Basic Statistics",
         "tsv": `The branch of mathematics dealing with collection and analysis of data?	Algebra	Geometry	Statistics	Trigonometry	C
 Data collected for the first time by an investigator is?	Secondary	Primary	Grouped	Discrete	B
 Data obtained from journals or reports is called?	Primary	Secondary	Raw	Ungrouped	B
@@ -663,273 +663,832 @@ The "Statistic" is a value calculated from?	Population	Sample	Census	Formula	B`
     },
 
 "maths10_u23": {
-        "title": "MATHS 10 | UNIT 23",
-        "subtitle": "Trigonometry",
-        "tsv": `The word 'Trigonometry' is derived from how many Greek words?	Two	Three	Four	Five	B
-The study of relationships between sides and angles of a triangle is?	Algebra	Geometry	Trigonometry	Calculus	C
-An angle of 180° is called a?	Right angle	Straight angle	Acute angle	Reflex angle	B
-1 degree (1°) is equal to how many minutes?	30	60	90	360	B
-1 minute (1') is equal to how many seconds?	30	60	90	120	B
-The union of two non-collinear rays with a common endpoint is?	Line	Angle	Triangle	Circle	B
-An angle in standard position has its vertex at?	Origin (0,0)	X-axis	Y-axis	Quadrant I	A
-If the terminal side of an angle is on an axis, it is called?	Acute angle	Quadrantal angle	Right angle	Reflex	B
-π radians is equal to?	90°	180°	270°	360°	B
-To convert degrees to radians, we multiply by?	π/180	180/π	360/π	π/90	A
-To convert radians to degrees, we multiply by?	π/180	180/π	90/π	2π	B
-1 radian is approximately equal to?	45°	57.3°	60°	90°	B
-The ratio of Perpendicular to Hypotenuse is?	cos θ	tan θ	sin θ	sec θ	C
-The ratio of Base to Hypotenuse is?	sin θ	cos θ	tan θ	cot θ	B
-The ratio of Perpendicular to Base is?	sin θ	cos θ	tan θ	cosec θ	C
-The reciprocal of sin θ is?	sec θ	cosec θ	cos θ	cot θ	B
-The reciprocal of cos θ is?	cosec θ	sec θ	sin θ	tan θ	B
-The reciprocal of tan θ is?	sin θ	cos θ	cot θ	sec θ	C
-tan θ is also equal to?	cos/sin	sin/cos	1/sin	1/cos	B
-cot θ is also equal to?	sin/cos	cos/sin	1/cos	1/sec	B
-sin²θ + cos²θ is always?	0	1	-1	tan θ	B
-1 + tan²θ is equal to?	cot²θ	sec²θ	cosec²θ	sin²θ	B
-1 + cot²θ is equal to?	tan²θ	sec²θ	cosec²θ	cos²θ	C
-The value of sin 30° is?	1	0.5	√3/2	0	B
-The value of cos 60° is?	0.5	√3/2	1	0	A
-The value of tan 45° is?	0	1	√3	∞	B
-The value of sin 90° is?	0	1	0.5	∞	B
-The value of cos 90° is?	0	1	0.5	-1	A
-The value of tan 90° is?	0	1	√3	Undefined (∞)	D
-An angle of 360° in radians is?	π	2π	π/2	3π/2	B
-If sin θ is positive and cos θ is negative, θ lies in?	Quadrant I	Quadrant II	Quadrant III	Quadrant IV	B
-In Quadrant III, which ratios are positive?	sin & cosec	cos & sec	tan & cot	All	C
-In Quadrant IV, which ratio is positive?	sin θ	tan θ	cos θ	None	C
-The value of sin 45° is?	1/2	1/√2	√3/2	1	B
-The value of cos 30° is?	1/2	√3/2	1/√2	0	B
-The value of tan 60° is?	1/√3	√3	1	∞	B
-sec²θ - tan²θ is equal to?	0	1	-1	2	B
-cosec²θ - cot²θ is equal to?	1	0	-1	sec²θ	A
-The side opposite to the right angle is?	Base	Perpendicular	Hypotenuse	Radius	C
-In a right triangle, a² + b² = c² is?	Cramer's Rule	Pythagoras Theorem	Vieta's Formula	None	B
-sin(90° - θ) is equal to?	sin θ	cos θ	-sin θ	tan θ	B
-cos(90° - θ) is equal to?	cos θ	sin θ	-cos θ	cot θ	B
-A circle with radius 1 is called?	Unit circle	Major circle	Minor circle	Null circle	A
-Angle in a semi-circle is always?	45°	90°	180°	60°	B
-If θ = 0°, then sin θ is?	0	1	-1	Undefined	A
-If θ = 0°, then cos θ is?	0	1	-1	Undefined	B
-tan θ is undefined at θ =?	0°	90°	180°	45°	B
-cot θ is undefined at θ =?	0°	90°	45°	60°	A
-1 degree is equal to how many radians?	0.01745	57.3	1	3.14	A
-30° in radians is?	π/3	π/6	π/4	π/2	B
-If sin θ = 3/5, then cosec θ is?	4/5	5/3	3/4	1	B
-If cos θ = 4/5, then sec θ is?	5/4	3/5	4/3	1	A
-If tan θ = 1, then θ is?	30°	45°	60°	90°	B
-The value of sin²30° + cos²30° is?	1	0.5	0.75	0	A
-The area of a sector is?	1/2 r²θ	rθ	2πr	πr²	A
-The length of an arc (s) is?	rθ	1/2 r²θ	2πr	r/θ	A
-In s = rθ, θ must be in?	Degrees	Radians	Gradians	Minutes	B
-If r = 2 cm and θ = 3 rad, then arc length s is?	5 cm	6 cm	1 cm	1.5 cm	B
-45° in radians is?	π/2	π/4	π/3	π/6	B
-60° in radians is?	π/6	π/4	π/3	π/2	C
-90° in radians is?	π	π/2	π/3	π/4	B
-If sin θ < 0 and tan θ > 0, θ is in?	Quad I	Quad II	Quad III	Quad IV	C
-The value of cos 180° is?	0	1	-1	0.5	C
-The value of sin 270° is?	0	1	-1	Undefined	C
-sin(-θ) is equal to?	sin θ	-sin θ	cos θ	-cos θ	B
-cos(-θ) is equal to?	cos θ	-cos θ	sin θ	-sin θ	A
-tan(-θ) is equal to?	tan θ	-tan θ	cot θ	-cot θ	B
-The value of 2 sin 45° cos 45° is?	1	0.5	√2	2	A
-sec θ is undefined at?	0°	90°	180°	45°	B
-cosec θ is undefined at?	0°	90°	180°	Both A and C	D
-If tan θ = 3/4, then cot θ is?	4/3	3/4	5/3	5/4	A
-The value of sin(π/2) is?	0	1	-1	0.5	B
-The value of cos(π) is?	0	1	-1	Undefined	C
-The value of tan(π/4) is?	0	1	√3	1/√3	B
-1 + tan²(30°) is?	sec²(30°)	cosec²(30°)	1	0	A
-sin²θ is equal to?	1 - cos²θ	1 + cos²θ	cos²θ - 1	tan²θ	A
-cos²θ is equal to?	1 - sin²θ	1 + sin²θ	sin²θ - 1	cot²θ	A
-In a right triangle, if Base=3, Perp=4, then Hyp is?	5	7	25	1	A
-tan θ = sin θ / cos θ is an?	Equation	Identity	Ratio	None	B
-The maximum value of sin θ is?	0	1	∞	-1	B
-The minimum value of sin θ is?	0	1	-1	-∞	C
-The value of cos 0° + sin 90° is?	0	1	2	-1	C
-The value of tan 45° - cot 45° is?	1	0	2	-1	B
-If sin θ = cos θ, then θ is?	30°	45°	60°	0°	B
-sin 60° cos 30° - cos 60° sin 30° is?	sin 30°	cos 30°	tan 30°	1	A
-270° in radians is?	π	3π/2	2π	π/2	B
-The terminal side of 180° lies on?	Positive x-axis	Negative x-axis	Positive y-axis	Negative y-axis	B
-The terminal side of 270° lies on?	Positive x-axis	Negative x-axis	Positive y-axis	Negative y-axis	D
-If r = 10, s = 20, then θ (in rad) is?	2	0.5	200	10	A
-The value of (sec²θ - tan²θ) / (cosec²θ - cot²θ) is?	0	1	-1	tan θ	B
-Trigonometry is used in?	Navigation	Astronomy	Engineering	All of these	D
-1' (one minute) is equal to?	(1/60)°	60°	3600°	1°	A
-1'' (one second) is equal to?	(1/60)'	(1/3600)°	Both A and B	None	C
-The angle subtended at the center by an arc equal to radius?	Degree	Radian	Minute	Second	B
-The value of sin 30° + cos 60° is?	1	0.5	√3	0	A
-If tan θ is negative, θ could be in?	Quad I or II	Quad II or IV	Quad III or IV	Quad I or III	B
-The range of sin θ is?	[0,1]	[-1,1]	(-∞,∞)	[1,∞)	B
-The range of tan θ is?	[0,1]	[-1,1]	(-∞,∞)	[1,∞)	C
-If θ is acute, then sin θ is always?	Positive	Negative	Zero	Infinite	A
-A triangle with no right angle is called?	Right triangle	Oblique triangle	Square	None	B
-The sum of angles in any triangle is?	90°	180°	360°	270°	B
-sin θ / √(1 - sin²θ) is equal to?	sin θ	cos θ	tan θ	cot θ	C`
-    },
+    "title": "MATHS 10 | UNIT 23",
+    "subtitle": "Pythagoras' Theorem",
+    "tsv": `The Pythagoras Theorem is applicable only to which type of triangle?	Acute triangle	Obtuse triangle	Right-angled triangle	Equilateral triangle	C
+In a right triangle with legs 3 cm and 4 cm, the hypotenuse measures?	5 cm	7 cm	12 cm	25 cm	A
+If a² + b² = c² in a triangle, the angle opposite side 'c' is?	Acute	Obtuse	Right	Straight	C
+Which set of numbers forms a valid Pythagorean triple?	(2,3,4)	(5,12,13)	(4,5,6)	(1,2,3)	B
+The side opposite to the right angle in a right triangle is called?	Base	Altitude	Median	Hypotenuse	D
+If hypotenuse = 13 cm and one leg = 5 cm, the other leg equals?	12 cm	8 cm	10 cm	15 cm	A
+Pythagoras, the mathematician associated with this theorem, was from ancient?	Egypt	Rome	Greece	India	C
+The converse of Pythagoras theorem is used to determine if a triangle is?	Isosceles	Right-angled	Equilateral	Scalene	B
+In ΔABC, ∠B = 90°, AB = 6 cm, BC = 8 cm. Length of AC is?	10 cm	12 cm	14 cm	16 cm	D
+For a triangle with longest side c, if c² < a² + b², the triangle is?	Acute	Right	Obtuse	Linear	A
+The diagonal of a square with side length 7 cm equals?	7 cm	14 cm	7√2 cm	7/√2 cm	C
+A triangle with sides 8 cm, 15 cm, and 17 cm is classified as?	Acute	Right-angled	Obtuse	Equilateral	B
+In any right triangle, the square of the hypotenuse equals?	Sum of other two sides	Product of legs	Sum of squares of legs	Difference of squares	D
+A 10 m ladder rests against a wall reaching 8 m high. Distance of foot from wall is?	6 m	4 m	9 m	12 m	A
+Which set does NOT satisfy the Pythagorean theorem?	(3,4,5)	(6,8,10)	(4,5,6)	(9,12,15)	C
+In trigonometry, sin θ in a right triangle is defined as?	Adjacent/Hypotenuse	Opposite/Hypotenuse	Opposite/Adjacent	Hypotenuse/Opposite	B
+If legs of a right triangle are 9 cm and 12 cm, hypotenuse is?	13 cm	15 cm	18 cm	21 cm	D
+The theorem a² + b² = c² is historically attributed to?	Pythagoras	Euclid	Newton	Archimedes	A
+In a 30°-60°-90° triangle, the side opposite 30° equals?	Hypotenuse	½ × hypotenuse	√3/2 × hypotenuse	2 × hypotenuse	B
+Using Pythagoras, distance between points (0,0) and (3,4) is?	3 units	4 units	5 units	7 units	C
+If c² = a² + b² holds for triangle sides, the triangle must be?	Acute	Obtuse	Scalene	Right-angled	D
+The altitude drawn to the hypotenuse of a right triangle creates?	Two congruent triangles	Two similar triangles	An equilateral triangle	No special property	A
+To find hypotenuse 'c' when legs 'a' and 'b' are known, use?	c = a + b	c = √(a² + b²)	c = a² + b²	c = (a + b)/2	B
+A triangle with sides 1, 1, and √2 is necessarily?	Acute	Obtuse	Right-angled	Equilateral	C
+If hypotenuse = 2x and one leg = x in a right triangle, other leg is?	x	x√2	x√3	2x	D
+Pythagorean triples consist exclusively of?	Fractions	Decimals	Positive integers	Negative numbers	A
+When legs of a right triangle are equal, each acute angle measures?	30°	45°	60°	90°	B
+If a² + b² > c² where c is longest side, the triangle is?	Right	Obtuse	Acute	Equilateral	C
+Diagonal length of a rectangle with sides 6 cm and 8 cm is?	10 cm	12 cm	14 cm	16 cm	D
+Which triplet satisfies a² + b² = c²?	(7,24,25)	(5,6,7)	(8,9,10)	(10,11,12)	A
+Given hypotenuse 25 cm and leg 7 cm, the other leg equals?	20 cm	24 cm	18 cm	15 cm	B
+Pythagoras theorem is fundamentally used to calculate?	Area of circle	Distance between points	Volume of prism	Perimeter of square	C
+In ΔPQR, ∠Q = 90°, PQ = 5 cm, PR = 13 cm. QR equals?	10 cm	11 cm	12 cm	14 cm	D
+Sides 10 cm, 24 cm, 26 cm form a?	Right triangle	Acute triangle	Obtuse triangle	Scalene only	A
+If a² + b² < c² (c longest), the triangle contains a(n)?	Right angle	Acute angle	Obtuse angle	Straight angle	B
+The shortest path between two points in a plane relies on?	Euclid's postulate	Pythagoras theorem	Triangle inequality	Circle theorem	C
+In any right triangle, no side can exceed the length of the?	Leg	Base	Altitude	Hypotenuse	D
+Area of right triangle with legs 5 cm and 12 cm is?	30 cm²	60 cm²	17 cm²	13 cm²	A
+The trigonometric identity sin²θ + cos²θ = 1 derives from?	Law of sines	Pythagoras theorem	Law of cosines	Euler's formula	B
+Coordinate geometry's distance formula is based on?	Similar triangles	Pythagoras theorem	Midpoint theorem	Angle sum property	C
+If triangle sides are in ratio 3:4:5, the triangle is?	Acute	Obtuse	Right-angled	Equilateral	D
+The hypotenuse in a right triangle is always the?	Shortest side	Medium side	Longest side	Equal to a leg	A
+The ratio tan θ = opposite/adjacent indirectly depends on?	Similarity	Pythagoras theorem	Circle theorems	Parallel lines	B
+In right triangle with c = 17 cm, a = 8 cm, leg b equals?	10 cm	12 cm	15 cm	20 cm	C
+Ancient Babylonian tablets show knowledge of?	Calculus	Pythagorean triples	Logarithms	Complex numbers	D
+Median to the hypotenuse of a right triangle equals?	Hypotenuse	½ × hypotenuse	√2 × hypotenuse	2 × hypotenuse	A
+If one angle of triangle is 90°, sum of remaining two angles is?	45°	90°	180°	270°	B
+Pythagoras theorem cannot be directly applied to?	Right triangles	Acute triangles	Obtuse triangles	Both B and C	D`
+},
 
-    "maths10_u24": {
-        "title": "MATHS 10 | UNIT 24",
-        "subtitle": "Demonstrative Geometry",
-        "tsv": `Theorem is?	Statement to be proved	A fact	An assumption	A tool	A
+"maths10_u24": {
+    "title": "MATHS 10 | UNIT 24",
+    "subtitle": "Ratio and Proportion",
+    "tsv": `Theorem is?	Statement to be proved	A fact	An assumption	A tool	A
 Corollary is?	Deduced from theorem	Assumption	Definition	None	A
 Postulate is?	Assumption in geometry	A theorem	A proof	None	A
 Axiom is?	General truth	Geometric truth	Theorem	None	A
-Proof uses?	Logic	Colors	Numbers	Weight	A`
-    },
+Proof uses?	Logic	Colors	Numbers	Weight	A
+Similar triangles have?	Corresponding sides proportional	Equal areas	Different shapes	No relation	A
+A ratio is a?	Comparison of two quantities	Sum of two numbers	Product of numbers	Difference	A
+In a:b, 'a' is called?	Antecedent	Consequent	Mean	Extreme	A
+In a:b, 'b' is called?	Consequent	Antecedent	Mean	Extreme	A
+Equality of two ratios is?	Proportion	Fraction	Equation	Expression	A
+Fourth proportional of a, b, c is?	bc/a	ac/b	ab/c	a/bc	A
+The symbol for 'is similar to' is?	~	≅	=	||	A
+The symbol for 'is congruent to' is?	≅	~	=	⊥	A
+How many terms are in a:b::c:d?	Four	Two	Three	Five	A
+Unit of ratio is?	None	Meters	Seconds	Kilograms	A
+Similar figures are?	Same shape, different size	Same size only	Different shapes	Not related	A
+Triangles with same height have areas proportional to?	Bases	Angles	Perimeters	Vertices	A
+A line parallel to one side of a triangle divides other sides?	Proportionally	Equally	Unequally	At 90 degrees	A
+In proportion a:b::c:d, 'a' and 'd' are?	Extremes	Means	Ratios	Units	A
+In proportion a:b::c:d, 'b' and 'c' are?	Means	Extremes	Totals	Factors	A
+Ratio of 2kg to 500g is?	4:1	1:4	2:5	5:2	A
+If a/b = c/d, then ad is equal to?	bc	ac	bd	ab	A
+Proportion is an equality of?	Two ratios	Three ratios	Four ratios	Two sums	A
+Congruent triangles are always?	Similar	Equilateral	Right-angled	Scalene	A
+Triangles on the same base and between same parallels are?	Equal in area	Congruent	Similar	Unequal	A
+If 3:x :: 6:8, then x is?	3	4	5	6	B
+Mean proportional of 4 and 9 is?	13	6	36	5	B
+If a:b = c:d, then b:a = d:c is?	Componendo	Invertendo	Alternando	Dividendo	B
+A line segment has how many midpoints?	Zero	One	Two	Infinite	B
+Two lines intersect at?	Two points	One point	Three points	No point	B
+If two angles of a triangle are equal, sides opposite are?	Unequal	Equal	Parallel	Perpendicular	B
+The sum of angles in a triangle is?	90°	180°	270°	360°	B
+A ratio has?	One term	Two terms	Three terms	Four terms	B
+The ratio 1:2 is same as?	2:1	50:100	1:3	2:3	B
+In a triangle, the side opposite to 90° is?	Base	Hypotenuse	Altitude	Median	B
+Internal bisector of an angle of a triangle divides opposite side in ratio of?	Squares of sides	Containing sides	Altitudes	Medians	B
+If two triangles are similar, their areas are proportional to?	Sides	Square of sides	Cubes of sides	Perimeters	B
+In x:4 :: 3:2, x is?	1	6	8	12	B
+Two polygons are similar if their corresponding angles are?	Supplementary	Equal	Complementary	Unequal	B
+The ratio 10:20 in simplest form is?	2:1	1:2	5:2	4:1	B
+Triangles with same base and same altitude have?	Same perimeter	Same area	Same shape	Same angles	B
+If a/b = c/d, then a/c = b/d is?	Invertendo	Alternando	Componendo	Dividendo	B
+Ratio of 1 hour to 30 minutes is?	1:2	2:1	3:1	1:3	B
+Pythagoras theorem applies to?	Acute triangle	Right triangle	Obtuse triangle	Circle	B
+Total degree in a circle is?	180°	360°	90°	540°	B
+Shortest distance from a point to a line is?	Curve	Perpendicular	Tangent	Arc	B
+Two circles are congruent if they have same?	Center	Radius	Chord	Sector	B
+Ratio of 1km to 100m is?	1:10	10:1	100:1	1:100	B
+Third proportional of 6 and 12 is?	18	24	36	48	B
+If a/b = c/d, then (a+b)/b = (c+d)/d is?	Invertendo	Componendo	Dividendo	Alternando	B
+If a:b = 2:3 and b:c = 3:4, then a:c is?	1:2	2:1	1:4	2:4	C
+A ratio must compare quantities of?	Different kind	Different unit	Same kind	Opposite kind	C
+Medians of a triangle are?	Parallel	Perpendicular	Concurrent	Unequal	C
+Distance between two parallel lines is?	Variable	Increasing	Constant	Zero	C
+The point of concurrency of medians is?	Incenter	Orthocenter	Centroid	Circumcenter	C
+A triangle with no equal sides is?	Isosceles	Equilateral	Scalene	Right	C
+Diagonal of a square divides it into two?	Squares	Circles	Congruent triangles	Trapeziums	C
+If two sides of a triangle are 3 and 4, the third side must be less than?	1	12	7	5	C
+Ratio of circumference to diameter is?	Area	Radius	Pi	Volume	C
+In a right triangle, if one angle is 30°, the other acute angle is?	45°	90°	60°	30°	C
+AAA postuate is used for?	Congruency	Equality	Similarity	Parallelism	C
+If a:b :: c:d, then a*d =?	a*c	b*d	b*c	a*b	C
+Area of a triangle is 1/2 * base *?	Radius	Side	Height	Angle	C
+Two similar triangles have sides 2:3. Ratio of their areas is?	2:3	3:2	4:9	9:4	C
+If 5:8 :: 10:x, then x is?	12	14	16	20	C
+A line bisecting a side of a triangle at 90° is?	Median	Angle bisector	Right bisector	Altitude	C
+Ratio 1/2 : 1/3 is equal to?	2:3	1:1	3:2	6:1	C
+How many ratios are in a proportion?	1	3	2	4	C
+If 7/x = 14/4, then x is?	1	3	2	8	C
+Side of square is 4cm, its area is?	8	12	16	20	C
+Sum of two sides of a triangle is _____ the third side?	Equal to	Less than	Greater than	Half of	C
+Ratio of 75 paise to 2 rupees is?	75:2	2:75	3:8	8:3	C
+An equilateral triangle has all angles?	30°	45°	60°	90°	C
+Number of altitudes in a triangle?	1	2	3	4	C
+The ratio a:b is not equal to?	a/b	ma:mb	b:a	(a+x):(b+x)	C
+SAS stands for?	Side Angle Side	Sum Area Side	Side Side Side	Side Angle Angle	D
+If a/b = c/d, then (a-b)/b = (c-d)/d is?	Invertendo	Alternando	Componendo	Dividendo	D
+Percentage is a ratio with denominator?	1	10	50	100	D
+The perimeter of a triangle is the?	Area	Space	Interior	Sum of sides	D
+Two lines which never meet are?	Interacting	Convergent	Perpendicular	Parallel	D
+In a:b, if a=b, the ratio is?	2:1	1:2	0	1:1	D
+Complement of 30° is?	150°	60°	90°	60°	D
+A quadrilateral with 4 equal sides and 90° angles is?	Rectangle	Rhombus	Parallelogram	Square	D
+A triangle cannot have more than one?	Acute angle	Vertex	Side	Right angle	D
+If a:b = 4:5, then 5a is?	4	5	20	4b	D
+The ratio of 5m to 5km is?	1:1	1:10	1:100	1:1000	D
+A map scale 1:1000 is an example of?	Area	Volume	Addition	Ratio	D
+If two triangles are congruent, their areas are?	Different	Half	Double	Equal	D
+If a, b, c are in continued proportion, then b² =?	a+c	a-c	a/c	ac	D
+The ratio of 1 week to 7 days is?	7:1	1:7	2:1	1:1	D
+Total angles in a quadrilateral sum to?	90°	180°	270°	360°	D
+Which is a ratio?	2kg	5cm	10 seconds	3:4	D
+In a right triangle, side opposite to 30° is _____ the hypotenuse?	Double	Equal	Triple	Half	D
+The ratio of 1 dozen to 1 score is?	12:1	20:1	1:1	3:5	D
+Two geometric figures are similar if they have the same?	Size	Weight	Color	Shape	D
+In 2:3 :: x:6, x is?	2	3	5	4	D
+Third proportional to 9 and 6 is?	3	9	12	4	D
+A proportion has _____ terms?	2	3	1	4	D
+If 2/3 = x/9, then x is?	2	3	4	6	D
+The mean proportional between 2 and 8 is?	10	16	5	4	D`
+},
 
-    "maths10_u25": {
-        "title": "MATHS 10 | UNIT 25",
-        "subtitle": "Circles",
-        "tsv": `Radius?	Center to boundary	Edge to edge through center	Curve	None	A
-Diameter?	2 * Radius	Radius / 2	Radius + 2	Radius²	A
-Circumference?	2πr	πr²	πd	A and C	D
-Sector?	Pie piece	Slice of boundary	Edge	Center	A
-Segment?	Area by chord and arc	Radius	Diameter	None	A`
-    },
-    "maths10_u26": {
-        "title": "MATHS 10 | UNIT 26",
-        "subtitle": "Tangents to a Circle",
-        "tsv": `Tangent touches at?	One point	Two points	Zero points	Center	A
-Tangent is ___ to radius?	Perpendicular	Parallel	45 degrees	None	A
-Point of tangency?	Touch point	Center	Origin	None	A
-Number of tangents from external point?	2	1	Infinite	0	A
-Secant intersects at?	Two points	One point	Zero points	None	A`
-    },
-    "maths10_u27": {
-        "title": "MATHS 10 | UNIT 27",
-        "subtitle": "Chords and Arcs",
-        "tsv": `Chord?	Line joining 2 points on circle	Radius	Curve	None	A
-Longest chord?	Diameter	Radius	Secant	Tangent	A
-Arc?	Part of circumference	Part of area	Radius	Center	A
-Minor arc?	Less than semi-circle	More than semi-circle	Half	None	A
-Equal chords are?	Equidistant from center	Parallel	Perpendicular	None	A`
-    },
-    "maths10_u28": {
-        "title": "MATHS 10 | UNIT 28",
-        "subtitle": "Angle in a Segment",
-        "tsv": `Angle in semi-circle?	90 degrees	180 degrees	60 degrees	45 degrees	A
-Central angle is ___ circum-angle?	Double	Half	Same	Triple	A
-Angles in same segment?	Equal	Unequal	Complementary	None	A
-Cyclic quadrilateral opposite angles sum?	180	360	90	None	A
-Angle in minor segment is?	Obtuse	Acute	Right	Reflex	A`
-    },
+"maths10_u25": {
+    "title": "MATHS 10 | UNIT 25",
+    "subtitle": "Chords of a Circle",
+    "tsv": `Radius?	Center to boundary	Edge to edge through center	Curve	None	A
+Diameter?	Radius / 2	2 * Radius	Radius + 2	Radius²	B
+Circumference?	πr²	πd	2πr	B and C	D
+Sector?	Slice of boundary	Edge	Center	Pie piece	D
+Segment?	Area by chord and arc	Radius	Diameter	None	A
+A line segment joining two points on a circle is?	Radius	Chord	Secant	Tangent	B
+The longest chord of a circle is?	Secant	Radius	Diameter	Arc	C
+The distance from the center to any point on the circle?	Diameter	Chord	Radius	Segment	C
+Points lying on the same circle are called?	Collinear	Concyclic	Concurrent	Coplanar	B
+A line segment whose endpoints are on the circle and passes through center?	Chord	Diameter	Secant	Tangent	B
+Equal chords of a circle subtend _____ angles at the center?	Supplementary	Complementary	Equal	Right	C
+The perpendicular from the center to a chord _____ the chord?	Triples	Squares	Bisects	Shortens	C
+Two chords are equidistant from the center if they are?	Parallel	Perpendicular	Equal in length	Unequal	C
+The angle in a semi-circle is?	45°	90°	180°	360°	B
+A circle passing through all vertices of a triangle is?	In-circle	E-circle	Circum-circle	None	C
+How many circles can pass through three non-collinear points?	Zero	One	Two	Infinite	B
+The region bounded by a chord and its corresponding arc?	Sector	Segment	Diameter	Circumference	B
+If two chords of a circle are equal, then their corresponding arcs are?	Equal	Unequal	Parallel	Perpendicular	A
+Radius of a circle is _____ of the diameter?	Double	Half	Equal	Triple	B
+A line which has only one point in common with a circle?	Secant	Chord	Tangent	Diameter	C
+The distance from the center to a chord _____ as the chord length increases?	Increases	Decreases	Stays same	Doubles	B
+Chords equidistant from the center of a circle are?	Parallel	Unequal	Equal	Perpendicular	C
+The angle subtended by a chord in the major segment is?	Right	Obtuse	Acute	Reflex	C
+The angle subtended by a chord in the minor segment is?	Right	Obtuse	Acute	Straight	B
+If a diameter bisects a chord, it must be _____ to the chord?	Parallel	Adjacent	Perpendicular	Equal	C
+Total degree measure of a circle is?	90°	180°	270°	360°	D
+A part of the circumference is called?	Chord	Segment	Arc	Sector	C
+Two circles having the same center but different radii are?	Identical	Concentric	Overlapping	Eccentric	B
+Angle in a segment greater than a semi-circle is?	Acute	Obtuse	Right	None	A
+Angle in a segment less than a semi-circle is?	Acute	Obtuse	Right	None	B
+The center of a circle lies in the _____ of the circle?	Exterior	Boundary	Interior	Infinity	C
+Length of a tangent from an external point to a circle are?	Unequal	Reciprocal	Equal	Zero	C
+A chord passing through the center divides circle into two?	Segments	Sectors	Semi-circles	Quadrants	C
+If the radius is 5cm, the longest chord is?	5cm	10cm	15cm	25cm	B
+The degree measure of a semi-circle arc is?	90°	180°	270°	360°	B
+If a chord AB = 8cm and its distance from center is 3cm, radius is?	4cm	5cm	7cm	10cm	B
+Number of tangents that can be drawn from a point inside the circle?	0	1	2	Infinite	A
+A line intersecting a circle at two points is?	Tangent	Secant	Radius	Center	B
+Two equal chords AB and CD of a circle intersect at P, then?	AP=CP	AP=BP	AP=DP	None	A
+The sum of opposite angles of a cyclic quadrilateral is?	90°	180°	270°	360°	B
+Radius perpendicular to a chord _____ the arc?	Bisects	Trisects	Squares	None	A
+Area of a circle is?	2πr	πd	πr²	2πr²	C
+In a circle, the greater chord is _____ to the center?	Farther	Nearer	Equal	Parallel	B
+A point P is at 13cm from center, radius is 5cm. Tangent length is?	8cm	10cm	12cm	18cm	C
+Congruent circles have equal?	Centers	Chords	Radii	Segments	C
+The arc greater than a semi-circle is called?	Minor arc	Major arc	Chord	Diameter	B
+The arc smaller than a semi-circle is called?	Minor arc	Major arc	Chord	Diameter	A
+If a chord is 6cm and radius is 5cm, distance from center is?	2cm	3cm	4cm	5cm	C
+How many tangents can be drawn from a point on the circle?	0	1	2	Infinite	B
+The midpoint of the hypotenuse of a right triangle is the _____?	In-center	Orthocenter	Circum-center	Centroid	C
+If two circles touch internally, distance between centers is?	Sum of radii	Difference of radii	Product	Zero	B
+If two circles touch externally, distance between centers is?	Sum of radii	Difference of radii	Product	Zero	A
+A cyclic parallelogram must be a?	Rhombus	Trapezium	Rectangle	Kite	C
+The tangent at any point of a circle is _____ to the radius?	Parallel	Perpendicular	Equal	Inclined	B
+The length of the complete circle is called?	Area	Diameter	Circumference	Volume	C
+An angle inscribed in a semi-circle is?	30°	60°	90°	120°	C
+A line segment joining the center to the midpoint of a chord is?	Parallel	Perpendicular	Tangent	Secant	B
+If radii of two circles are equal, circles are?	Concentric	Congruent	Similar	Internal	B
+The union of a circle and its interior is?	Circular region	Arc	Segment	Sector	A
+A chord divides a circle into _____ parts?	Two	Three	Four	Infinite	A
+A sector is bounded by two radii and one?	Chord	Arc	Diameter	Tangent	B
+Area of a sector with angle θ?	(θ/360)πr	(θ/360)πr²	(θ/180)πr	πr²	B
+If the diameter is 14cm, the circumference is?	22cm	44cm	88cm	154cm	B
+The locus of points equidistant from a fixed point is?	Square	Triangle	Circle	Line	C
+Maximum number of common tangents to two disjoint circles?	1	2	3	4	D
+Distance between two parallel tangents of radius 4cm is?	4cm	6cm	8cm	16cm	C
+Angle between two radii of a circle is 100°, angle between tangents is?	50°	80°	100°	180°	B
+A line segment having both endpoints on the circle is?	Radius	Chord	Secant	Tangent	B
+Number of circles passing through two points?	One	Two	Infinite	Zero	C
+If the area is 154 cm², the radius is?	7cm	14cm	21cm	49cm	A
+If the circumference is 44cm, the diameter is?	7cm	14cm	21cm	28cm	B
+The measure of a central angle is _____ the inscribed angle?	Half	Double	Equal	Triple	B
+The angle subtended by a diameter at the circumference is?	45°	90°	180°	0°	B
+A circle has _____ number of radii?	One	Two	Ten	Infinite	D
+All radii of a circle are?	Unequal	Equal	Parallel	Perpendicular	B
+The distance of the chord from center if chord=24, radius=13?	5	7	10	12	A
+Interior of a circle is a _____ set of points?	Finite	Empty	Infinite	Single	C
+A chord not passing through the center is _____ than diameter?	Larger	Smaller	Equal	Double	B
+Perpendicular bisector of any chord passes through?	Origin	Boundary	Center	Tangent	C
+If two arcs are congruent, their corresponding chords are?	Parallel	Equal	Unequal	Perpendicular	B
+In a circle, equal arcs subtend equal _____ angles?	Interior	Exterior	Central	Reflex	C
+Every diameter is a chord but every chord is not a?	Radius	Arc	Diameter	Segment	C
+If a chord of 24cm is 5cm from center, radius is?	12cm	13cm	15cm	17cm	B
+In "2πr", the π represents?	Radius/Circumference	Circumference/Diameter	Area/Radius	Diameter/Radius	B
+A chord divides the circular region into two?	Sectors	Segments	Arcs	Radii	B
+The boundary of a circle is called?	Area	Volume	Circumference	Chord	C
+The distance between the center and a tangent is equal to?	Diameter	Secant	Radius	Chord	C
+Number of circles passing through one point?	One	Two	Zero	Infinite	D
+If an arc subtends 60° at center, it is a?	Minor arc	Major arc	Semi-circle	Sector	A
+Angle in the major segment is always?	> 90°	< 90°	= 90°	180°	B
+Angle in the minor segment is always?	> 90°	< 90°	= 90°	0°	A
+If the radius of a circle is doubled, its circumference is?	Halved	Doubled	Tripled	Squared	B
+Two chords AB and CD bisect each other, they must be?	Parallel	Tangents	Diameters	Radii	C
+A line touches a circle at P, then P is called?	Origin	Center	Point of contact	Focus	C
+The length of a diameter is _____ any other chord?	Less than	Greater than	Equal to	Half of	B
+An equilateral triangle inscribed in a circle has central angles?	60°	90°	120°	180°	C
+Number of points a tangent and circle have in common?	One	Two	Three	Infinite	A
+A chord is 10cm, its distance from center is 12cm. Radius is?	11cm	13cm	15cm	17cm	B
+A circle can have _____ number of chords?	One	Ten	Hundred	Infinite	D
+The angle in a major segment is?	Acute	Obtuse	Right	Straight	A`
+},
 
-    "maths10_u29": {
-        "title": "MATHS 10 | UNIT 29",
-        "subtitle": "Practical Geometry-Circles",
-        "tsv": `Circumcircle?	Outside triangle touching vertices	Inside triangle	Touching 1 side	None	A
-In-circle?	Inside triangle touching sides	Outside triangle	None	None	A
-E-circle?	Outside triangle touching 1 side	Inside	None	None	A
+"maths10_u26": {
+    "title": "MATHS 10 | UNIT 26",
+    "subtitle": "Tangents to a Circle",
+    "tsv": `Tangent touches the circle at?	One point	Two points	Zero points	Center	A
+A line intersecting a circle at two points is?	Tangent	Secant	Diameter	Chord	B
+The distance from the center to the tangent line is?	Less than radius	Greater than radius	Equal to radius	Zero	C
+How many tangents can be drawn from a point inside the circle?	One	Two	Infinite	Zero	D
+A tangent is ___ to the radius at the point of contact?	Perpendicular	Parallel	Inclined at 60°	Non-coplanar	A
+Length of two tangents drawn from an external point are?	Unequal	Equal	Zero	Infinite	B
+The point where a tangent meets the circle is called?	Origin	Center	Point of Tangency	Vertex	C
+A line that has only one point in common with a circle is?	Secant	Chord	Segment	Tangent	D
+How many tangents can be drawn to a circle from a point outside it?	Two	One	Zero	Three	A
+The tangents drawn at the ends of a diameter are?	Intersecting	Parallel	Perpendicular	Coincident	B
+If a line is perpendicular to the radius at its outer end, it is a?	Chord	Secant	Tangent	Normal	C
+Angle between a tangent and the radius through the point of contact is?	0°	45°	60°	90°	D
+A circle can have how many parallel tangents at most?	Two	One	Four	Infinite	A
+The lengths of tangents from an external point to a circle are?	Variable	Equal	Reciprocal	Parallel	B
+Two circles touch each other externally; the number of common tangents is?	One	Two	Three	Four	C
+Two circles touch each other internally; the number of common tangents is?	Zero	Two	Three	One	D
+The word 'Tangent' comes from the Latin word 'Tangere' which means?	To touch	To cut	To divide	To join	A
+How many tangents can a circle have?	One	Two	Zero	Infinite	D
+The common point of a tangent and the circle lies on?	The exterior	The interior	The circumference	The center	C
+If the distance of a line from the center is equal to the radius, the line is?	Secant	Tangent	Diameter	Chord	B
+Common tangents to two circles that do not intersect or touch?	One	Two	Three	Four	D
+A line segment joining two points on the circumference?	Tangent	Secant	Chord	Radial segment	C
+In a circle, the tangent is perpendicular to the ___?	Chord	Diameter	Secant	Radius	D
+If two tangents are drawn from an external point P, then OP ___ the angle between them?	Trisects	Bisects	Doubles	Squashes	B
+The angle in a semi-circle is always?	45°	60°	90°	120°	C
+A tangent cannot be drawn to a circle from?	The boundary	Outside	An interior point	The surface	C
+The tangent at any point of a circle is ___ to the radius?	Perpendicular	Parallel	Oblique	Equal	A
+How many common tangents do two intersecting circles have?	One	Two	Three	Four	B
+The number of tangents that can be drawn from a point on the circle is?	One	Two	Three	Zero	A
+Radii of the same circle are?	Different	Equal	Parallel	Perpendicular	B
+If the radius is 5cm and distance from center is 5cm, the line is?	Secant	Diameter	Tangent	Chord	C
+Two tangents $PA$ and $PB$ are drawn from $P$; $\triangle PAB$ is always?	Scalene	Right-angled	Equilateral	Isosceles	D
+A secant becomes a tangent when its two endpoints?	Are far apart	Coincide	Are diameters	Vanish	B
+The length of a tangent from a point 10cm away to a circle of radius 6cm is?	4cm	8cm	16cm	64cm	B
+If two circles are concentric, the number of common tangents is?	One	Two	Three	Zero	D
+Tangents drawn at the end points of a chord make ___ angles with the chord?	Equal	Complementary	Supplementary	Zero	A
+The locus of the center of a circle touching a given line at a given point is?	A circle	A square	A perpendicular line	A parallel line	C
+If $d > r$ (distance > radius), the line is?	A tangent	A secant	An exterior line	A chord	C
+The distance between two parallel tangents of a circle of radius $r$ is?	$r$	$2r$	$r/2$	$r^2$	B
+The tangents at the end points of a diameter are ___ to each other?	Perpendicular	Parallel	Equal	Unequal	B
+Angle between two radii of a circle is 110°, the angle between tangents at their ends is?	70°	110°	90°	180°	A
+If $PA$ and $PB$ are tangents, then $\angle APO$ is equal to?	$\angle BPO$	$\angle AOB$	90°	180°	A
+A line which intersects the circle at one and only one point is?	Secant	Chord	Normal	Tangent	D
+A tangent is a limiting case of a secant when the two points of intersection?	Are diametrically opposite	Coincide	Are at infinity	Are at center	B
+The length of the tangent from a point $P$ to a circle is the distance between $P$ and?	Center	Point of contact	Origin	Chord	B
+If two tangents are parallel, the distance between them is the?	Radius	Diameter	Chord	Secant	B
+How many tangents can be drawn from a point on the circumference?	2	0	1	Infinite	C
+The number of common tangents to two circles which touch each other externally?	1	2	3	4	C
+A line that intersects a circle in two distinct points is called?	Tangent	Chord	Secant	Radius	C
+Number of tangents to a circle from an external point?	1	2	3	4	B
+The angle between a tangent and a chord through the point of contact is equal to the angle in the?	Same segment	Alternate segment	Center	Minor arc	B
+Two tangents $PA$ and $PB$ are drawn from $P$ to a circle with center $O$. Then $OAPB$ is a?	Square	Trapezium	Cyclic Quadrilateral	Rhombus	C
+A point $P$ is 13cm from the center. If radius is 5cm, length of tangent is?	8cm	12cm	18cm	144cm	B
+The common tangents to two circles are called 'direct' if they?	Cross the line of centers	Do not cross line of centers	Intersect the circle	Are perpendicular	B
+The length of the tangent from a point $P(x,y)$ to a circle is found using?	Pythagoras Theorem	Euclidean Geometry	Algebra	All of these	A
+Tangents from an external point to a circle subtend equal angles at the?	Circumference	Segment	Chord	Center	D
+If a chord is $8$cm and distance from center is $3$cm, the radius is?	$5$cm	$4$cm	$11$cm	$7$cm	A
+A line meeting the circle at two points is a secant, and at one point is a?	Diameter	Radius	Tangent	Normal	C
+The measure of the angle between two tangents to a circle is 60°, the $\triangle$ formed by the tangents and the chord of contact is?	Right-angled	Scalene	Equilateral	Isosceles	C
+Two circles of radii $5$cm and $3$cm touch internally. Distance between centers is?	$8$cm	$2$cm	$4$cm	$15$cm	B
+Two circles of radii $5$cm and $3$cm touch externally. Distance between centers is?	$2$cm	$15$cm	$8$cm	$4$cm	C
+Transverse common tangents are also known as?	Direct tangents	Indirect tangents	Normal tangents	Secants	B
+The length of the tangent to a circle from a point at a distance of $5$cm from center (radius $3$cm) is?	$4$cm	$2$cm	$8$cm	$16$cm	A
+At the point of contact, the tangent and radius are?	Parallel	Congruent	Perpendicular	Unequal	C
+A line touching a circle at $P$ is $L$. The line perpendicular to $L$ at $P$ passes through?	Origin	Any point	The center	The chord	C
+The number of common tangents to two circles which do not intersect?	2	4	0	1	B
+If the angle between two tangents is 80°, the angle between the radii is?	100°	80°	90°	120°	A
+The lengths of tangents drawn from an external point are?	Reciprocal	Parallel	Equal	Perpendicular	C
+The common point of tangent and circle is?	Point of tangency	Focus	Directrix	Secant point	A
+From a point $Q$, the length of tangent is 24cm and distance from center is 25cm. Radius is?	7cm	12cm	15cm	24.5cm	A
+The tangent is ___ to the radius at the point of contact?	Normal	Parallel	Diagonal	Adjacent	A
+A line segment whose endpoints lie on the circle is?	Tangent	Ray	Chord	Line	C
+Maximum number of common tangents to two circles?	2	3	4	1	C
+Tangent drawn from an external point $P$ to a circle with center $O$ is?	$\perp$ to $OP$	$\perp$ to radius	$\perp$ to chord	$\|$ to radius	B
+Two circles are $C1$ and $C2$. If they don't intersect, max common tangents?	4	2	1	0	A
+If the length of tangent is $12$ and radius is $5$, the distance from center is?	$17$	$13$	$7$	$144$	B
+The angle between a tangent and the radius is?	$45°$	$180°$	$90°$	$0°$	C
+A circle can have how many tangents?	$1$	$2$	$10$	Infinite	D
+In the figure, if $PA$ and $PB$ are tangents, then $PA$ is ___ to $PB$?	Perpendicular	Parallel	Equal	Unequal	C
+If a tangent $PQ$ is drawn from $P$, then $OQ$ is?	The radius	The secant	The chord	The diameter	A
+The center of the circle lies on the ___ of any chord?	Tangent	Bisector	Perpendicular bisector	Parallel line	C
+If two circles touch each other, the point of contact lies on the line joining their?	Chords	Diameters	Centers	Tangents	C
+How many tangents can be drawn from a point inside the circle?	Zero	One	Two	Three	A
+The point of contact of a tangent to a circle is?	Unique	Multiple	Infinite	Variable	A
+A line which touches a circle at only one point is a?	Chord	Segment	Sector	Tangent	D
+Number of common tangents to two circles touching internally is?	3	2	0	1	D
+Tangent is a line segment?	True	False	Sometimes	Only in 3D	B
+If distance between centers $d = r1 + r2$, circles touch?	Internally	Externally	Do not touch	Intersect	B
+If distance between centers $d < |r1 - r2|$, one circle is?	Outside other	Inside other	Intersecting	Touching	B
+The angle between two tangents from an external point is ___ by the line joining the point to center?	Trisected	Bisected	Multiplied	Ignored	B
+Tangent at any point of a circle is perpendicular to the radius through the?	Center	Point of contact	Chord	Segment	B
+The perpendicular from center to a chord ___ the chord?	Triples	Bisects	Doubles	Crosses	B
+A line segment whose endpoints are on the circle and passes through center?	Radius	Secant	Diameter	Tangent	C
+The tangent to a circle is a line that intersects the circle in?	Two points	Only one point	No points	Three points	B
+The common tangents which do not intersect the line segment joining the centers are?	Transverse	Direct	Internal	Secant	B
+Common tangents which intersect the line joining the centers are?	Direct	Transverse	Parallel	Vertical	B
+Distance of the point $(3,4)$ from the origin is?	3	4	5	7	C
+How many tangents can be drawn from an external point to a circle?	1	2	3	4	B
+If the angle between two radii is 90°, the angle between tangents at their ends is?	90°	180°	0°	45°	A
+If the length of tangent is 0, the point $P$ is?	Outside	On the circle	Inside	At center	B`
+},
+
+"maths10_u27": {
+    "title": "MATHS 10 | UNIT 27",
+    "subtitle": "Chords and Arcs",
+    "tsv": `A line segment joining any two points on a circle is called?	Chord	Diameter	Secant	Tangent	A
+The longest chord of a circle is known as the?	Radius	Diameter	Arc	Segment	B
+A part of the circumference of a circle is called?	Sector	Segment	Arc	Chord	C
+An arc which is less than a semi-circle is called?	Major arc	Sector	Segment	Minor arc	D
+The distance from the center to any point on the circle is?	Radius	Diameter	Chord	Secant	A
+If two chords of a circle are congruent, then they are ____ from the center.	Equidistant	Parallel	Perpendicular	Intersecting	A
+A line joining the center to the midpoint of a chord is ___ to the chord.	Parallel	Perpendicular	Tangent	Equal	B
+The perpendicular from the center of a circle to a chord ____ the chord.	Triples	Squares	Bisects	Trisects	C
+Two arcs are congruent if they have equal?	Radii	Length	Central angles	Areas	C
+A chord passing through the center of the circle is the?	Radius	Minor arc	Diameter	Tangent	C
+The measure of a semi-circular arc is?	90°	180°	270°	360°	B
+If two arcs of a circle are congruent, their corresponding chords are?	Unequal	Parallel	Equal	Perpendicular	C
+The region bounded by a chord and its corresponding arc is a?	Sector	Segment	Diameter	Normal	B
+How many diameters can a circle have?	One	Two	Four	Infinite	D
+Chords equidistant from the center of a circle are?	Unequal	Equal	Parallel	Perpendicular	B
+The angle subtended by a diameter at any point on the circle is?	45°	60°	90°	180°	C
+A circle can be divided into how many equal arcs?	Two	Four	Six	Any number	D
+If a chord subtends a larger angle at the center, the chord is?	Longer	Shorter	Equal	Half	A
+Congruent circles have equal?	Chords	Radii	Arcs	All of these	B
+The central angle of a minor arc is always ____ 180 degrees.	Greater than	Less than	Equal to	Double	B
+The boundary of a circle is its?	Area	Radius	Circumference	Volume	C
+Two circles are congruent if they have the same?	Center	Chord	Radius	Segment	C
+A chord divides a circle into two?	Sectors	Segments	Radii	Arcs	B
+The midpoint of a diameter is the ____ of the circle.	Radius	Tangent	Center	Circumference	C
+Equal chords of a circle subtend equal ____ at the center.	Angles	Arcs	Radii	Areas	A
+An arc greater than a semi-circle is called?	Minor arc	Major arc	Segment	Sector	B
+The measure of a complete circle in degrees is?	90°	180°	270°	360°	D
+A line that intersects a circle at two points is a?	Tangent	Radius	Secant	Normal	C
+The length of the diameter is ____ the radius.	Half	Twice	Thrice	Equal	B
+If two chords bisect each other, they are both?	Tangents	Diameters	Radii	Secants	B
+The sum of central angles of all arcs in a circle is?	180°	270°	360°	540°	C
+A diameter divides the circle into two equal?	Minor arcs	Sectors	Semi-circles	Segments	C
+Points lying on the same circle are called?	Collinear	Concyclic	Concurrent	Coplanar	B
+The perpendicular bisector of any chord passes through the?	Tangent	Circumference	Center	Radius	C
+Distance between the center and a tangent is equal to?	Chord	Secant	Radius	Diameter	C
+Two chords AB and CD of a circle intersect at P; then PA.PB =?	PC.PD	PC+PD	AB.CD	Radius	A
+A line that touches the circle at exactly one point is?	Secant	Tangent	Chord	Arc	B
+Two congruent arcs of a circle subtend ____ angles at the center.	Complementary	Equal	Supplementary	Right	B
+The region bounded by two radii and an arc is?	Segment	Sector	Chord	Diameter	B
+A line segment with one end at the center and one on the circle is?	Diameter	Radius	Secant	Tangent	B
+How many points are common between a tangent and a circle?	Zero	One	Two	Infinite	B
+The locus of a point equidistant from a fixed point is a?	Square	Triangle	Circle	Line	C
+Which is the longest chord?	Radius	Diameter	Secant	Tangent	B
+An angle in a semi-circle is always a?	Acute angle	Obtuse angle	Right angle	Straight angle	C
+If two chords are unequal, the longer one is ____ to the center.	Farther	Nearer	Parallel	Equal	B
+The center of a circle lies in its?	Exterior	Interior	Boundary	None	B
+The union of a circle and its interior is?	Circular region	Arc	Sector	Segment	A
+If the radius is 5cm, the diameter is?	2.5cm	10cm	15cm	20cm	B
+In a circle, equal arcs have equal?	Chords	Centers	Secants	Tangents	A
+An arc is a ____ of a circle.	Internal part	Subset	Square	Diameter	B
+Two circles with the same center but different radii are?	Congruent	Equal	Concentric	Tangent	C
+The length of a circle is called its?	Area	Radius	Circumference	Volume	C
+A chord is not a ____?	Line segment	Diameter	Radius	Secant part	C
+If a chord is 8cm, the distance from center to midpoint is 3cm, radius is?	4cm	5cm	6cm	7cm	B
+The area of a circle is given by?	2πr	πd	πr²	2πd	C
+A circle has only one?	Radius	Chord	Center	Arc	C
+The angle subtended by a minor arc in the alternate segment is?	Acute	Obtuse	Right	Straight	A
+The angle subtended by a major arc in the alternate segment is?	Acute	Obtuse	Right	Straight	B
+If two chords are parallel, the arcs between them are?	Equal	Unequal	Perpendicular	None	A
+The diameter is the ____ chord of the circle.	Shortest	Longer	Longest	Medium	C
+Total degree measure of a semi-circle?	90°	180°	270°	360°	B
+A circle can pass through how many non-collinear points?	Two	Three	One	Four	B
+The distance from center to a chord increases as chord length?	Increases	Decreases	Stays same	Doubles	B
+A line segment joining two points on circle and passing through center?	Radius	Diameter	Secant	Tangent	B
+A circle is a ____ figure.	3D	Plane	Open	Linear	B
+Two arcs are equal if they have equal ____ at center.	Radii	Segments	Central angles	Areas	C
+The angle in a segment greater than a semi-circle is?	Acute	Obtuse	Right	None	A
+The angle in a segment less than a semi-circle is?	Acute	Obtuse	Right	None	B
+Number of circles passing through one point is?	One	Two	Infinite	Zero	C
+Number of circles passing through two points is?	One	Two	Infinite	Zero	C
+If a diameter bisects a chord, it is ____ to it.	Parallel	Perpendicular	Diagonal	None	B
+The symbolic form of a circle with center O and radius r is?	C(O,r)	O(C,r)	r(O,C)	Circle-O	A
+Points inside the circle are at a distance ____ than the radius.	More	Less	Equal	Double	B
+Points outside the circle are at a distance ____ than the radius.	More	Less	Equal	Half	A
+Radial segment is a?	Line	Line segment	Ray	Curve	B
+The center of the circle ____ on the circle.	Lies	Does not lie	Inside	Outside	B
+A diameter consists of how many radii?	One	Two	Three	Four	B
+Can a chord be longer than a diameter?	Yes	No	Maybe	Sometimes	B
+Chords near the center are ____ than chords away from center.	Smaller	Larger	Equal	Half	B
+Arcs of the same circle are equal if their ____ are equal.	Chords	Radii	Angles	None	A
+Equal ____ of a circle subtend equal angles at the center.	Tangents	Secants	Chords	Sectors	C
+A semi-circle is an arc whose measure is?	Half circle	Full circle	Quarter circle	None	A
+Area of a sector is a portion of the circle's?	Circumference	Diameter	Area	Perimeter	C
+The angle at the center is ____ the angle at the circumference.	Half	Double	Triple	Equal	B
+The angle subtended by an arc at the center is 60°, then at the circle?	120°	30°	60°	90°	B
+All radii of a circle are?	Unequal	Equal	Parallel	Perpendicular	B
+If radius is 7cm, circumference is?	14π	49π	7π	21π	A
+Pi (π) is the ratio of circumference to?	Radius	Diameter	Area	Chord	B
+If two circles intersect at two points, the line joining centers is?	Tangent	Chord	Perpendicular bisector of common chord	None	C
+A chord divide the circular region into how many segments?	One	Two	Three	Four	B
+What is the shape of a sector?	Square	Triangle	Pie-slice	Rectangle	C
+A circle has ____ symmetry.	No	Point	Infinite	Finite	C
+The distance from center to a chord is 0 if the chord is?	Small	Large	Diameter	Secant	C
+The major arc and minor arc together make a?	Segment	Sector	Complete circle	Chord	C
+If a chord length equals the radius, the central angle is?	30°	45°	60°	90°	C
+In congruent circles, equal chords have equal?	Distance from center	Areas	Thickness	None	A
+If we have 3 collinear points, how many circles pass through them?	One	Two	Zero	Infinite	C
+An arc is named using how many points?	One	Two or Three	Zero	Four	B
+The set of all points in a plane at a fixed distance from a point?	Square	Oval	Circle	Triangle	C
+The vertex of a central angle is always the?	Circumference	Chord	Center	Segment	C`
+},
+
+"maths10_u28": {
+    "title": "MATHS 10 | UNIT 28",
+    "subtitle": "Angle in a Segment Of a Circle",
+    "tsv": `Angle in semi-circle is? 90 degrees 180 degrees 60 degrees 45 degrees A
+Central angle is ___ circum-angle? Double Half Same Triple A
+Angles in same segment? Equal Unequal Complementary None A
+Cyclic quadrilateral opposite angles sum? 180 360 90 None A
+Angle in minor segment is? Obtuse Acute Right Reflex A
+Angle in major segment is? Acute Obtuse Right Reflex B
+Sum of angles in a triangle? 90 180 270 360 B
+A chord passing through center is? Radius Diameter Tangent Secant B
+Distance from center to any point on circle? Chord Secant Radius Segment C
+Angle subtended by an arc at the center? Central Angle Circum-angle Right Angle Reflex Angle A
+Angle in a segment greater than a semi-circle? Obtuse Acute Right Reflex B
+Angle in a segment less than a semi-circle? Acute Obtuse Right Reflex B
+A circle passing through vertices of a triangle? In-circle Circum-circle E-circle Unit-circle B
+Opposite angles of a cyclic quadrilateral are? Complementary Supplementary Equal Right B
+The boundary of a circle is called? Area Volume Circumference Diameter C
+A line touching a circle at one point? Secant Chord Radius Tangent D
+Length of the diameter is ___ the radius? Half Triple Double Equal C
+An arc greater than a semi-circle? Minor arc Major arc Chord Sector B
+An arc less than a semi-circle? Major arc Minor arc Chord Sector B
+The point of tangency lies? Inside circle Outside circle On the circle In the center C
+Points lying on the same circle are? Collinear Concurrent Concyclic Coplanar C
+A line segment joining two points on circle? Radius Diameter Chord Tangent C
+Angle in a semi-circle is always? Acute Obtuse Right Reflex C
+Number of circles passing through three non-collinear points? Two Zero Three One D
+Measure of a central angle of a semi-circle? 90 270 360 180 D
+The supplement of 110 degrees is? 90 180 80 70 D
+If central angle is 100, then circum-angle is? 200 100 25 50 D
+Two chords are congruent if they are ___ from center? Adjacent Parallel Unequal Equidistant D
+Radii of the same circle are? Different Parallel Perpendicular Equal D
+In a circle, the largest chord is? Secant Tangent Radius Diameter D
+A quadrilateral whose vertices lie on a circle? Trapezium Parallelogram Cyclic Quadrilateral Rhombus C
+The circum-angle of a 120 central angle is? 60 240 120 30 A
+If two arcs are congruent, their chords are? Parallel Perpendicular Equal Unequal C
+Angle inscribed in a semi-circle? 45 90 180 60 B
+Sum of central angles in a circle? 180 90 360 270 C
+A line intersecting a circle at two points? Tangent Secant Radius Center B
+The area bounded by a chord and an arc? Segment Sector Circumference Radius A
+The area bounded by two radii and an arc? Segment Sector Diameter Chord B
+A circle has only one? Chord Radius Arc Center D
+How many tangents can be drawn from a point on circle? Two Three Zero One D
+The distance of a chord from center increases as chord? Lengthens Shortens Stays same Doubles B
+Equal chords subtend equal ___ at the center? Segments Radii Tangents Angles D
+The perpendicular from center to a chord ___ the chord? Triples Squares Bisects Doubles C
+A tangent is ___ to the radius at point of contact? Parallel Perpendicular Equal Bisector B
+If a triangle is inscribed in a semi-circle, it is? Isosceles Right-angled Equilateral Scalene B
+The length of a complete circle? Diameter Area Circumference Volume C
+The interior of a circle is a ___ set of points? Finite Infinite Empty Null B
+The degree measure of a circle? 90 180 270 360 D
+In a cyclic quad, if A=70, then C=? 70 110 180 20 B
+Number of tangents from an external point to a circle? 1 3 4 2 D
+Two circles having the same center? Concentric Eccentric Congruent Similar A
+If two circles touch internally, distance between centers is? Sum of radii Product of radii Difference of radii Ratio of radii C
+If circum-angle is 40, central angle is? 20 80 40 160 B
+Segment of a circle is a region between an arc and? Radius Diameter Chord Secant C
+Tangent and radius meet at? 45 60 90 180 C
+A cyclic parallelogram must be a? Rhombus Trapezium Rectangle Kite C
+If central angle is 60, triangle formed by radii and chord is? Scalene Right-angled Equilateral Obtuse C
+Semi-circle is ___ of a circle? One-third One-fourth Half Full C
+Medians of a triangle are? Perpendicular Parallel Concurrent Equal C
+Number of segments in a circle made by one chord? One Three Four Two D
+Sum of adjacent angles in cyclic quad? 180 90 360 Depends on size D
+If a chord is 6cm and radius is 5cm, distance from center? 3 5 2 4 D
+Two tangents from an external point are? Unequal Perpendicular Parallel Equal D
+If a cyclic quad has one right angle, it is a? Rhombus Trapezium Rectangle Kite C
+The center of the circum-circle is? In-center Circum-center Orthocenter Centroid B
+Angle between two radii of a circle? Acute Reflex Central Obtuse C
+A diameter divides a circle into? Two segments Two semi-circles Four sectors One arc B
+Total number of degrees in a semi-circle arc? 90 180 360 270 B
+The angle in a major segment is? Acute Obtuse Right Straight A
+The angle in a minor segment is? Acute Obtuse Right Straight B
+If an arc subtends 90 at center, it is a? Semi-circle Quadrant Major arc Minor arc B
+A chord and its bisecting diameter are? Parallel Perpendicular Concurrent Coincident B
+An angle in a segment is the angle subtended by? Chord Arc Secant Tangent B
+The angle subtended by a major arc at center is? Acute Right Obtuse Reflex D
+Locus of points equidistant from a fixed point? Square Triangle Circle Rectangle C
+The fixed point in a circle is called? Chord Circumference Center Diameter C
+If two chords bisect each other, they are? Tangents Diameters Secants Radii B
+A line segment with one end at center and other on circle? Chord Diameter Secant Radius D
+The length of a tangent from external point? Varies Depends on radius Zero Equal D
+Points inside the circle are? Exterior Interior On boundary None B
+Angle in a semi-circle is a/an? Right angle Acute angle Obtuse angle Reflex angle A
+If chord AB = chord CD, then arc AB is ___ arc CD? Greater than Less than Equal to Half A
+The part of circumference? Chord Segment Arc Sector C
+An equilateral triangle's angles are each? 90 45 30 60 D
+The external angle of a cyclic quad equals? Interior opposite angle Adjacent angle Central angle None A
+Total degrees in a quadrant? 180 90 360 45 B
+Number of arcs made by a chord? 1 3 4 2 D
+A line passing through two points of a circle? Tangent Secant Chord Diameter B
+Central angle is subtended by? Arc Tangent Secant Point A
+In Unit 28, the "segment" refers to? Line Circular region Arc Radius B
+The distance from center to a tangent? Radius Diameter Chord Secant A
+If a circle has radius 7, its diameter is? 3.5 14 21 49 B
+The sum of angles in a quadrilateral? 180 90 270 360 D
+Two congruent circles have equal? Centers Chords Radii Positions C
+The angle in a segment is ___ the central angle? Double Same Half Triple C
+If central angle is 180, the chord is? Minor Diameter Radius Secant B
+Every cyclic trapezium is? Isosceles Scalene Right-angled Obtuse A
+A line segment joining center to point of tangency is? Tangent Chord Radius Secant C
+The angle between a tangent and a chord? Alternate segment angle Right angle Central angle None A
+A chord divides the circular region into two? Sectors Segments Arcs Radii B`
+},
+
+"maths10_u29": {
+    "title": "MATHS 10 | UNIT 29",
+    "subtitle": "Practical Geometry-Circles",
+    "tsv": `Circumcircle?	Outside triangle touching vertices	Inside triangle	Touching 1 side	None	A
+In-circle?	Inside triangle touching sides	Outside triangle	Touching vertices	None	A
+E-circle?	Outside triangle touching 1 side	Inside triangle	Touching all sides	None	A
 Number of circles through 3 non-collinear points?	1	2	3	Infinite	A
-Common tangent?	Touches two circles	Touches center	None	None	A`
-    },
+Common tangent?	Touches two circles	Touches center	Inside circle	None	A
+A circle passing through all vertices of a triangle?	Circumcircle	In-circle	E-circle	Inscribed circle	A
+Tangent is perpendicular to the radius at the:	Point of tangency	Center	Chord	Segment	A
+Length of two tangents drawn from an external point are:	Equal	Unequal	Parallel	Perpendicular	A
+How many common tangents can two separate circles have?	4	3	2	1	A
+Two circles touching externally have how many common tangents?	3	2	1	4	A
+The center of the circumcircle is the intersection of:	Right bisectors of sides	Angle bisectors	Medians	Altitudes	A
+A line segment joining two points on a circle is:	Chord	Radius	Secant	Diameter	A
+The greatest chord of a circle is:	Diameter	Radius	Tangent	Secant	A
+A circle touching the three sides of a triangle internally?	In-circle	Circumcircle	E-circle	Semi-circle	A
+The distance from center to any point on the circle?	Radius	Diameter	Chord	Arc	A
+If the distance between centers is equal to sum of radii, circles touch:	Externally	Internally	Not at all	Intersect	A
+Angle in a semi-circle is:	90°	180°	60°	45°	A
+How many circles can pass through one point?	Infinite	1	2	0	A
+The part of a circle bounded by an arc and a chord?	Segment	Sector	Diameter	Tangent	A
+An arc greater than a semi-circle is called:	Major arc	Minor arc	Sector	Chord	A
+The boundary of a circle is called:	Circumference	Area	Volume	Chord	A
+Points lying on the same circle are called:	Concyclic	Collinear	Concurrent	Parallel	A
+The point of intersection of internal angle bisectors of a triangle?	In-center	Circumcenter	Orthocenter	Centroid	A
+Tangents drawn at the ends of a diameter are:	Parallel	Perpendicular	Intersecting	Equal	A
+To draw a circumcircle of a triangle, we bisect any two:	Sides	Angles	Medians	Vertices	A
+A circle touching one side externally and two produced sides?	Circumcircle	E-circle	In-circle	Unit circle	B
+The center of an in-circle is the intersection of:	Sides	Angle bisectors	Altitudes	Medians	B
+How many tangents can be drawn from a point inside the circle?	One	Zero	Two	Infinite	B
+Two circles touching internally have how many common tangents?	Two	One	Three	Four	B
+The distance between centers of two circles touching internally is:	Sum of radii	Difference of radii	Product of radii	Zero	B
+If two circles do not intersect and one is inside other, common tangents?	Two	Zero	One	Four	B
+The angle in a segment greater than a semi-circle is:	Obtuse	Acute	Right	Reflex	B
+Number of circles that can pass through two given points?	One	Infinite	Two	Zero	B
+A line intersecting a circle at two points?	Tangent	Secant	Radius	Normal	B
+The center of an e-circle opposite to vertex A is:	I	I1	I2	I3	B
+Length of the tangent from (0,0) to a circle is found by:	Addition	Power of point	Subtraction	Division	B
+The locus of a point equidistant from a fixed point?	Square	Circle	Triangle	Line	B
+In a circle, equal chords subtend equal angles at the:	Circumference	Center	Tangent	Segment	B
+The degree measure of a semi-circle is:	90°	180°	270°	360°	B
+A triangle having an e-circle is:	Any triangle	Only equilateral	Only right	None	B
+The radius of the in-circle is denoted by:	R	r	r1	r2	B
+The measure of a central angle is ____ its related arc.	Half	Equal to	Double	Triple	B
+A line which has only one point in common with the circle?	Secant	Tangent	Chord	Diameter	B
+The plural of radius is:	Radii	Radiuses	Radials	Arcs	B
+How many e-circles can be drawn for a triangle?	One	Three	Two	Infinite	B
+The symbol for 'is perpendicular to' is:	||	⊥	∠	≅	B
+If a chord subtends a 60° angle at center, the triangle formed is:	Right	Equilateral	Scalene	Isosceles	B
+Area of a circle is calculated by:	2πr	πr²	2r	πd	B
+The portion of circle between two radii and an arc?	Segment	Sector	Chord	Secant	B
+Common tangents to two circles which lie on opposite sides of the line joining centers?	Direct	Transverse	Simple	Parallel	B
+A circle passing through the vertices of a right triangle has center at:	Vertex	Midpoint of hypotenuse	Inside	Outside	C
+The angle in a segment less than a semi-circle is:	Right	Acute	Obtuse	Straight	C
+How many tangents can be drawn from a point outside the circle?	Zero	One	Two	Three	C
+The distance between centers of two circles touching externally is:	Difference of radii	Product	Sum of radii	Half of radii	C
+Circum-radius of a triangle is denoted by:	r	r1	R	I	C
+To draw an in-circle, we bisect the:	Sides	Medians	Angles	Altitudes	C
+A circle has only one:	Radius	Chord	Center	Tangent	C
+A circle touching all three sides of a triangle is:	E-circle	Circumcircle	In-circle	Unit circle	C
+The chord passing through the center is:	Secant	Tangent	Diameter	Arc	C
+Transverse common tangents are also called:	Direct	Parallel	Indirect	Secants	C
+The length of a circle is called its:	Area	Volume	Circumference	Diameter	C
+Two circles of different radii can have at most how many common tangents?	1	2	4	0	C
+The center of the E-circle opposite to vertex B is:	I	I1	I2	I3	C
+If the radius is 5cm, the diameter is:	2.5cm	5cm	10cm	25cm	C
+An arc less than a semi-circle is called:	Major arc	Sector	Minor arc	Segment	C
+The angle subtended by a major arc at the center is:	Acute	Right	Reflex	Obtuse	C
+If two circles intersect at two points, number of common tangents?	4	3	2	1	C
+The sum of opposite angles of a cyclic quadrilateral is:	90°	270°	180°	360°	C
+A circle is a:	Polygon	Open curve	Closed plane curve	Solid	C
+Perpendicular from the center to a chord ____ the chord.	Doubles	Triples	Bisects	Trisects	C
+The angle between a tangent and the radius is:	45°	60°	90°	180°	C
+A point inside the circle is called:	Exterior	Boundary	Interior	Center	C
+A circle of radius 1 is called:	In-circle	E-circle	Unit circle	Circumcircle	C
+How many common tangents do two concentric circles have?	1	2	0	Infinite	C
+Medians of a triangle meet at:	In-center	Circumcenter	Centroid	Orthocenter	C
+The center of the E-circle opposite to vertex C is:	I1	I2	I3	I	D
+A line segment joining any two points on the circumference?	Radius	Tangent	Secant	Chord	D
+The set of all points in a plane equidistant from a fixed point?	Square	Triangle	Rectangle	Circle	D
+A line which touches the circle at one point only?	Diameter	Chord	Secant	Tangent	D
+Number of common tangents to two circles which do not intersect and are separate?	1	2	3	4	D
+The formula for circumference is:	πr²	πd²	r²	2πr	D
+If the distance between centers is greater than the sum of radii, the circles:	Touch	Intersect	Are inside	Are separate	D
+A quadrilateral whose vertices lie on a circle?	Square	Trapezium	Parallelogram	Cyclic	D
+The region bounded by two radii and the arc intercepted by them?	Segment	Chord	Secant	Sector	D
+Two circles having the same center but different radii?	Equal	Congruent	E-circles	Concentric	D
+Half of a circle is:	Sector	Segment	Arc	Semi-circle	D
+The angle subtended by an arc at the center is ____ the angle at circumference.	Half	Equal	One-third	Double	D
+The center of an e-circle lies ____ the triangle.	On the side	Inside	At the vertex	Outside	D
+Which of the following is not a part of a circle?	Radius	Chord	Arc	Diagonal	D
+If a diameter is 14cm, the radius is:	28cm	14cm	10cm	7cm	D
+In practical geometry, to locate a center, we draw:	Parallel lines	Tangents	Circles	Perpendicular bisectors	D
+The point where a tangent touches the circle is:	Focus	Origin	Node	Point of contact	D
+Direct common tangents to two equal circles are:	Intersecting	Perpendicular	Circular	Parallel	D
+Two chords are equidistant from the center if they are:	Parallel	Perpendicular	Unequal	Equal	D
+A circle has ____ number of radii.	1	2	3	Infinite	D
+The number of tangents drawn from a point on the circle?	0	2	Infinite	1	D
+If the radius of a circle is 'r', then the diameter 'd' is:	r/2	r+2	r²	2r	D
+A circle is determined by how many non-collinear points?	1	2	4	3	D
+The diameter divides the circle into two equal:	Sectors	Segments	Chords	Semi-circles	D
+The sum of central angles of a circle is:	90°	180°	270°	360°	D`
+},
 
-"maths10_u30_part1": {
+"maths10_u30": {
         "title": "MATHS 10 | UNIT 30",
-        "subtitle": "Analytical Geometry",
-        "tsv": `The study of geometry using coordinate systems is?	Euclidean Geometry	Analytical Geometry	Trigonometry	Topology	B
-The horizontal axis in a Cartesian plane is?	Y-axis	X-axis	Origin	Abscissa	B
-The vertical axis in a Cartesian plane is?	X-axis	Y-axis	Ordinate	Origin	B
-The point where x and y axes intersect is?	Intercept	Vertex	Origin	Center	C
-The x-coordinate of a point is also called?	Ordinate	Abscissa	Slope	Intercept	B
-The y-coordinate of a point is also called?	Abscissa	Ordinate	Slope	Intercept	B
-Distance between (x1, y1) and (x2, y2) is?	√[(x2-x1)²+(y2-y1)²]	(x2-x1)²+(y2-y1)²	√[(x2+x1)²]	x2-x1	A
-The distance of point (3, 4) from the origin is?	3	4	5	7	C
-The midpoint of (x1, y1) and (x2, y2) is?	((x1+x2)/2, (y1+y2)/2)	((x1-x2)/2, (y1-y2)/2)	(x1+x2, y1+y2)	None	A
-The midpoint of (2, 4) and (4, 6) is?	(3, 5)	(6, 10)	(1, 1)	(2, 2)	A
-Slope (m) of a line passing through two points is?	(y2-y1)/(x2-x1)	(x2-x1)/(y2-y1)	(y2+y1)/(x2+x1)	y2-x2	A
-If a line is parallel to the x-axis, its slope is?	1	0	Undefined	-1	B
-If a line is parallel to the y-axis, its slope is?	0	1	Undefined	-1	C
-The slope of a line making 45° with x-axis is?	0	1	√3	1/√3	B
-Two lines are parallel if their slopes m1 and m2 are?	m1 = -m2	m1 = m2	m1.m2 = -1	m1.m2 = 1	B
-Two lines are perpendicular if the product of slopes is?	0	1	-1	2	C
-The equation y = mx + c is called?	Point-slope form	Slope-intercept form	Two-point form	Intercept form	B
-In y = mx + c, 'm' represents?	x-intercept	y-intercept	Slope	Origin	C
-In y = mx + c, 'c' represents?	Slope	x-intercept	y-intercept	Constant	C
-The slope of the line 2x + y = 5 is?	2	-2	5	1/2	B
-The y-intercept of the line 3x - 2y = 6 is?	3	2	-3	6	C
-The equation of x-axis is?	x = 0	y = 0	y = x	x + y = 0	B
-The equation of y-axis is?	y = 0	x = 0	x = 1	y = 1	B
-Equation of a line parallel to x-axis is?	x = a	y = b	y = x	x + y = k	B
-Equation of a line parallel to y-axis is?	y = b	x = a	y = 0	x = 0	B
-The point (0, 0) lies in?	Quadrant I	Quadrant II	Origin	Quadrant IV	C
-If x > 0 and y < 0, the point lies in?	Quadrant I	Quadrant II	Quadrant III	Quadrant IV	D
-If x < 0 and y < 0, the point lies in?	Quadrant I	Quadrant II	Quadrant III	Quadrant IV	C
-The distance between (2, 3) and (2, 7) is?	4	10	0	√4	A
-The slope of a horizontal line is?	Positive	Negative	Zero	Infinite	C
-The slope of a vertical line is?	Zero	One	Undefined	Negative	C
-If m = 1/2, the slope of a perpendicular line is?	1/2	-1/2	2	-2	D
-Intercept form of a line is?	x/a + y/b = 1	y = mx + c	ax + by = c	y-y1 = m(x-x1)	A
-In x/a + y/b = 1, 'a' is the?	Slope	x-intercept	y-intercept	Length	B
-The point-slope form of a line is?	y-y1 = m(x-x1)	y = mx+c	x/a + y/b = 1	None	A
-Two-point form of a line is?	(y-y1)/(y2-y1)=(x-x1)/(x2-x1)	y=mx+c	ax+by+c=0	None	A
-Slope of the line joining (0,0) and (1,1) is?	0	1	-1	2	B
-The distance between (0,0) and (x,y) is?	x+y	x-y	√(x²+y²)	xy	C
-General linear equation in two variables is?	ax+by+c=0	ax²+bx+c=0	y=mx	None	A
-If m1 = 3, then for a parallel line m2 is?	-3	1/3	3	0	C
-A line with a negative slope leans towards the?	Right	Left	Top	Bottom	B
-If the slope of a line is undefined, the line is?	Horizontal	Vertical	Slanting	None	B
-The x-intercept of 2x + 3y = 6 is?	2	3	6	0	B
-The line y = x passes through which quadrants?	I and II	I and III	II and IV	III and IV	B
-The line y = -x passes through which quadrants?	I and III	II and IV	I and II	None	B
-The distance between (5, 0) and (0, 5) is?	5	10	√50	0	C
-Midpoint of (0,0) and (a,b) is?	(a,b)	(a/2, b/2)	(0,0)	(a+b)/2	B
-Collinear points lie on the?	Same line	Different lines	Circle	Square	A
-Area of a triangle with vertices at origin, (a,0), and (0,b) is?	ab	1/2 ab	a+b	√(a²+b²)	B
-The slope of a line perpendicular to x+y=0 is?	1	-1	0	Undefined	A
-The distance between (x1, y1) and (x1, y2) is?	|y2-y1|	|x2-x1|	0	x1+y1	A
-Slope of a line perpendicular to the y-axis is?	Undefined	0	1	-1	B
-If three points A, B, and C are collinear, then slope AB =?	Slope BC	Slope AC	Both A and B	None	C
-The point (3, 0) lies on the?	Y-axis	X-axis	Origin	Line y=x	B
-The point (0, -5) lies on the?	X-axis	Y-axis	Quadrant III	Quadrant IV	B
-Equation of a line with slope 2 and y-intercept 3?	y=2x+3	y=3x+2	2x+3y=0	y=2x-3	A
-Slope of the line 5x - 2y + 10 = 0?	5/2	-5/2	2/5	5	A
-x-intercept of the line x + y = 5 is?	0	5	-5	1	B
-y-intercept of the line x + y = 5 is?	0	5	-5	1	B
-If a line passes through the origin, its 'c' value is?	1	0	-1	Undefined	B
-The equation of a line passing through origin is?	y = mx	y = mx+c	x = c	y = c	A
-Distance between (a, b) and (-a, -b) is?	0	2√(a²+b²)	√(a²+b²)	2a+2b	B
-If (1, 2), (2, 3) and (3, k) are collinear, then k is?	3	4	5	2	B
-The slope of the line x = 10 is?	10	0	Undefined	1	C
-The slope of the line y = -4 is?	-4	0	Undefined	1	B
-The points (2, 3) and (3, 2) are?	Same	Different	On same line	None	B
-The distance from (x, y) to the x-axis is?	|x|	|y|	√(x²+y²)	0	B
-The distance from (x, y) to the y-axis is?	|x|	|y|	√(x²+y²)	0	A
-If the slope of a line is m, the slope of its normal is?	m	-m	1/m	-1/m	D
-Which point lies on y = 2x + 1?	(1, 2)	(1, 3)	(0, 0)	(2, 4)	B
-Two lines y = m1x + c1 and y = m2x + c2 are identical if?	m1=m2, c1=c2	m1=m2	c1=c2	m1=-m2	A
-The distance between (4, 3) and (1, -1) is?	5	√13	3	4	A
-Midpoint of (-2, 8) and (2, -8) is?	(0, 0)	(2, 8)	(4, 16)	(1, 1)	A
-In ax + by + c = 0, the slope is?	-a/b	-b/a	a/b	c/a	A
-In ax + by + c = 0, the y-intercept is?	-c/b	-c/a	c/b	a/b	A
-If m = 0, the line is ____ to the x-axis?	Perpendicular	Parallel	Diagonal	None	B
-The angle between two parallel lines is?	0°	90°	180°	45°	A
-The angle between two perpendicular lines is?	0°	90°	180°	45°	B
-If a line has a slope of 1, it makes an angle of?	30°	45°	60°	90°	B
-The slope of the line joining (2, 5) and (4, 5) is?	0	2	Undefined	5	A
-The slope of the line joining (3, 6) and (3, 8) is?	2	0	Undefined	1	C
-The lines y = 2x + 5 and y = 2x - 3 are?	Parallel	Perpendicular	Intersecting	Same	A
-The lines y = 3x + 1 and y = -1/3x + 4 are?	Parallel	Perpendicular	Same	None	B
-The x-intercept of x/3 + y/4 = 1 is?	4	3	1	12	B
-The y-intercept of x/3 + y/4 = 1 is?	3	4	1	7	B
-The distance between (0, 0) and (3, 4) is?	5	7	25	1	A
-Midpoint of (5, 7) and (5, 11) is?	(5, 9)	(10, 18)	(5, 4)	(0, 2)	A
-The coordinate geometry was developed by?	Euclid	Descartes	Newton	Pythagoras	B
-The Cartesian plane is also called?	Number plane	XY-plane	Both A and B	None	C
-The point (-3, 4) is in Quadrant?	I	II	III	IV	B
-The point (5, -2) is in Quadrant?	I	II	III	IV	D
-If m is positive, the angle θ is?	Acute	Obtuse	Right	Straight	A
-If m is negative, the angle θ is?	Acute	Obtuse	Right	Straight	B
-Slope of 3x + 4y + 7 = 0 is?	-3/4	3/4	-4/3	7/4	A
-The distance between (2, 2) and (-2, -2) is?	0	√32	4	8	B
-Equation of a line through (0,0) with slope 1?	y=x	y=-x	x=0	y=0	A
-The product of slopes of x-axis and y-axis is?	0	1	Undefined	-1	C
-A line segment joining (1,2) and (1,2) has length?	0	1	2	√5	A
-Slope of a line whose inclination is 0°?	0	1	∞	-1	A
-Slope of a line whose inclination is 90°?	0	1	∞	-1	C
-Analytical geometry links?	Algebra & Geometry	Logic & Sets	Calculus & Trig	None	A
-Unit 30 for Maths 10 Sindh Board covers?	Matrices	Analytical Geometry	Sets	Circles	B`
+        "subtitle": "Introduction To Trigonometry",
+        "tsv": `
+The word 'Trigonometry' is derived from which language?	Arabic	Latin	Greek	Persian	C
+How many degrees are in one radian?	180/π	π/180	360/π	90/π	A
+The union of two non-collinear rays with a common endpoint is?	Line	Angle	Triangle	Circle	B
+An angle of 360° is equal to how many radians?	π rad	3π/2 rad	π/2 rad	2π rad	D
+In a right-angled triangle, the side opposite to the 90° angle is?	Base	Perpendicular	Hypotenuse	Adjacent	C
+Which of the following is the reciprocal of sin θ?	sec θ	cosec θ	cot θ	cos θ	B
+The value of sin 30° is?	1/2	√3/2	1/√2	1	A
+The value of cos 60° is?	√3/2	1/2	1/√2	0	B
+The fundamental identity sin²θ + cos²θ equals?	0	-1	2	1	D
+The value of tan 45° is?	0	1	√3	Undefined	B
+In which quadrant is sin θ positive but cos θ negative?	Quadrant I	Quadrant II	Quadrant III	Quadrant IV	B
+The formula for the area of a sector of a circle is?	1/2 r²θ	rθ	2πr	πr²	A
+The value of cos 0° is?	0	1/2	1	-1	C
+1 + tan²θ is equal to?	cosec²θ	sin²θ	sec²θ	cot²θ	C
+If θ = 45°, then sec θ is?	√2	1/√2	2	2/√3	A
+The measure of an angle in a semi-circle is?	45°	90°	180°	60°	B
+Which ratio is defined as Base / Hypotenuse?	sin θ	tan θ	sec θ	cos θ	D
+The reciprocal of tan θ is?	sec θ	sin θ	cot θ	cosec θ	C
+Value of sin 90° is?	1	0	-1	1/2	A
+An angle greater than 90° but less than 180° is?	Acute	Right	Obtuse	Reflex	C
+Value of cos 90° is?	1	0	Undefined	-1	B
+The relation between arc length (s), radius (r), and angle (θ) is?	s = r/θ	s = rθ	s = θ/r	s = r²θ	B
+If sin θ = 3/5, then cosec θ is?	4/5	5/3	3/4	5/4	B
+In the third quadrant, which ratio is positive?	sin θ	cos θ	cosec θ	tan θ	D
+The value of tan 60° is?	1/√3	1	√3	Undefined	C
+The value of sin 45° is?	1/2	√3/2	1/√2	0	C
+Which is equal to 1/sec θ?	sin θ	cos θ	tan θ	cot θ	B
+1 + cot²θ is equal to?	sec²θ	tan²θ	sin²θ	cosec²θ	D
+The value of cos 30° is?	1/2	√3/2	1/√2	1	B
+If tan θ = 1, then θ is?	30°	60°	90°	45°	D
+A circle with radius 1 is called?	Major Circle	Minor Circle	Unit Circle	Sector	C
+The sum of angles in a triangle is?	90°	270°	360°	180°	D
+Which ratio is Perpendicular / Base?	tan θ	sin θ	cos θ	cot θ	A
+π/3 radians is equal to?	30°	60°	45°	90°	B
+π/6 radians is equal to?	30°	60°	45°	90°	A
+If sin θ = 1, then θ is?	0°	180°	90°	45°	C
+The value of sec 0° is?	0	-1	1	Undefined	C
+cot 45° is equal to?	1	0	√3	1/√2	A
+The value of cosec 90° is?	0	-1	Undefined	1	D
+In Quadrant IV, which ratio is positive?	sin θ	cos θ	tan θ	cot θ	B
+The angle subtended by an arc equal to the radius is?	1 degree	1 radian	90 degrees	180 degrees	B
+sin θ / cos θ is equal to?	cot θ	sec θ	cosec θ	tan θ	D
+Value of sin 0° is?	0	1	-1	1/2	A
+How many radians in 180°?	π/2	2π	π	3π/2	C
+The value of tan 30° is?	√3	1/√3	1	0	B
+sec²θ - tan²θ equals?	0	-1	2	1	D
+If cos θ = 0, then θ is?	0°	90°	180°	45°	B
+cosec 30° is equal to?	1	√2	2	2/√3	C
+If θ = 60°, then cot θ is?	√3	1/√3	1	0	B
+sin(90° - θ) is equal to?	sin θ	tan θ	cos θ	cot θ	C
+Distance of any point on a circle from its center is?	Diameter	Chord	Radius	Secant	C
+A central angle of 90° is how many radians?	π	π/2	π/3	π/4	B
+The value of sec 60° is?	1	√2	√3	2	D
+In a right triangle, if Base=3 and Perp=4, Hypotenuse is?	5	7	25	1	A
+tan θ is undefined at?	0°	45°	90°	180°	C
+The reciprocal of cos θ is?	sin θ	sec θ	cosec θ	cot θ	B
+If cos θ = 1/2, then θ is?	30°	60°	45°	0°	B
+Value of cot 90° is?	1	Undefined	0	-1	C
+How many minutes are in one degree?	10	360	60	100	C
+In Quadrant II, cosec θ is?	Positive	Negative	Zero	Undefined	A
+Area of a circle is?	2πr	πr	πd	πr²	D
+Which ratio is Hypotenuse / Perpendicular?	sec θ	tan θ	cosec θ	sin θ	C
+If sin θ = cos θ, then θ is?	30°	45°	60°	90°	B
+cot θ is equal to?	sin θ / cos θ	1 / sin θ	cos θ / sin θ	1 / cos θ	C
+The value of cosec 45° is?	√2	2	1/√2	1	A
+2π/3 radians in degrees is?	120°	150°	135°	90°	A
+Value of cos 180° is?	1	0	-1	1/2	C
+Value of sin 180° is?	1	-1	0	1/2	C
+cosec²θ - cot²θ equals?	0	1	-1	2	B
+If r=2 and θ=0.5 rad, then arc length s is?	1	4	0.25	2.5	A
+The value of tan 0° is?	1	Undefined	-1	0	D
+The sign of tan 200° is?	Positive	Negative	Zero	Undefined	A
+The sign of cos 120° is?	Positive	Negative	Zero	Undefined	B
+Convert 45° to radians?	π/2	π/3	π/6	π/4	D
+An angle in standard position has its vertex at?	(1,1)	Origin	X-axis	Y-axis	B
+The terminal side of 270° lies on?	Positive x-axis	Negative x-axis	Positive y-axis	Negative y-axis	D
+sec 45° is?	1	√2	2	1/√2	B
+If θ is in Quadrant III, sin θ is?	Positive	Negative	Zero	1	B
+The value of sin²30° + cos²30° is?	1/2	1/4	1	√3/2	C
+3π/2 radians in degrees is?	90°	180°	360°	270°	D
+In a right triangle, sin θ =?	a/c	b/c	a/b	b/a	A
+If tan θ = 0, then θ is?	90°	0°	45°	60°	B
+The ratio Base / Perpendicular is?	tan θ	sec θ	cot θ	cosec θ	C
+The value of cos 45° is?	1/2	√3/2	1/√2	1	C
+1 degree is approximately how many radians?	0.01745	0.1745	1.745	57.3	A
+cos²θ is equal to?	1 + sin²θ	sin²θ - 1	1 - sin²θ	tan²θ	C
+If sin θ is negative and tan θ is positive, θ is in?	Quad I	Quad II	Quad III	Quad IV	C
+Value of tan 180° is?	1	0	-1	Undefined	B
+Length of arc s when r=5, θ=2 is?	10	2.5	7	3	A
+If sec θ = 2, then cos θ is?	2	√3/2	1/2	1	C
+The value of sin 60° is?	1/2	√3/2	1/√2	1	B
+Which ratio is Hypotenuse / Base?	cosec θ	sin θ	cot θ	sec θ	D
+The value of cosec 60° is?	2/√3	√3/2	2	√2	A
+If cot θ = √3, then θ is?	60°	45°	30°	90°	C
+sin²45° is?	1/2	1/4	1/√2	1	A
+cos²45° is?	1/4	1/2	1/√2	0	B
+An angle of -90° is co-terminal with?	90°	180°	270°	0°	C
+The value of tan(90°) is?	0	1	-1	Undefined	D
+In the unit circle, x-coordinate represents?	sin θ	tan θ	cos θ	sec θ	C
+In the unit circle, y-coordinate represents?	sin θ	cos θ	tan θ	cosec θ	A
+In a right triangle, the ratio of opposite side to hypotenuse is called?	Sine	Cosine	Tangent	Cotangent	A
+The trigonometric ratio cos θ is defined as?	Opposite/Hypotenuse	Adjacent/Hypotenuse	Opposite/Adjacent	Hypotenuse/Adjacent	B
+If sin θ = 3/5 in a right triangle, then cos θ equals?	3/4	5/4	4/5	5/3	C
+The value of sin 30° is?	√3/2	1/√2	1	1/2	D
+tan 45° equals?	1	0	√3	1/√3	A
+The reciprocal of sin θ is?	cos θ	cosec θ	sec θ	cot θ	B
+The fundamental identity sin²θ + cos²θ equals?	tan θ	sec θ	1	0	C
+If θ = 90°, then tan θ is?	0	1	√3	Undefined	D
+sec θ is equal to?	1/cos θ	1/sin θ	1/tan θ	1/cot θ	A
+The value of cos 60° is?	√3/2	1/2	0	1	B
+cot θ is the reciprocal of?	sin θ	cos θ	tan θ	sec θ	C
+sin(90° - θ) equals?	tan θ	cot θ	cosec θ	cos θ	D
+If tan θ = 1, then θ equals?	45°	30°	60°	90°	A
+The value of cosec 30° is?	1	2	1/2	√3	B
+1 + tan²θ equals?	sin²θ	cos²θ	sec²θ	cosec²θ	C
+cos(90° - θ) equals?	tan θ	cot θ	sec θ	sin θ	D
+The ratio Adjacent/Opposite represents?	cot θ	tan θ	sin θ	cos θ	A
+If sin θ = 1/2, a possible acute value of θ is?	60°	30°	45°	90°	B
+The value of tan 60° is?	1/√3	1	√3	0	C
+sec²θ - tan²θ equals?	0	-1	2	1	D
+In a right triangle, the side opposite to the right angle is called?	Hypotenuse	Adjacent	Opposite	Base	A
+If cos θ = 0, then θ equals?	0°	90°	45°	30°	B
+The value of sin 90° is?	0	1/2	1	√3/2	C
+cosec²θ - cot²θ equals?	0	-1	2	1	D
+tan θ × cot θ equals?	1	0	-1	tan²θ	A
+If sin θ = cos θ for acute θ, then θ equals?	30°	45°	60°	90°	B
+The ratio Opposite/Adjacent represents?	sin θ	cos θ	tan θ	cot θ	C
+Value of cos 0° is?	0	1/2	√3/2	1	D
+If sec θ = 2, then cos θ equals?	1/2	2	√2	1/√2	A
+sin 45° equals?	1/2	1/√2	√3/2	0	B
+The identity 1 + cot²θ equals?	sin²θ	tan²θ	cosec²θ	sec²θ	C
+If tan θ = √3 for acute θ, then θ equals?	30°	45°	90°	60°	D
+cosec θ is defined as?	1/sin θ	1/cos θ	1/tan θ	sin θ	A
+The value of cot 45° is?	0	1	√3	1/√3	B
+If cos θ = 1/√2 for acute θ, then θ equals?	30°	60°	45°	90°	C
+sin θ / cos θ equals?	sec θ	cosec θ	cot θ	tan θ	D
+The value of sec 60° is?	2	1/2	√3	1/√3	A
+If sin θ = 4/5 in a right triangle, then tan θ equals?	3/4	4/3	5/3	3/5	B
+cos 30° equals?	1/2	1/√2	√3/2	0	C
+The product sin θ × cosec θ equals?	0	-1	sin²θ	1	D
+`
     }
 });
