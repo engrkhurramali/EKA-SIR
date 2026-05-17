@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0f0f1a">
+    <title>Pakistan Prayer Timings - EKA SIR</title>
+    <style>
+        :root {
+            --bg: #0f0f1a;
+            --card: rgba(255, 255, 255, 0.06);
+            --card-hover: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.12);
+            --text: #e6e6f0;
+            --text-muted: #8a8a9a;
+            --accent: #6c5ce7;
+            --active: #00b894;
+            --active-glow: rgba(0, 184, 148, 0.25);
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --radius: 10px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh; height: 100dvh;
+            display: flex; flex-direction: column;
+            padding: 0.8rem; gap: 0.7rem;
+            overflow: hidden;
+        }
+
+        /* Header */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
+        }
+        .back { color: var(--text); text-decoration: none; font-size: 1.3rem; line-height: 1; }
+        h1 { font-size: 1.05rem; font-weight: 600; text-align: center; }
+        #live-clock { font-size: 0.8rem; color: var(--text-muted); font-variant-numeric: tabular-nums; min-width: 65px; text-align: right; }
+
+        /* Location & Controls */
+        .location-tag { text-align: center; font-size: 0.82rem; color: var(--accent); font-weight: 500; margin-bottom: 0.2rem; }
+        .controls { display: grid; grid-template-columns: 1.8fr 1fr; gap: 0.5rem; }
+        select, input[type="date"] {
+            width: 100%; padding: 0.55rem 0.6rem; border-radius: var(--radius);
+            background: var(--card); color: var(--text); border: 1px solid var(--border);
+            font-size: 0.88rem; font-family: var(--font); appearance: none;
+        }
+        select { background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238a8a9a'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 0.6rem center; background-size: 16px; padding-right: 2rem; }
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.8); cursor: pointer; }
+
+        /* Timetable */
+        .timetable { flex: 1; display: flex; flex-direction: column; gap: 0.35rem; overflow-y: auto; padding-right: 2px; }
+        .prayer-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.6rem 0.75rem; border-radius: var(--radius);
+            background: var(--card); border: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+        .prayer-row:hover { background: var(--card-hover); }
+        .prayer-row.active {
+            background: var(--active-glow); border-color: var(--active);
+            box-shadow: 0 0 0 1px var(--active); transform: scale(1.01);
+        }
+        .prayer-row.zawal { opacity: 0.65; border-style: dashed; }
+        .name { font-weight: 500; font-size: 0.9rem; }
+        .time { font-variant-numeric: tabular-nums; color: var(--text-muted); font-size: 0.88rem; }
+        .active .name { color: #fff; font-weight: 600; }
+        .active .time { color: #fff; }
+
+        .loading, .error { text-align: center; padding: 1.5rem; color: var(--text-muted); font-size: 0.85rem; }
+        .error { color: #ff7675; }
+
+        /* Android WebView Safe Area */
+        @supports (padding-top: env(safe-area-inset-top)) {
+            body { padding-top: max(0.8rem, env(safe-area-inset-top)); padding-bottom: max(0.8rem, env(safe-area-inset-bottom)); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back">⬅</a>
+        <h1>Pakistan Prayer Timings</h1>
+        <div id="live-clock">--:--</div>
+    </header>
+
+    <div id="location-tag" class="location-tag">📍 Select City</div>
+
+    <div class="controls">
+        <select id="city-select"><option value="">Loading...</option></select>
+        <input type="date" id="date-picker">
+    </div>
+
+    <div class="timetable" id="timetable-container">
+        <div class="loading">Initializing...</div>
+    </div>
+
+    <script>
+        // 📍 Pakistan Cities Database
+        const pakistanCities = [
+            { name: "Karachi", lat: "24.8607", lng: "67.0111" }, { name: "Lahore", lat: "31.5204", lng: "74.3587" },
+            { name: "Faisalabad", lat: "31.4504", lng: "73.1350" }, { name: "Rawalpindi", lat: "33.5651", lng: "73.0169" },
+            { name: "Gujranwala", lat: "32.1877", lng: "74.1945" }, { name: "Peshawar", lat: "34.0151", lng: "71.5249" },
+            { name: "Multan", lat: "30.1575", lng: "71.5249" }, { name: "Hyderabad", lat: "25.3960", lng: "68.3578" },
+            { name: "Islamabad", lat: "33.6844", lng: "73.0479" }, { name: "Quetta", lat: "30.1798", lng: "66.9965" },
+            { name: "Bahawalpur", lat: "29.3544", lng: "71.6911" }, { name: "Sargodha", lat: "32.0836", lng: "72.6711" },
+            { name: "Sialkot", lat: "32.4945", lng: "74.5229" }, { name: "Sukkur", lat: "27.7244", lng: "68.8475" },
+            { name: "Jhang", lat: "31.2778", lng: "72.3289" }, { name: "Sheikhupura", lat: "31.7131", lng: "73.9783" },
+            { name: "Mardan", lat: "34.1989", lng: "72.0314" }, { name: "Gujrat", lat: "32.5742", lng: "74.0754" },
+            { name: "Larkana", lat: "27.5589", lng: "68.2120" }, { name: "Kasur", lat: "31.1179", lng: "74.4479" }
+        ];
+
+        // 🔧 Config
+        const METHOD = '1'; // University of Islamic Sciences, Karachi
+        const SCHOOL = '1'; // Hanafi
+        let globalTimingsArray = [];
+        let isViewingToday = true;
+
+        // 🎛️ DOM
+        const citySelect = document.getElementById('city-select');
+        const datePicker = document.getElementById('date-picker');
+        const locationTag = document.getElementById('location-tag');
+        const timetable = document.getElementById('timetable-container');
+        const clockEl = document.getElementById('live-clock');
+
+        // 🚀 Init
+        document.addEventListener('DOMContentLoaded', () => {
+            populateCities();
+            setDefaultDate();
+            bindEvents();
+            startLiveClock();
+            updateView();
+        });
+
+        function populateCities() {
+            citySelect.innerHTML = '';
+            pakistanCities.forEach((city, i) => {
+                const opt = document.createElement('option');
+                opt.value = i; opt.textContent = city.name;
+                citySelect.appendChild(opt);
+            });
+        }
+
+        function setDefaultDate() {
+            const today = new Date();
+            const fmt = d => String(d).padStart(2, '0');
+            datePicker.value = `${today.getFullYear()}-${fmt(today.getMonth()+1)}-${fmt(today.getDate())}`;
+        }
+
+        function bindEvents() {
+            citySelect.addEventListener('change', updateView);
+            datePicker.addEventListener('change', (e) => {
+                isViewingToday = (e.target.value === datePicker.defaultValue);
+                updateView();
+            });
+        }
+
+        function updateView() {
+            const city = pakistanCities[citySelect.value];
+            if (!city) return;
+            locationTag.textContent = `📍 ${city.name}, Pakistan`;
+            fetchPrayerTimes(datePicker.value, city.lat, city.lng);
+        }
+
+        function startLiveClock() {
+            setInterval(() => {
+                const now = new Date();
+                clockEl.textContent = now.toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' });
+                if (isViewingToday && globalTimingsArray.length) highlightCurrentPrayer();
+            }, 1000);
+        }
+
+        async function fetchPrayerTimes(dateStr, lat, lng) {
+            timetable.innerHTML = '<div class="loading">Fetching timings...</div>';
+            const [y, m, d] = dateStr.split('-');
+            const url = `https://api.aladhan.com/v1/timings/${d}-${m}-${y}?latitude=${lat}&longitude=${lng}&method=${METHOD}&school=${SCHOOL}`;
+            
+            try {
+                const res = await fetch(url);
+                if (!res.ok) throw new Error('Network');
+                const json = await res.json();
+                if (json.code === 200 && json.data) processTimings(json.data.timings);
+                else throw new Error('Invalid API response');
+            } catch (err) {
+                timetable.innerHTML = `<div class="error">❌ Failed to load. Check internet.</div>`;
+                console.error(err);
+            }
+        }
+
+        function processTimings(t) {
+            // Zawal calculation (10 mins before Dhuhr)
+            const [dhH, dhM] = t.Dhuhr.split(':').map(Number);
+            const zawalDate = new Date(); zawalDate.setHours(dhH, dhM - 10, 0);
+            const zawalStr = `${String(zawalDate.getHours()).padStart(2,'0')}:${String(zawalDate.getMinutes()).padStart(2,'0')}`;
+
+            globalTimingsArray = [
+                { id: 'fajr', name: 'Fajr', time: t.Fajr, display: fmt12(t.Fajr) },
+                { id: 'sunrise', name: 'Sunrise', time: t.Sunrise, display: fmt12(t.Sunrise) },
+                { id: 'zawal', name: 'Zawal (Makrooh)', time: zawalStr, display: `${fmt12(zawalStr)} - ${fmt12(t.Dhuhr)}`, isZawal: true },
+                { id: 'dhuhr', name: 'Dhuhr', time: t.Dhuhr, display: fmt12(t.Dhuhr) },
+                { id: 'asr', name: 'Asr', time: t.Asr, display: fmt12(t.Asr) },
+                { id: 'maghrib', name: 'Maghrib', time: t.Maghrib, display: fmt12(t.Maghrib) },
+                { id: 'isha', name: 'Isha', time: t.Isha, display: fmt12(t.Isha) }
+            ];
+            renderTimetable();
+            if(isViewingToday) highlightCurrentPrayer();
+        }
+
+        function renderTimetable() {
+            timetable.innerHTML = '';
+            globalTimingsArray.forEach(item => {
+                const row = document.createElement('div');
+                row.className = `prayer-row ${item.isZawal ? 'zawal' : ''}`;
+                row.dataset.id = item.id;
+                row.innerHTML = `<span class="name">${item.name}</span><span class="time">${item.display}</span>`;
+                timetable.appendChild(row);
+            });
+        }
+
+        function highlightCurrentPrayer() {
+            const now = new Date();
+            const curMins = now.getHours() * 60 + now.getMinutes();
+            const boundaries = globalTimingsArray
+                .filter(t => !t.isZawal)
+                .map(t => ({ id: t.id, mins: t.time.split(':').map(Number).reduce((a,b)=>a*60+b,0) }));
+            
+            let active = 'isha';
+            for (const b of boundaries) {
+                if (curMins >= b.mins) active = b.id;
+                else break;
+            }
+
+            document.querySelectorAll('.prayer-row').forEach(row => {
+                row.classList.toggle('active', row.dataset.id === active);
+            });
+        }
+
+        function fmt12(t24) {
+            let [h, m] = t24.split(':').map(Number);
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;
+            return `${h}:${String(m).padStart(2,'0')} ${ampm}`;
+        }
+    </script>
+</body>
+</html>
