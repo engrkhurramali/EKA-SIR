@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Islamic Knowledge - EKA SIR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --text-color: #ffffff;
+            --accent-color: #2ecc71;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298, #2ecc71);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            min-height: 100vh;
+            color: var(--text-color);
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header {
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+            max-width: 600px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+            font-size: 24px;
+            background: var(--glass-bg);
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+        }
+
+        .title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            padding-bottom: 40px;
+        }
+
+        .search-box {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 12px 20px;
+            width: 100%;
+            box-sizing: border-box;
+            color: white;
+            font-family: inherit;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        .search-box::placeholder { color: rgba(255,255,255,0.6); }
+
+        .topic-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .topic-card:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+        }
+
+        .topic-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .topic-icon { font-size: 30px; }
+
+        .topic-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .topic-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        .coming-soon {
+            text-align: center;
+            padding: 20px;
+            opacity: 0.6;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <a href="index.html" class="back-btn">←</a>
+    <div class="title">Islamic Knowledge</div>
+    <div style="width:45px"></div>
+</div>
+
+<div class="container">
+    <input type="text" class="search-box" placeholder="Search topics (Pillars, History, Prophets)...">
+
+    <div id="topics-list">
+        <div class="topic-card">
+            <div class="topic-header">
+                <span class="topic-icon">🕌</span>
+                <span class="topic-title">Five Pillars of Islam</span>
+            </div>
+            <p class="topic-desc">Learn about Shahada, Salah, Zakat, Sawm, and Hajj.</p>
+        </div>
+
+        <div class="topic-card">
+            <div class="topic-header">
+                <span class="topic-icon">📖</span>
+                <span class="topic-title">The Holy Quran</span>
+            </div>
+            <p class="topic-desc">History, revelation, and importance of the Final Book.</p>
+        </div>
+
+        <div class="topic-card">
+            <div class="topic-header">
+                <span class="topic-icon">👤</span>
+                <span class="topic-title">Prophets of Allah</span>
+            </div>
+            <p class="topic-desc">Stories and lessons from the lives of the Prophets (A.S).</p>
+        </div>
+
+        <div class="topic-card">
+            <div class="topic-header">
+                <span class="topic-icon">⚖️</span>
+                <span class="topic-title">Islamic Ethics & Morals</span>
+            </div>
+            <p class="topic-desc">Guidance on character, honesty, and kindness in daily life.</p>
+        </div>
+
+        <div class="coming-soon">More topics being added soon...</div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EKA Word Scramble</title>
+    <style>
+        :root {
+            --bg: #0f0f1a;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text: #e6e6f0;
+            --accent: #6c5ce7;
+            --accent-hover: #8a7af5;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #ff7675;
+            --font: 'Segoe UI', system-ui, sans-serif;
+            --radius: 12px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Theme Overrides */
+        body[data-theme="modern-orange"] { --bg: #1a1110; --glass: rgba(255, 107, 53, 0.15); --accent: #ff6b35; --accent-hover: #ff8c5a; }
+        body[data-theme="dark-neon"] { --bg: #0a0a0f; --glass: rgba(0, 255, 255, 0.05); --accent: #00ffff; --accent-hover: #66ffff; --text: #f0f0f0; }
+        body[data-theme="midnight"] { --bg: #1e1e2e; --glass: rgba(180, 180, 255, 0.08); --accent: #7289da; --accent-hover: #99aef0; }
+        body[data-theme="cyberpunk"] { --bg: #111; --glass: rgba(255, 0, 255, 0.1); --accent: #ff00ff; --accent-hover: #ff66ff; }
+        body[data-theme="ocean"] { --bg: #0b1a2b; --glass: rgba(0, 150, 255, 0.1); --accent: #00a8ff; --accent-hover: #33c4ff; }
+        body[data-theme="forest"] { --bg: #112211; --glass: rgba(40, 180, 90, 0.12); --accent: #2ecc71; --accent-hover: #58d68d; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.4s ease;
+            padding: 1rem;
+            overflow-x: hidden;
+        }
+
+        .screen { display: none; width: 100%; max-width: 520px; animation: fadeIn 0.4s ease; flex-direction: column; }
+        .screen.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1rem;
+            width: 100%;
+        }
+
+        h1, h2, h3 { font-weight: 600; margin-bottom: 0.8rem; text-align: center; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; width: 100%; }
+        .back-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); color: var(--text); cursor: pointer; font-size: 1.2rem; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+
+        .stats { display: flex; justify-content: space-around; background: rgba(0,0,0,0.2); padding: 0.6rem; border-radius: var(--radius); margin-bottom: 1rem; font-size: 0.95rem; width: 100%; }
+        .stat span { color: var(--accent); font-weight: bold; }
+
+        .input, .btn {
+            width: 100%; padding: 0.8rem; border-radius: var(--radius); border: none;
+            font-family: var(--font); font-size: 1rem; transition: all 0.2s;
+        }
+        .input { background: rgba(0,0,0,0.3); color: var(--text); margin-bottom: 1rem; border: 1px solid var(--glass-border); text-align: center; font-weight: bold; }
+        .input:focus { outline: none; border-color: var(--accent); }
+
+        .btn { background: var(--accent); color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn:hover { background: var(--accent-hover); transform: translateY(-2px); }
+        .btn:active { transform: translateY(0); }
+        .btn.secondary { background: transparent; border: 1px solid var(--glass-border); margin-top: 0.5rem; }
+        .btn.hint { background: var(--warning); color: #111; }
+        .btn.giveup { background: var(--danger); color: white; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .theme-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin: 1rem 0; }
+        .theme-btn { padding: 0.5rem; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: var(--text); cursor: pointer; text-align: center; font-size: 0.75rem; }
+        .theme-btn.selected { background: var(--accent); color: white; border-color: var(--accent); }
+
+        .scramble-box {
+            font-size: 2.2rem; font-weight: bold; text-align: center; letter-spacing: 0.3rem; margin: 1.5rem 0;
+            background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius); color: var(--accent); text-transform: uppercase;
+        }
+
+        .actions { display: flex; gap: 0.5rem; margin-top: 0.5rem; width: 100%; }
+        .actions .btn { flex: 1; }
+
+        .leaderboard { width: 100%; max-height: 50vh; overflow-y: auto; background: rgba(0,0,0,0.2); border-radius: 15px; border: 1px solid var(--glass-border); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--glass-border); font-size: 0.85rem; }
+        th { color: var(--accent); font-weight: 600; background: rgba(0,0,0,0.2); }
+
+        .tabs { display: flex; gap: 0.5rem; margin-bottom: 10px; width: 100%; }
+        .tab { flex: 1; padding: 10px; text-align: center; border-radius: 10px; background: rgba(255,255,255,0.1); cursor: pointer; font-weight: bold; font-size: 0.85rem; }
+        .tab.active { background: var(--accent); color: white; }
+
+        .center { text-align: center; }
+        .score-display { font-size: 3.5rem; font-weight: 900; color: var(--accent); margin: 0.5rem 0; }
+    </style>
+</head>
+<body data-theme="default">
+
+<!-- Welcome Screen -->
+<section id="screen-welcome" class="screen active">
+    <div class="card">
+        <h1 style="font-size: 1.8rem;">EKA Scramble</h1>
+        <input type="text" id="player-name" class="input" placeholder="Enter Player Name" maxlength="15">
+
+        <select id="age-select" class="input">
+            <option value="Age < 8">Easy (Child)</option>
+            <option value="Age 8-12" selected>Medium (Standard)</option>
+            <option value="Age 12-16">Difficult (Teen)</option>
+            <option value="Age 16-20">Expert</option>
+            <option value="Age 20+">Master</option>
+        </select>
+
+        <h3>🎨 Select Theme</h3>
+        <div class="theme-grid" id="theme-grid">
+            <div class="theme-btn selected" onclick="setTheme('default')">DEFAULT</div>
+            <div class="theme-btn" onclick="setTheme('modern-orange')">ORANGE</div>
+            <div class="theme-btn" onclick="setTheme('dark-neon')">NEON</div>
+            <div class="theme-btn" onclick="setTheme('midnight')">MIDNIGHT</div>
+            <div class="theme-btn" onclick="setTheme('ocean')">OCEAN</div>
+            <div class="theme-btn" onclick="setTheme('forest')">FOREST</div>
+        </div>
+
+        <button class="btn" onclick="startGame()">▶ START GAME</button>
+        <button class="btn secondary" onclick="showLeaderboard('top')">🏆 LEADERBOARD</button>
+    </div>
+</section>
+
+<!-- Game Screen -->
+<section id="screen-game" class="screen">
+    <div class="header">
+        <button class="back-btn" onclick="navTo('screen-welcome')">⬅</button>
+        <h2 id="disp-age" style="font-size: 1rem; opacity: 0.8;">Level</h2>
+    </div>
+    <div class="stats">
+        <div>⏱️ <span id="timer">60</span>s</div>
+        <div>📊 <span id="disp-stage">Stage 1</span></div>
+        <div>🌟 <span id="score">0</span></div>
+    </div>
+    <div class="card">
+        <div id="hint-text" style="height: 20px; text-align: center; font-size: 0.9rem; color: var(--warning); margin-bottom: 5px;"></div>
+        <div class="scramble-box" id="scrambled-word">----</div>
+        <input type="text" id="word-input" class="input" placeholder="Your Answer..." autocomplete="off">
+        <div class="actions">
+            <button class="btn" onclick="checkWord()">✔ SUBMIT</button>
+            <button class="btn secondary" onclick="nextWord(true)">⏭ SKIP</button>
+        </div>
+        <div class="actions">
+            <button class="btn hint" onclick="useHint()">👁️ HINT (-10s)</button>
+            <button class="btn giveup" onclick="endGame()">🏳️ GIVE UP</button>
+        </div>
+    </div>
+</section>
+
+<!-- Leaderboard Screen -->
+<section id="screen-leaderboard" class="screen">
+    <div class="header">
+        <button class="back-btn" onclick="navTo('screen-welcome')">⬅</button>
+        <h2>🏆 Rankings</h2>
+    </div>
+    <div class="card">
+        <div class="tabs">
+            <div class="tab active" id="tab-top" onclick="showLeaderboard('top')">Top 15</div>
+            <div class="tab" id="tab-recent" onclick="showLeaderboard('recent')">Recent 60</div>
+        </div>
+        <div class="leaderboard">
+            <table>
+                <thead><tr><th>Player</th><th>Score</th><th>Date</th></tr></thead>
+                <tbody id="leaderboardBody"></tbody>
+            </table>
+        </div>
+        <button class="btn secondary" style="margin-top: 1rem;" onclick="navTo('screen-welcome')">Back to Menu</button>
+    </div>
+</section>
+
+<!-- Game Over Screen -->
+<section id="screen-gameover" class="screen">
+    <div class="card center">
+        <h2>⏳ Time's Up!</h2>
+        <div class="score-display" id="final-score">0</div>
+        <p id="gameover-msg" style="margin-bottom: 1.5rem; opacity: 0.8;"></p>
+        <button class="btn" onclick="startGame()">▶ PLAY AGAIN</button>
+        <button class="btn secondary" onclick="showLeaderboard('top')">🏆 LEADERBOARD</button>
+        <button class="btn secondary" onclick="navTo('screen-welcome')">🏠 MAIN MENU</button>
+    </div>
+</section>
+
+<!-- Firebase Compat -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="vocabulary.js"></script>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAEcPKE7n33wNUGxYpyqm5UWFjwXTT_x_c",
+        authDomain: "eka-sir.firebaseapp.com",
+        databaseURL: "https://eka-sir-default-rtdb.firebaseio.com",
+        projectId: "eka-sir",
+        storageBucket: "eka-sir.firebasestorage.app",
+        messagingSenderId: "1022804634776",
+        appId: "1:1022804634776:web:4c547efa80d625885734ed",
+        measurementId: "G-5P543VP1EZ"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let state = {
+        name: "Player", age: "Age 8-12", stage: 1, score: 0,
+        timeLeft: 60, currentWord: "", timerInterval: null, active: false
+    };
+
+    // Audio Logic
+    let audioCtx = null;
+    function playSound(type) {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        try {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
+            if (type === 'hit') {
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.exponentialRampToValueAtTime(800, now + 0.1);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+                osc.start(); osc.stop(now + 0.15);
+            } else if (type === 'win') {
+                [523, 659, 783].forEach((f, i) => {
+                    const o = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    o.connect(g); g.connect(audioCtx.destination);
+                    o.frequency.setValueAtTime(f, now + i * 0.1);
+                    g.gain.setValueAtTime(0.1, now + i * 0.1);
+                    g.gain.exponentialRampToValueAtTime(0.01, now + i * 0.1 + 0.3);
+                    o.start(now + i * 0.1); o.stop(now + i * 0.1 + 0.3);
+                });
+            }
+        } catch(e) {}
+    }
+
+    function setTheme(t) {
+        document.body.dataset.theme = t;
+        localStorage.setItem('scrabble_theme', t);
+        document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('selected', b.innerText.toLowerCase().includes(t.replace('-','').substring(0,3))));
+    }
+
+    function navTo(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if (state.timerInterval && id !== 'screen-game') clearInterval(state.timerInterval);
+    }
+
+    function startGame() {
+        const name = document.getElementById('player-name').value.trim();
+        if (!name) { alert("Please enter your name!"); return; }
+        state.name = name;
+        state.age = document.getElementById('age-select').value;
+        state.score = 0; state.stage = 1; state.timeLeft = 60;
+        state.active = true;
+        localStorage.setItem('eka_player_name', name);
+
+        document.getElementById('score').innerText = '0';
+        document.getElementById('disp-stage').innerText = 'Stage 1';
+        document.getElementById('disp-age').innerText = state.age;
+
+        navTo('screen-game');
+        nextWord();
+        startTimer();
+    }
+
+    function startTimer() {
+        clearInterval(state.timerInterval);
+        state.timerInterval = setInterval(() => {
+            if (!state.active) return;
+            state.timeLeft--;
+            document.getElementById('timer').innerText = state.timeLeft;
+            if (state.timeLeft <= 0) endGame();
+        }, 1000);
+    }
+
+    function nextWord(isSkip = false) {
+        const dict = window.VOCABULARY[state.age] || window.VOCABULARY["Age 8-12"];
+        state.currentWord = dict[Math.floor(Math.random() * dict.length)].toUpperCase();
+
+        // Scramble
+        let scrambled = state.currentWord.split('').sort(() => Math.random() - 0.5).join('');
+        if (scrambled === state.currentWord) scrambled = scrambled.split('').reverse().join('');
+
+        document.getElementById('scrambled-word').innerText = scrambled;
+        document.getElementById('word-input').value = '';
+        document.getElementById('hint-text').innerText = isSkip ? 'Skipped!' : '';
+        document.getElementById('word-input').focus();
+    }
+
+    function checkWord() {
+        const input = document.getElementById('word-input').value.trim().toUpperCase();
+        if (input === state.currentWord) {
+            playSound('hit');
+            if (navigator.vibrate) navigator.vibrate(20);
+            const points = (state.currentWord.length * 2) + 5;
+            state.score += points;
+            state.stage++;
+            document.getElementById('score').innerText = state.score;
+            document.getElementById('disp-stage').innerText = `Stage ${state.stage}`;
+            nextWord();
+        } else {
+            document.getElementById('hint-text').innerText = '❌ Incorrect!';
+            if (navigator.vibrate) navigator.vibrate([30, 30]);
+        }
+    }
+
+    function useHint() {
+        if (state.timeLeft <= 10) return;
+        state.timeLeft -= 10;
+        document.getElementById('timer').innerText = state.timeLeft;
+        document.getElementById('hint-text').innerText = `💡 Starts with: ${state.currentWord[0]}`;
+    }
+
+    function endGame() {
+        state.active = false;
+        clearInterval(state.timerInterval);
+        playSound('win');
+        document.getElementById('final-score').innerText = state.score;
+        document.getElementById('gameover-msg').innerText = state.score > 50 ? "Excellent Work!" : "Keep Practicing!";
+        navTo('screen-gameover');
+        saveToLeaderboard();
+    }
+
+    function saveToLeaderboard() {
+        if (state.score <= 0) return;
+        db.ref('scores_scrabble').push({
+            name: state.name,
+            score: state.score,
+            age: state.age,
+            timestamp: firebase.database.ServerValue.TIMESTAMP
+        });
+    }
+
+    function showLeaderboard(mode) {
+        navTo('screen-leaderboard');
+        const body = document.getElementById('leaderboardBody');
+        body.innerHTML = '<tr><td colspan="3">Loading...</td></tr>';
+
+        document.getElementById('tab-top').classList.toggle('active', mode === 'top');
+        document.getElementById('tab-recent').classList.toggle('active', mode === 'recent');
+
+        let ref = db.ref('scores_scrabble');
+        if (mode === 'top') {
+            ref = ref.orderByChild('score').limitToLast(15);
+        } else {
+            ref = ref.limitToLast(60);
+        }
+
+        ref.once('value', snapshot => {
+            let data = [];
+            snapshot.forEach(child => {
+                let val = child.val();
+                val.key = child.key;
+                data.push(val);
+            });
+
+            if (mode === 'top') data.sort((a,b) => b.score - a.score);
+            else data.sort((a,b) => b.timestamp - a.timestamp);
+
+            body.innerHTML = data.map(item => `
+                <tr>
+                    <td><b>${item.name}</b><br><small>${item.age}</small></td>
+                    <td style="color:var(--accent); font-weight:bold;">${item.score}</td>
+                    <td style="font-size:0.7rem;">${new Date(item.timestamp).toLocaleDateString()}</td>
+                </tr>
+            `).join('') || '<tr><td colspan="3">No records found</td></tr>';
+        });
+    }
+
+    window.onload = () => {
+        const savedName = localStorage.getItem('eka_player_name');
+        if (savedName) document.getElementById('player-name').value = savedName;
+
+        const savedTheme = localStorage.getItem('scrabble_theme');
+        if (savedTheme) setTheme(savedTheme);
+
+        document.getElementById('word-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkWord();
+        });
+    };
+</script>
+</body>
+</html>

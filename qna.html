@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0f0f1a">
+    <title>Q&A - EKA SIR</title>
+    <style>
+        :root { --bg: #0f0f1a; --card: rgba(255,255,255,0.06); --border: rgba(255,255,255,0.12); --text: #e6e6f0; --text-muted: #8a8a9a; --accent: #6c5ce7; --success: #00b894; --danger: #ff7675; --warning: #fdcb6e; --radius: 10px; --font: system-ui, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { font-family: var(--font); background: var(--bg); color: var(--text); height: 100dvh; display: flex; flex-direction: column; padding: 0.6rem; gap: 0.5rem; overflow: hidden; }
+
+        header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+        .back { color: var(--text); text-decoration: none; font-size: 1.2rem; }
+        h1 { font-size: 1rem; font-weight: 600; }
+        .admin-toggle { background: none; border: 1px solid var(--border); color: var(--text-muted); padding: 0.3rem 0.6rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        .admin-toggle.active { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+        .ask-box, .search-box { display: flex; gap: 0.4rem; }
+        .ask-box input, .ask-box textarea, .search-box input { flex: 1; padding: 0.5rem; border-radius: var(--radius); background: var(--card); color: var(--text); border: 1px solid var(--border); font-family: var(--font); font-size: 0.9rem; }
+        .ask-box textarea { resize: none; min-height: 40px; }
+        .btn { padding: 0.5rem 0.8rem; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .qa-list { flex: 1; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 0.4rem; }
+        .qa-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.6rem; position: relative; }
+        .qa-card.hidden-question { opacity: 0.4; border-style: dashed; border-color: var(--warning); }
+        .qa-card.auto-flagged { border-color: var(--danger); border-width: 2px; }
+
+        .qa-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; }
+        .qa-id { font-size: 0.7rem; color: var(--accent); background: rgba(108,92,231,0.15); padding: 2px 5px; border-radius: 4px; }
+        .qa-user { font-size: 0.8rem; color: var(--text-muted); }
+        .qa-time { font-size: 0.7rem; color: var(--text-muted); }
+        .qa-q { font-weight: 500; margin: 0.3rem 0; font-size: 0.95rem; line-height: 1.3; }
+        .qa-a { background: rgba(0,184,148,0.12); border-left: 3px solid var(--success); padding: 0.5rem; margin-top: 0.4rem; border-radius: 0 6px 6px 0; font-size: 0.9rem; }
+        .qa-a-label { font-size: 0.7rem; color: var(--success); font-weight: 600; margin-bottom: 0.2rem; }
+
+        .qa-actions { display: flex; gap: 0.6rem; align-items: center; margin-top: 0.4rem; flex-wrap: wrap; }
+        .vote { background: rgba(255,255,255,0.08); border: none; color: var(--text-muted); padding: 0.2rem 0.5rem; border-radius: 5px; cursor: pointer; font-size: 0.8rem; }
+        .vote.active-like { color: var(--success); background: rgba(0,184,148,0.2); }
+        .vote.active-dislike { color: var(--danger); background: rgba(255,118,117,0.2); }
+        .hide-toggle { display: flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; color: var(--warning); margin-left: auto; cursor: pointer; }
+        .hide-toggle input { accent-color: var(--warning); transform: scale(0.9); cursor: pointer; }
+        .flag-badge { font-size: 0.65rem; background: var(--danger); color: white; padding: 2px 5px; border-radius: 3px; margin-left: 0.3rem; }
+
+        .admin-reply-box { display: none; margin-top: 0.4rem; }
+        .admin-reply-box textarea { width: 100%; padding: 0.4rem; background: rgba(0,0,0,0.2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; resize: vertical; min-height: 45px; font-size: 0.9rem; margin-bottom: 0.3rem; }
+        .mini-btn { padding: 0.2rem 0.5rem; font-size: 0.75rem; }
+
+        .loading, .empty { text-align: center; padding: 1.2rem; color: var(--text-muted); font-size: 0.85rem; }
+        .error { text-align: center; padding: 1rem; color: var(--danger); background: rgba(255,118,117,0.1); border-radius: var(--radius); margin-top: 0.5rem; }
+        .hidden-notice { font-size: 0.75rem; color: var(--warning); font-style: italic; margin-top: 0.3rem; }
+    </style>
+</head>
+<body>
+<header>
+    <a href="index.html" class="back">⬅</a>
+    <h1>EKA SIR Q&A</h1>
+    <button class="admin-toggle" id="admin-btn">🔑 Admin</button>
+</header>
+
+<form id="ask-form" class="ask-box">
+    <textarea id="q-username" placeholder="Name" maxlength="20" required style="flex:0.3"></textarea>
+    <textarea id="q-text" placeholder="Ask a question..." required></textarea>
+    <button type="submit" class="btn" id="submit-btn">📤</button>
+</form>
+
+<div class="search-box">
+    <input type="text" id="search-input" placeholder="🔍 Search questions...">
+</div>
+
+<div class="qa-list" id="qa-container">
+    <div class="loading">Connecting to EKA SIR Database...</div>
+</div>
+
+<div id="admin-modal" style="position:fixed;inset:0;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;z-index:10;">
+    <div style="background:#1a1a24;padding:1.2rem;border-radius:var(--radius);width:85%;max-width:300px;border:1px solid var(--border)">
+        <h3 style="margin-bottom:0.8rem">🔐 Admin PIN</h3>
+        <input type="password" id="admin-pin" placeholder="Enter PIN" style="width:100%;padding:0.5rem;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;margin-bottom:0.8rem">
+        <div style="display:flex;gap:0.5rem">
+            <button class="btn" id="pin-confirm" style="flex:1">Login</button>
+            <button class="btn" id="pin-cancel" style="flex:1;background:var(--card);border:1px solid var(--border)">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyAEcPKE7n33wNUGxYpyqm5UWFjwXTT_x_c",
+authDomain: "eka-sir.firebaseapp.com",
+databaseURL: "https://eka-sir-default-rtdb.firebaseio.com",
+projectId: "eka-sir",
+storageBucket: "eka-sir.firebasestorage.app",
+messagingSenderId: "1022804634776",
+appId: "1:1022804634776:web:4c547efa80d625885734ed",
+measurementId: "G-5P543VP1EZ"
+};
+
+    let db;
+    try {
+        const app = initializeApp(firebaseConfig);
+        db = getDatabase(app);
+    } catch(e) {
+        console.error("Firebase Init Failed:", e);
+    }
+
+    let isAdmin = false;
+    let qaData = [];
+    let votes = JSON.parse(localStorage.getItem('eka_qna_votes') || '{}');
+
+    const EXPLICIT_PATTERNS = [/https?:\/\/[^\s]+/i, /\b(sex|porn|fuck|shit|damn|hate|kill|drug|casino|bet|gamble|nude|xxx|abuse)\b/gi];
+    function isExplicit(text) { return EXPLICIT_PATTERNS.some(p => p.test(text)); }
+
+    function genId() {
+        const d = new Date();
+        return `Q${String(d.getFullYear()).slice(-2)}${d.toLocaleString('en',{month:'short'}).toUpperCase()}${String(d.getDate()).padStart(2,'0')}-${Math.random().toString(36).substr(2,4).toUpperCase()}`;
+    }
+
+    const qaContainer = document.getElementById('qa-container');
+    const adminBtn = document.getElementById('admin-btn');
+    const adminModal = document.getElementById('admin-modal');
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if(!db) {
+            qaContainer.innerHTML = `<div class="error">❌ Firebase Config Error. Check console.</div>`;
+            return;
+        }
+
+        startListener();
+
+        document.getElementById('ask-form').onsubmit = handleSubmit;
+        document.getElementById('search-input').oninput = debounce(renderList, 300);
+        adminBtn.onclick = () => isAdmin ? toggleAdmin(false) : adminModal.style.display = 'flex';
+        document.getElementById('pin-confirm').onclick = () => {
+            if(document.getElementById('admin-pin').value === 'ekasir') toggleAdmin(true);
+            else alert('Wrong PIN');
+            adminModal.style.display = 'none';
+        };
+        document.getElementById('pin-cancel').onclick = () => adminModal.style.display = 'none';
+    });
+
+    function toggleAdmin(state) {
+        isAdmin = state;
+        adminBtn.classList.toggle('active', state);
+        adminBtn.textContent = state ? '🔓 Admin ON' : '🔑 Admin';
+        renderList(); // Re-render to show/hide hidden questions
+    }
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = true; btn.textContent = '⏳';
+
+        const uname = document.getElementById('q-username').value.trim();
+        const qtxt = document.getElementById('q-text').value.trim();
+
+        if(!uname || !qtxt) { btn.disabled=false; btn.textContent='📤'; return; }
+
+        const flagged = isExplicit(qtxt);
+        const payload = {
+            id: genId(),
+            username: uname,
+            question: qtxt,
+            timestamp: Date.now(),
+            likes: 0,
+            dislikes: 0,
+            hidden: flagged,
+            autoFlagged: flagged
+        };
+
+        try {
+            if(db) {
+                await push(ref(db, 'qna'), payload);
+                document.getElementById('q-text').value = '';
+                // Real-time listener will auto-update
+            }
+        } catch(err) {
+            console.error("Push Error:", err);
+            alert('❌ Submit Failed: ' + err.message);
+        } finally {
+            btn.disabled = false; btn.textContent = '📤';
+        }
+    }
+
+    function startListener() {
+        qaContainer.innerHTML = '<div class="loading">Loading Q&A...</div>';
+        const qnaRef = ref(db, 'qna');
+
+        onValue(qnaRef, (snapshot) => {
+            qaData = [];
+            if (snapshot.exists()) {
+                snapshot.forEach((childSnapshot) => {
+                    const data = childSnapshot.val();
+                    data.refKey = childSnapshot.key;
+                    qaData.push(data);
+                });
+            }
+            // Sort by timestamp descending (newest first)
+            qaData.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            renderList();
+        }, (error) => {
+            console.error("Listener Error:", error);
+            qaContainer.innerHTML = `<div class="error">❌ Failed to load: ${error.message}</div>`;
+        });
+    }
+
+    function renderList() {
+        const searchTerm = document.getElementById('search-input').value.toLowerCase().trim();
+
+        // Filter based on admin status and search
+        let filtered = qaData.filter(q => {
+            // If not admin, only show visible questions
+            if (!isAdmin && q.hidden === true) {
+                return false;
+            }
+            // Apply search filter
+            if (searchTerm) {
+                return q.question.toLowerCase().includes(searchTerm) ||
+                       q.username.toLowerCase().includes(searchTerm);
+            }
+            return true;
+        });
+
+        if(!filtered.length) {
+            qaContainer.innerHTML = isAdmin ?
+                '<div class="empty">No questions found.</div>' :
+                '<div class="empty">No questions yet. Be the first to ask!</div>';
+            return;
+        }
+
+        qaContainer.innerHTML = filtered.map(q => {
+            const isHidden = q.hidden === true;
+            const cardClass = `qa-card ${isHidden ? 'hidden-question' : ''} ${q.autoFlagged ? 'auto-flagged' : ''}`;
+            const hideLabel = isHidden ? 'Hidden' : 'Visible';
+
+            return `
+            <div class="${cardClass}" data-key="${q.refKey}">
+                <div class="qa-header">
+                    <span class="qa-id">${q.id} ${q.autoFlagged ? '<span class="flag-badge">FLAGGED</span>' : ''}</span>
+                    <span class="qa-user">@${escapeHtml(q.username)}</span>
+                </div>
+                <div class="qa-time">${new Date(q.timestamp).toLocaleString()}</div>
+                <div class="qa-q">${escapeHtml(q.question)}</div>
+                ${isHidden ? '<div class="hidden-notice">⚠️ This question is hidden from public view</div>' : ''}
+                ${q.answered ? `<div class="qa-a"><div class="qa-a-label">✅ Answered</div>${escapeHtml(q.answer)}</div>` : ''}
+                <div class="qa-actions">
+                    <button class="vote ${votes[q.id]==='like'?'active-like':''}" onclick="window.vote('${q.id}','like')">👍 ${q.likes||0}</button>
+                    <button class="vote ${votes[q.id]==='dislike'?'active-dislike':''}" onclick="window.vote('${q.id}','dislike')">👎 ${q.dislikes||0}</button>
+                    ${isAdmin ? `
+                        <label class="hide-toggle">
+                            <input type="checkbox" ${!isHidden ? 'checked' : ''}
+                                onchange="window.toggleHide('${q.refKey}', this.checked)">
+                            ${hideLabel}
+                        </label>
+                    ` : ''}
+                    ${isAdmin && !q.answered ? `<button class="btn mini-btn" onclick="window.showReply('${q.id}')">💬 Reply</button>` : ''}
+                </div>
+                <div class="admin-reply-box" id="rep-${q.id}">
+                    <textarea placeholder="Type answer..."></textarea>
+                    <button class="btn mini-btn" onclick="window.postAnswer('${q.id}')">Post Answer</button>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    window.toggleHide = async (key, shouldBeVisible) => {
+        try {
+            const isHidden = !shouldBeVisible;
+            if(db) {
+                await update(ref(db, `qna/${key}`), { hidden: isHidden });
+                // The listener will auto-update the UI
+            }
+        } catch(err) {
+            console.error("Toggle hide error:", err);
+            alert('Failed to update visibility');
+        }
+    };
+
+    window.showReply = id => {
+        const replyBox = document.getElementById(`rep-${id}`);
+        if(replyBox) replyBox.style.display = 'block';
+    };
+
+    window.postAnswer = async id => {
+        const textarea = document.querySelector(`#rep-${id} textarea`);
+        const txt = textarea ? textarea.value.trim() : '';
+        if(!txt) { alert('Please enter an answer'); return; }
+
+        try {
+            if(db) {
+                await update(ref(db, `qna/${id}`), { answer: txt, answered: true });
+                // Listener will auto-update
+            }
+        } catch(err) {
+            console.error("Post answer error:", err);
+            alert('Failed to post answer');
+        }
+    };
+
+    window.vote = async (id, type) => {
+        if(votes[id] === type) return;
+        votes[id] = type;
+        localStorage.setItem('eka_qna_votes', JSON.stringify(votes));
+
+        const item = qaData.find(q => q.id === id);
+        if(db && item) {
+            const updates = {};
+            if (type === 'like') {
+                updates['likes'] = (item.likes || 0) + 1;
+            } else {
+                updates['dislikes'] = (item.dislikes || 0) + 1;
+            }
+
+            try {
+                await update(ref(db, `qna/${item.refKey}`), updates);
+            } catch(err) {
+                console.error("Vote error:", err);
+            }
+        }
+        renderList();
+    };
+
+    function escapeHtml(text) {
+        if(!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function debounce(fn, ms) {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => fn(...args), ms);
+        };
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EKA Verbal Memory</title>
+    
+    <!-- Firebase Compat SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #1e1e2f 0%, #2d2b42 100%);
+            --panel-bg: rgba(255, 255, 255, 0.08);
+            --panel-border: rgba(255, 255, 255, 0.15);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0c0;
+            --accent-color: #00e5ff;
+            --accent-glow: rgba(0, 229, 255, 0.4);
+            --btn-new: #4ade80;
+            --btn-seen: #f87171;
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            --radius: 16px;
+            --font-main: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        /* Themes */
+        [data-theme="orange"] {
+            --bg-gradient: linear-gradient(135deg, #ff9a00 0%, #ff4b1f 100%);
+            --accent-color: #fff; --accent-glow: rgba(255,255,255,0.5);
+            --panel-bg: rgba(0,0,0,0.15); --panel-border: rgba(255,255,255,0.25);
+            --text-primary: #ffffff; --text-secondary: #ffe0c2;
+            --btn-new: #22c55e; --btn-seen: #ef4444;
+        }
+        [data-theme="neon"] {
+            --bg-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            --accent-color: #ff0055; --accent-glow: rgba(255,0,85,0.6);
+            --btn-new: #00ff9d; --btn-seen: #ff3366;
+            --panel-bg: rgba(255,255,255,0.05); --text-secondary: #c0c0ff;
+        }
+        [data-theme="midnight"] {
+            --bg-gradient: linear-gradient(to bottom, #000000, #1a1a2e);
+            --panel-bg: rgba(0,0,0,0.7); --panel-border: rgba(255,255,255,0.1);
+            --accent-color: #f1c40f; --accent-glow: rgba(241,196,15,0.4);
+            --text-primary: #e0e0e0; --text-secondary: #888888;
+            --btn-new: #2ecc71; --btn-seen: #e74c3c;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+        body {
+            margin: 0; padding: 20px; min-height: 100vh;
+            font-family: var(--font-main); background: var(--bg-gradient);
+            color: var(--text-primary); display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: background 0.5s ease;
+        }
+
+        .glass-panel {
+            background: var(--panel-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--panel-border); border-radius: var(--radius);
+            box-shadow: var(--shadow); padding: 24px; width: 100%; max-width: 460px; margin: 10px 0;
+        }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 15px; }
+        h1 { margin: 0; font-size: 1.6rem; letter-spacing: 1.5px; text-transform: uppercase; background: linear-gradient(90deg, var(--text-primary), var(--accent-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .stats { display: flex; gap: 15px; font-weight: 700; font-size: 1.1rem; margin-bottom: 20px; justify-content: center; }
+        .stat-box { background: rgba(0,0,0,0.25); padding: 8px 14px; border-radius: 10px; border: 1px solid var(--panel-border); min-width: 90px; text-align: center; }
+        .stat-label { display: block; font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+        .lives { color: var(--btn-seen); } .score { color: var(--btn-new); }
+
+        .word-display {
+            height: 160px; display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; font-weight: 800; text-align: center;
+            background: rgba(0,0,0,0.2); border-radius: 12px; margin: 15px 0;
+            border: 2px solid var(--panel-border); position: relative; overflow: hidden;
+        }
+        .word-text { transition: opacity 0.2s, transform 0.2s; }
+        .word-text.fade { opacity: 0; transform: translateY(10px); }
+        .word-text.pop { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
+        .btn {
+            padding: 16px; font-size: 1.1rem; font-weight: bold; border: none; border-radius: 12px;
+            cursor: pointer; transition: all 0.15s; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .btn-new { background: var(--btn-new); color: #000; }
+        .btn-seen { background: var(--btn-seen); color: #fff; }
+        .btn:active { transform: scale(0.96); filter: brightness(0.9); }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .btn-full { grid-column: 1 / -1; background: var(--accent-color); color: #000; box-shadow: 0 4px 15px var(--accent-glow); margin-top: 15px; }
+        .btn-secondary { background: transparent; color: var(--text-primary); border: 1px solid var(--panel-border); box-shadow: none; margin-top: 8px; }
+
+        .theme-bar { display: flex; align-items: center; gap: 10px; margin-top: 20px; }
+        select {
+            background: var(--panel-bg); color: var(--text-primary); border: 1px solid var(--panel-border);
+            padding: 10px; border-radius: 8px; width: 100%; font-size: 0.95rem; outline: none;
+        }
+
+        .modal {
+            display: none; position: fixed; inset: 0; z-index: 100;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(6px);
+            align-items: center; justify-content: center; padding: 20px;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .modal.active { display: flex; opacity: 1; }
+        .modal-content { max-height: 85vh; overflow-y: auto; width: 100%; max-width: 440px; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid var(--panel-border); font-size: 0.95rem; }
+        th { color: var(--accent-color); font-weight: 600; }
+        .rank-badge { background: var(--accent-color); color: #000; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 8px; }
+
+        .input-group { margin: 15px 0; }
+        input[type="text"] {
+            width: 100%; padding: 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--panel-border);
+            border-radius: 8px; color: white; text-align: center; font-size: 1rem; outline: none;
+        }
+        input:focus { border-color: var(--accent-color); }
+
+        .hidden { display: none !important; }
+        @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+        .shake { animation: shake 0.4s; }
+        .correct-flash { box-shadow: 0 0 20px var(--btn-new) !important; border-color: var(--btn-new) !important; }
+        .wrong-flash { box-shadow: 0 0 20px var(--btn-seen) !important; border-color: var(--btn-seen) !important; }
+
+        @media (max-width: 380px) {
+            .word-display { height: 130px; font-size: 2rem; }
+            .btn { padding: 14px; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="menu-screen" class="glass-panel">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <h1>EKA VERBAL MEMORY</h1>
+            <p style="color: var(--text-secondary); margin: 5px 0;">Test your recall. Is the word NEW or SEEN?</p>
+        </div>
+        <div class="controls" style="margin: 0;">
+            <button class="btn btn-full" onclick="startGame()">▶ START GAME</button>
+            <button class="btn btn-secondary" onclick="showLeaderboard()">🏆 TOP 15 LEADERBOARD</button>
+        </div>
+        <div class="theme-bar">
+            <span style="font-size: 0.9rem;">🎨 Theme:</span>
+            <select id="theme-selector" onchange="setTheme(this.value)">
+                <option value="default">3D Glass</option>
+                <option value="orange">Modern Orange</option>
+                <option value="neon">Dark Neon</option>
+                <option value="midnight">Midnight Black</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="game-screen" class="glass-panel hidden">
+        <div class="header">
+            <div class="stats">
+                <div class="stat-box"><span class="stat-label">Score</span><span id="score-display" class="score">0</span></div>
+                <div class="stat-box"><span class="stat-label">Lives</span><span id="lives-display" class="lives">❤️❤️❤️❤️❤️</span></div>
+            </div>
+            <button onclick="giveUp()" style="background:transparent; border:none; color:var(--text-secondary); font-size:1.5rem; cursor:pointer;">🏳️</button>
+        </div>
+        <div class="word-display" id="word-box">
+            <div class="word-text" id="current-word">READY?</div>
+        </div>
+        <div class="controls">
+            <button class="btn btn-new" id="btn-new" onclick="handleGuess('new')">🆕 NEW</button>
+            <button class="btn btn-seen" id="btn-seen" onclick="handleGuess('seen')">👁️ SEEN</button>
+        </div>
+    </div>
+
+    <div id="leaderboard-modal" class="modal">
+        <div class="glass-panel modal-content">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2>🏆 TOP 15 RANKINGS</h2>
+                <button onclick="closeModal('leaderboard-modal')" style="background:transparent; border:none; color:white; font-size:1.5rem; cursor:pointer;">✕</button>
+            </div>
+            <table>
+                <thead><tr><th>Rank</th><th>Player</th><th>Score</th></tr></thead>
+                <tbody id="leaderboard-body"><tr><td colspan="3" style="text-align:center;">Loading global scores...</td></tr></tbody>
+            </table>
+            <button class="btn btn-secondary" style="margin-top: 15px;" onclick="closeModal('leaderboard-modal')">BACK TO MENU</button>
+        </div>
+    </div>
+
+    <div id="gameover-modal" class="modal">
+        <div class="glass-panel modal-content" style="text-align:center;">
+            <h1 id="go-title" style="font-size: 2rem; color: var(--accent-color);">GAME OVER</h1>
+            <p style="font-size: 1.2rem;">Final Score: <span id="final-score" style="font-weight:bold; color: var(--btn-new);">0</span></p>
+            <div class="input-group"><input type="text" id="player-name" placeholder="Enter Your Name..." maxlength="12"></div>
+            <button class="btn btn-full" onclick="saveAndShowLeaderboard()">💾 SAVE SCORE</button>
+            <button class="btn btn-secondary" onclick="restartGame()">🔄 PLAY AGAIN</button>
+            <button class="btn btn-secondary" onclick="quitToMenu()">🏠 MENU</button>
+        </div>
+    </div>
+
+    <script>
+        // 🔥 FIREBASE CONFIG
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        let db;
+        try {
+            if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.firestore();
+                console.log("✅ Firebase Connected");
+            }
+        } catch (e) { console.error("Firebase Init Error:", e); }
+
+        // 🎮 GAME STATE
+        let score = 0, lives = 5, isNewPool = [], seenPool = [], currentWordObj = null, isProcessing = false;
+        const FALLBACK_WORDS = ["APPLE","BRAIN","CLOUD","DREAM","EARTH","FOCUS","GREEN","HOUSE","IMAGE","JUMP","KNOW","LIGHT","MUSIC","NIGHT","OCEAN","PEACE","QUIET","RIVER","STONE","TRAIN","UNITY","VISIT","WATER","YOUTH","ZOOM"];
+
+        // 🛡️ SAFE DICTIONARY LOADER
+        const loadDictionary = () => {
+            if (!window.VOCABULARY || typeof window.VOCABULARY !== 'object') {
+                console.warn("⚠️ vocabulary.js not loaded. Using fallback dictionary.");
+                return FALLBACK_WORDS;
+            }
+            try {
+                const rawWords = Object.values(window.VOCABULARY).flat();
+                return rawWords
+                    .filter(w => typeof w === 'string' && w.trim().length > 0)
+                    .map(w => w.trim().toUpperCase().replace(/[^A-Z]/g, ''))
+                    .filter(w => w.length >= 2 && w.length <= 20);
+            } catch (e) {
+                console.error("Dictionary parse error:", e);
+                return FALLBACK_WORDS;
+            }
+        };
+
+        function initWordPools() {
+            const allWords = loadDictionary();
+            // Fisher-Yates Shuffle
+            for (let i = allWords.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [allWords[i], allWords[j]] = [allWords[j], allWords[i]];
+            }
+            isNewPool = [...allWords];
+            seenPool = [];
+            console.log(`📚 Loaded ${allWords.length} words.`);
+        }
+
+        function pickNextWord() {
+            if (seenPool.length > 0 && Math.random() < 0.5) {
+                const repeatIdx = Math.floor(Math.random() * seenPool.length);
+                currentWordObj = { word: seenPool[repeatIdx], type: 'seen' };
+            } else {
+                if (isNewPool.length === 0) initWordPools();
+                const newWord = isNewPool.pop();
+                if (!newWord) { initWordPools(); return pickNextWord(); } // Safety fallback
+                seenPool.push(newWord);
+                currentWordObj = { word: newWord, type: 'new' };
+            }
+            return currentWordObj;
+        }
+
+        function updateUI() {
+            document.getElementById('score-display').innerText = score;
+            document.getElementById('lives-display').innerText = '❤️'.repeat(Math.max(0, lives));
+        }
+
+        function showWord(word) {
+            const el = document.getElementById('current-word');
+            el.classList.add('fade');
+            setTimeout(() => {
+                el.innerText = word || "LOADING...";
+                el.classList.remove('fade');
+                el.classList.add('pop');
+                setTimeout(() => el.classList.remove('pop'), 300);
+            }, 150);
+        }
+
+        function startGame() {
+            document.getElementById('menu-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+            score = 0; lives = 5; isProcessing = false;
+            initWordPools(); updateUI();
+            document.getElementById('btn-new').disabled = false;
+            document.getElementById('btn-seen').disabled = false;
+            showWord('GET READY...');
+            setTimeout(() => { pickNextWord(); showWord(currentWordObj.word); }, 800);
+        }
+
+        function handleGuess(userGuess) {
+            if (isProcessing) return;
+            isProcessing = true;
+            const box = document.getElementById('word-box');
+            const isCorrect = (userGuess === currentWordObj.type);
+            const btnEl = userGuess === 'new' ? document.getElementById('btn-new') : document.getElementById('btn-seen');
+
+            if (isCorrect) {
+                score++;
+                box.classList.add('correct-flash');
+                setTimeout(() => box.classList.remove('correct-flash'), 300);
+            } else {
+                lives--;
+                box.classList.add('shake', 'wrong-flash');
+                setTimeout(() => box.classList.remove('shake', 'wrong-flash'), 400);
+            }
+            updateUI();
+
+            setTimeout(() => {
+                if (lives <= 0) { endGame(); } 
+                else { pickNextWord(); showWord(currentWordObj.word); }
+                isProcessing = false;
+            }, 450);
+        }
+
+        function endGame() {
+            document.getElementById('btn-new').disabled = true;
+            document.getElementById('btn-seen').disabled = true;
+            document.getElementById('final-score').innerText = score;
+            document.getElementById('go-title').innerText = "🏁 GAME OVER";
+            document.getElementById('gameover-modal').classList.add('active');
+        }
+        function giveUp() {
+            document.getElementById('final-score').innerText = score;
+            document.getElementById('go-title').innerText = "🏳️ SURRENDERED";
+            document.getElementById('gameover-modal').classList.add('active');
+        }
+        function restartGame() { closeModal('gameover-modal'); startGame(); }
+        function quitToMenu() { closeModal('gameover-modal'); document.getElementById('game-screen').classList.add('hidden'); document.getElementById('menu-screen').classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        // 🏆 FIREBASE LEADERBOARD
+        function saveAndShowLeaderboard() {
+            const name = document.getElementById('player-name').value.trim() || `Player_${Math.floor(Math.random()*900)+100}`;
+            if (db) {
+                db.collection('verbal_memory_scores').add({ name, score, timestamp: firebase.firestore.FieldValue.serverTimestamp() })
+                  .then(() => fetchLeaderboard()).catch(err => console.error(err));
+            } else { alert("Firebase not configured! Score: " + score); fetchLeaderboard(); }
+        }
+        function showLeaderboard() { document.getElementById('leaderboard-modal').classList.add('active'); fetchLeaderboard(); }
+        function fetchLeaderboard() {
+            const tbody = document.getElementById('leaderboard-body');
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Loading...</td></tr>';
+            if (!db) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:orange;">⚠️ Configure Firebase for live rankings.<br>Local Mock: Master (85), Pro (60), Novice (20)</td></tr>`;
+                return;
+            }
+            db.collection('verbal_memory_scores').orderBy('score','desc').limit(15).get().then(snapshot => {
+                if (snapshot.empty) { tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No scores yet. Be the first!</td></tr>'; return; }
+                let html = '', rank = 1;
+                snapshot.forEach(doc => { const d = doc.data(); html += `<tr><td><span class="rank-badge">${rank++}</span></td><td>${d.name}</td><td><strong>${d.score}</strong></td></tr>`; });
+                tbody.innerHTML = html;
+            });
+        }
+
+        // 🎨 THEME ENGINE
+        function setTheme(theme) { document.documentElement.setAttribute('data-theme', theme); localStorage.setItem('eka_vm_theme', theme); }
+        const savedTheme = localStorage.getItem('eka_vm_theme');
+        if (savedTheme) { document.getElementById('theme-selector').value = savedTheme; setTheme(savedTheme); }
+    </script>
+</body>
+</html>
