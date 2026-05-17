@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EKA Studio - Advanced BMI Analytics</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --panel-bg: rgba(20, 30, 55, 0.6);
+            --border-color: rgba(0, 242, 254, 0.2);
+            --neon-cyan: #00f2fe;
+            --neon-blue: #4facfe;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            
+            /* BMI Category Colors */
+            --underweight: #38bdf8;
+            --normal: #4ade80;
+            --overweight: #facc15;
+            --obese: #f87171;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #1a2639 0%, var(--bg-color) 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* 3D Ice-Cube / Glassmorphism Container */
+        .app-container {
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 1024px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4),
+                        inset 0 0 20px rgba(0, 242, 254, 0.1);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .app-header {
+            grid-column: 1 / -1;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            position: relative;
+        }
+
+        .app-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .app-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* Left Column: Inputs & Controls */
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 16px;
+        }
+
+        .group-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--neon-cyan);
+            margin-bottom: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .unit-toggle-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .btn-toggle {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-toggle.active {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.2));
+            border-color: var(--neon-cyan);
+            color: #fff;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+        }
+
+        .inputs-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .field-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .field-box label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 8px rgba(0, 242, 254, 0.15);
+        }
+
+        .btn-calc {
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-cyan));
+            color: #000;
+            font-weight: 700;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.2s, box-shadow 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-calc:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 242, 254, 0.4);
+        }
+
+        /* Right Column: Visualizer & Live Summary */
+        .display-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        /* Holographic Biometric Display */
+        .biometric-display {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            height: 240px;
+            display: flex;
+            position: relative;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .biometric-display::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(rgba(0,242,254,0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0,242,254,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            top: 0; left: 0;
+            z-index: 1;
+        }
+
+        /* SVG Avatar Styling */
+        .body-vector {
+            height: 85%;
+            z-index: 2;
+            filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.3));
+        }
+
+        .body-silhouette {
+            fill: rgba(79, 172, 254, 0.15);
+            stroke: var(--neon-cyan);
+            stroke-width: 1.5;
+            transition: all 0.5s ease;
+        }
+
+        /* Data Callout Lines */
+        .callout-tag {
+            position: absolute;
+            background: rgba(11, 15, 25, 0.85);
+            border: 1px solid var(--neon-blue);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-family: monospace;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        #height-tag { top: 25%; left: 15%; border-left: 3px solid var(--neon-cyan); }
+        #weight-tag { bottom: 35%; right: 15%; border-right: 3px solid var(--neon-cyan); }
+
+        /* Results Readout */
+        .result-score-container {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .bmi-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255,255,255,0.2);
+            margin-bottom: 5px;
+        }
+
+        .bmi-status {
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* BMI Matrix / Range Table Grid */
+        .bmi-matrix {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            background: rgba(0,0,0,0.15);
+            padding: 10px;
+            border-radius: 12px;
+        }
+
+        .matrix-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            border: 1px solid transparent;
+        }
+
+        .matrix-row.active {
+            background: rgba(255, 255, 255, 0.05);
+            animation: pulse-border 2s infinite alternate;
+        }
+
+        @keyframes pulse-border {
+            0% { border-color: rgba(255,255,255,0.1); }
+            100% { border-color: var(--neon-cyan); }
+        }
+
+        /* Insights Block */
+        .insights-panel {
+            grid-column: 1 / -1;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .insights-panel h3 {
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--neon-cyan);
+            padding-left: 10px;
+        }
+
+        .insights-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .insights-list { grid-template-columns: 1fr; }
+        }
+
+        .insights-list li {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: var(--text-muted);
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .insights-list li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: var(--neon-cyan);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Header -->
+        <header class="app-header">
+            <h1>BIOMETRIC BMI MODULE</h1>
+            <p>Engineered by EKA Studio Pro • Diagnostics Panel</p>
+        </header>
+
+        <!-- Left Configuration Column -->
+        <section class="input-section">
+            
+            <!-- Age & Gender Grid -->
+            <div class="input-group">
+                <div class="group-title">Demographics</div>
+                <div class="inputs-row">
+                    <div class="field-box">
+                        <label for="input-age">Age (yrs)</label>
+                        <input type="number" id="input-age" value="25" min="2" max="120">
+                    </div>
+                    <div class="field-box">
+                        <label>Biological Metric</label>
+                        <div class="unit-toggle-container" style="margin-bottom:0;">
+                            <button type="button" class="btn-toggle active" onclick="setGender('m')">MALE</button>
+                            <button type="button" class="btn-toggle" onclick="setGender('f')">FEMALE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Height Subsystem -->
+            <div class="input-group">
+                <div class="group-title">Height Scale</div>
+                <div class="unit-toggle-container">
+                    <button type="button" class="btn-toggle active" id="unit-h-cm" onclick="switchHeightUnit('cm')">Metric (cm)</button>
+                    <button type="button" class="btn-toggle" id="unit-h-in" onclick="switchHeightUnit('in')">Inches (in)</button>
+                    <button type="button" class="btn-toggle" id="unit-h-ft" onclick="switchHeightUnit('ft')">Imperial (ft-in)</button>
+                </div>
+                
+                <div class="inputs-row" id="container-height-inputs">
+                    <!-- Dynamic inputs populated via JS -->
+                </div>
+            </div>
+
+            <!-- Mass Subsystem -->
+            <div class="input-group">
+                <div class="group-title">Mass Scale</div>
+                <div class="unit-toggle-container">
+                    <button type="button" class="btn-toggle active" id="unit-w-kg" onclick="switchWeightUnit('kg')">Kilograms (kg)</button>
+                    <button type="button" class="btn-toggle" id="unit-w-lbs" onclick="switchWeightUnit('lbs')">Pounds (lbs)</button>
+                </div>
+                
+                <div class="inputs-row">
+                    <div class="field-box">
+                        <input type="number" id="input-weight" value="70" step="0.1">
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn-calc" onclick="calculateBMI()">Execute Metrics</button>
+        </section>
+
+        <!-- Right Diagnostic Display Column -->
+        <section class="display-section">
+            
+            <!-- Wireframe Biometric Scan -->
+            <div class="biometric-display">
+                <div class="callout-tag" id="height-tag">H: --</div>
+                <div class="callout-tag" id="weight-tag">W: --</div>
+                
+                <!-- Scalable Vector Anatomy Wireframe -->
+                <svg class="body-vector" viewBox="0 0 100 200">
+                    <path class="body-silhouette" d="M50,15 A10,10 0 1,0 50,35 A10,10 0 1,0 50,15 M42,37 Q30,42 28,60 L24,110 Q24,120 32,120 L34,120 L30,190 Q30,195 36,195 L42,195 Q46,150 48,125 L52,125 Q54,150 58,195 L64,195 Q70,195 70,190 L66,120 L68,120 Q76,120 76,110 L72,60 Q70,42 58,37 Z" />
+                </svg>
+            </div>
+
+            <!-- Readout Module -->
+            <div class="result-score-container">
+                <div class="bmi-value" id="render-bmi">--.-</div>
+                <div class="bmi-status" id="render-status">Awaiting Input</div>
+            </div>
+
+            <!-- Diagnostic Matrix Matrix -->
+            <div class="bmi-matrix" id="matrix-display">
+                <div class="matrix-row" id="row-under" style="color: var(--underweight)">
+                    <span>Underweight (&lt; 18.5)</span><span id="val-under">--</span>
+                </div>
+                <div class="matrix-row" id="row-normal" style="color: var(--normal)">
+                    <span>Normal Range (18.5 - 24.9)</span><span id="val-normal">--</span>
+                </div>
+                <div class="matrix-row" id="row-over" style="color: var(--overweight)">
+                    <span>Overweight (25.0 - 29.9)</span><span id="val-over">--</span>
+                </div>
+                <div class="matrix-row" id="row-obese" style="color: var(--obese)">
+                    <span>Obese (≥ 30.0)</span><span id="val-obese">--</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Insights Block -->
+        <footer class="insights-panel">
+            <h3>Clinical Insights & Action Plan</h3>
+            <ul class="insights-list" id="render-insights">
+                <li>Enter biometric parameters above to generate localized metabolic guidelines and targeted lifestyle adjustments.</li>
+                <li>BMI metrics offer standard reference coordinates but do not differentiate explicit muscle mass configuration from adipose tissue.</li>
+                <li>Maintaining balanced values directly reduces long-term systemic cardiovascular and metabolic strain.</li>
+                <li>Consult customized nutritional profiling architectures to map accurate caloric deployment strategies.</li>
+            </ul>
+        </footer>
+    </div>
+
+    <script>
+        // System Architecture Variables
+        let currentHeightUnit = 'cm';
+        let currentWeightUnit = 'kg';
+        let currentGender = 'm';
+
+        // UI Initialization Tracking
+        document.addEventListener("DOMContentLoaded", () => {
+            renderHeightInputs();
+            calculateBMI();
+        });
+
+        function setGender(gender) {
+            currentGender = gender;
+            const buttons = document.querySelectorAll('.unit-toggle-container')[0].querySelectorAll('.btn-toggle');
+            buttons[0].classList.toggle('active', gender === 'm');
+            buttons[1].classList.toggle('active', gender === 'f');
+            
+            // Visual feedback alteration on human wireframe fill
+            const silhouette = document.querySelector('.body-silhouette');
+            if(gender === 'f') {
+                silhouette.style.fill = 'rgba(244, 63, 94, 0.15)';
+                silhouette.style.stroke = '#f43f5e';
+            } else {
+                silhouette.style.fill = 'rgba(79, 172, 254, 0.15)';
+                silhouette.style.stroke = '#00f2fe';
+            }
+            calculateBMI();
+        }
+
+        function switchHeightUnit(unit) {
+            if (currentHeightUnit === unit) return;
+            
+            // Retain absolute value conversions to preserve seamless user entry data
+            const prevVals = getHeightValuesInCm();
+            currentHeightUnit = unit;
+            
+            ['cm', 'in', 'ft'].forEach(u => {
+                document.getElementById(`unit-h-${u}`).classList.toggle('active', u === unit);
+            });
+
+            renderHeightInputs(prevVals);
+            calculateBMI();
+        }
+
+        function switchWeightUnit(unit) {
+            if (currentWeightUnit === unit) return;
+            
+            const weightInput = document.getElementById('input-weight');
+            let weightVal = parseFloat(weightInput.value) || 0;
+
+            if (unit === 'lbs' && currentWeightUnit === 'kg') {
+                weightInput.value = (weightVal * 2.20462).toFixed(1);
+            } else if (unit === 'kg' && currentWeightUnit === 'lbs') {
+                weightInput.value = (weightVal / 2.20462).toFixed(1);
+            }
+
+            currentWeightUnit = unit;
+            document.getElementById('unit-w-kg').classList.toggle('active', unit === 'kg');
+            document.getElementById('unit-w-lbs').classList.toggle('active', unit === 'lbs');
+            calculateBMI();
+        }
+
+        function renderHeightInputs(fallbackCm = 170) {
+            const container = document.getElementById('container-height-inputs');
+            container.innerHTML = '';
+
+            if (currentHeightUnit === 'cm') {
+                container.innerHTML = `
+                    <div class="field-box">
+                        <input type="number" id="height-main" value="${Math.round(fallbackCm)}" step="1" oninput="calculateBMI()">
+                    </div>`;
+            } else if (currentHeightUnit === 'in') {
+                let totalInches = fallbackCm / 2.54;
+                container.innerHTML = `
+                    <div class="field-box">
+                        <input type="number" id="height-main" value="${totalInches.toFixed(1)}" step="0.1" oninput="calculateBMI()">
+                    </div>`;
+            } else if (currentHeightUnit === 'ft') {
+                let totalInches = fallbackCm / 2.54;
+                let feet = Math.floor(totalInches / 12);
+                let inches = Math.round(totalInches % 12);
+                if(inches === 12) { feet++; inches = 0; }
+                container.innerHTML = `
+                    <div class="field-box">
+                        <label for="height-main">Feet</label>
+                        <input type="number" id="height-main" value="${feet}" step="1" oninput="calculateBMI()">
+                    </div>
+                    <div class="field-box">
+                        <label for="height-sub">Inches</label>
+                        <input type="number" id="height-sub" value="${inches}" step="1" max="11" oninput="calculateBMI()">
+                    </div>`;
+            }
+        }
+
+        function getHeightValuesInCm() {
+            const mainEl = document.getElementById('height-main');
+            const subEl = document.getElementById('height-sub');
+            if (!mainEl) return 170;
+
+            let mainVal = parseFloat(mainEl.value) || 0;
+
+            if (currentHeightUnit === 'cm') return mainVal;
+            if (currentHeightUnit === 'in') return mainVal * 2.54;
+            if (currentHeightUnit === 'ft') {
+                let subVal = subEl ? parseFloat(subEl.value) || 0 : 0;
+                return ((mainVal * 12) + subVal) * 2.54;
+            }
+            return 170;
+        }
+
+        function calculateBMI() {
+            const age = parseInt(document.getElementById('input-age').value) || 25;
+            const cm = getHeightValuesInCm();
+            const weightInput = parseFloat(document.getElementById('input-weight').value) || 0;
+            
+            // Standardize operational weight calculation configuration base unit to kg
+            let kg = currentWeightUnit === 'lbs' ? weightInput / 2.20462 : weightInput;
+
+            // Render live text nodes directly on biometric engine callout components
+            document.getElementById('height-tag').innerText = `H: ${Math.round(cm)} cm`;
+            document.getElementById('weight-tag').innerText = `W: ${Math.round(kg)} kg`;
+
+            if (!cm || !kg || cm <= 0 || kg <= 0) {
+                resetOutputs();
+                return;
+            }
+
+            const meters = cm / 100;
+            const bmi = kg / (meters * meters);
+            
+            renderDashboard(bmi, kg, meters);
+        }
+
+        function resetOutputs() {
+            document.getElementById('render-bmi').innerText = '--.-';
+            document.getElementById('render-status').innerText = 'Awaiting Input';
+            document.getElementById('render-status').style.color = 'var(--text-main)';
+            document.querySelectorAll('.matrix-row').forEach(r => r.classList.remove('active'));
+        }
+
+        function renderDashboard(bmi, kg, meters) {
+            const bmiElement = document.getElementById('render-bmi');
+            const statusElement = document.getElementById('render-status');
+            
+            bmiElement.innerText = bmi.toFixed(1);
+            
+            // Compute personalized targeted healthy masses based on specific dynamic user profile configurations
+            const idealLow = (18.5 * (meters * meters) * (currentWeightUnit === 'lbs' ? 2.20462 : 1)).toFixed(1);
+            const idealHigh = (24.9 * (meters * meters) * (currentWeightUnit === 'lbs' ? 2.20462 : 1)).toFixed(1);
+            const wUnitStr = currentWeightUnit;
+
+            document.getElementById('val-under').innerText = `< ${idealLow} ${wUnitStr}`;
+            document.getElementById('val-normal').innerText = `${idealLow} - ${idealHigh} ${wUnitStr}`;
+            document.getElementById('val-over').innerText = `${idealHigh} - ${(29.9 * (meters * meters) * (currentWeightUnit === 'lbs' ? 2.20462 : 1)).toFixed(1)} ${wUnitStr}`;
+            document.getElementById('val-obese').innerText = `≥ ${(30.0 * (meters * meters) * (currentWeightUnit === 'lbs' ? 2.20462 : 1)).toFixed(1)} ${wUnitStr}`;
+
+            document.querySelectorAll('.matrix-row').forEach(r => r.classList.remove('active'));
+
+            let category = '';
+            let color = '';
+            let insights = [];
+
+            if (bmi < 18.5) {
+                category = 'Underweight';
+                color = 'var(--underweight)';
+                document.getElementById('row-under').classList.add('active');
+                insights = [
+                    "Your BMI points to low systemic mass levels. Focus on tracking clean caloric surpluses and increasing nutrient-dense whole foods.",
+                    "Integrate structured resistance exercise profiles rather than extensive cardio to safely build functional lean body mass.",
+                    "Ensure daily protein intakes align with muscle optimization goals (target roughly 1.6–2.0g per kg of body weight).",
+                    "Monitor Micronutrient panels (like Vitamin D, Ferritin, and B12 levels) closely to rule out absorption or energy conversion deficiencies."
+                ];
+            } else if (bmi >= 18.5 && bmi < 25) {
+                category = 'Normal Composition';
+                color = 'var(--normal)';
+                document.getElementById('row-normal').classList.add('active');
+                insights = [
+                    "Excellent matrix profile. Your current mass metrics show optimal configuration with minimal baseline cardiovascular stress risk.",
+                    "Maintain this balance by executing consistent weekly functional strength routines combined with zone-2 cardio training.",
+                    "Prioritize high-fiber complex carbohydrates and lean amino targets to keep optimal metabolic flexibility.",
+                    "Focus optimization cycles on sleep quality patterns and hydration benchmarks to regulate ongoing body composition."
+                ];
+            } else if (bmi >= 25 && bmi < 30) {
+                category = 'Overweight';
+                color = 'var(--overweight)';
+                document.getElementById('row-over').classList.add('active');
+                insights = [
+                    "Elevated mass ratios detected. Implementing a minor, controlled caloric deficit (roughly 300-500 kcal/day) will assist processing.",
+                    "Prioritize resistance-based weight training to optimize lean mass retention while initiating body fat mobilization pathways.",
+                    "Incorporate high-satiety macronutrients like leafy fibers and clean proteins to naturally stabilize insulin levels.",
+                    "Track progress using waist-to-hip metrics to accurately differentiate abdominal adipose risk from structural muscle mass."
+                ];
+            } else {
+                category = 'Obese Class Range';
+                color = 'var(--obese)';
+                document.getElementById('row-obese').classList.add('active');
+                insights = [
+                    "Biometric feedback reveals higher metabolic burden indicators. Focus on long-term sustainable adjustments to lower risk profiles.",
+                    "Initiate persistent, low-impact exercise strategies (such as brisk walking or swimming) to safeguard joints while boosting energy use.",
+                    "Consider utilizing structured, low-glycemic dietary plans to optimize systemic insulin sensitivity parameters.",
+                    "Establish routine diagnostic tracking of resting heart rates and blood pressure patterns alongside your primary weight management goals."
+                ];
+            }
+
+            statusElement.innerText = category;
+            statusElement.style.color = color;
+
+            // Render customized list elements safely
+            const insightsContainer = document.getElementById('render-insights');
+            insightsContainer.innerHTML = '';
+            insights.forEach(text => {
+                const li = document.createElement('li');
+                li.innerText = text;
+                insightsContainer.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
