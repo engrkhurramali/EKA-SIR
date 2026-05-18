@@ -64,6 +64,10 @@
             background: var(--active-glow); border-color: var(--active);
             box-shadow: 0 0 0 1px var(--active); transform: scale(1.01);
         }
+        .prayer-row.active.danger {
+            background: rgba(255, 118, 117, 0.25); border-color: #ff7675;
+            box-shadow: 0 0 0 1px #ff7675;
+        }
         .prayer-row.zawal { opacity: 0.65; border-style: dashed; }
         .name { font-weight: 500; font-size: 0.9rem; }
         .time { font-variant-numeric: tabular-nums; color: var(--text-muted); font-size: 0.88rem; }
@@ -114,7 +118,6 @@
 
         // 🔧 Config
         const METHOD = '1'; // University of Islamic Sciences, Karachi
-        const SCHOOL = '1'; // Hanafi
         let globalTimingsArray = [];
         let isViewingToday = true;
 
@@ -175,21 +178,32 @@
         async function fetchPrayerTimes(dateStr, lat, lng) {
             timetable.innerHTML = '<div class="loading">Fetching timings...</div>';
             const [y, m, d] = dateStr.split('-');
-            const url = `https://api.aladhan.com/v1/timings/${d}-${m}-${y}?latitude=${lat}&longitude=${lng}&method=${METHOD}&school=${SCHOOL}`;
+            const baseUrl = `https://api.aladhan.com/v1/timings/${d}-${m}-${y}?latitude=${lat}&longitude=${lng}&method=${METHOD}`;
             
             try {
-                const res = await fetch(url);
-                if (!res.ok) throw new Error('Network');
-                const json = await res.json();
-                if (json.code === 200 && json.data) processTimings(json.data.timings);
-                else throw new Error('Invalid API response');
+                // Fetch both Hanafi (1) and Shafi (0) timings in parallel
+                const [resH, resS] = await Promise.all([
+                    fetch(`${baseUrl}&school=1`),
+                    fetch(`${baseUrl}&school=0`)
+                ]);
+
+                if (!resH.ok || !resS.ok) throw new Error('Network Error');
+
+                const jsonH = await resH.json();
+                const jsonS = await resS.json();
+
+                if (jsonH.code === 200 && jsonH.data && jsonS.code === 200 && jsonS.data) {
+                    processTimings(jsonH.data.timings, jsonS.data.timings.Asr);
+                } else {
+                    throw new Error('Invalid API response');
+                }
             } catch (err) {
                 timetable.innerHTML = `<div class="error">❌ Failed to load. Check internet.</div>`;
                 console.error(err);
             }
         }
 
-        function processTimings(t) {
+        function processTimings(t, asrShafi) {
             // Zawal calculation (10 mins before Dhuhr)
             const [dhH, dhM] = t.Dhuhr.split(':').map(Number);
             const zawalDate = new Date(); zawalDate.setHours(dhH, dhM - 10, 0);
@@ -200,7 +214,8 @@
                 { id: 'sunrise', name: 'Sunrise', time: t.Sunrise, display: fmt12(t.Sunrise) },
                 { id: 'zawal', name: 'Zawal (Makrooh)', time: zawalStr, display: `${fmt12(zawalStr)} - ${fmt12(t.Dhuhr)}`, isZawal: true },
                 { id: 'dhuhr', name: 'Dhuhr', time: t.Dhuhr, display: fmt12(t.Dhuhr) },
-                { id: 'asr', name: 'Asr', time: t.Asr, display: fmt12(t.Asr) },
+                { id: 'asr_s', name: 'Asr (S)', time: asrShafi, display: fmt12(asrShafi) },
+                { id: 'asr_h', name: 'Asr (H)', time: t.Asr, display: fmt12(t.Asr) },
                 { id: 'maghrib', name: 'Maghrib', time: t.Maghrib, display: fmt12(t.Maghrib) },
                 { id: 'isha', name: 'Isha', time: t.Isha, display: fmt12(t.Isha) }
             ];
@@ -223,17 +238,26 @@
             const now = new Date();
             const curMins = now.getHours() * 60 + now.getMinutes();
             const boundaries = globalTimingsArray
-                .filter(t => !t.isZawal)
                 .map(t => ({ id: t.id, mins: t.time.split(':').map(Number).reduce((a,b)=>a*60+b,0) }));
             
             let active = 'isha';
+            let activeMins = 0;
             for (const b of boundaries) {
-                if (curMins >= b.mins) active = b.id;
-                else break;
+                if (curMins >= b.mins) {
+                    active = b.id;
+                    activeMins = b.mins;
+                } else break;
             }
 
+            // Sunrise 10-minute rule
+            if (active === 'sunrise' && curMins > activeMins + 10) active = null;
+
             document.querySelectorAll('.prayer-row').forEach(row => {
-                row.classList.toggle('active', row.dataset.id === active);
+                const isCurrent = row.dataset.id === active;
+                row.classList.toggle('active', isCurrent);
+                if (row.dataset.id === 'sunrise' || row.dataset.id === 'zawal') {
+                    row.classList.toggle('danger', isCurrent);
+                }
             });
         }
 
