@@ -65,8 +65,8 @@
 
         .game-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
             margin-top: 25px;
         }
 
@@ -75,7 +75,7 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--border);
-            border-radius: 20px;
+            border-radius: 16px;
             text-decoration: none;
             color: inherit;
             display: flex;
@@ -86,17 +86,17 @@
         }
 
         .game-card:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.5);
+            transform: scale(0.92);
+            background: rgba(255, 255, 255, 0.4);
         }
 
         .game-preview {
-            height: 100px;
+            height: 70px;
             background: rgba(255, 255, 255, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 50px;
+            font-size: 32px;
             position: relative;
             border-bottom: 1px solid var(--border);
             overflow: hidden;
@@ -104,24 +104,33 @@
 
         /* Enhanced Visual Previews using CSS Art */
         .preview-basket { background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%); }
-        .preview-crossword { background: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px), repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(0,0,0,0.1) 20px); background-color: #fff; }
-        .preview-guess { background: radial-gradient(circle at center, #fff176 0%, #fbc02d 100%); }
+        .preview-crossword {
+            background: repeating-linear-gradient(0deg, transparent, transparent 14px, rgba(0,0,0,0.05) 15px),
+                        repeating-linear-gradient(90deg, transparent, transparent 14px, rgba(0,0,0,0.05) 15px);
+            background-color: #fff;
+            animation: panBG 10s infinite linear;
+        }
+        .preview-guess { background: radial-gradient(circle at center, #fff176 0%, #fbc02d 100%); animation: glow 2s infinite alternate; }
         .preview-clock { background: conic-gradient(#81c784, #4db6ac, #81c784); }
         .preview-snap { background: linear-gradient(135deg, #64b5f6 0%, #1e88e5 100%); }
-        .preview-scrabble { background: #d7ccc8; border: 4px solid #8d6e63; }
+        .preview-scrabble { background: #d7ccc8; border-bottom: 3px solid #8d6e63; }
         .preview-tictactoe { background: #eceff1; }
+
         /* EKA ARROW Eliminator */
         .preview-arrow { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); position: relative; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         .preview-arrow::before {
-            content: '➹'; position: absolute; left: 10%; top: 10%; font-size: 30px; opacity: 0.2; transform: rotate(-45deg);
+            content: '➹'; position: absolute; left: 10%; top: 10%; font-size: 20px; opacity: 0.2; transform: rotate(-45deg);
         }
         .preview-arrow::after {
-            content: '➸'; position: absolute; right: 10%; bottom: 10%; font-size: 30px; opacity: 0.2; transform: rotate(135deg);
+            content: '➸'; position: absolute; right: 10%; bottom: 10%; font-size: 20px; opacity: 0.2; transform: rotate(135deg);
         }
         .preview-arrow-anim { animation: arrowFloat 3s infinite ease-in-out; }
+
+        @keyframes panBG { from { background-position: 0 0; } to { background-position: 30px 30px; } }
+        @keyframes glow { from { box-shadow: inset 0 0 10px rgba(255,255,255,0.2); } to { box-shadow: inset 0 0 30px rgba(255,255,255,0.6); } }
         @keyframes arrowFloat {
             0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-5px) scale(1.1); }
+            50% { transform: translateY(-3px) scale(1.1); }
         }
 
         .game-card:hover .game-preview {
@@ -133,15 +142,19 @@
         .preview-snap { animation: pulse 2s infinite; }
         .preview-clock { animation: rotate 4s infinite linear; }
         .preview-fruit { animation: bounce 2s infinite; }
+        .preview-scrabble-anim { animation: tileFloat 3s infinite ease-in-out; }
+        .preview-ttt-anim { animation: tttBlink 2s infinite; }
 
-        @keyframes pulse { 0% { opacity: 0.7; } 50% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0.7; } }
+        @keyframes pulse { 0% { opacity: 0.8; } 50% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0.8; } }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        @keyframes tileFloat { 0%, 100% { transform: rotate(-3deg) translateY(0); } 50% { transform: rotate(3deg) translateY(-4px); } }
+        @keyframes tttBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
         .game-info {
-            padding: 12px 10px;
+            padding: 8px 4px;
             text-align: center;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1);
             flex-grow: 1;
             display: flex;
             flex-direction: column;
@@ -150,16 +163,19 @@
 
         .game-info h3 {
             margin: 0;
-            font-size: 0.9rem;
+            font-size: 0.65rem;
             font-weight: 800;
-            line-height: 1.2;
+            line-height: 1.1;
         }
 
         .game-info p {
-            margin: 4px 0 0;
-            font-size: 0.7rem;
-            opacity: 0.8;
+            margin: 2px 0 0;
+            font-size: 0.55rem;
+            opacity: 0.7;
             font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .tag-new {
@@ -188,39 +204,23 @@
     <p class="subtitle">Interactive educational games for all ages!</p>
 
     <div class="game-grid">
+
+        <!-- EKA ARROW Eliminator -->
+        <a href="game_arrow_eliminator.html" class="game-card">
+            <span class="tag-new">NEW</span>
+            <div class="game-preview preview-arrow preview-arrow-anim">🎯</div>
+            <div class="game-info">
+                <h3>ARROW ELIMINATOR</h3>
+                <p>Precision & Strategy</p>
+            </div>
+        </a>
+
         <!-- Fruit Basket -->
         <a href="game1.html" class="game-card">
             <div class="game-preview preview-basket preview-fruit">🧺</div>
             <div class="game-info">
                 <h3>FRUIT BASKET</h3>
                 <p>Catch & Score</p>
-            </div>
-        </a>
-
-        <!-- Crossword -->
-        <a href="crossword.html" class="game-card">
-            <div class="game-preview preview-crossword">🔠</div>
-            <div class="game-info">
-                <h3>CROSSWORD</h3>
-                <p>Vocabulary Test</p>
-            </div>
-        </a>
-
-        <!-- Guess Word -->
-        <a href="guessword.html" class="game-card">
-            <div class="game-preview preview-guess">💡</div>
-            <div class="game-info">
-                <h3>GUESS WORD</h3>
-                <p>Think & Solve</p>
-            </div>
-        </a>
-
-        <!-- Click Clock -->
-        <a href="gameclickclock.html" class="game-card">
-            <div class="game-preview preview-clock">⏱️</div>
-            <div class="game-info">
-                <h3>CLICK CLOCK</h3>
-                <p>Precision Time</p>
             </div>
         </a>
 
@@ -234,33 +234,53 @@
             </div>
         </a>
 
+
+        <!-- Guess Word -->
+        <a href="guessword.html" class="game-card">
+            <div class="game-preview preview-guess">💡</div>
+            <div class="game-info">
+                <h3>GUESS WORD</h3>
+                <p>Think & Solve</p>
+            </div>
+        </a>
+
+        <!-- Crossword -->
+        <a href="crossword.html" class="game-card">
+            <div class="game-preview preview-crossword">🔠</div>
+            <div class="game-info">
+                <h3>CROSSWORD</h3>
+                <p>Vocabulary Test</p>
+            </div>
+        </a>
+
+
         <!-- Scrabble -->
         <a href="scrabblewords.html" class="game-card">
-            <div class="game-preview preview-scrabble">🧩</div>
+            <div class="game-preview preview-scrabble preview-scrabble-anim">🧩</div>
             <div class="game-info">
                 <h3>SCRABBLE</h3>
-                <p>Word Building</p>
+                <p>Word Build</p>
             </div>
         </a>
 
         <!-- Tic Tac Toe -->
         <a href="tictactoe.html" class="game-card">
-            <div class="game-preview preview-tictactoe">🎮</div>
+            <div class="game-preview preview-tictactoe preview-ttt-anim">❌</div>
             <div class="game-info">
                 <h3>TIC TAC TOE</h3>
-                <p>Classic Strategy</p>
+                <p>Strategy</p>
             </div>
         </a>
 
-        <!-- EKA ARROW Eliminator -->
-        <a href="game_arrow_eliminator.html" class="game-card">
-            <span class="tag-new">NEW</span>
-            <div class="game-preview preview-arrow preview-arrow-anim">🎯</div>
+        <!-- Click Clock -->
+        <a href="gameclickclock.html" class="game-card">
+            <div class="game-preview preview-clock">⏱️</div>
             <div class="game-info">
-                <h3>ARROW ELIMINATOR</h3>
-                <p>Precision & Strategy</p>
+                <h3>CLICK CLOCK</h3>
+                <p>Precision Time</p>
             </div>
         </a>
+
 
         <!-- Placeholder/Coming Soon -->
         <div class="game-card" style="opacity: 0.5; pointer-events: none;">
