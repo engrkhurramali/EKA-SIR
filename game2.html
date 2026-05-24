@@ -125,16 +125,11 @@
         }
         .icecube:active { transform: scale(0.9); background: rgba(255,255,255,0.1); }
 
-        /* Shape Styles (keeping original logic but fixing aspect) */
-        .shape-container { width: 60%; height: 60%; display: flex; align-items: center; justify-content: center; position: relative; }
+        /* Shape Styles */
+        .shape-container { width: 65%; height: 65%; display: flex; align-items: center; justify-content: center; position: relative; }
         .circle { width: 100%; height: 100%; border-radius: 50%; }
         .square { width: 100%; height: 100%; }
-        .triangle {
-            width: 0; height: 0;
-            border-left: 25px solid transparent;
-            border-right: 25px solid transparent;
-            border-bottom: 50px solid;
-        }
+        .triangle { width: 100%; height: 100%; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
         .star { width: 100%; height: 100%; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
         .hexagon { width: 100%; height: 100%; clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%); }
 
@@ -150,12 +145,15 @@
 
         /* Leaderboard */
         .leaderboard {
-            width: 100%; max-height: 35vh; overflow-y: auto; background: rgba(0,0,0,0.2);
+            width: 100%; max-height: 40vh; overflow-y: auto; background: rgba(0,0,0,0.2);
             border-radius: 15px; border: 1px solid var(--glass-border);
+            -webkit-overflow-scrolling: touch;
         }
         .leaderboard table { width: 100%; border-collapse: collapse; }
-        .leaderboard th, .leaderboard td { padding: 10px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; }
-        .leaderboard th { color: var(--accent); }
+        .leaderboard th, .leaderboard td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; }
+        .leaderboard th { color: var(--accent); font-weight: 800; background: rgba(255,255,255,0.02); }
+        .leaderboard td b { color: var(--text-main); font-size: 0.85rem; }
+        .leaderboard td small { color: var(--text-sub); display: block; margin-top: 2px; }
 
         #firebaseStatus { font-size: 10px; color: var(--success); margin-bottom: 5px; opacity: 0.8; }
     </style>
@@ -194,12 +192,12 @@
 
             <div id="firebaseStatus">Connecting...</div>
             <div class="leaderboard">
-                <div style="display: flex; gap: 5px; padding: 8px;">
-                    <button class="btn" style="flex:1; min-height: 30px; font-size: 0.7rem;" onclick="loadScoresFromFirebase('top')" id="btnTop">🏆 TOP 10</button>
-                    <button class="btn" style="flex:1; min-height: 30px; font-size: 0.7rem; opacity: 0.6;" onclick="loadScoresFromFirebase('recent')" id="btnRecent">🕒 RECENT</button>
+                <div style="display: flex; gap: 8px; padding: 10px;">
+                    <button class="btn" style="flex:1; min-height: 36px; font-size: 0.8rem;" onclick="loadScoresFromFirebase('top')" id="btnTop">🏆 TOP 15</button>
+                    <button class="btn" style="flex:1; min-height: 36px; font-size: 0.8rem; opacity: 0.6;" onclick="loadScoresFromFirebase('recent')" id="btnRecent">🕒 RECENT 60</button>
                 </div>
                 <table>
-                    <thead><tr><th>Rank</th><th>Score</th><th>Name</th></tr></thead>
+                    <thead><tr><th>Player</th><th>Score</th><th>Date</th></tr></thead>
                     <tbody id="leaderboardBody"></tbody>
                 </table>
             </div>
@@ -420,46 +418,76 @@
     }
 
     async function submitScore() {
+        if (state.score <= 0) { location.reload(); return; }
         const btn = document.getElementById('submitScoreBtn');
         btn.disabled = true; btn.textContent = 'SAVING...';
 
-        if (firebaseInitialized && state.score > 0) {
-            await firebaseDB.ref('scores_snap').push({
-                name: state.name,
-                score: state.score,
-                age: state.currentAge,
-                timestamp: firebase.database.ServerValue.TIMESTAMP
-            });
+        if (firebaseInitialized) {
+            try {
+                await firebaseDB.ref('scores_snap').push({
+                    name: state.name,
+                    score: state.score,
+                    level: state.currentAge,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                });
+                btn.textContent = 'SAVED!';
+            } catch(e) {
+                console.error("Firebase Save Error:", e);
+                btn.textContent = 'ERROR';
+            }
         }
-        btn.textContent = 'SAVED!';
-        setTimeout(() => location.reload(), 800);
+        setTimeout(() => location.reload(), 1000);
     }
 
     function loadScoresFromFirebase(mode = 'top') {
         if (!firebaseInitialized) return;
         const tbody = document.getElementById('leaderboardBody');
-        tbody.innerHTML = '<tr><td colspan="3">Syncing...</td></tr>';
+        const btnTop = document.getElementById('btnTop');
+        const btnRecent = document.getElementById('btnRecent');
 
-        document.getElementById('btnTop').style.opacity = mode === 'top' ? '1' : '0.6';
-        document.getElementById('btnRecent').style.opacity = mode === 'recent' ? '1' : '0.6';
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center">Syncing...</td></tr>';
+
+        if (mode === 'top') {
+            btnTop.style.opacity = '1'; btnRecent.style.opacity = '0.6';
+        } else {
+            btnTop.style.opacity = '0.6'; btnRecent.style.opacity = '1';
+        }
 
         let query = firebaseDB.ref('scores_snap');
-        if (mode === 'top') query = query.orderByChild('score').limitToLast(10);
-        else query = query.limitToLast(10);
+        if (mode === 'top') {
+            query = query.orderByChild('score').limitToLast(15);
+        } else {
+            query = query.limitToLast(60);
+        }
 
         query.once('value', snapshot => {
             let list = [];
-            snapshot.forEach(c => list.push(c.val()));
-            if (mode === 'top') list.sort((a,b) => b.score - a.score);
-            else list.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
+            snapshot.forEach(child => {
+                let val = child.val();
+                // Normalize fields for legacy/typo support
+                val.score = val.score !== undefined ? val.score : (val.Score || 0);
+                val.name = val.name || val.Name || 'Anonymous';
+                val.level = val.level || val.age || 'Standard';
+                list.push(val);
+            });
 
-            tbody.innerHTML = list.map((s, i) => `
+            if (mode === 'top') {
+                list.sort((a,b) => (parseInt(b.score)||0) - (parseInt(a.score)||0));
+            } else {
+                list.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
+            }
+
+            tbody.innerHTML = list.length ? list.map((s) => {
+                const dateStr = s.timestamp ? new Date(s.timestamp).toLocaleDateString() : 'N/A';
+                return `
                 <tr>
-                    <td>${mode === 'top' ? i+1 : '#'}</td>
+                    <td><b>${s.name}</b><br><small>${s.level}</small></td>
                     <td style="font-weight:bold;color:var(--accent)">${s.score}</td>
-                    <td>${s.name}</td>
-                </tr>
-            `).join('') || '<tr><td colspan="3">No scores yet</td></tr>';
+                    <td style="font-size:0.7rem; opacity:0.7;">${dateStr}</td>
+                </tr>`;
+            }).join('') : '<tr><td colspan="3" style="text-align:center">No scores yet</td></tr>';
+        }, err => {
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:var(--danger)">Connection Error</td></tr>';
         });
     }
 
