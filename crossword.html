@@ -6,28 +6,75 @@
     <meta name="theme-color" content="#a8edea">
     <title>EKA CROSSWORD</title>
     <style>
-        :root {
+        /* ========== THEME VARIABLES ========== */
+        :root, [data-theme="3d-glass"] {
           --bg-grad: linear-gradient(135deg, #a8edea 0%, #b5f0e0 50%, #88d8c0 100%);
           --glass-bg: rgba(255, 255, 255, 0.4);
           --glass-border: rgba(255, 255, 255, 0.65);
+          --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
           --text-main: #004d40;
           --text-sub: #00695c;
           --accent: #00897b;
           --danger: #e57373;
+          --success: #00897b;
+          --cell-bg: rgba(255,255,255,0.6);
           --found-bg: #fff9c4;
           --found-border: #d32f2f;
-          --cell-bg: rgba(255,255,255,0.6);
           --radius: 16px;
+        }
+
+        [data-theme="modern-2x2"] {
+            --bg-grad: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            --glass-bg: rgba(255, 255, 255, 0.5);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --text-main: #44403c;
+            --text-sub: #78716c;
+            --accent: #fb923c;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --cell-bg: rgba(255,255,255,0.6);
+            --found-bg: #fef3c7;
+            --found-border: #f59e0b;
+        }
+
+        [data-theme="dark-neon"] {
+            --bg-grad: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(148, 163, 184, 0.2);
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --accent: #60a5fa;
+            --danger: #f43f5e;
+            --success: #34d399;
+            --cell-bg: rgba(51, 65, 85, 0.9);
+            --found-bg: rgba(96, 165, 250, 0.3);
+            --found-border: #60a5fa;
+        }
+
+        [data-theme="midnight-dark"] {
+            --bg-grad: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+            --glass-bg: rgba(15, 23, 42, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --accent: #38bdf8;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --cell-bg: rgba(30, 41, 59, 0.9);
+            --found-bg: rgba(56, 189, 248, 0.2);
+            --found-border: #38bdf8;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body {
-          font-family: system-ui, sans-serif;
+          font-family: system-ui, -apple-system, sans-serif;
           background: var(--bg-grad); background-size: 100% 200%;
+          animation: bgFloat 20s ease infinite;
           color: var(--text-main); height: 100dvh; width: 100vw;
           display: flex; justify-content: center; align-items: center;
           overflow: hidden; touch-action: manipulation;
         }
+        @keyframes bgFloat { 0% { background-position: 0% 0%; } 50% { background-position: 0% 100%; } 100% { background-position: 0% 0%; } }
 
         .app-container {
           width: 100vw; max-width: 450px; height: 100dvh;
@@ -65,6 +112,18 @@
           display: flex; gap: 6px; width: 100%; align-items: center;
         }
         .controls-row .level-selector { flex: 2; min-width: 0; }
+        .btn {
+          min-height: 50px; width: 100%; padding: 0 20px;
+          font-size: 1rem; font-weight: 700; border: none; border-radius: 12px;
+          background: var(--cell-bg); color: var(--text-main);
+          cursor: pointer; transition: all 0.2s;
+          display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+          margin-bottom: 5px;
+        }
+        .btn.primary { background: var(--accent); color: white; }
+        .btn:active { transform: scale(0.96); }
+
         .btn-mini {
           flex: 1; height: 44px; border: none; border-radius: 10px;
           font-weight: 700; cursor: pointer; background: var(--cell-bg);
@@ -136,24 +195,13 @@
 
         /* Leaderboard Styles */
         .leaderboard {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px;
-            border-radius: 15px;
-            margin-top: 15px;
-            width: 100%;
-            max-height: 25vh;
-            overflow-y: auto;
-            color: var(--text-main);
-            border: 1px solid var(--glass-border);
+            width: 100%; max-height: 45vh; overflow-y: auto; background: rgba(255,255,255,0.1);
+            border-radius: 15px; border: 1px solid var(--glass-border);
+            -webkit-overflow-scrolling: touch;
         }
-
         .leaderboard table { width: 100%; border-collapse: collapse; }
-        .leaderboard th, .leaderboard td {
-            padding: 6px; text-align: left;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            font-size: 0.75rem;
-        }
-        .leaderboard th { color: var(--text-sub); font-size: 0.65rem; text-transform: uppercase; }
+        .leaderboard th, .leaderboard td { padding: 10px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; }
+        .leaderboard th { font-weight: 800; color: var(--accent); background: rgba(255,255,255,0.05); text-transform: uppercase; font-size: 0.7rem; }
 
         .firebase-status {
             font-size: 10px; color: var(--accent);
@@ -189,29 +237,42 @@
     <div class="screens-wrapper">
         <!-- WELCOME / LEVEL SELECTION SCREEN -->
         <section id="screen-levels" class="screen active">
-            <div class="glass-card" style="align-items:flex-start; width:100%;">
-                <h2>Player Profile</h2>
-                <input type="text" id="playerName" class="input-glass" placeholder="Enter Name" maxlength="12">
+            <div style="font-size: 2.2rem; font-weight: 900; color: var(--accent); text-align: center; margin: 20px 0;">WORD SEARCH</div>
 
-                <h2>Select Age Bracket</h2>
-                <select id="level-select" class="level-selector" style="width:100%; height:48px; margin-bottom:10px;">
+            <div class="glass-card">
+                <input type="text" id="playerName" class="input-glass" placeholder="Enter Your Name" maxlength="12">
+
+                <select id="level-select" class="input-glass">
                 </select>
-                <p>Grid size and words complexity scale with age.</p>
-                <button id="btn-start" class="btn-mini primary" style="width:100%; height:50px; font-size:1rem;">🚀 Start Game</button>
+
+                <select id="theme-select" class="input-glass" onchange="setTheme(this.value)">
+                    <option value="3d-glass">🎨 3D Glass</option>
+                    <option value="modern-2x2">🎨 Modern Orange</option>
+                    <option value="dark-neon">🎨 Dark Neon</option>
+                    <option value="midnight-dark">🎨 Midnight</option>
+                </select>
+
+                <button id="btn-start" class="btn primary">▶ START GAME</button>
+                <button class="btn" onclick="navTo('screen-leaderboard-main')">🏆 LEADERBOARD</button>
             </div>
 
-            <div class="glass-card" style="margin-top: 10px; flex:1; display:flex; flex-direction:column;">
-                <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
-                    <h2>🏆 Global Ranking</h2>
-                    <div id="firebaseStatus" class="firebase-status">Connecting...</div>
-                </div>
-                <div class="leaderboard" style="flex:1; max-height:none;">
-                    <table>
-                        <thead><tr><th>Rank</th><th>Score</th><th>Name</th></tr></thead>
-                        <tbody id="leaderboardBody"><tr><td colspan="3">Loading...</td></tr></tbody>
-                    </table>
-                </div>
+            <div id="firebaseStatus" class="firebase-status" style="margin-top: 10px;">Connecting...</div>
+        </section>
+
+        <!-- MAIN LEADERBOARD SCREEN -->
+        <section id="screen-leaderboard-main" class="screen">
+            <h2 style="margin: 10px 0;">🏆 Global Rankings</h2>
+            <div style="display: flex; gap: 8px; margin-bottom: 10px; width: 98%;">
+                <button class="btn" style="flex: 1; min-height: 40px; font-size: 0.8rem;" id="btnTop15" onclick="loadScoresFromFirebase('top')">Top 15</button>
+                <button class="btn" style="flex: 1; min-height: 40px; font-size: 0.8rem; opacity: 0.6;" id="btnRecent60" onclick="loadScoresFromFirebase('recent')">Recent 60</button>
             </div>
+            <div class="leaderboard">
+                <table>
+                    <thead><tr><th>Player</th><th>Score</th><th>Date</th></tr></thead>
+                    <tbody id="leaderboardBodyMain"></tbody>
+                </table>
+            </div>
+            <button class="btn primary" style="margin-top: 15px;" onclick="navTo('screen-levels')">Back to Menu</button>
         </section>
 
         <!-- GAME SCREEN -->
@@ -347,35 +408,63 @@
         });
     }
 
-    function loadScoresFromFirebase() {
+    function loadScoresFromFirebase(mode = 'top') {
         if (!firebaseInitialized || !firebaseDB) return;
-        firebaseDB.ref('scores_crossword').orderByChild('score').limitToLast(15).once('value')
-            .then(snapshot => {
-                const scores = [];
-                snapshot.forEach(child => { scores.push(child.val()); });
+
+        const btnTop = document.getElementById('btnTop15');
+        const btnRecent = document.getElementById('btnRecent60');
+        if (btnTop && btnRecent) {
+            if (mode === 'top') { btnTop.style.opacity = '1'; btnRecent.style.opacity = '0.6'; }
+            else { btnTop.style.opacity = '0.6'; btnRecent.style.opacity = '1'; }
+        }
+
+        const body = document.getElementById('leaderboardBodyMain');
+        if (body) body.innerHTML = '<tr><td colspan="3">Syncing...</td></tr>';
+
+        let q = firebaseDB.ref('scores_crossword');
+        if (mode === 'top') {
+            q = q.orderByChild('score').limitToLast(15);
+        } else {
+            q = q.limitToLast(60);
+        }
+
+        q.once('value').then(snapshot => {
+            const scores = [];
+            snapshot.forEach(child => { scores.push(child.val()); });
+
+            if (mode === 'top') {
                 scores.sort((a, b) => b.score - a.score);
-                displayLeaderboard(scores);
-            });
+            } else {
+                scores.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            }
+            displayLeaderboard(scores);
+        });
     }
 
     function displayLeaderboard(scores) {
+        const body = document.getElementById('leaderboardBodyMain');
+        if (!body) return;
+
         if (!scores || scores.length === 0) {
-            UI.leaderboardBody.innerHTML = `<tr><td colspan="3">No scores yet.</td></tr>`;
+            body.innerHTML = `<tr><td colspan="3">No records found.</td></tr>`;
             return;
         }
-        const currentScore = calculateScore(false);
-        const currentPlayer = UI.playerName.value.trim();
 
-        UI.leaderboardBody.innerHTML = scores.map((s, i) => {
-            const isMe = s.name === currentPlayer && s.score === currentScore;
+        body.innerHTML = scores.map((s, i) => {
+            const date = s.timestamp ? new Date(s.timestamp).toLocaleDateString() : 'N/A';
             return `
-                <tr style="${isMe ? 'background:rgba(0,137,123,0.15);font-weight:bold' : ''}">
-                    <td>${i + 1}</td>
+                <tr>
+                    <td><b>${s.name || 'Anonymous'}</b><br><small>${s.age || ''}</small></td>
                     <td style="font-weight:bold;color:var(--accent)">${s.score}</td>
-                    <td>${s.name} ${isMe ? '⭐' : ''}</td>
+                    <td style="font-size: 0.7rem; opacity: 0.7;">${date}</td>
                 </tr>
             `;
         }).join('');
+    }
+
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('eka_crossword_theme', theme);
     }
 
     let grid = [], placedWords = [], foundWords = new Set();
@@ -391,6 +480,12 @@
 
         const savedName = localStorage.getItem('eka_player_name');
         if (savedName) UI.playerName.value = savedName;
+
+        const savedTheme = localStorage.getItem('eka_crossword_theme');
+        if (savedTheme) {
+            setTheme(savedTheme);
+            document.getElementById('theme-select').value = savedTheme;
+        }
 
         document.getElementById('btn-start').onclick = () => {
             if (UI.playerName.value.trim()) {
@@ -663,60 +758,42 @@
         clearInterval(timerInterval);
         const finalScore = calculateScore(won);
 
-        const modal = document.getElementById('modal-end');
-        const title = document.getElementById('end-title');
-        const msg = document.getElementById('end-msg');
-        const actionBtn = document.getElementById('btn-restart');
-        const saveBtn = document.getElementById('btn-save-score');
-
         if (won) {
-            title.textContent = `🎉 Level ${levelCount} Clear!`;
-            msg.textContent = `Excellent! You found all words.\nBonus: +${Math.max(0, Math.floor(timer / 5))}\nTotal Score: ${finalScore}`;
-            actionBtn.textContent = "Next Level";
-            actionBtn.onclick = () => {
-                modal.classList.remove('active');
+            saveScore(finalScore);
+            UI.btnSaveScore.style.display = 'block';
+            UI.btnSaveScore.onclick = async () => {
+                UI.btnSaveScore.disabled = true;
+                UI.btnSaveScore.textContent = "⏳ Saving...";
+                await saveScoreToFirebase(UI.playerName.value.trim(), finalScore, currentLevel);
+                UI.btnSaveScore.textContent = "✅ Saved!";
+                loadScoresFromFirebase();
+            };
+        } else {
+            UI.btnSaveScore.style.display = 'none';
+        }
+
+        const btnRestart = document.getElementById('btn-restart');
+        if (won) {
+            btnRestart.textContent = "Next Level";
+            btnRestart.onclick = () => {
                 baseScore = finalScore;
                 levelCount++;
                 startLevel();
             };
-            saveBtn.style.display = 'none';
+            document.getElementById('end-title').textContent = `🎉 Level ${levelCount} Clear!`;
         } else {
-            title.textContent = "⏰ Game Over!";
-            msg.textContent = `Time ran out!\nFound ${foundWords.size} of ${placedWords.length}\nFinal Score: ${finalScore}`;
-            actionBtn.textContent = "Try Again";
-            actionBtn.onclick = () => {
-                modal.classList.remove('active');
+            btnRestart.textContent = "Play Again";
+            btnRestart.onclick = () => {
                 baseScore = 0;
                 levelCount = 1;
                 startLevel();
             };
-
-            // Show save button and auto-save
-            saveBtn.style.display = 'block';
-            saveBtn.disabled = true;
-            saveBtn.textContent = "⏳ Saving...";
-
-            saveScoreToFirebase(UI.playerName.value.trim(), finalScore, currentLevel).then(() => {
-                saveBtn.textContent = "✅ Saved to Leaderboard";
-                loadScoresFromFirebase();
-            }).catch(() => {
-                saveBtn.disabled = false;
-                saveBtn.textContent = "💾 Save to Global";
-            });
+            document.getElementById('end-title').textContent = "⏰ Time's Up!";
         }
 
-        modal.classList.add('active');
+        document.getElementById('end-msg').textContent = (won ? `Excellent! You finished Level ${levelCount}.` : `Found ${foundWords.size} of ${placedWords.length}`) + `\nTotal Score: ${finalScore}`;
+        UI.modalEnd.classList.add('active');
     }
-
-    // Remove the old btn-save-score onclick since we integrated it
-    UI.btnSaveScore.onclick = async () => {
-        const finalScore = calculateScore(false);
-        UI.btnSaveScore.disabled = true;
-        UI.btnSaveScore.textContent = "⏳ Saving...";
-        await saveScoreToFirebase(UI.playerName.value.trim(), finalScore, currentLevel);
-        UI.btnSaveScore.textContent = "✅ Saved!";
-        loadScoresFromFirebase();
-    };
 
     function populateLevels() {
         if (UI.level.options.length > 0) return;
