@@ -363,7 +363,7 @@
         state.level = 1;
         localStorage.setItem('eka_player_name', name);
         navTo('screen-game');
-        setTimeout(initLevel, 300); // Wait for transition and resize
+        setTimeout(initLevel, 300);
     }
 
     function initLevel() {
@@ -375,9 +375,10 @@
         state.active = false;
         particles = [];
 
+        // Dynamic bound estimation based on canvas parent sizing
+        resizeCanvas();
         generateSolvableBoard();
 
-        // Ensure count is updated
         countDisplay.innerText = state.arrows.length;
         chancesDisplay.innerText = state.chances;
         document.getElementById('disp-level').textContent = `Level ${state.level}`;
@@ -401,10 +402,9 @@
         document.getElementById('timer-bar').style.background = pct < 25 ? 'var(--danger)' : 'var(--success)';
     }
 
-    // Logic for board generation
     function getArrowBounds(a) {
         let halfL = a.length / 2;
-        let hw = 14; // Adjusted for smaller arrow head
+        let hw = 14;
         if (a.dir === "UP" || a.dir === "DOWN") {
             return { minX: a.x - hw, maxX: a.x + hw, minY: a.y - halfL - 5, maxY: a.y + halfL + 5 };
         } else {
@@ -412,31 +412,50 @@
         }
     }
 
+    // Refined path intersection solver logic
     function isPathBlocked(a, b) {
         let boundsA = getArrowBounds(a);
         let boundsB = getArrowBounds(b);
-        if (!(boundsA.maxX < boundsB.minX - 8 || boundsA.minX > boundsB.maxX + 8 ||
-              boundsA.maxY < boundsB.minY - 8 || boundsA.minY > boundsB.maxY + 8)) return true;
-        const checkRange = 20;
+
+        // Static overlap inspection bounding box check
+        if (!(boundsA.maxX < boundsB.minX - 4 || boundsA.minX > boundsB.maxX + 4 ||
+              boundsA.maxY < boundsB.minY - 4 || boundsA.minY > boundsB.maxY + 4)) {
+            return true;
+        }
+
+        const checkRange = 24;
+        // Projection calculation along continuous vector trajectory lines
         if (a.dir === "UP" && b.y < a.y && Math.abs(a.x - b.x) < checkRange) return true;
         if (a.dir === "DOWN" && b.y > a.y && Math.abs(a.x - b.x) < checkRange) return true;
         if (a.dir === "LEFT" && b.x < a.x && Math.abs(a.y - b.y) < checkRange) return true;
         if (a.dir === "RIGHT" && b.x > a.x && Math.abs(a.y - b.y) < checkRange) return true;
+
         return false;
     }
 
+    // Completely reworked validation engine simulating precise destruction flows
     function verifyBoardSolvability(testArrows) {
-        let tempList = [...testArrows];
+        let tempList = testArrows.map(a => ({...a}));
         let progress = true;
+
         while (tempList.length > 0 && progress) {
             progress = false;
             for (let i = 0; i < tempList.length; i++) {
                 let current = tempList[i];
                 let blocked = false;
+
                 for (let j = 0; j < tempList.length; j++) {
-                    if (i !== j && isPathBlocked(current, tempList[j])) { blocked = true; break; }
+                    if (i !== j && isPathBlocked(current, tempList[j])) {
+                        blocked = true;
+                        break;
+                    }
                 }
-                if (!blocked) { tempList.splice(i, 1); progress = true; break; }
+                // If it can clear, remove from virtual stack and restart pass
+                if (!blocked) {
+                    tempList.splice(i, 1);
+                    progress = true;
+                    break;
+                }
             }
         }
         return tempList.length === 0;
@@ -447,36 +466,59 @@
         let canvasWidth = rect.width || window.innerWidth;
         let canvasHeight = rect.height || (window.innerHeight * 0.6);
 
-        if (canvasWidth < 100) canvasWidth = 360; // Fallback
+        if (canvasWidth < 100) canvasWidth = 360;
         if (canvasHeight < 100) canvasHeight = 500;
 
-        let targetArrows = 6 + (state.level - 1) * 3;
-        let globalAttempts = 0;
-        const xPadding = canvasWidth * 0.12;
-        const yPadding = canvasHeight * 0.12;
+        let targetArrows = 6 + (state.level - 1) * 2;
+        if (targetArrows > 24) targetArrows = 24; // Prevent crowded grid lock loops
 
-        while (globalAttempts < 100) {
+        let globalAttempts = 0;
+        const xPadding = canvasWidth * 0.15;
+        const yPadding = canvasHeight * 0.15;
+
+        while (globalAttempts < 150) {
             globalAttempts++;
             state.arrows = [];
             let idCounter = 1;
             let packAttempts = 0;
-            while (state.arrows.length < targetArrows && packAttempts < 500) {
+
+            while (state.arrows.length < targetArrows && packAttempts < 600) {
                 packAttempts++;
                 let dir = DIRECTIONS[Math.floor(Math.random() * DIRECTIONS.length)];
-                let length = Math.min(canvasWidth, canvasHeight) * 0.20;
+                let length = Math.min(canvasWidth, canvasHeight) * 0.18;
                 let cx = xPadding + Math.random() * (canvasWidth - xPadding * 2);
                 let cy = yPadding + Math.random() * (canvasHeight - yPadding * 2);
 
                 let p = { id: idCounter, x: cx, y: cy, dir: dir, length: length, thickness: ARROW_THICKNESS, state: "IDLE", offset: Math.random() * Math.PI * 2 };
                 let overlap = false;
                 let pb = getArrowBounds(p);
+
                 for (let o of state.arrows) {
                     let ob = getArrowBounds(o);
-                    if (!(pb.maxX < ob.minX - 12 || pb.minX > ob.maxX + 12 || pb.maxY < ob.minY - 12 || pb.minY > ob.maxY + 12)) { overlap = true; break; }
+                    // Standard intersection safety bounding box
+                    if (!(pb.maxX < ob.minX - 16 || pb.minX > ob.maxX + 16 || pb.maxY < ob.minY - 16 || pb.minY > ob.maxY + 16)) {
+                        overlap = true;
+                        break;
+                    }
+                    // Explicit directional protection rule configuration to completely avoid head-to-head trajectory loops
+                    if ((dir === "UP" && o.dir === "DOWN" && Math.abs(cx - o.x) < 25) ||
+                        (dir === "DOWN" && o.dir === "UP" && Math.abs(cx - o.x) < 25) ||
+                        (dir === "LEFT" && o.dir === "RIGHT" && Math.abs(cy - o.y) < 25) ||
+                        (dir === "RIGHT" && o.dir === "LEFT" && Math.abs(cy - o.y) < 25)) {
+                        overlap = true;
+                        break;
+                    }
                 }
-                if (!overlap) { state.arrows.push(p); idCounter++; }
+                if (!overlap) {
+                    state.arrows.push(p);
+                    idCounter++;
+                }
             }
-            if (verifyBoardSolvability(state.arrows) && state.arrows.length >= Math.min(targetArrows, 4)) break;
+
+            // Validate simulation logic passes accurately
+            if (state.arrows.length >= 4 && verifyBoardSolvability(state.arrows)) {
+                break;
+            }
         }
         countDisplay.innerText = state.arrows.length;
     }
@@ -492,11 +534,9 @@
         const accentColor = getThemeColor('--accent');
         const borderCol = getThemeColor('--glass-border');
 
-        // Subtle floating animation
         const pulse = Math.sin(Date.now() / 300 + a.offset) * 2;
         if (a.state === "IDLE") ctx.translate(0, pulse);
 
-        // 3D Tilt & Glow Effect when moving
         if (a.state === "MOVING") {
             ctx.scale(1.25, 1.25);
             ctx.shadowBlur = 30;
@@ -510,15 +550,12 @@
         let halfL = a.length / 2;
         let t = a.thickness;
 
-        // 1. BEVELED GLASS SHAFT
-        // Shadow
         ctx.fillStyle = "rgba(0,0,0,0.15)";
         ctx.beginPath();
         if(ctx.roundRect) ctx.roundRect(-t/2 + 3, -halfL + 12, t, a.length - 24, 4);
         else ctx.rect(-t/2 + 3, -halfL + 12, t, a.length - 24);
         ctx.fill();
 
-        // Glass Body with Multi-stop Gradient
         let shaftGrad = ctx.createLinearGradient(-t, 0, t, 0);
         shaftGrad.addColorStop(0, "rgba(255,255,255,0.1)");
         shaftGrad.addColorStop(0.3, "rgba(255,255,255,0.5)");
@@ -535,7 +572,6 @@
         ctx.fill();
         ctx.stroke();
 
-        // 2. STYLISH FLETCHING (Tail)
         ctx.fillStyle = accentColor;
         ctx.globalAlpha = 0.6;
         ctx.beginPath();
@@ -548,15 +584,12 @@
         ctx.fill();
         ctx.globalAlpha = 1.0;
 
-        // 3. REFINED 3D ARROW HEAD
         const headW = 16;
         const headBase = -halfL + 12;
 
-        // Outer Glow/Border for Head
         ctx.shadowBlur = 10;
         ctx.shadowColor = accentColor;
 
-        // Head Shadow
         ctx.fillStyle = "rgba(0,0,0,0.2)";
         ctx.beginPath();
         ctx.moveTo(3, -halfL + 3);
@@ -567,11 +600,10 @@
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Head Main Gradient (Bevel effect)
         let headGrad = ctx.createLinearGradient(-headW, 0, headW, 0);
         headGrad.addColorStop(0, accentColor);
         headGrad.addColorStop(0.48, accentColor);
-        headGrad.addColorStop(0.5, "rgba(255,255,255,0.8)"); // Center highlight line
+        headGrad.addColorStop(0.5, "rgba(255,255,255,0.8)");
         headGrad.addColorStop(0.52, accentColor);
         headGrad.addColorStop(1, accentColor);
 
@@ -584,7 +616,6 @@
         ctx.closePath();
         ctx.fill();
 
-        // Top Gloss Highlight
         ctx.fillStyle = "rgba(255,255,255,0.4)";
         ctx.beginPath();
         ctx.moveTo(0, -halfL);
@@ -594,7 +625,6 @@
         ctx.closePath();
         ctx.fill();
 
-        // 4. NEON CORE BEAM
         ctx.strokeStyle = "rgba(255,255,255,0.9)";
         ctx.lineWidth = 2;
         ctx.lineCap = "round";
@@ -629,7 +659,6 @@
         const rect = canvas.parentElement.getBoundingClientRect();
         ctx.clearRect(0, 0, rect.width, rect.height);
 
-        // Update Particles
         particles = particles.filter(p => p.life > 0);
         particles.forEach(p => {
             p.x += p.vx; p.y += p.vy;
