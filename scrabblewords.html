@@ -49,96 +49,106 @@
 
         /* === 9:16 PORTRAIT CONTAINER (EXACT SPEC) === */
         .app-container {
-          width: 100vw; max-width: 450px;
+          width: 100vw; max-width: 480px;
           height: 100vh; height: 100dvh;
-          aspect-ratio: 9 / 16;
           margin: 0 auto;
           overflow: hidden; display: flex; flex-direction: column;
-          background: rgba(255,255,255,0.12);
-          backdrop-filter: blur(14px);
-          border-radius: var(--radius);
-          box-shadow: 0 12px 35px rgba(0,0,0,0.18);
+          background: rgba(255,255,255,0.05);
+          backdrop-filter: blur(15px);
+          border-radius: 16px;
+          box-shadow: 0 12px 35px rgba(0,0,0,0.2);
           border: 1px solid var(--glass-border);
-        }
-        @media (min-width: 768px) {
-          .app-container { height: 92vh; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.22); }
+          position: relative;
         }
 
         /* Header */
         header {
-          padding: 10px 16px 6px; text-align: center; flex-shrink: 0;
-          background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+          padding: 10px 12px; text-align: center; flex-shrink: 0;
+          background: linear-gradient(to bottom, rgba(255,255,255,0.2), transparent);
+          border-bottom: 1px solid var(--glass-border);
+          position: relative;
         }
-        header h1 { font-size: clamp(1rem, 4vw, 1.3rem); font-weight: 800; letter-spacing: 0.5px; }
+        header h1 { font-size: 1.2rem; font-weight: 800; }
+
+        .back-btn {
+            position: absolute; left: 10px; top: 10px;
+            text-decoration: none; background: rgba(255,255,255,0.3);
+            width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; color: var(--text-main); font-weight: bold; border: 1px solid var(--glass-border);
+        }
+
         .stats-row {
           display: flex; justify-content: space-between; align-items: center;
           margin-top: 6px; font-size: 0.85rem; font-weight: 700; color: var(--text-sub);
+          width: 100%;
         }
         .stat-badge { background: var(--glass-bg); padding: 4px 10px; border-radius: 20px; border: 1px solid var(--glass-border); white-space: nowrap; }
 
         .timer-container {
           flex: 1; height: 8px; background: rgba(0,0,0,0.1);
           border-radius: 4px; margin: 0 10px; overflow: hidden;
-          border: 1px solid rgba(255,255,255,0.2);
         }
-        #timer-bar { height: 100%; width: 100%; background: var(--success); transition: width 1s linear, background 0.3s; }
+        #timer-bar { height: 100%; width: 100%; background: var(--success); transition: width 1s linear; }
 
         /* Screens & Navigation */
-        .screens-wrapper { flex: 1; position: relative; overflow: hidden; display: flex; }
+        .screens-wrapper { flex: 1; position: relative; overflow: hidden; display: flex; width: 100%; }
         .screen {
-          position: absolute; inset: 0; padding: 14px;
-          display: flex; flex-direction: column; gap: 12px;
-          opacity: 0; transform: translateX(40px) scale(0.98);
-          transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.35s;
-          pointer-events: none; overflow-y: auto;
+          position: absolute; inset: 0; padding: 10px;
+          display: none; flex-direction: column; gap: 15px;
+          animation: slideIn 0.3s ease forwards;
+          overflow-y: auto; align-items: center;
+          width: 100%;
         }
-        .screen.active {
-          opacity: 1; transform: translateX(0) scale(1); pointer-events: auto; position: relative;
-        }
-        .screen.exit { transform: translateX(-40px) scale(0.96); }
+        .screen.active { display: flex; position: relative; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Bottom Nav */
         .bottom-nav {
-          height: var(--nav-h); display: flex; justify-content: space-around; align-items: center;
-          background: rgba(255,255,255,0.65); backdrop-filter: blur(12px);
+          height: 60px; display: flex; justify-content: space-around; align-items: center;
+          background: rgba(255,255,255,0.3); backdrop-filter: blur(12px);
           border-top: 1px solid var(--glass-border); flex-shrink: 0;
-          padding-bottom: env(safe-area-inset-bottom);
         }
         .nav-btn {
           flex: 1; background: none; border: none; padding: 6px 4px;
           font-size: 0.75rem; font-weight: 700; color: var(--text-sub);
           cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px;
-          transition: color 0.2s, transform 0.1s;
         }
-        .nav-btn:active { transform: scale(0.92); }
         .nav-btn.active { color: var(--accent); }
 
         /* Touch-Friendly Components */
         .glass-card {
           background: var(--glass-bg); border: 1px solid var(--glass-border);
-          border-radius: var(--radius); padding: 16px;
+          border-radius: 20px; padding: 15px;
           box-shadow: var(--glass-shadow);
-          display: flex; flex-direction: column; align-items: center; gap: 14px;
+          display: flex; flex-direction: column; align-items: center; gap: 15px;
+          width: 98%;
         }
         .btn {
-          min-height: 48px; min-width: 44px; padding: 0 14px;
-          font-size: 0.9rem; font-weight: 700; border: none; border-radius: 12px;
-          background: var(--glass-bg); color: var(--text-main);
-          cursor: pointer; transition: transform 0.1s, background 0.15s, box-shadow 0.2s;
-          display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-          box-shadow: 0 3px 8px rgba(0,0,0,0.1); width: 100%;
+          min-height: 50px; width: 100%; padding: 0 20px;
+          font-size: 1rem; font-weight: 700; border: none; border-radius: 12px;
+          background: rgba(255,255,255,0.7); color: var(--text-main);
+          cursor: pointer; transition: all 0.2s;
+          display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         .btn.primary { background: var(--accent); color: white; }
         .btn.danger { background: var(--danger); color: white; }
         .btn.secondary { background: var(--warning); color: #004d40; }
-        .btn:active { transform: scale(0.96); box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn:active { transform: scale(0.96); }
 
-        select.input-field {
+        .input-glass {
+            width: 100%; padding: 14px; border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.2);
+            color: var(--text-main); font-size: 1rem;
+            outline: none; text-align: center; font-weight: 600;
+        }
+
+        .input-field {
             width: 100%; padding: 12px; border-radius: 12px;
-            border: 1px solid var(--glass-border); background: var(--glass-bg);
+            border: 1px solid var(--glass-border); background: rgba(255,255,255,0.3);
             color: var(--text-main); font-weight: 700; font-size: 1rem;
-            margin-bottom: 10px;
+            text-align: center;
         }
 
         /* === TARGET WORD DISPLAY (CENTERED, SINGLE ROW) === */
@@ -168,7 +178,7 @@
         .slots-row::-webkit-scrollbar { display: none; }
 
         .slot {
-          width: var(--cube-size); height: var(--cube-size); min-width: 44px;
+          width: var(--cube-size); height: var(--cube-size);
           background: rgba(0,0,0,0.05); border: 2px dashed var(--text-sub);
           border-radius: 10px; display: flex; align-items: center; justify-content: center;
           transition: all 0.2s ease; flex-shrink: 0;
@@ -182,7 +192,6 @@
         }
         .tile {
           width: var(--cube-size); height: var(--cube-size);
-          min-width: 44px; min-height: 44px;
           background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
           border: 1px solid var(--glass-border); border-radius: 10px;
           display: flex; align-items: center; justify-content: center;
@@ -277,27 +286,28 @@
 <body>
 <div class="app-container">
     <header>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-            <a href="games.html" style="text-decoration:none; background:rgba(255,255,255,0.4); padding:4px 10px; border-radius:15px; color:var(--text-main); font-weight:bold; font-size:0.8rem;">⬅ Home</a>
-            <h1>EKA Scrabble</h1>
-            <div style="width:50px;"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="games.html" class="back-btn">⬅</a>
+            <h1 id="game-title">EKA Scramble</h1>
+            <div style="width:34px;"></div>
         </div>
-        <div class="stats-row">
-            <span class="stat-badge" id="disp-timer">⏱️ 01:00</span>
-            <div class="timer-container"><div id="timer-bar"></div></div>
-            <span class="stat-badge" id="disp-level">Age 12-16</span>
-            <span class="stat-badge" id="disp-score">🏆 0</span>
+        <div id="game-stats-container" style="display:none;">
+            <div class="stats-row">
+                <span class="stat-badge" id="disp-timer">⏱️ 01:00</span>
+                <div class="timer-container"><div id="timer-bar"></div></div>
+                <span class="stat-badge" id="disp-level">Age 12-16</span>
+                <span class="stat-badge" id="disp-score">🏆 0</span>
+            </div>
         </div>
     </header>
 
     <div class="screens-wrapper">
-        <!-- LEVEL SELECTION SCREEN -->
+        <!-- WELCOME/LEVEL SELECTION SCREEN -->
         <section id="screen-levels" class="screen active">
-            <div class="glass-card" style="align-items:flex-start; width:100%;">
-                <h2>Player Profile</h2>
-                <input type="text" id="playerName" class="input-glass" placeholder="Enter Name" maxlength="12">
+            <div style="font-size: 2.2rem; font-weight: 900; color: var(--accent); text-align: center; margin: 20px 0; text-transform: uppercase;">Scramble</div>
+            <div class="glass-card">
+                <input type="text" id="playerName" class="input-glass" placeholder="Enter Your Name" maxlength="12">
 
-                <h2>Select Age Bracket</h2>
                 <select id="age-selector" class="input-field">
                     <option value="Age < 8">Age &lt; 8</option>
                     <option value="Age 8-12">Age 8-12</option>
@@ -305,43 +315,42 @@
                     <option value="Age 16-20">Age 16-20</option>
                     <option value="Age 20+">Age 20+</option>
                 </select>
-                <p>Words will be selected based on age group</p>
-                <button id="btn-start" class="btn primary">🚀 Start Game</button>
+
+                <button id="btn-start" class="btn primary">▶ START GAME</button>
+                <button class="btn" onclick="showLeaderboard('top')">🏆 LEADERBOARD</button>
             </div>
 
-            <div class="glass-card" style="margin-top: 10px;">
-                <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
-                    <h2>🏆 Global Ranking</h2>
-                    <div id="firebaseStatus" class="firebase-status">Connecting...</div>
-                </div>
-                <div class="leaderboard">
-                    <table>
-                        <thead><tr><th>Rank</th><th>Score</th><th>Name</th></tr></thead>
-                        <tbody id="leaderboardBody"><tr><td colspan="3">Loading...</td></tr></tbody>
-                    </table>
-                </div>
-            </div>
+            <div id="firebaseStatus" class="firebase-status" style="margin-top: 10px;">Connecting...</div>
         </section>
 
         <!-- GAME SCREEN -->
         <section id="screen-game" class="screen">
             <div class="glass-card">
                 <div class="status-msg" id="status-msg">Arrange tiles to form the word</div>
-
-
-                <!-- TARGET WORD DISPLAY (CENTERED, SINGLE ROW) - HIDDEN -->
-                <div class="target-word-container" style="display:none;">
-                    <div class="target-word" id="target-word"></div>
-                </div>
-
-                <div class="slots-row" id="slots-row"></div>
-                <div class="tiles-pool" id="tiles-pool"></div>
+                <div class="slots-row" id="slots-row" style="width: 100%;"></div>
+                <div class="tiles-pool" id="tiles-pool" style="width: 100%;"></div>
 
                 <div class="game-controls">
-                    <button id="btn-clear" class="btn danger">🗑️ Clear</button>
-                    <button id="btn-skip" class="btn secondary">⏭️ Skip</button>
+                    <button id="btn-clear" class="btn danger" style="flex:1;">🗑️ Clear</button>
+                    <button id="btn-skip" class="btn secondary" style="flex:1;">⏭️ Skip</button>
                 </div>
             </div>
+        </section>
+
+        <!-- LEADERBOARD SCREEN -->
+        <section id="screen-leaderboard" class="screen">
+            <h2 style="margin: 10px 0;">🏆 Global Rankings</h2>
+            <div style="display: flex; gap: 8px; margin-bottom: 10px; width: 98%;">
+                <button class="btn" style="flex: 1; min-height: 40px; font-size: 0.8rem;" id="btnTop15" onclick="showLeaderboard('top')">Top 15</button>
+                <button class="btn" style="flex: 1; min-height: 40px; font-size: 0.8rem; opacity: 0.6;" id="btnRecent60" onclick="showLeaderboard('recent')">Recent 60</button>
+            </div>
+            <div class="leaderboard" style="max-height: 60vh;">
+                <table>
+                    <thead><tr><th>Player</th><th>Score</th><th>Date</th></tr></thead>
+                    <tbody id="leaderboardBody"></tbody>
+                </table>
+            </div>
+            <button class="btn primary" style="margin-top: 15px;" onclick="navTo('screen-levels')">Back to Menu</button>
         </section>
     </div>
 
@@ -389,7 +398,6 @@
                 firebaseDB = firebase.database();
                 firebaseInitialized = true;
                 UI.firebaseStatus.textContent = '✅ Global Online';
-                loadScoresFromFirebase();
             }
         } catch (e) {
             console.error("Firebase init failed", e);
@@ -397,33 +405,58 @@
         }
     }
 
-    // === LOAD LEADERBOARD FROM FIREBASE (game1.html pattern) ===
-    function loadScoresFromFirebase() {
+    // === LOAD LEADERBOARD FROM FIREBASE ===
+    function showLeaderboard(mode = 'top') {
+        navTo('screen-leaderboard');
+        const body = document.getElementById('leaderboardBody');
+        const btnTop = document.getElementById('btnTop15');
+        const btnRecent = document.getElementById('btnRecent60');
+
+        if (mode === 'top') {
+            btnTop.style.opacity = '1'; btnRecent.style.opacity = '0.6';
+        } else {
+            btnTop.style.opacity = '0.6'; btnRecent.style.opacity = '1';
+        }
+
+        body.innerHTML = '<tr><td colspan="3">Syncing...</td></tr>';
         if (!firebaseInitialized || !firebaseDB) return;
-        const agePath = UI.ageSelector.value;
-        firebaseDB.ref('scores_scrabble').orderByChild('score').limitToLast(10).on('value', snapshot => {
-            const scores = [];
-            snapshot.forEach(child => { scores.push(child.val()); });
-            scores.sort((a, b) => b.score - a.score);
-            displayLeaderboard(scores);
+
+        let q = firebaseDB.ref('scores_scrabble');
+        if (mode === 'top') {
+            q = q.orderByChild('score').limitToLast(15);
+        } else {
+            q = q.limitToLast(60);
+        }
+
+        q.once('value', snapshot => {
+            let list = [];
+            snapshot.forEach(child => {
+                let data = child.val();
+                list.push(data);
+            });
+
+            if (mode === 'top') {
+                list.sort((a, b) => b.score - a.score);
+            } else {
+                list.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            }
+
+            body.innerHTML = list.length ? list.map((item, i) => {
+                const date = item.timestamp ? new Date(item.timestamp).toLocaleDateString() : 'N/A';
+                return `
+                <tr>
+                    <td><b>${item.name || 'Anonymous'}</b><br><small>${item.age || 'Standard'}</small></td>
+                    <td style="font-weight:bold;color:var(--accent)">${item.score}</td>
+                    <td style="font-size: 0.7rem; opacity: 0.7;">${date}</td>
+                </tr>`;
+            }).join('') : '<tr><td colspan="3">No records.</td></tr>';
         });
     }
 
-    function displayLeaderboard(scores) {
-        if (!scores || scores.length === 0) {
-            UI.lBoard.innerHTML = `<tr><td colspan="3">No scores for ${UI.ageSelector.value} yet.</td></tr>`;
-            return;
-        }
-        UI.lBoard.innerHTML = scores.map((s, i) => `
-            <tr><td>${i + 1}</td><td style="font-weight:bold;color:var(--accent)">${s.score}</td><td>${s.name}</td></tr>
-        `).join('');
-    }
-
-    // === SAVE SCORE TO FIREBASE (game1.html pattern) ===
+    // === SAVE SCORE TO FIREBASE ===
     async function saveScoreToFirebase() {
         if (!firebaseInitialized || !firebaseDB) return;
         const name = UI.playerName.value.trim() || "Anonymous";
-        const agePath = state.age;
         UI.btnSave.disabled = true;
         UI.btnSave.textContent = "⏳ Saving...";
 
@@ -435,7 +468,10 @@
                 timestamp: firebase.database.ServerValue.TIMESTAMP
             });
             UI.btnSave.textContent = "✅ Saved!";
-            loadScoresFromFirebase();
+            setTimeout(() => {
+                UI.modal.classList.remove('active');
+                showLeaderboard('recent');
+            }, 1000);
         } catch (e) {
             UI.btnSave.textContent = "❌ Error";
             UI.btnSave.disabled = false;
@@ -485,7 +521,8 @@
     function setupEvents() {
       // Navigation
       document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('pointerdown', e => {
-        e.preventDefault(); navTo(btn.dataset.target);
+        e.preventDefault();
+        if (btn.dataset.target) navTo(btn.dataset.target);
       }));
 
       UI.btnStart.addEventListener('pointerdown', e => {
@@ -500,7 +537,6 @@
 
       UI.ageSelector.addEventListener('change', () => {
           state.age = UI.ageSelector.value;
-          loadScoresFromFirebase();
       });
 
       UI.btnClear.addEventListener('pointerdown', e => { e.preventDefault(); clearSlots(); });
@@ -535,16 +571,40 @@
     // === NAVIGATION ===
     function navTo(id) {
       document.querySelectorAll('.screen').forEach(s => {
-        if (s.id === id) { s.classList.add('active'); s.classList.remove('exit'); }
-        else { s.classList.remove('active'); s.classList.add('exit'); }
+        s.classList.toggle('active', s.id === id);
       });
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.target === id));
+
+      // Toggle stats bar visibility
+      document.getElementById('game-stats-container').style.display = (id === 'screen-game') ? 'block' : 'none';
+      document.getElementById('game-title').style.display = (id === 'screen-game') ? 'none' : 'block';
     }
 
     // === GAME LOGIC ===
-    function getWordForAge(age) {
+    function getWordForAge(age, score) {
       const pool = window.VOCABULARY[age] || window.VOCABULARY["Age 12-16"];
-      return pool[Math.floor(Math.random() * pool.length)];
+
+      // Determine target word length based on score
+      let targetLen = 3;
+      if (score >= 1800) targetLen = 8;
+      else if (score >= 1200) targetLen = 7;
+      else if (score >= 1000) targetLen = 6;
+      else if (score >= 500) targetLen = 5;
+      else if (score >= 200) targetLen = 4;
+
+      // Difficulty scaling with age: add more length if older
+      if (age === "Age 16-20" || age === "Age 20+") targetLen += 1;
+      else if (age === "Age 12-16") targetLen += (score > 150 ? 1 : 0);
+
+      let filtered = pool.filter(w => w.length === targetLen);
+
+      // Fallback if no exact length words found
+      if (filtered.length === 0) {
+          filtered = pool.filter(w => w.length >= targetLen);
+          if (filtered.length === 0) filtered = pool;
+      }
+
+      return filtered[Math.floor(Math.random() * filtered.length)];
     }
 
     function scramble(word) {
@@ -569,43 +629,47 @@
     }
 
     function nextWord() {
-      state.currentWord = getWordForAge(state.age).toUpperCase();
+      state.currentWord = getWordForAge(state.age, state.score).toUpperCase();
       state.placed = []; state.isChecking = false;
       UI.msg.textContent = "Tap tiles to arrange!";
       UI.msg.style.color = "var(--accent)";
 
-      // Render target word (centered, single row)
-      renderTargetWord(state.currentWord);
       renderTiles(scramble(state.currentWord));
     }
 
-    // === NEW: Render target word centered in single row ===
-    function renderTargetWord(word) {
-        UI.targetWord.innerHTML = '';
-        word.split('').forEach(char => {
-            const letter = document.createElement('div');
-            letter.className = 'target-letter';
-            letter.textContent = char;
-            UI.targetWord.appendChild(letter);
-        });
-    }
-
     function renderTiles(scrambled) {
-      // Clear containers
       UI.slots.innerHTML = ''; UI.pool.innerHTML = '';
       state.tiles = [];
 
-      // Create slots (flex row, no wrap)
-      for (let i = 0; i < state.currentWord.length; i++) {
+      const len = state.currentWord.length;
+
+      // COMPLETE WIDTH CALCULATION
+      const containerWidth = UI.slots.offsetWidth || (window.innerWidth - 40);
+      const availableWidth = containerWidth * 0.96;
+      const gap = len > 8 ? 4 : 8;
+      const size = Math.floor((availableWidth - (len - 1) * gap) / len);
+
+      // Min-max constraints for better aesthetics
+      const finalSize = Math.min(Math.max(size, 28), 70);
+      const fontSize = (finalSize * 0.6) + 'px';
+
+      UI.slots.style.gap = gap + 'px';
+      UI.pool.style.gap = gap + 'px';
+
+      for (let i = 0; i < len; i++) {
         const slot = document.createElement('div');
         slot.className = 'slot'; slot.dataset.idx = i;
+        slot.style.width = finalSize + 'px';
+        slot.style.height = finalSize + 'px';
         UI.slots.appendChild(slot);
       }
 
-      // Create tiles
       scrambled.split('').forEach((char, i) => {
         const tile = document.createElement('div');
         tile.className = 'tile'; tile.textContent = char; tile.dataset.char = char; tile.dataset.id = i;
+        tile.style.width = finalSize + 'px';
+        tile.style.height = finalSize + 'px';
+        tile.style.fontSize = fontSize;
         state.tiles.push(tile);
         UI.pool.appendChild(tile);
       });
