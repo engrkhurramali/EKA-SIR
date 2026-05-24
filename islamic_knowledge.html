@@ -4,70 +4,111 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Islamic Knowledge - EKA SIR</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --glass-bg: rgba(255, 255, 255, 0.15);
-            --glass-border: rgba(255, 255, 255, 0.3);
-            --text-color: #ffffff;
-            --accent-color: #2ecc71;
+        /* ========== THEME VARIABLES ========== */
+        :root, [data-theme="3d-glass"] {
+            --bg-grad: linear-gradient(160deg, #f0fdf4 0%, #dcfce7 100%);
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.7);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            --text-main: #064e3b;
+            --text-sub: #065f46;
+            --accent: #10b981;
+            --danger: #ef4444;
+            --success: #059669;
+            --card-bg: rgba(255,255,255,0.6);
         }
 
+        [data-theme="modern-2x2"] {
+            --bg-grad: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            --glass-bg: rgba(255, 255, 255, 0.5);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --text-main: #44403c;
+            --text-sub: #78716c;
+            --accent: #fb923c;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --card-bg: rgba(255,255,255,0.6);
+        }
+
+        [data-theme="dark-neon"] {
+            --bg-grad: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
+            --glass-bg: rgba(6, 78, 59, 0.7);
+            --glass-border: rgba(16, 185, 129, 0.2);
+            --text-main: #ecfdf5;
+            --text-sub: #a7f3d0;
+            --accent: #34d399;
+            --danger: #f43f5e;
+            --success: #10b981;
+            --card-bg: rgba(6, 95, 70, 0.9);
+        }
+
+        [data-theme="midnight-dark"] {
+            --bg-grad: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+            --glass-bg: rgba(15, 23, 42, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --accent: #10b981;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --card-bg: rgba(30, 41, 59, 0.9);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
         body {
-            background: linear-gradient(135deg, #1e3c72, #2a5298, #2ecc71);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background: var(--bg-grad);
+            background-attachment: fixed;
             font-family: 'Poppins', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 0;
             min-height: 100vh;
-            color: var(--text-color);
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            color: var(--text-main);
+            overflow-x: hidden;
         }
 
         .header {
             width: 100%;
-            padding: 20px;
+            padding: 15px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-sizing: border-box;
-            max-width: 600px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .back-btn {
             text-decoration: none;
-            color: white;
-            font-size: 24px;
-            background: var(--glass-bg);
-            width: 45px;
-            height: 45px;
+            color: var(--text-main);
+            font-size: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
+            border-radius: 12px;
             border: 1px solid var(--glass-border);
         }
 
         .title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            letter-spacing: 1px;
+            font-size: 1.1rem;
+            font-weight: 800;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .container {
-            width: 90%;
+            width: 95%;
             max-width: 500px;
-            padding-bottom: 40px;
+            padding: 20px 0 40px 0;
         }
 
         .search-box {
@@ -75,51 +116,168 @@
             backdrop-filter: blur(15px);
             border: 1px solid var(--glass-border);
             border-radius: 15px;
-            padding: 12px 20px;
+            padding: 14px 20px;
             width: 100%;
             box-sizing: border-box;
-            color: white;
+            color: var(--text-main);
             font-family: inherit;
             margin-bottom: 20px;
             outline: none;
+            font-weight: 600;
+            box-shadow: var(--glass-shadow);
         }
 
-        .search-box::placeholder { color: rgba(255,255,255,0.6); }
+        .search-box::placeholder { color: var(--text-sub); opacity: 0.6; }
 
         .topic-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
-            padding: 20px;
+            padding: 18px;
             margin-bottom: 15px;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .topic-card:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-3px);
+        .topic-card:active {
+            transform: scale(0.97);
         }
 
         .topic-header {
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 10px;
         }
 
-        .topic-icon { font-size: 30px; }
+        .topic-icon {
+            font-size: 28px;
+            background: rgba(255,255,255,0.4);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+        }
 
         .topic-title {
-            font-weight: 600;
-            font-size: 1.1rem;
+            font-weight: 800;
+            font-size: 1.05rem;
+            color: var(--text-main);
         }
 
         .topic-desc {
-            font-size: 0.9rem;
-            opacity: 0.8;
+            font-size: 0.85rem;
+            color: var(--text-sub);
             line-height: 1.4;
+            opacity: 0.9;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-content {
+            background: var(--bg-grad);
+            width: 100%;
+            max-width: 450px;
+            max-height: 85vh;
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 20px;
+            background: var(--glass-bg);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .detail-item {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
+        }
+
+        .detail-item h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: var(--accent);
+        }
+
+        .detail-item p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .close-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .arabic {
+            font-family: 'Amiri', serif;
+            font-size: 1.4rem;
+            text-align: right;
+            direction: rtl;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .theme-selector {
+            display: flex;
+            gap: 10px;
+            padding: 0 10px 20px;
+            justify-content: center;
+        }
+
+        .theme-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
         }
 
         .coming-soon {
@@ -127,67 +285,187 @@
             padding: 20px;
             opacity: 0.6;
             font-style: italic;
+            font-size: 0.8rem;
         }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <a href="index.html" class="back-btn">←</a>
+    <a href="index.html" class="back-btn">⬅</a>
     <div class="title">Islamic Knowledge</div>
-    <div style="width:45px"></div>
+    <div style="width:40px"></div>
 </div>
 
 <div class="container">
-    <input type="text" class="search-box" placeholder="Search topics (Pillars, History, Prophets)...">
+    <input type="text" id="search-input" class="search-box" placeholder="Search topics..." onkeyup="filterTopics()">
+
+    <div class="theme-selector">
+        <div class="theme-dot" style="background: #10b981;" onclick="setTheme('3d-glass')"></div>
+        <div class="theme-dot" style="background: #fb923c;" onclick="setTheme('modern-2x2')"></div>
+        <div class="theme-dot" style="background: #064e3b;" onclick="setTheme('dark-neon')"></div>
+        <div class="theme-dot" style="background: #020617;" onclick="setTheme('midnight-dark')"></div>
+    </div>
 
     <div id="topics-list">
+        <!-- Topic Cards will be generated here -->
+    </div>
 
-        <a href="prayertime.html" class="topic-card-link" style="text-decoration: none; color: inherit; display: block;">
-            <div class="topic-card">
-                <div class="topic-header">
-                    <span class="topic-icon">🕌 ⏰</span>
-                    <span class="topic-title">PRAYER TIME</span>
-                </div>
-                <p class="topic-desc">Pray on Time with PRAYER TIME</p>
-            </div>
-        </a>
+    <div class="coming-soon">More modules coming soon inshAllah...</div>
+</div>
 
-        <div class="topic-card">
-            <div class="topic-header">
-                <span class="topic-icon">🕌</span>
-                <span class="topic-title">Five Pillars of Islam</span>
-            </div>
-            <p class="topic-desc">Learn about Shahada, Salah, Zakat, Sawm, and Hajj.</p>
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h2 id="modal-title" style="font-size: 1.2rem;">Topic Details</h2>
+            <button class="close-btn" onclick="closeModal()">×</button>
         </div>
-
-        <div class="topic-card">
-            <div class="topic-header">
-                <span class="topic-icon">📖</span>
-                <span class="topic-title">The Holy Quran</span>
-            </div>
-            <p class="topic-desc">History, revelation, and importance of the Final Book.</p>
+        <div class="modal-body" id="modal-body">
+            <!-- Details will be injected here -->
         </div>
-
-        <div class="topic-card">
-            <div class="topic-header">
-                <span class="topic-icon">📖</span>
-                <span class="topic-title">Prophets of Allah</span>
-            </div>
-            <p class="topic-desc">Stories and lessons from the lives of the Prophets (A.S).</p>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-header">
-                <span class="topic-icon">⚖️</span>
-                <span class="topic-title">Islamic Ethics & Morals</span>
-            </div>
-            <p class="topic-desc">Guidance on character, honesty, and kindness in daily life.</p>
-        </div>
-
-        <div class="coming-soon">More topics being added soon...</div>
     </div>
 </div>
 
+<script>
+    const ISLAMIC_DATA = [
+        {
+            id: "prayer",
+            title: "PRAYER TIME",
+            icon: "🕌",
+            desc: "Pray on Time with Pakistani City Timings.",
+            link: "prayertime.html"
+        },
+        {
+            id: "pillars",
+            title: "Five Pillars of Islam",
+            icon: "🕋",
+            desc: "The foundation of a Muslim's life.",
+            details: [
+                { h: "Shahada (Faith)", p: "Declaring 'La ilaha illallah, Muhammadur Rasulullah' (There is no god but Allah, and Muhammad is His messenger)." },
+                { h: "Salah (Prayer)", p: "Establishing the five daily prayers: Fajr, Dhuhr, Asr, Maghrib, and Isha." },
+                { h: "Zakat (Almsgiving)", p: "Giving 2.5% of annual savings to the poor and needy to purify wealth." },
+                { h: "Sawm (Fasting)", p: "Fasting from dawn to sunset during the holy month of Ramadan." },
+                { h: "Hajj (Pilgrimage)", p: "Performing pilgrimage to the Kaaba in Makkah once in a lifetime for those who can afford it." }
+            ]
+        },
+        {
+            id: "quran",
+            title: "The Holy Quran",
+            icon: "📖",
+            desc: "Facts about the final revelation from Allah.",
+            details: [
+                { h: "Revelation", p: "Revealed to Prophet Muhammad (PBUH) through Angel Jibrail over 23 years." },
+                { h: "Structure", p: "Contains 114 Surahs (Chapters) and 30 Juz (Parts)." },
+                { h: "First Word", p: "The first word revealed was 'Iqra', which means 'Read'." },
+                { h: "Language", p: "Revealed in pure Arabic language, preserved perfectly for over 1400 years." },
+                { h: "Purpose", p: "A complete guide for mankind to live a successful life here and in the hereafter." }
+            ]
+        },
+        {
+            id: "duas",
+            title: "Daily Duas (Supplications)",
+            icon: "🤲",
+            desc: "Beautiful prayers for everyday actions.",
+            details: [
+                { h: "Before Eating", a: "بِسْمِ اللَّهِ وَعَلَى بَرَكَةِ اللَّهِ", p: "In the name of Allah and with the blessings of Allah." },
+                { h: "After Eating", a: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ", p: "Praise be to Allah who has fed us and given us drink and made us Muslims." },
+                { h: "Before Sleeping", a: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", p: "O Allah, in Your name I die and I live." },
+                { h: "Waking Up", a: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", p: "Praise be to Allah who gave us life after death and to Him is the return." },
+                { h: "Entering Home", a: "اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الْمَوْلَجِ وَخَيْرَ الْمَخْرَجِ", p: "O Allah, I ask You for the best of entering and the best of exiting." }
+            ]
+        },
+        {
+            id: "hadith",
+            title: "Short Hadiths",
+            icon: "📜",
+            desc: "Wise sayings of Prophet Muhammad (PBUH).",
+            details: [
+                { h: "Learning Quran", p: "\"The best among you are those who learn the Quran and teach it.\"" },
+                { h: "Cleanliness", p: "\"Cleanliness is half of faith (Iman).\"" },
+                { h: "Consistency", p: "\"The most beloved of deeds to Allah are those that are most consistent, even if they are small.\"" },
+                { h: "Safety of Others", p: "\"A Muslim is the one from whose tongue and hands other Muslims are safe.\"" },
+                { h: "Love for Brother", p: "\"None of you truly believes until he loves for his brother what he loves for himself.\"" }
+            ]
+        },
+        {
+            id: "prophets",
+            title: "Prophets of Allah",
+            icon: "👣",
+            desc: "The chosen messengers of guidance.",
+            details: [
+                { h: "Adam (A.S)", p: "The first human and the first Prophet of Allah." },
+                { h: "Nuh (A.S)", p: "Built the Great Ark to save the believers and pairs of every animal." },
+                { h: "Ibrahim (A.S)", p: "The 'Friend of Allah' and father of many Prophets. He built the Kaaba with his son Ismail (A.S)." },
+                { h: "Musa (A.S)", p: "Led Bani Israel out of Egypt and received the Torah on Mount Sinai." },
+                { h: "Isa (A.S)", p: "Born miraculously to Maryam (A.S) and performed many miracles by Allah's permission." },
+                { h: "Muhammad (PBUH)", p: "The final Prophet and Messenger, sent as a mercy to all the worlds." }
+            ]
+        }
+    ];
+
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('eka_wordguess_theme', theme);
+    }
+
+    function renderTopics() {
+        const list = document.getElementById('topics-list');
+        list.innerHTML = ISLAMIC_DATA.map(topic => `
+            <div class="topic-card" onclick="handleTopicClick('${topic.id}')">
+                <div class="topic-header">
+                    <div class="topic-icon">${topic.icon}</div>
+                    <div>
+                        <div class="topic-title">${topic.title}</div>
+                        <p class="topic-desc">${topic.desc}</p>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function handleTopicClick(id) {
+        const topic = ISLAMIC_DATA.find(t => t.id === id);
+        if (topic.link) {
+            window.location.href = topic.link;
+            return;
+        }
+
+        const modal = document.getElementById('modal-overlay');
+        const title = document.getElementById('modal-title');
+        const body = document.getElementById('modal-body');
+
+        title.textContent = topic.title;
+        body.innerHTML = topic.details.map(d => `
+            <div class="detail-item">
+                <h3>${d.h}</h3>
+                ${d.a ? `<div class="arabic">${d.a}</div>` : ''}
+                <p>${d.p}</p>
+            </div>
+        `).join('');
+
+        modal.classList.add('active');
+    }
+
+    function closeModal(e) {
+        document.getElementById('modal-overlay').classList.remove('active');
+    }
+
+    function filterTopics() {
+        const query = document.getElementById('search-input').value.toLowerCase();
+        const cards = document.querySelectorAll('.topic-card');
+
+        ISLAMIC_DATA.forEach((topic, index) => {
+            const match = topic.title.toLowerCase().includes(query) ||
+                          topic.desc.toLowerCase().includes(query);
+            cards[index].style.display = match ? 'flex' : 'none';
+        });
+    }
+
+    window.onload = () => {
+        renderTopics();
+        const st = localStorage.getItem('eka_wordguess_theme');
+        if (st) setTheme(st);
+    };
+</script>
 </body>
 </html>
