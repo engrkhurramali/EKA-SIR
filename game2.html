@@ -1,243 +1,236 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="3d-glass">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>EKA Snap Mobile Final</title>
+    <title>EKA Snap Mobile</title>
     <style id="theme-styles"></style>
     <style>
-        :root {
-            --primary: #00d2ff; --secondary: #3a7bd5; --bg: #0f172a;
-            --glass: rgba(255, 255, 255, 0.12); --vh: 1vh;
+        /* ========== THEME VARIABLES (from GuessWord) ========== */
+        :root, [data-theme="3d-glass"] {
+            --bg-grad: linear-gradient(160deg, #0f172a 0%, #1e293b 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --accent: #3b82f6;
+            --danger: #ef4444;
+            --success: #10b981;
+            --cell-bg: rgba(255, 255, 255, 0.05);
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
         body {
-            margin: 0; padding: 0;
-            background: var(--bg); color: #fff;
-            height: calc(var(--vh) * 100); width: 100vw;
-            overflow: hidden; font-family: sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg-grad);
+            color: var(--text-main);
+            height: 100vh; height: 100dvh;
+            width: 100vw;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; touch-action: none;
+        }
+
+        .app-container {
+            width: 100vw; max-width: 480px;
+            height: 100vh; height: 100dvh;
             display: flex; flex-direction: column;
-            touch-action: none;
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(20px);
+            border-radius: 0;
+            border: 1px solid var(--glass-border);
+            position: relative;
         }
 
+        header {
+            padding: 10px 12px; text-align: center; flex-shrink: 0;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.1), transparent);
+            border-bottom: 1px solid var(--glass-border);
+            position: relative;
+        }
+        header h1 { font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+
+        .back-btn {
+            position: absolute; left: 10px; top: 10px;
+            text-decoration: none; background: rgba(255,255,255,0.1);
+            width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; color: var(--text-main); font-weight: bold; border: 1px solid var(--glass-border);
+        }
+
+        .screens-wrapper { flex: 1; position: relative; overflow: hidden; display: flex; width: 100%; }
         .screen {
-            display: none; position: absolute; inset: 0;
-            width: 100%; height: 100%; flex-direction: column;
-            padding: 15px; z-index: 10; background: inherit;
+            position: absolute; inset: 0; padding: 15px;
+            display: none; flex-direction: column; gap: 15px;
+            animation: slideIn 0.3s ease forwards;
+            overflow-y: auto; align-items: center;
+            width: 100%;
         }
-        .active { display: flex; z-index: 100; }
+        .screen.active { display: flex; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .glass-panel {
-            background: var(--glass); backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 15px; padding: 15px;
+        .glass-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 20px; padding: 15px;
+            box-shadow: var(--glass-shadow);
+            display: flex; flex-direction: column; align-items: center; gap: 12px;
+            width: 100%;
         }
 
+        .input-glass {
+            width: 100%; padding: 12px; border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.05);
+            color: var(--text-main); font-size: 1rem;
+            outline: none; text-align: center; font-weight: 600;
+        }
+
+        .btn {
+            min-height: 48px; width: 100%; padding: 0 20px;
+            font-size: 1rem; font-weight: 700; border: none; border-radius: 12px;
+            background: var(--cell-bg); color: var(--text-main);
+            cursor: pointer; transition: all 0.2s;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border: 1px solid var(--glass-border);
+        }
+        .btn.primary { background: var(--accent); color: white; border: none; }
+        .btn:active { transform: scale(0.96); }
+
+        /* Stats in Header */
+        .stats-bar { display: none; padding: 5px 12px; }
+        .stats-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; font-weight: 700; width: 100%; }
+        .timer-container { flex: 1; height: 6px; background: rgba(0,0,0,0.3); border-radius: 3px; margin: 0 10px; overflow: hidden; }
+        #timer-bar { height: 100%; width: 100%; background: var(--success); transition: width 1s linear; }
+        .stat-badge { background: var(--glass-bg); padding: 4px 10px; border-radius: 20px; white-space: nowrap; border: 1px solid var(--glass-border); }
+
+        /* Grid specific */
         #shapesGrid {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(3, 1fr); gap: 8px;
-            flex: 1; min-height: 0; margin: 10px 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
         }
 
         .icecube {
-            background: rgba(255,255,255,0.05); border-radius: 12px;
+            background: var(--cell-bg);
+            border-radius: 16px;
+            aspect-ratio: 1 / 1;
             display: flex; justify-content: center; align-items: center;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid var(--glass-border);
             touch-action: none;
+            transition: transform 0.1s;
         }
+        .icecube:active { transform: scale(0.9); background: rgba(255,255,255,0.1); }
 
-        .circle { width: 50%; height: 50%; border-radius: 50%; }
-        .square { width: 50%; height: 50%; }
-        .triangle { width: 0; height: 0; border-left: 22px solid transparent; border-right: 22px solid transparent; border-bottom: 44px solid; }
-        .star { width: 55%; height: 55%; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
-        .hexagon { width: 55%; height: 55%; clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%); }
-
-        header {
-            padding: 10px 16px 6px;
-            text-align: center;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
-            color: #fff;
+        /* Shape Styles (keeping original logic but fixing aspect) */
+        .shape-container { width: 60%; height: 60%; display: flex; align-items: center; justify-content: center; position: relative; }
+        .circle { width: 100%; height: 100%; border-radius: 50%; }
+        .square { width: 100%; height: 100%; }
+        .triangle {
+            width: 0; height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 50px solid;
         }
-        header h1 {
-            font-size: clamp(1rem, 4vw, 1.3rem);
-            font-weight: 800;
-            margin: 0;
-            letter-spacing: 0.5px;
-        }
-        .stats-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 6px;
-            font-size: 0.85rem;
-            font-weight: 700;
-        }
-        .stat-badge {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 4px 10px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(5px);
-            white-space: nowrap;
-        }
-        .timer-container {
-            flex: 1;
-            height: 10px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 5px;
-            margin: 0 10px;
-            overflow: hidden;
-            position: relative;
-        }
-        #timer-bar {
-            height: 100%;
-            width: 100%;
-            background: var(--primary);
-            transition: width 1s linear;
-        }
+        .star { width: 100%; height: 100%; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+        .hexagon { width: 100%; height: 100%; clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%); }
 
         #prompt-card {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 10px;
+            width: 100%;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 12px;
             text-align: center;
-            min-height: 50px;
-            margin-top: 5px;
-            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 10px;
         }
 
-        button {
-            width: 100%; padding: 15px; border: none; border-radius: 10px;
-            color: white; font-weight: bold; font-size: 1.1rem; margin-top: 10px;
-            cursor: pointer; background: var(--primary);
-        }
-        input[type="text"] {
-            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(255,255,255,0.1); color: white; margin-bottom: 10px;
-        }
-
-        /* Leaderboard Styles */
+        /* Leaderboard */
         .leaderboard {
-            background: rgba(255, 255, 255, 0.07);
-            padding: 15px;
-            border-radius: 18px;
-            margin-top: 20px;
-            width: 100%;
-            max-height: 28vh;
-            overflow-y: auto;
-            color: white;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            width: 100%; max-height: 35vh; overflow-y: auto; background: rgba(0,0,0,0.2);
+            border-radius: 15px; border: 1px solid var(--glass-border);
         }
+        .leaderboard table { width: 100%; border-collapse: collapse; }
+        .leaderboard th, .leaderboard td { padding: 10px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; }
+        .leaderboard th { color: var(--accent); }
 
-        .leaderboard table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .leaderboard th, .leaderboard td {
-            padding: 6px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            font-size: 12px;
-        }
-
-        .leaderboard th {
-            color: #f9ca24;
-        }
-
-        .firebase-status {
-            font-size: 11px;
-            color: #55efc4;
-            margin-top: 5px;
-            text-align: center;
-        }
+        #firebaseStatus { font-size: 10px; color: var(--success); margin-bottom: 5px; opacity: 0.8; }
     </style>
 </head>
 <body>
 
-<div id="screen-start" class="screen active">
-    <h2 style="text-align:center">EKA MOBILE SNAP</h2>
-    <div class="glass-panel" style="margin-top: auto; margin-bottom: 10px;">
-        <input type="text" id="playerName" placeholder="Player Name" maxlength="10">
-        <select id="ageSelect" style="width: 100%; margin: 8px 0; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);">
-            <option value="Age < 8">Age &lt; 8</option>
-            <option value="Age 8-12">Age 8-12</option>
-            <option value="Age 12-16" selected>Age 12-16</option>
-            <option value="Age 16-20">Age 16-20</option>
-            <option value="Age 20+">Age 20+</option>
-        </select>
-        <select id="themeDropdown" style="width: 100%; margin: 8px 0; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);"></select>
-        <button id="startBtn" style="background: #10b981;">START ADVENTURE</button>
-    </div>
-
-    <div class="leaderboard" style="margin-bottom: 20px;">
-        <h3 style="text-align: center; margin-bottom: 8px; font-size: 13px; color: #f9ca24; text-transform: uppercase;">🏆 Top 10 Leaders 🏆</h3>
-        <div style="display: flex; gap: 5px; margin-bottom: 8px;">
-            <button id="btnTop10" onclick="loadScoresFromFirebase('top')" style="flex:1; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); color:white; font-size:9px; font-weight:bold; padding:6px; border-radius:8px; cursor:pointer;">🏆 TOP 10</button>
-            <button id="btnRecent60" onclick="loadScoresFromFirebase('recent')" style="flex:1; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); color:white; font-size:9px; font-weight:bold; padding:6px; border-radius:8px; cursor:pointer; opacity:0.6;">🕒 RECENT 60</button>
-        </div>
-        <div id="firebaseStatus" class="firebase-status">Loading global scores...</div>
-        <table>
-            <thead>
-            <tr>
-                <th style="width: 20%">Rank</th>
-                <th style="width: 30%">Score</th>
-                <th style="width: 50%">Name</th>
-            </tr>
-            </thead>
-            <tbody id="leaderboardBody">
-            <tr><td>-</td><td>-</td><td>-</td></tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<div id="screen-game" class="screen">
+<div class="app-container">
     <header>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-            <a href="games.html" style="text-decoration:none; background:rgba(255,255,255,0.2); padding:4px 10px; border-radius:15px; color:white; font-weight:bold; font-size:0.8rem;">⬅ Home</a>
-            <h1>EKA MOBILE SNAP</h1>
-            <div style="width:50px;"></div>
-        </div>
-        <div class="stats-row">
-            <span class="stat-badge" id="disp-timer">⏱️ 01:00</span>
-            <div class="timer-container"><div id="timer-bar"></div></div>
-            <span class="stat-badge" id="disp-level">#1</span>
-            <span class="stat-badge" id="disp-score">🌟 0</span>
+        <a href="games.html" class="back-btn">⬅</a>
+        <h1 id="header-title">EKA Snap Mobile</h1>
+        <div id="game-stats-container" class="stats-bar">
+            <div class="stats-row">
+                <span class="stat-badge" id="disp-timer">⏱️ 60s</span>
+                <div class="timer-container"><div id="timer-bar"></div></div>
+                <span class="stat-badge" id="disp-level">#1</span>
+                <span class="stat-badge" id="disp-score">🌟 0</span>
+            </div>
         </div>
     </header>
 
-    <div id="prompt-card">
-        <span id="prompt" style="font-size: 1.2rem;">Get Ready...</span>
+    <div class="screens-wrapper">
+        <!-- Welcome Screen -->
+        <section id="screen-welcome" class="screen active">
+            <div style="font-size: 2rem; font-weight: 900; color: var(--accent); text-align: center; margin: 10px 0;">MOBILE SNAP</div>
+            <div class="glass-card">
+                <input type="text" id="playerName" class="input-glass" placeholder="Player Name" maxlength="12">
+                <select id="ageSelect" class="input-glass">
+                    <option value="Age < 8">Age < 8 (Child)</option>
+                    <option value="Age 8-12">Age 8-12 (Junior)</option>
+                    <option value="Age 12-16" selected>Age 12-16 (Standard)</option>
+                    <option value="Age 16-20">Age 16-20 (Teen)</option>
+                    <option value="Age 20+">Age 20+ (Expert)</option>
+                </select>
+                <button class="btn primary" id="startBtn">▶ START MISSION</button>
+            </div>
+
+            <div id="firebaseStatus">Connecting...</div>
+            <div class="leaderboard">
+                <div style="display: flex; gap: 5px; padding: 8px;">
+                    <button class="btn" style="flex:1; min-height: 30px; font-size: 0.7rem;" onclick="loadScoresFromFirebase('top')" id="btnTop">🏆 TOP 10</button>
+                    <button class="btn" style="flex:1; min-height: 30px; font-size: 0.7rem; opacity: 0.6;" onclick="loadScoresFromFirebase('recent')" id="btnRecent">🕒 RECENT</button>
+                </div>
+                <table>
+                    <thead><tr><th>Rank</th><th>Score</th><th>Name</th></tr></thead>
+                    <tbody id="leaderboardBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Game Screen -->
+        <section id="screen-game" class="screen">
+            <div id="prompt-card">
+                <span id="prompt" style="font-size: 1.1rem; font-weight: 800;">Get Ready...</span>
+            </div>
+            <div id="shapesGrid"></div>
+            <div style="flex: 1;"></div>
+        </section>
+
+        <!-- Result Screen -->
+        <section id="screen-result" class="screen">
+            <div class="glass-card" style="margin-top: 20%;">
+                <h2 style="font-size: 1.5rem;">MISSION COMPLETE</h2>
+                <div style="font-size: 3rem; font-weight: 900; margin: 10px 0; color: var(--accent);" id="finalScore">0</div>
+                <button class="btn primary" id="submitScoreBtn">SAVE SCORE</button>
+                <button class="btn" id="restartBtn">PLAY AGAIN</button>
+                <button class="btn" onclick="location.reload()" style="background: transparent;">MENU</button>
+            </div>
+        </section>
     </div>
-    <div id="shapesGrid"></div>
 </div>
 
-<div id="screen-result" class="screen">
-    <div class="glass-panel" style="margin: auto 0; text-align: center;">
-        <h2>TIME UP!</h2>
-        <div style="font-size: 2rem; margin-bottom: 20px;">Score: <b id="finalScore">0</b></div>
-        <button id="submitScoreBtn" style="background: #6c5ce7; margin-bottom: 10px;">SAVE SCORE</button>
-        <button id="restartBtn">PLAY AGAIN</button>
-        <button onclick="location.reload()" style="background:#475569">HOME</button>
-    </div>
-</div>
-
-<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
 <script>
-    // ============================================
-    // 🔥 FIREBASE CONFIGURATION
-    // ============================================
     const firebaseConfig = {
         apiKey: "AIzaSyAEcPKE7n33wNUGxYpyqm5UWFjwXTT_x_c",
         authDomain: "eka-sir.firebaseapp.com",
@@ -254,160 +247,50 @@
 
     function initFirebase() {
         try {
-            if (!firebaseConfig.apiKey || firebaseConfig.apiKey.includes("YOUR_API_KEY")) {
-                document.getElementById('firebaseStatus').textContent = '⚠️ Firebase not configured.';
-                return;
-            }
-            const app = firebase.initializeApp(firebaseConfig);
+            firebase.initializeApp(firebaseConfig);
             firebaseDB = firebase.database();
             firebaseInitialized = true;
-            document.getElementById('firebaseStatus').textContent = '✅ Connected to Firebase';
+            document.getElementById('firebaseStatus').textContent = '✅ Global Sync Active';
         } catch (e) {
-            console.error("Firebase init error:", e);
-            document.getElementById('firebaseStatus').textContent = '❌ Connection failed';
+            document.getElementById('firebaseStatus').textContent = '❌ Offline Mode';
         }
     }
 
-    function saveScoreToFirebase(name, score, age) {
-        if (!firebaseInitialized || !firebaseDB) return Promise.resolve();
-        const now = new Date();
-        const scoreData = {
-            name: name || 'Anonymous',
-            score: parseInt(score) || 0,
-            age: age,
-            date: now.toISOString(),
-            timestamp: firebase.database.ServerValue.TIMESTAMP
-        };
-        return firebaseDB.ref('scores_snap').push().set(scoreData);
-    }
-
-    function loadScoresFromFirebase(mode = 'top') {
-        if (!firebaseInitialized || !firebaseDB) { loadLeaderboardLocal(); return; }
-        const statusEl = document.getElementById('firebaseStatus');
-        const lbTitle = document.querySelector('.leaderboard h3');
-        const btnTop = document.getElementById('btnTop10');
-        const btnRecent = document.getElementById('btnRecent60');
-
-        statusEl.textContent = '⏳ Loading...';
-
-        let query;
-        if (mode === 'top') {
-            lbTitle.textContent = '🏆 Top 10 Leaders 🏆';
-            if(btnTop) btnTop.style.opacity = '1';
-            if(btnRecent) btnRecent.style.opacity = '0.6';
-            query = firebaseDB.ref('scores_snap').orderByChild('score').limitToLast(10);
-        } else {
-            lbTitle.textContent = '🕒 Recent 60 Games 🕒';
-            if(btnTop) btnTop.style.opacity = '0.6';
-            if(btnRecent) btnRecent.style.opacity = '1';
-            query = firebaseDB.ref('scores_snap').orderByChild('timestamp').limitToLast(60);
-        }
-
-        query.once('value').then(snapshot => {
-            const scores = [];
-            snapshot.forEach(child => { scores.push(child.val()); });
-
-            if (mode === 'top') {
-                scores.sort((a, b) => b.score - a.score);
-            } else {
-                scores.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-            }
-
-            displayLeaderboard(scores, mode);
-            statusEl.textContent = '✅ ' + (mode === 'top' ? 'Global Leaders' : 'Recent Games');
-        }).catch(err => {
-            console.error(err);
-            statusEl.textContent = '⚠️ Local scores only';
-            loadLeaderboardLocal();
-        });
-    }
-
-    function displayLeaderboard(scores, mode = 'top') {
-        const tbody = document.getElementById('leaderboardBody');
-        const lbTableHead = document.querySelector('.leaderboard thead tr');
-
-        if (mode === 'recent') {
-            lbTableHead.innerHTML = '<th style="width: 20%">Time</th><th style="width: 30%">Score</th><th style="width: 50%">Name</th>';
-        } else {
-            lbTableHead.innerHTML = '<th style="width: 20%">Rank</th><th style="width: 30%">Score</th><th style="width: 50%">Name</th>';
-        }
-
-        if (!scores || scores.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center">No scores yet.</td></tr>';
-            return;
-        }
-
-        tbody.innerHTML = scores.map((s, i) => {
-            let firstCol = i + 1;
-            if (mode === 'recent' && s.timestamp) {
-                const date = new Date(s.timestamp);
-                firstCol = date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0');
-            }
-            return `
-                <tr>
-                    <td style="font-size: 10px; opacity: 0.8;">${firstCol}</td>
-                    <td style="font-weight:bold;color:#f9ca24">${s.score}</td>
-                    <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px;">${s.name}</td>
-                </tr>
-            `;
-        }).join('');
-    }
-
-    function loadLeaderboardLocal() {
-        const scores = JSON.parse(localStorage.getItem('eka_score_mobilesnap') || '[]');
-        displayLeaderboard(scores, 'top');
-    }
-
-    // Adjust for mobile address bar
-    const resize = () => document.documentElement.style.setProperty('--vh', `${window.innerHeight/100}px`);
-    window.addEventListener('resize', resize); resize();
-
-    const themes = {
-        icecube: { bg: 'linear-gradient(135deg, #020617, #0f172a)', primary: '#00d2ff', secondary: '#0ea5e9' },
-        sunset: { bg: 'linear-gradient(135deg, #431407, #7c2d12)', primary: '#fbbf24', secondary: '#ea580c' },
-        neon: { bg: 'linear-gradient(135deg, #1a0033, #000000)', primary: '#ff00ff', secondary: '#00ffff' }
+    let state = {
+        score: 0, timeLeft: 60, isGameActive: false, timerInterval: null,
+        currentAge: "Age 12-16", name: "Anonymous"
     };
 
-    let score = 0, timeLeft = 60, level = 1, isGameActive = false, timerInterval;
-    let currentAge = "Age 12-16";
-    const colors = ['red', 'blue', 'green', 'orange', 'purple', 'yellow', 'white'];
+    const colors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#ffffff'];
     const shapes = ['circle', 'square', 'triangle', 'star', 'hexagon'];
 
     const AGE_CONFIGS = {
-        "Age < 8":   { timeBonus: 8, penalty: 2, levelStep: 50 },
-        "Age 8-12":  { timeBonus: 5, penalty: 5, levelStep: 100 },
-        "Age 12-16": { timeBonus: 4, penalty: 8, levelStep: 150 },
-        "Age 16-20": { timeBonus: 3, penalty: 10, levelStep: 200 },
-        "Age 20+":   { timeBonus: 2, penalty: 15, levelStep: 250 }
+        "Age < 8":   { timeBonus: 8, penalty: 2, levelStep: 50, startFreq: 400 },
+        "Age 8-12":  { timeBonus: 5, penalty: 5, levelStep: 100, startFreq: 523 },
+        "Age 12-16": { timeBonus: 4, penalty: 8, levelStep: 150, startFreq: 600 },
+        "Age 16-20": { timeBonus: 3, penalty: 10, levelStep: 200, startFreq: 700 },
+        "Age 20+":   { timeBonus: 2, penalty: 15, levelStep: 250, startFreq: 800 }
     };
 
-    // --- High-Performance Audio System (Web Audio API) ---
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx = null;
     const synth = window.speechSynthesis;
 
     function initAudio() {
-        if (!audioCtx) {
-            audioCtx = new AudioContext();
-        }
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
+        if (!audioCtx) audioCtx = new AudioContext();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
     }
 
     function playSound(type) {
         initAudio();
-        if (!audioCtx) return;
-
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
+        osc.connect(gain); gain.connect(audioCtx.destination);
         const now = audioCtx.currentTime;
 
         if (type === 'correct') {
-            osc.frequency.setValueAtTime(523.25, now);
-            osc.frequency.exponentialRampToValueAtTime(880, now + 0.1);
+            osc.frequency.setValueAtTime(AGE_CONFIGS[state.currentAge].startFreq, now);
+            osc.frequency.exponentialRampToValueAtTime(1000, now + 0.1);
             gain.gain.setValueAtTime(0.1, now);
             gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
             osc.start(); osc.stop(now + 0.15);
@@ -417,75 +300,72 @@
             gain.gain.setValueAtTime(0.1, now);
             gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
             osc.start(); osc.stop(now + 0.2);
-        } else if (type === 'click') {
-            osc.frequency.setValueAtTime(800, now);
-            gain.gain.setValueAtTime(0.05, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-            osc.start(); osc.stop(now + 0.05);
         }
     }
 
     function speak(text) {
         if (!synth) return;
-        try {
-            synth.cancel();
-            if (text === "") return;
-            const utter = new SpeechSynthesisUtterance(text);
-            utter.rate = 1.3;
-            synth.speak(utter);
-        } catch (e) { console.warn("Speech error:", e); }
+        synth.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.rate = 1.4;
+        synth.speak(utter);
     }
 
-    function showScreen(id) {
+    function navTo(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
+        document.getElementById('game-stats-container').style.display = (id === 'screen-game') ? 'block' : 'none';
+        document.getElementById('header-title').style.display = (id === 'screen-game') ? 'none' : 'block';
     }
 
-    const handleStart = () => {
-        initAudio();
-        playSound('click');
-        showScreen('screen-game');
-        isGameActive = true;
-        score = 0; timeLeft = 60; level = 1;
-        currentAge = document.getElementById('ageSelect').value;
-        updateStats();
+    function handleStart() {
+        const name = document.getElementById('playerName').value.trim();
+        if(!name) { alert("Please enter name"); return; }
+        state.name = name;
+        state.currentAge = document.getElementById('ageSelect').value;
+        localStorage.setItem('eka_player_name', name);
 
-        speak(""); // Android warm-up
-        setTimeout(() => speak("Ready"), 50);
+        initAudio();
+        state.score = 0;
+        state.timeLeft = 60;
+        state.isGameActive = true;
+        updateStats();
+        navTo('screen-game');
 
         nextPrompt();
-        if(timerInterval) clearInterval(timerInterval);
-        timerInterval = setInterval(() => {
-            if (!isGameActive) return;
-            timeLeft--;
+        if(state.timerInterval) clearInterval(state.timerInterval);
+        state.timerInterval = setInterval(() => {
+            if (!state.isGameActive) return;
+            state.timeLeft--;
             updateTimerUI();
-            if(timeLeft <= 0) endGame();
+            if(state.timeLeft <= 0) endGame();
         }, 1000);
-    };
+    }
 
     function updateTimerUI() {
-        const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-        const s = (timeLeft % 60).toString().padStart(2, '0');
-        document.getElementById('disp-timer').textContent = `⏱️ ${m}:${s}`;
-        const pct = (timeLeft / 60) * 100;
+        document.getElementById('disp-timer').textContent = `⏱️ ${state.timeLeft}s`;
+        const pct = (state.timeLeft / 60) * 100;
         const bar = document.getElementById('timer-bar');
-        if (bar) {
-            bar.style.width = pct + "%";
-            bar.style.backgroundColor = pct < 25 ? "#ff6b6b" : "#00b894";
-        }
+        bar.style.width = pct + "%";
+        bar.style.backgroundColor = pct < 25 ? "var(--danger)" : "var(--success)";
     }
 
     function updateStats() {
-        document.getElementById('disp-score').textContent = `🌟 ${score}`;
-        document.getElementById('disp-level').textContent = currentAge;
+        document.getElementById('disp-score').textContent = `🌟 ${state.score}`;
+        document.getElementById('disp-level').textContent = state.currentAge.replace('Age ', '');
     }
 
     function nextPrompt() {
-        const c = colors[Math.floor(Math.random() * colors.length)];
-        const s = shapes[Math.floor(Math.random() * shapes.length)];
-        document.getElementById('prompt').innerHTML = `Find: <b style="color:${c}">${c.toUpperCase()} ${s.toUpperCase()}</b>`;
-        speak(`${c} ${s}`);
-        renderGrid(c, s);
+        const colorNames = ['Red', 'Blue', 'Green', 'Orange', 'Purple', 'Pink', 'White'];
+        const idxC = Math.floor(Math.random() * colors.length);
+        const idxS = Math.floor(Math.random() * shapes.length);
+        const targetColor = colors[idxC];
+        const targetColorName = colorNames[idxC];
+        const targetShape = shapes[idxS];
+
+        document.getElementById('prompt').innerHTML = `Find: <b style="color:${targetColor}">${targetColorName.toUpperCase()} ${targetShape.toUpperCase()}</b>`;
+        speak(`${targetColorName} ${targetShape}`);
+        renderGrid(targetColor, targetShape);
     }
 
     function renderGrid(targetC, targetS) {
@@ -493,65 +373,94 @@
         grid.innerHTML = '';
         let pool = [{ color: targetC, shape: targetS }];
         while(pool.length < 9) {
-            let rc = colors[Math.floor(Math.random() * colors.length)], rs = shapes[Math.floor(Math.random() * shapes.length)];
+            let rc = colors[Math.floor(Math.random() * colors.length)];
+            let rs = shapes[Math.floor(Math.random() * shapes.length)];
             if(!pool.find(p => p.color === rc && p.shape === rs)) pool.push({color: rc, shape: rs});
         }
         pool.sort(() => Math.random() - 0.5).forEach(item => {
             const cube = document.createElement('div');
             cube.className = 'icecube';
+            const container = document.createElement('div');
+            container.className = 'shape-container';
             const shp = document.createElement('div');
             shp.className = item.shape;
+
             if(item.shape === 'triangle') shp.style.borderBottomColor = item.color;
             else shp.style.backgroundColor = item.color;
 
-            const handleTouch = (e) => {
-                e.preventDefault();
-                if(!isGameActive) return;
-                initAudio();
-                const config = AGE_CONFIGS[currentAge];
+            cube.onclick = (e) => {
+                if(!state.isGameActive) return;
+                const config = AGE_CONFIGS[state.currentAge];
                 if(item.color === targetC && item.shape === targetS) {
-                    score += 10;
+                    state.score += 10;
                     playSound('correct');
-                    if (score > 0 && score % config.levelStep === 0) {
-                        level++;
-                        timeLeft = Math.min(60, timeLeft + config.timeBonus);
+                    if (state.score % config.levelStep === 0) {
+                        state.timeLeft = Math.min(60, state.timeLeft + config.timeBonus);
                     }
                     if(navigator.vibrate) navigator.vibrate(40);
                 } else {
-                    score = Math.max(0, score - config.penalty);
+                    state.score = Math.max(0, state.score - config.penalty);
                     playSound('wrong');
                 }
                 updateStats();
                 nextPrompt();
             };
 
-            cube.addEventListener('pointerdown', handleTouch);
-            cube.appendChild(shp);
+            container.appendChild(shp);
+            cube.appendChild(container);
             grid.appendChild(cube);
         });
     }
 
     function endGame() {
-        isGameActive = false;
-        clearInterval(timerInterval);
-        document.getElementById('finalScore').textContent = score;
-        showScreen('screen-result');
+        state.isGameActive = false;
+        clearInterval(state.timerInterval);
+        document.getElementById('finalScore').textContent = state.score;
+        navTo('screen-result');
     }
 
     async function submitScore() {
-        const name = document.getElementById('playerName').value || 'Anonymous';
-        localStorage.setItem('eka_player_name', name);
         const btn = document.getElementById('submitScoreBtn');
         btn.disabled = true; btn.textContent = 'SAVING...';
 
-        await saveScoreToFirebase(name, score, currentAge);
+        if (firebaseInitialized && state.score > 0) {
+            await firebaseDB.ref('scores_snap').push({
+                name: state.name,
+                score: state.score,
+                age: state.currentAge,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            });
+        }
+        btn.textContent = 'SAVED!';
+        setTimeout(() => location.reload(), 800);
+    }
 
-        const history = JSON.parse(localStorage.getItem('eka_score_mobilesnap') || '[]');
-        history.unshift({ score, name, age: currentAge, date: new Date().toLocaleDateString() });
-        localStorage.setItem('eka_score_mobilesnap', JSON.stringify(history.slice(0, 10)));
+    function loadScoresFromFirebase(mode = 'top') {
+        if (!firebaseInitialized) return;
+        const tbody = document.getElementById('leaderboardBody');
+        tbody.innerHTML = '<tr><td colspan="3">Syncing...</td></tr>';
 
-        btn.disabled = false; btn.textContent = 'SAVED!';
-        setTimeout(() => location.reload(), 1000);
+        document.getElementById('btnTop').style.opacity = mode === 'top' ? '1' : '0.6';
+        document.getElementById('btnRecent').style.opacity = mode === 'recent' ? '1' : '0.6';
+
+        let query = firebaseDB.ref('scores_snap');
+        if (mode === 'top') query = query.orderByChild('score').limitToLast(10);
+        else query = query.limitToLast(10);
+
+        query.once('value', snapshot => {
+            let list = [];
+            snapshot.forEach(c => list.push(c.val()));
+            if (mode === 'top') list.sort((a,b) => b.score - a.score);
+            else list.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
+
+            tbody.innerHTML = list.map((s, i) => `
+                <tr>
+                    <td>${mode === 'top' ? i+1 : '#'}</td>
+                    <td style="font-weight:bold;color:var(--accent)">${s.score}</td>
+                    <td>${s.name}</td>
+                </tr>
+            `).join('') || '<tr><td colspan="3">No scores yet</td></tr>';
+        });
     }
 
     document.getElementById('startBtn').onclick = handleStart;
@@ -563,14 +472,6 @@
         if (savedName) document.getElementById('playerName').value = savedName;
         initFirebase();
         loadScoresFromFirebase();
-        const drop = document.getElementById('themeDropdown');
-        for(let k in themes) drop.add(new Option(k.toUpperCase(), k));
-        drop.onchange = (e) => {
-            const t = themes[e.target.value];
-            document.getElementById('theme-styles').innerHTML = `:root { --primary:${t.primary}; --secondary:${t.secondary}; --bg:${t.bg}; } body { background:${t.bg}; }`;
-        };
-        drop.dispatchEvent(new Event('change'));
-        if (synth) synth.getVoices();
     };
 </script>
 </body>
