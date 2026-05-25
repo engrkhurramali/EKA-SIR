@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="3d-glass">
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>EKA Snap Mobile</title>
-    <style id="theme-styles"></style>
     <style>
-        /* ========== THEME VARIABLES (from GuessWord) ========== */
+        /* ========== THEME VARIABLES ========== */
         :root, [data-theme="3d-glass"] {
             --bg-grad: linear-gradient(160deg, #0f172a 0%, #1e293b 100%);
             --glass-bg: rgba(255, 255, 255, 0.1);
@@ -15,20 +14,65 @@
             --text-main: #f1f5f9;
             --text-sub: #94a3b8;
             --accent: #3b82f6;
+            --accent-hover: #2563eb;
             --danger: #ef4444;
             --success: #10b981;
-            --cell-bg: rgba(255, 255, 255, 0.05);
+            --warning: #f59e0b;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --radius: 20px;
+        }
+
+        [data-theme="modern-2x2"] {
+            --bg-grad: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            --glass-bg: rgba(255, 255, 255, 0.5);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --text-main: #44403c;
+            --text-sub: #78716c;
+            --accent: #fb923c;
+            --accent-hover: #f97316;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --card-bg: rgba(255, 255, 255, 0.6);
+        }
+
+        [data-theme="dark-neon"] {
+            --bg-grad: linear-gradient(135deg, #000000 0%, #0f172a 100%);
+            --glass-bg: rgba(15, 23, 42, 0.8);
+            --glass-border: rgba(59, 130, 246, 0.3);
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --accent: #3b82f6;
+            --accent-hover: #60a5fa;
+            --danger: #f43f5e;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --card-bg: rgba(30, 41, 59, 0.9);
+        }
+
+        [data-theme="midnight-dark"] {
+            --bg-grad: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+            --glass-bg: rgba(15, 23, 42, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --card-bg: rgba(30, 41, 59, 0.95);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
         body {
             font-family: system-ui, -apple-system, sans-serif;
             background: var(--bg-grad);
+            background-attachment: fixed;
             color: var(--text-main);
             height: 100vh; height: 100dvh;
             width: 100vw;
-            display: flex; justify-content: center; align-items: center;
+            display: flex; align-items: center; justify-content: center;
             overflow: hidden; touch-action: none;
         }
 
@@ -36,11 +80,29 @@
             width: 100vw; max-width: 480px;
             height: 100vh; height: 100dvh;
             display: flex; flex-direction: column;
-            background: rgba(255,255,255,0.02);
+            position: relative; overflow: hidden;
+            background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(20px);
             border-radius: 0;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
             border: 1px solid var(--glass-border);
-            position: relative;
+        }
+
+        .screen { display: none; width: 100%; flex: 1; animation: fadeIn 0.4s ease; flex-direction: column; padding: 1rem; overflow-y: auto; }
+        .screen.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--glass-shadow);
+            margin-bottom: 1rem;
+            width: 100%;
+            display: flex; flex-direction: column; align-items: center; gap: 12px;
         }
 
         header {
@@ -54,48 +116,32 @@
         .back-btn {
             position: absolute; left: 10px; top: 10px;
             text-decoration: none; background: rgba(255,255,255,0.1);
-            width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
             border-radius: 10px; color: var(--text-main); font-weight: bold; border: 1px solid var(--glass-border);
-        }
-
-        .screens-wrapper { flex: 1; position: relative; overflow: hidden; display: flex; width: 100%; }
-        .screen {
-            position: absolute; inset: 0; padding: 15px;
-            display: none; flex-direction: column; gap: 15px;
-            animation: slideIn 0.3s ease forwards;
-            overflow-y: auto; align-items: center;
-            width: 100%;
-        }
-        .screen.active { display: flex; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .glass-card {
-            background: var(--glass-bg); border: 1px solid var(--glass-border);
-            border-radius: 20px; padding: 15px;
-            box-shadow: var(--glass-shadow);
-            display: flex; flex-direction: column; align-items: center; gap: 12px;
-            width: 100%;
-        }
-
-        .input-glass {
-            width: 100%; padding: 12px; border-radius: 12px;
-            border: 1px solid var(--glass-border);
-            background: rgba(255,255,255,0.05);
-            color: var(--text-main); font-size: 1rem;
-            outline: none; text-align: center; font-weight: 600;
+            z-index: 10;
         }
 
         .btn {
             min-height: 48px; width: 100%; padding: 0 20px;
             font-size: 1rem; font-weight: 700; border: none; border-radius: 12px;
-            background: var(--cell-bg); color: var(--text-main);
+            background: var(--card-bg); color: var(--text-main);
             cursor: pointer; transition: all 0.2s;
             display: inline-flex; align-items: center; justify-content: center; gap: 8px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             border: 1px solid var(--glass-border);
         }
         .btn.primary { background: var(--accent); color: white; border: none; }
+        .btn.secondary { background: rgba(255,255,255,0.1); color: var(--text-main); }
         .btn:active { transform: scale(0.96); }
+
+        .input {
+            width: 100%; padding: 12px; border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.05);
+            color: var(--text-main); font-size: 1rem;
+            outline: none; text-align: center; font-weight: 600;
+            margin-bottom: 10px;
+        }
 
         /* Stats in Header */
         .stats-bar { display: none; padding: 5px 12px; }
@@ -115,7 +161,7 @@
         }
 
         .icecube {
-            background: var(--cell-bg);
+            background: var(--card-bg);
             border-radius: 16px;
             aspect-ratio: 1 / 1;
             display: flex; justify-content: center; align-items: center;
@@ -129,7 +175,7 @@
         .shape-container { width: 65%; height: 65%; display: flex; align-items: center; justify-content: center; position: relative; }
         .circle { width: 100%; height: 100%; border-radius: 50%; }
         .square { width: 100%; height: 100%; }
-        .triangle { width: 100%; height: 100%; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
+        .triangle { width: 0; height: 0; border-left: 25px solid transparent; border-right: 25px solid transparent; border-bottom: 45px solid; }
         .star { width: 100%; height: 100%; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
         .hexagon { width: 100%; height: 100%; clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%); }
 
@@ -147,18 +193,25 @@
         .leaderboard {
             width: 100%; max-height: 40vh; overflow-y: auto; background: rgba(0,0,0,0.2);
             border-radius: 15px; border: 1px solid var(--glass-border);
-            -webkit-overflow-scrolling: touch;
         }
-        .leaderboard table { width: 100%; border-collapse: collapse; }
-        .leaderboard th, .leaderboard td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; }
-        .leaderboard th { color: var(--accent); font-weight: 800; background: rgba(255,255,255,0.02); }
-        .leaderboard td b { color: var(--text-main); font-size: 0.85rem; }
-        .leaderboard td small { color: var(--text-sub); display: block; margin-top: 2px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; }
+        th { color: var(--accent); font-weight: 800; background: rgba(255,255,255,0.02); text-transform: uppercase; font-size: 0.7rem; }
+        td b { color: var(--text-main); font-size: 0.85rem; }
+        td small { color: var(--text-sub); display: block; margin-top: 2px; }
 
-        #firebaseStatus { font-size: 10px; color: var(--success); margin-bottom: 5px; opacity: 0.8; }
+        .tabs { display: flex; gap: 0.5rem; margin-bottom: 10px; width: 100%; }
+        .tab { flex: 1; padding: 10px; text-align: center; border-radius: 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); cursor: pointer; font-weight: 800; font-size: 0.8rem; }
+        .tab.active { background: var(--accent); color: white; }
+
+        .theme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; margin: 10px 0; width: 100%; }
+        .theme-btn { padding: 0.8rem; border-radius: 12px; border: 2px solid var(--glass-border); background: rgba(255,255,255,0.1); color: var(--text-main); cursor: pointer; text-align: center; font-size: 0.75rem; font-weight: 700; transition: all 0.2s; }
+        .theme-btn.selected { background: var(--accent); color: white; border-color: var(--accent); }
+
+        #firebaseStatus { font-size: 10px; color: var(--success); margin-top: 5px; opacity: 0.8; text-align: center; }
     </style>
 </head>
-<body>
+<body data-theme="3d-glass">
 
 <div class="app-container">
     <header>
@@ -174,55 +227,73 @@
         </div>
     </header>
 
-    <div class="screens-wrapper">
-        <!-- Welcome Screen -->
-        <section id="screen-welcome" class="screen active">
-            <div style="font-size: 2rem; font-weight: 900; color: var(--accent); text-align: center; margin: 10px 0;">MOBILE SNAP</div>
-            <div class="glass-card">
-                <input type="text" id="playerName" class="input-glass" placeholder="Player Name" maxlength="12">
-                <select id="ageSelect" class="input-glass">
-                    <option value="Age < 8">Age < 8 (Child)</option>
-                    <option value="Age 8-12">Age 8-12 (Junior)</option>
-                    <option value="Age 12-16" selected>Age 12-16 (Standard)</option>
-                    <option value="Age 16-20">Age 16-20 (Teen)</option>
-                    <option value="Age 20+">Age 20+ (Expert)</option>
-                </select>
-                <button class="btn primary" id="startBtn">▶ START MISSION</button>
+    <!-- Welcome Screen -->
+    <section id="screen-welcome" class="screen active">
+        <div style="font-size: 2.2rem; font-weight: 900; color: var(--accent); text-align: center; margin: 20px 0;">MOBILE SNAP</div>
+        <div class="card">
+            <input type="text" id="playerName" class="input" placeholder="Player Name" maxlength="12">
+            <select id="ageSelect" class="input">
+                <option value="Age < 8">Age < 8 (Child)</option>
+                <option value="Age 8-12">Age 8-12 (Junior)</option>
+                <option value="Age 12-16" selected>Age 12-16 (Standard)</option>
+                <option value="Age 16-20">Age 16-20 (Teen)</option>
+                <option value="Age 20+">Age 20+ (Expert)</option>
+            </select>
+
+            <h3 style="font-size: 0.9rem; margin-top: 5px;">🎨 SELECT THEME</h3>
+            <div class="theme-grid">
+                <div class="theme-btn selected" onclick="setTheme('3d-glass')">3D GLASS</div>
+                <div class="theme-btn" onclick="setTheme('modern-2x2')">MODERN</div>
+                <div class="theme-btn" onclick="setTheme('dark-neon')">NEON</div>
+                <div class="theme-btn" onclick="setTheme('midnight-dark')">DARK</div>
             </div>
 
-            <div id="firebaseStatus">Connecting...</div>
+            <button class="btn primary" onclick="handleStart()">▶ START MISSION</button>
+            <button class="btn secondary" onclick="showLeaderboard('top')">🏆 LEADERBOARD</button>
+        </div>
+        <div id="firebaseStatus">Connecting...</div>
+    </section>
+
+    <!-- Game Screen -->
+    <section id="screen-game" class="screen">
+        <div id="prompt-card">
+            <span id="prompt" style="font-size: 1.1rem; font-weight: 800;">Get Ready...</span>
+        </div>
+        <div id="shapesGrid"></div>
+        <div style="flex: 1;"></div>
+    </section>
+
+    <!-- Result Screen -->
+    <section id="screen-result" class="screen">
+        <div class="card" style="margin-top: 20%;">
+            <h2 style="font-size: 1.5rem;">MISSION COMPLETE</h2>
+            <div style="font-size: 4rem; font-weight: 900; margin: 10px 0; color: var(--accent);" id="finalScore">0</div>
+            <button class="btn primary" id="submitScoreBtn" onclick="submitScore()">SAVE SCORE</button>
+            <button class="btn secondary" onclick="handleStart()">PLAY AGAIN</button>
+            <button class="btn secondary" onclick="location.reload()">MAIN MENU</button>
+        </div>
+    </section>
+
+    <!-- Leaderboard Screen -->
+    <section id="screen-leaderboard" class="screen">
+        <div class="header" style="background:transparent; border:none; padding:0; margin-bottom:15px;">
+            <button class="back-btn" onclick="navTo('screen-welcome')">⬅</button>
+            <h2 style="margin: 0 auto;">🏆 Rankings</h2>
+        </div>
+        <div class="card">
+            <div class="tabs">
+                <div class="tab active" id="btnTop" onclick="showLeaderboard('top')">Top 15</div>
+                <div class="tab" id="btnRecent" onclick="showLeaderboard('recent')">Recent 60</div>
+            </div>
             <div class="leaderboard">
-                <div style="display: flex; gap: 8px; padding: 10px;">
-                    <button class="btn" style="flex:1; min-height: 36px; font-size: 0.8rem;" onclick="loadScoresFromFirebase('top')" id="btnTop">🏆 TOP 15</button>
-                    <button class="btn" style="flex:1; min-height: 36px; font-size: 0.8rem; opacity: 0.6;" onclick="loadScoresFromFirebase('recent')" id="btnRecent">🕒 RECENT 60</button>
-                </div>
                 <table>
                     <thead><tr><th>Player</th><th>Score</th><th>Date</th></tr></thead>
                     <tbody id="leaderboardBody"></tbody>
                 </table>
             </div>
-        </section>
-
-        <!-- Game Screen -->
-        <section id="screen-game" class="screen">
-            <div id="prompt-card">
-                <span id="prompt" style="font-size: 1.1rem; font-weight: 800;">Get Ready...</span>
-            </div>
-            <div id="shapesGrid"></div>
-            <div style="flex: 1;"></div>
-        </section>
-
-        <!-- Result Screen -->
-        <section id="screen-result" class="screen">
-            <div class="glass-card" style="margin-top: 20%;">
-                <h2 style="font-size: 1.5rem;">MISSION COMPLETE</h2>
-                <div style="font-size: 3rem; font-weight: 900; margin: 10px 0; color: var(--accent);" id="finalScore">0</div>
-                <button class="btn primary" id="submitScoreBtn">SAVE SCORE</button>
-                <button class="btn" id="restartBtn">PLAY AGAIN</button>
-                <button class="btn" onclick="location.reload()" style="background: transparent;">MENU</button>
-            </div>
-        </section>
-    </div>
+            <button class="btn secondary" style="margin-top: 1rem;" onclick="navTo('screen-welcome')">Back to Menu</button>
+        </div>
+    </section>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -309,6 +380,14 @@
         synth.speak(utter);
     }
 
+    function setTheme(t) {
+        document.body.setAttribute('data-theme', t);
+        localStorage.setItem('eka_wordguess_theme', t);
+        document.querySelectorAll('.theme-btn').forEach(b => {
+            b.classList.toggle('selected', b.getAttribute('onclick').includes(`'${t}'`));
+        });
+    }
+
     function navTo(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
@@ -380,11 +459,18 @@
             cube.className = 'icecube';
             const container = document.createElement('div');
             container.className = 'shape-container';
-            const shp = document.createElement('div');
-            shp.className = item.shape;
 
-            if(item.shape === 'triangle') shp.style.borderBottomColor = item.color;
-            else shp.style.backgroundColor = item.color;
+            if (item.shape === 'triangle') {
+                const tri = document.createElement('div');
+                tri.className = 'triangle';
+                tri.style.borderBottomColor = item.color;
+                container.appendChild(tri);
+            } else {
+                const shp = document.createElement('div');
+                shp.className = item.shape;
+                shp.style.backgroundColor = item.color;
+                container.appendChild(shp);
+            }
 
             cube.onclick = (e) => {
                 if(!state.isGameActive) return;
@@ -404,7 +490,6 @@
                 nextPrompt();
             };
 
-            container.appendChild(shp);
             cube.appendChild(container);
             grid.appendChild(cube);
         });
@@ -436,22 +521,21 @@
                 btn.textContent = 'ERROR';
             }
         }
-        setTimeout(() => location.reload(), 1000);
+        setTimeout(() => showLeaderboard('recent'), 1000);
     }
 
-    function loadScoresFromFirebase(mode = 'top') {
-        if (!firebaseInitialized) return;
+    function showLeaderboard(mode = 'top') {
+        navTo('screen-leaderboard');
         const tbody = document.getElementById('leaderboardBody');
         const btnTop = document.getElementById('btnTop');
         const btnRecent = document.getElementById('btnRecent');
 
         tbody.innerHTML = '<tr><td colspan="3" style="text-align:center">Syncing...</td></tr>';
 
-        if (mode === 'top') {
-            btnTop.style.opacity = '1'; btnRecent.style.opacity = '0.6';
-        } else {
-            btnTop.style.opacity = '0.6'; btnRecent.style.opacity = '1';
-        }
+        btnTop.classList.toggle('active', mode === 'top');
+        btnRecent.classList.toggle('active', mode === 'recent');
+
+        if (!firebaseInitialized) return;
 
         let query = firebaseDB.ref('scores_snap');
         if (mode === 'top') {
@@ -464,7 +548,6 @@
             let list = [];
             snapshot.forEach(child => {
                 let val = child.val();
-                // Normalize fields for legacy/typo support
                 val.score = val.score !== undefined ? val.score : (val.Score || 0);
                 val.name = val.name || val.Name || 'Anonymous';
                 val.level = val.level || val.age || 'Standard';
@@ -491,15 +574,11 @@
         });
     }
 
-    document.getElementById('startBtn').onclick = handleStart;
-    document.getElementById('restartBtn').onclick = handleStart;
-    document.getElementById('submitScoreBtn').onclick = submitScore;
-
     window.onload = () => {
         const savedName = localStorage.getItem('eka_player_name');
         if (savedName) document.getElementById('playerName').value = savedName;
+        setTheme(localStorage.getItem('eka_wordguess_theme') || '3d-glass');
         initFirebase();
-        loadScoresFromFirebase();
     };
 </script>
 </body>

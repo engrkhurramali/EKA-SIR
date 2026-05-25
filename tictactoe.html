@@ -1,284 +1,272 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tic Tac Toe - EKA SIR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>EKA TicTacToe</title>
     <style>
-        :root {
-            --bg: #0f172a; --surface: #1e293b; --text: #f8fafc;
-            --primary: #3b82f6; --primary-hover: #2563eb;
-            --accent: #10b981; --danger: #ef4444;
-            --cell: #334155; --cell-hover: #475569; --cell-disabled: #1e293b;
-            --shadow: 0 10px 15px -3px rgba(0,0,0,0.5);
-            --radius: 12px; --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --board-gap: 8px;
-        }
-        [data-theme="light"] {
-            --bg: #f8fafc; --surface: #ffffff; --text: #0f172a;
-            --cell: #e2e8f0; --cell-hover: #cbd5e1; --cell-disabled: #f1f5f9;
-            --shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-        }
-        [data-theme="neon"] {
-            --bg: #050505; --surface: #0a0a0a; --text: #00ffcc;
-            --primary: #ff00ff; --accent: #00ff00;
-            --cell: #111; --cell-hover: #222;
-            --shadow: 0 0 15px rgba(0,255,204,0.5);
+        /* ========== THEME VARIABLES ========== */
+        :root, [data-theme="3d-glass"] {
+            --bg-grad: linear-gradient(160deg, #e0e7ff 0%, #dbeafe 100%);
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.7);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            --text-main: #1e293b;
+            --text-sub: #475569;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --card-bg: rgba(255,255,255,0.6);
+            --font: 'Segoe UI', system-ui, sans-serif;
+            --radius: 20px;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+        [data-theme="modern-2x2"] {
+            --bg-grad: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            --glass-bg: rgba(255, 255, 255, 0.5);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --text-main: #44403c;
+            --text-sub: #78716c;
+            --accent: #fb923c;
+            --accent-hover: #f97316;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --card-bg: rgba(255,255,255,0.6);
+        }
+
+        [data-theme="dark-neon"] {
+            --bg-grad: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(148, 163, 184, 0.2);
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --accent: #60a5fa;
+            --accent-hover: #3b82f6;
+            --danger: #f43f5e;
+            --success: #34d399;
+            --warning: #f59e0b;
+            --card-bg: rgba(51, 65, 85, 0.9);
+        }
+
+        [data-theme="midnight-dark"] {
+            --bg-grad: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+            --glass-bg: rgba(15, 23, 42, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --card-bg: rgba(30, 41, 59, 0.9);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body {
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: background var(--transition);
-            padding: 10px;
+            font-family: var(--font);
+            background: var(--bg-grad);
+            background-attachment: fixed;
+            color: var(--text-main);
+            height: 100vh; height: 100dvh;
+            width: 100vw;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; touch-action: manipulation;
         }
 
-        .app { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 15px; }
-        .screen { display: none; flex-direction: column; align-items: center; gap: 15px; animation: fadeIn 0.4s ease; width: 100%; }
+        .app-container {
+            width: 100vw; max-width: 480px;
+            height: 100vh; height: 100dvh;
+            display: flex; flex-direction: column;
+            position: relative; overflow: hidden;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+        }
+
+        .screen { display: none; width: 100%; flex: 1; animation: fadeIn 0.4s ease; flex-direction: column; padding: 1rem; overflow-y: auto; }
         .screen.active { display: flex; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        h1 { font-size: 1.8rem; margin: 5px 0; text-align: center; width: 100%; }
-        h2 { font-size: 1.4rem; text-align: center; margin: 0 0 10px; width: 100%; }
         .card {
-            background: var(--surface);
-            padding: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid var(--glass-border);
             border-radius: var(--radius);
-            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            box-shadow: var(--glass-shadow);
+            margin-bottom: 1rem;
             width: 100%;
-            text-align: center;
         }
 
-        input, select, button {
-            width: 100%; padding: 14px 16px; margin: 6px 0; border: none; border-radius: 10px;
-            font-size: 1rem; background: var(--cell); color: var(--text); outline: none; transition: var(--transition);
-        }
-        button {
-            background: var(--primary);
-            font-weight: 600;
-            cursor: pointer;
-            letter-spacing: 0.3px;
-        }
-        button:hover:not(:disabled) { background: var(--primary-hover); transform: translateY(-2px); }
-        button:disabled { background: var(--cell-disabled); cursor: not-allowed; opacity: 0.6; transform: none !important; }
-        .btn-secondary { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
-        .btn-secondary:hover { background: var(--primary); color: var(--text); }
-        .btn-danger { background: var(--danger); }
-        .btn-danger:hover { background: #dc2626; }
+        h1, h2, h3 { font-weight: 800; margin-bottom: 0.8rem; text-align: center; color: var(--text-main); }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255,255,255,0.1); border-bottom: 1px solid var(--glass-border); position: relative;}
+        .back-btn { background: rgba(255,255,255,0.3); border: 1px solid var(--glass-border); color: var(--text-main); cursor: pointer; font-size: 1.2rem; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; z-index: 10; }
+        .back-btn:active { transform: scale(0.9); }
 
-        .mode-select, .theme-select { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-        .mode-select label, .theme-select label {
-            flex: 1; min-width: 90px; padding: 10px 8px; border: 2px solid var(--cell); border-radius: 8px;
-            cursor: pointer; transition: var(--transition); text-align: center; font-size: 0.9rem;
+        .input, .btn {
+            width: 100%; padding: 0.8rem; border-radius: 14px; border: none;
+            font-family: var(--font); font-size: 1rem; transition: all 0.2s;
         }
-        .mode-select input, .theme-select input { display: none; }
-        .mode-select input:checked + label, .theme-select input:checked + label {
-            border-color: var(--primary);
-            background: var(--cell-hover);
-            box-shadow: 0 0 0 2px var(--primary);
-        }
+        .input { background: rgba(255,255,255,0.3); color: var(--text-main); margin-bottom: 1rem; border: 2px solid var(--glass-border); text-align: center; font-weight: bold; }
+        .input:focus { outline: none; border-color: var(--accent); background: rgba(255,255,255,0.5); }
 
-        /* FIXED 3x3 GRID - Full mobile width, fixed aspect ratio */
+        .btn { background: var(--accent); color: white; cursor: pointer; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 8px; }
+        .btn:active { transform: scale(0.98); }
+        .btn.secondary { background: rgba(255,255,255,0.3); color: var(--text-main); border: 2px solid var(--glass-border); }
+
+        .stats-bar { display: flex; justify-content: space-around; background: rgba(255,255,255,0.2); padding: 0.8rem; border-radius: var(--radius); margin: 10px; font-size: 0.85rem; border: 1px solid var(--glass-border); }
+        .stat-badge { font-weight: bold; color: var(--text-main); }
+
+        .theme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; margin: 10px 0; width: 100%; }
+        .theme-btn { padding: 0.8rem; border-radius: 14px; border: 2px solid var(--glass-border); background: rgba(255,255,255,0.2); color: var(--text-main); cursor: pointer; text-align: center; font-size: 0.75rem; font-weight: 700; transition: all 0.2s; }
+        .theme-btn.selected { background: var(--accent); color: white; border-color: var(--accent); }
+
+        .mode-select { display: flex; gap: 8px; width: 100%; margin-bottom: 15px; }
+        .mode-option { flex: 1; position: relative; }
+        .mode-option input { position: absolute; opacity: 0; }
+        .mode-option label {
+            display: block; padding: 12px; background: rgba(255,255,255,0.2); border-radius: 12px;
+            border: 2px solid var(--glass-border); cursor: pointer; font-weight: 700; transition: all 0.2s;
+            text-align: center; font-size: 0.9rem;
+        }
+        .mode-option input:checked + label { border-color: var(--accent); background: var(--accent); color: white; }
+
         .board {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: var(--board-gap);
-            width: 100%;
-            max-width: 420px;
-            aspect-ratio: 1 / 1;
-            margin: 5px auto;
-            padding: var(--board-gap);
-            background: var(--surface);
-            border-radius: var(--radius);
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+            width: 100%; max-width: 320px; aspect-ratio: 1 / 1;
+            margin: 15px auto; padding: 15px;
+            background: rgba(255,255,255,0.1); border-radius: 20px; border: 1px solid var(--glass-border);
         }
         .cell {
-            background: var(--cell);
-            border-radius: 10px;
-            font-size: clamp(2.5rem, 8vw, 3.5rem);
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            aspect-ratio: 1 / 1;
-            user-select: none;
+            background: rgba(255,255,255,0.2); border-radius: 15px;
+            font-size: clamp(2.5rem, 10vw, 3.5rem); font-weight: 900;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s; aspect-ratio: 1 / 1; border: 1px solid var(--glass-border);
         }
-        .cell:hover:not(.taken) { background: var(--cell-hover); transform: scale(1.03); }
-        .cell.taken { cursor: default; transform: none !important; }
-        .cell.x { color: var(--primary); text-shadow: 0 0 10px rgba(59,130,246,0.3); }
-        .cell.o { color: var(--accent); text-shadow: 0 0 10px rgba(16,185,129,0.3); }
-        .cell.winning { animation: pulse 0.5s ease-in-out 3; background: var(--primary); color: white; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .cell:active { transform: scale(0.92); }
+        .cell.x { color: var(--accent); }
+        .cell.o { color: var(--danger); }
+        .cell.winning { background: var(--success); color: white; animation: pulse 0.5s infinite alternate; }
+        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.05); } }
 
-        .status {
-            font-size: 1.1rem;
-            font-weight: 500;
-            min-height: 26px;
-            margin: 5px 0;
-            text-align: center;
-            width: 100%;
-        }
-        .round-counter {
-            font-size: 0.9rem;
-            opacity: 0.85;
-            margin-bottom: 5px;
-            width: 100%;
-            text-align: center;
-        }
-        .scores {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            font-size: 0.95rem;
-            background: var(--surface);
-            padding: 10px;
-            border-radius: 10px;
-        }
-        .scores span { display: flex; align-items: center; gap: 4px; }
+        .leaderboard { width: 100%; max-height: 40vh; overflow-y: auto; background: rgba(255,255,255,0.1); border-radius: 15px; border: 2px solid var(--glass-border); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--glass-border); font-size: 0.8rem; }
+        th { color: var(--accent); font-weight: 800; background: rgba(255,255,255,0.2); text-transform: uppercase; font-size: 0.7rem; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 5px; }
-        th, td { padding: 10px 8px; border-bottom: 1px solid var(--cell); text-align: left; font-size: 0.9rem; }
-        th { color: var(--primary); font-weight: 600; }
-        tr:last-child td { border-bottom: none; }
-        tr:hover { background: var(--cell-hover); }
+        .tabs { display: flex; gap: 0.5rem; margin-bottom: 10px; width: 100%; }
+        .tab { flex: 1; padding: 10px; text-align: center; border-radius: 12px; background: rgba(255,255,255,0.2); border: 1px solid var(--glass-border); cursor: pointer; font-weight: 800; font-size: 0.8rem; }
+        .tab.active { background: var(--accent); color: white; }
 
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--surface);
-            color: var(--text);
-            padding: 12px 20px;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            opacity: 0;
-            transition: 0.3s;
-            pointer-events: none;
-            z-index: 1000;
-            max-width: 90%;
-            text-align: center;
-        }
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
-        .toast.error { border-left: 4px solid var(--danger); }
-        .toast.success { border-left: 4px solid var(--accent); }
-
-        .hidden { display: none !important; }
-        .flex-row { display: flex; gap: 10px; width: 100%; }
-        .flex-center { display: flex; justify-content: center; align-items: center; }
-        .text-center { text-align: center; }
-        .mt-10 { margin-top: 10px; }
-        .mb-5 { margin-bottom: 5px; }
-
-        @media (max-width: 360px) {
-            .board { gap: 6px; padding: 6px; }
-            .cell { font-size: clamp(2rem, 7vw, 3rem); }
-            h1 { font-size: 1.6rem; }
-        }
+        .modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
+        .modal-overlay.active { display: flex; }
+        .modal-box { background: var(--glass-bg); padding: 2rem; border-radius: var(--radius); text-align: center; width: 85%; border: 2px solid var(--glass-border); }
     </style>
 </head>
-<body>
-<div class="app">
-    <!-- SCREEN 1: MENU -->
-    <div id="screen-menu" class="screen active">
-        <h1>🎮 Tic Tac Toe</h1>
-        <div class="card">
-            <input type="text" id="playerName" placeholder="Enter Your Name (max 15 chars)" maxlength="15" required>
+<body data-theme="3d-glass">
 
-            <h3 class="mb-5">🎯 Game Mode</h3>
-            <div class="mode-select">
-                <input type="radio" name="mode" id="pvp" value="pvp" checked>
-                <label for="pvp">👥 PvP</label>
-                <input type="radio" name="mode" id="pvc" value="pvc">
-                <label for="pvc">🤖 PvC</label>
-            </div>
-
-            <h3 class="mb-5 mt-10">🎨 Theme</h3>
-            <div class="theme-select">
-                <input type="radio" name="theme" id="dark" value="dark" checked>
-                <label for="dark">🌙 Dark</label>
-                <input type="radio" name="theme" id="light" value="light">
-                <label for="light">☀️ Light</label>
-                <input type="radio" name="theme" id="neon" value="neon">
-                <label for="neon">⚡ Neon</label>
-            </div>
-
-            <div class="flex-row mt-10">
-                <button id="btn-start">▶️ Start Game</button>
-                <button id="btn-leaderboard" class="btn-secondary">🏆 Leaders</button>
-            </div>
+<div class="app-container">
+    <header id="main-header">
+        <a href="games.html" class="back-btn">⬅</a>
+        <h1 id="header-title">EKA TicTacToe</h1>
+        <div id="game-stats" style="display:none;" class="stats-bar">
+            <div class="stat-badge" id="disp-round">R1/10</div>
+            <div class="stat-badge" id="disp-score-x">X: 0</div>
+            <div class="stat-badge" id="disp-score-o">O: 0</div>
+            <div class="stat-badge" id="disp-draws">🤝 0</div>
         </div>
+    </header>
+
+    <div class="screens-wrapper" style="flex:1; display:flex;">
+        <!-- Welcome Screen -->
+        <section id="screen-welcome" class="screen active">
+            <div style="font-size: 2.2rem; font-weight: 900; color: var(--accent); text-align: center; margin: 20px 0;">TIC TAC TOE</div>
+            <div class="card">
+                <input type="text" id="playerName" class="input" placeholder="Player Name" maxlength="12">
+
+                <h3 style="font-size: 0.9rem; text-align: left; margin-bottom: 5px;">GAME MODE</h3>
+                <div class="mode-select">
+                    <div class="mode-option">
+                        <input type="radio" name="mode" id="pvp" value="pvp" checked>
+                        <label for="pvp">👥 PvP</label>
+                    </div>
+                    <div class="mode-option">
+                        <input type="radio" name="mode" id="pvc" value="pvc">
+                        <label for="pvc">🤖 PvC</label>
+                    </div>
+                </div>
+
+                <h3 style="font-size: 0.9rem; text-align: left; margin-bottom: 5px;">SELECT THEME</h3>
+                <div class="theme-grid">
+                    <div class="theme-btn selected" onclick="setTheme('3d-glass')">3D GLASS</div>
+                    <div class="theme-btn" onclick="setTheme('modern-2x2')">MODERN</div>
+                    <div class="theme-btn" onclick="setTheme('dark-neon')">NEON</div>
+                    <div class="theme-btn" onclick="setTheme('midnight-dark')">DARK</div>
+                </div>
+
+                <button class="btn" onclick="startGame()">▶ START GAME</button>
+                <button class="btn secondary" onclick="showLeaderboard('top')">🏆 LEADERBOARD</button>
+            </div>
+            <div id="firebaseStatus" style="text-align:center; font-size: 0.7rem; opacity: 0.7;">Connecting...</div>
+        </section>
+
+        <!-- Game Screen -->
+        <section id="screen-game" class="screen">
+            <h2 id="game-status" style="margin: 10px 0; font-size: 1.2rem;">Player X's Turn</h2>
+            <div class="board" id="board"></div>
+            <div style="display:flex; gap:10px; width:100%; padding:0 10px;">
+                <button class="btn secondary" onclick="resetRound()">🔄 RESET</button>
+                <button class="btn secondary" style="background:var(--danger); color:white;" onclick="endSession()">🏳️ EXIT</button>
+            </div>
+        </section>
+
+        <!-- Leaderboard Screen -->
+        <section id="screen-leaderboard" class="screen">
+            <div class="header" style="background:transparent; border:none; padding:0; margin-bottom:15px;">
+                <button class="back-btn" onclick="navTo('screen-welcome')">⬅</button>
+                <h2>🏆 Rankings</h2>
+                <div style="width:40px;"></div>
+            </div>
+            <div class="card">
+                <div class="tabs">
+                    <div class="tab active" id="tab-top" onclick="showLeaderboard('top')">Top 15</div>
+                    <div class="tab" id="tab-recent" onclick="showLeaderboard('recent')">Recent 60</div>
+                </div>
+                <div class="leaderboard">
+                    <table>
+                        <thead><tr><th>Player</th><th>Score</th><th>Date</th></tr></thead>
+                        <tbody id="leaderboardBody"></tbody>
+                    </table>
+                </div>
+                <button class="btn secondary" style="margin-top: 1rem;" onclick="navTo('screen-welcome')">Back to Menu</button>
+            </div>
+        </section>
     </div>
 
-    <!-- SCREEN 2: GAME -->
-    <div id="screen-game" class="screen">
-        <div class="round-counter">Round: <b id="round-counter">1</b>/10</div>
-        <div class="scores">
-            <span>✔️ <b id="score-x">0</b></span>
-            <span>⭕ <b id="score-o">0</b></span>
-            <span>🤝 <b id="score-draw">0</b></span>
-        </div>
-        <div class="status" id="game-status">Player X's Turn</div>
-
-        <!-- FIXED 3x3 GRID - Takes full mobile width -->
-        <div class="board" id="board"></div>
-
-        <div class="flex-row">
-            <button id="btn-reset">🔄 New Round</button>
-            <button id="btn-exit" class="btn-secondary btn-danger">🚪 Exit</button>
-        </div>
-    </div>
-
-    <!-- SCREEN 3: GAME OVER (Save option ONLY appears here) -->
-    <div id="screen-gameover" class="screen">
-        <h2 id="result-title">🏁 Session Complete</h2>
-        <div class="card">
-            <p id="result-message" style="margin-bottom:12px; font-size:1rem; line-height:1.4;"></p>
-
-            <!-- Final Score Summary -->
-            <div style="background:var(--cell); padding:12px; border-radius:8px; margin:10px 0; text-align:left;">
-                <div>👤 Player X: <b id="final-x" style="color:var(--primary)">0</b></div>
-                <div>🤖 Player O: <b id="final-o" style="color:var(--accent)">0</b></div>
-                <div>🤝 Draws: <b id="final-draw">0</b></div>
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal-end">
+        <div class="modal-box">
+            <h2 id="modal-title">Round Over</h2>
+            <p id="modal-msg" style="margin: 10px 0; font-weight: 600;"></p>
+            <div id="final-stats" style="display:none; margin: 15px 0; background: rgba(0,0,0,0.05); padding: 10px; border-radius: 12px;">
+                <div id="stat-x"></div>
+                <div id="stat-o"></div>
+                <div id="stat-draw"></div>
             </div>
-
-            <!-- SAVE SECTION - Only visible after game ends -->
-            <div id="save-section">
-                <input type="text" id="winner-name" placeholder="Name for leaderboard" maxlength="15">
-                <input type="number" id="score-value" placeholder="Points to submit" min="10" max="100" value="10">
-                <button id="btn-submit">💾 Submit to Leaderboard</button>
-            </div>
-
-            <button id="btn-back-menu" class="btn-secondary mt-10">🏠 Main Menu</button>
+            <button class="btn" id="btn-modal-action"></button>
         </div>
-    </div>
-
-    <!-- SCREEN 4: LEADERBOARD -->
-    <div id="screen-leaderboard" class="screen">
-        <h2>🏆 Top 15 Players</h2>
-        <div class="card" style="max-height: 55vh; overflow-y: auto; padding: 10px;">
-            <table>
-                <thead><tr><th>#</th><th>Name</th><th>Score</th></tr></thead>
-                <tbody id="leaderboard-body"><tr><td colspan="3">⏳ Loading...</td></tr></tbody>
-            </table>
-        </div>
-        <button id="btn-back-lb" class="btn-secondary" style="margin-top:10px; width:auto; padding:10px 25px;">⬅️ Back</button>
     </div>
 </div>
 
-<div id="toast" class="toast"></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
-<script type="module">
-    // 🔥 FIREBASE SETUP - KEPT INTACT AS REQUESTED
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getDatabase, ref, push, query, orderByChild, limitToLast, get } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
-
+<script>
     const firebaseConfig = {
         apiKey: "AIzaSyAEcPKE7n33wNUGxYpyqm5UWFjwXTT_x_c",
         authDomain: "eka-sir.firebaseapp.com",
@@ -290,446 +278,213 @@
         measurementId: "G-5P543VP1EZ"
     };
 
-    let db;
-    try {
-        const app = initializeApp(firebaseConfig);
-        db = getDatabase(app);
-        console.log("✅ Firebase initialized");
-    } catch(e) {
-        console.warn("⚠️ Firebase not configured. Leaderboard will run locally only.");
-    }
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-    // 🎮 GAME STATE
-    const state = {
-        player: 'Player 1',
-        mode: 'pvp',           // 'pvp' or 'pvc'
-        theme: 'dark',
-        board: Array(9).fill(null),
-        currentPlayer: 'X',
-        gameActive: true,
-        sessionActive: true,   // Controls 10-round session
-        round: 1,              // Current round (1-10)
-        maxRounds: 10,         // Session ends after 10 rounds
-        scores: { X: 0, O: 0, draws: 0 },
-        winningCombo: null
+    let state = {
+        name: "", mode: "pvp", board: Array(9).fill(null), currentPlayer: "X",
+        gameActive: false, round: 1, maxRounds: 10,
+        scores: { X: 0, O: 0, draws: 0 }, winningCombo: null
     };
 
-    // DOM Elements
-    const screens = {
-        menu: document.getElementById('screen-menu'),
-        game: document.getElementById('screen-game'),
-        gameover: document.getElementById('screen-gameover'),
-        leaderboard: document.getElementById('screen-leaderboard')
-    };
-
-    const boardEl = document.getElementById('board');
-    const statusEl = document.getElementById('game-status');
-    const roundEl = document.getElementById('round-counter');
-    const toast = document.getElementById('toast');
-    const saveSection = document.getElementById('save-section');
-
-    // 🧭 Screen Navigation
-    function showScreen(name) {
-        Object.values(screens).forEach(s => s.classList.remove('active'));
-        screens[name].classList.add('active');
-
-        if(name === 'leaderboard') loadLeaderboard();
-        if(name === 'gameover') {
-            // Show save section only in game over screen
-            saveSection.classList.remove('hidden');
-            populateFinalScores();
+    let audioCtx = null;
+    function playSound(type) {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        const now = audioCtx.currentTime;
+        if (type === 'hit') {
+            osc.frequency.setValueAtTime(523, now);
+            osc.frequency.exponentialRampToValueAtTime(783, now + 0.1);
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+            osc.start(); osc.stop(now + 0.15);
+        } else if (type === 'win') {
+            [523, 659, 783].forEach((f,i) => {
+                const o = audioCtx.createOscillator();
+                const g = audioCtx.createGain();
+                o.connect(g); g.connect(audioCtx.destination);
+                o.frequency.setValueAtTime(f, now + i*0.1);
+                g.gain.setValueAtTime(0.1, now + i*0.1);
+                g.gain.exponentialRampToValueAtTime(0.01, now + i*0.1 + 0.2);
+                o.start(now + i*0.1); o.stop(now + i*0.1 + 0.2);
+            });
         }
     }
 
-    function showToast(msg, type = 'info') {
-        toast.textContent = msg;
-        toast.className = `toast show ${type === 'error' ? 'error' : type === 'success' ? 'success' : ''}`;
-        setTimeout(() => toast.classList.remove('show'), 2800);
-    }
-
-    // 🎨 Theme Handler
-    document.querySelectorAll('input[name="theme"]').forEach(radio => {
-        radio.addEventListener('change', (e) => {
-            document.documentElement.setAttribute('data-theme', e.target.value);
-            state.theme = e.target.value;
+    function setTheme(t) {
+        document.body.setAttribute('data-theme', t);
+        localStorage.setItem('eka_wordguess_theme', t);
+        document.querySelectorAll('.theme-btn').forEach(b => {
+            b.classList.toggle('selected', b.getAttribute('onclick').includes(`'${t}'`));
         });
-    });
+    }
 
-    // ▶️ Start Game Handler
-    document.getElementById('btn-start').addEventListener('click', () => {
+    function navTo(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.getElementById('game-stats').style.display = (id === 'screen-game') ? 'flex' : 'none';
+        document.getElementById('header-title').style.display = (id === 'screen-game') ? 'none' : 'block';
+    }
+
+    function startGame() {
         const name = document.getElementById('playerName').value.trim();
-        if(!name) return showToast('⚠️ Please enter your name!', 'error');
-        if(name.length > 15) return showToast('⚠️ Name too long (max 15)', 'error');
-
-        state.player = name;
+        if (!name) { alert("Enter Name!"); return; }
+        state.name = name;
         state.mode = document.querySelector('input[name="mode"]:checked').value;
-
-        // Reset session state
-        state.round = 1;
-        state.scores = { X: 0, O: 0, draws: 0 };
-        state.sessionActive = true;
-
-        resetRound();
-        updateRoundDisplay();
-        updateScoreUI();
-        showScreen('game');
-        showToast(`🎮 ${state.mode === 'pvc' ? 'vs Computer' : 'PvP'} - Round 1/10`, 'success');
-    });
-
-    // 🔄 Reset Round / Exit
-    document.getElementById('btn-reset').addEventListener('click', () => {
-        if(state.round < state.maxRounds) {
-            state.round++;
-            resetRound();
-            updateRoundDisplay();
-            showToast(`🔄 Round ${state.round}/10`, 'success');
-        } else {
-            endSession();
-        }
-    });
-
-    document.getElementById('btn-exit').addEventListener('click', () => {
-        if(confirm('Exit current session? Progress will be lost.')) {
-            showScreen('menu');
-        }
-    });
-
-    document.getElementById('btn-back-menu').addEventListener('click', () => showScreen('menu'));
-    document.getElementById('btn-back-lb').addEventListener('click', () => showScreen('menu'));
-    document.getElementById('btn-leaderboard').addEventListener('click', () => showScreen('leaderboard'));
-
-    // 🔄 Reset single round (not session)
-    function resetRound() {
-        state.board.fill(null);
-        state.currentPlayer = 'X';
-        state.gameActive = true;
-        state.winningCombo = null;
-        statusEl.textContent = "Player X's Turn";
-        renderBoard();
+        state.round = 1; state.scores = { X: 0, O: 0, draws: 0 };
+        localStorage.setItem('eka_player_name', name);
+        newRound();
+        navTo('screen-game');
     }
 
-    function updateRoundDisplay() {
-        roundEl.textContent = state.round;
+    function newRound() {
+        state.board.fill(null); state.currentPlayer = "X"; state.gameActive = true; state.winningCombo = null;
+        updateUI(); renderBoard();
+        document.getElementById('game-status').innerText = "Player X's Turn";
     }
 
-    // 📦 Render Fixed 3x3 Board
     function renderBoard() {
+        const boardEl = document.getElementById('board');
         boardEl.innerHTML = '';
-        state.board.forEach((cell, index) => {
+        state.board.forEach((cell, i) => {
             const div = document.createElement('div');
-            div.className = `cell ${cell ? cell.toLowerCase() : ''} ${cell ? 'taken' : ''}`;
-            if(state.winningCombo && state.winningCombo.includes(index)) {
-                div.classList.add('winning');
-            }
+            div.className = `cell ${cell ? cell.toLowerCase() : ''}`;
+            if (state.winningCombo && state.winningCombo.includes(i)) div.classList.add('winning');
             div.textContent = cell || '';
-            div.setAttribute('data-index', index);
-            div.addEventListener('click', () => handleMove(index));
+            div.onclick = () => handleMove(i);
             boardEl.appendChild(div);
         });
     }
 
-    // ✋ Handle Player Move
-    function handleMove(index) {
-        if(!state.gameActive || !state.sessionActive || state.board[index] || state.currentPlayer !== 'X') return;
-
-        state.board[index] = 'X';
-        renderBoard();
-
-        const winResult = checkWin(state.board, 'X');
-        if(winResult) {
-            highlightWin(winResult);
-            return endRound('X');
-        }
-        if(state.board.every(c => c)) return endRound('draw');
-
-        state.currentPlayer = 'O';
-        statusEl.textContent = state.mode === 'pvc' ? "🤖 AI Thinking..." : "Player O's Turn";
-
-        if(state.mode === 'pvc') {
-            setTimeout(makeAIMove, 400);
+    function handleMove(i) {
+        if (!state.gameActive || state.board[i] || (state.mode === 'pvc' && state.currentPlayer === 'O')) return;
+        makeMove(i);
+        if (state.gameActive && state.mode === 'pvc' && state.currentPlayer === 'O') {
+            document.getElementById('game-status').innerText = "🤖 AI Thinking...";
+            setTimeout(makeAIMove, 600);
         }
     }
 
-    // 🤖 Minimax AI (Unbeatable)
+    function makeMove(i) {
+        state.board[i] = state.currentPlayer;
+        playSound('hit');
+        const win = checkWin(state.board, state.currentPlayer);
+        if (win) {
+            state.winningCombo = win; renderBoard();
+            endRound(state.currentPlayer); return;
+        }
+        if (state.board.every(c => c)) { endRound('draw'); return; }
+        state.currentPlayer = state.currentPlayer === "X" ? "O" : "X";
+        document.getElementById('game-status').innerText = `Player ${state.currentPlayer}'s Turn`;
+        renderBoard();
+    }
+
     function makeAIMove() {
-        if(!state.gameActive || !state.sessionActive) return;
-
-        let bestScore = -Infinity;
-        let bestMove = -1;
-        const boardCopy = [...state.board];
-
-        for(let i = 0; i < 9; i++) {
-            if(!boardCopy[i]) {
-                boardCopy[i] = 'O';
-                const score = minimax(boardCopy, 0, false);
-                boardCopy[i] = null;
-                if(score > bestScore) {
-                    bestScore = score;
-                    bestMove = i;
-                }
+        let best = -Infinity, move = -1;
+        for(let i=0; i<9; i++) {
+            if(!state.board[i]) {
+                state.board[i] = "O";
+                let score = minimax(state.board, 0, false);
+                state.board[i] = null;
+                if(score > best) { best = score; move = i; }
             }
         }
-
-        if(bestMove !== -1) {
-            state.board[bestMove] = 'O';
-            renderBoard();
-
-            const winResult = checkWin(state.board, 'O');
-            if(winResult) {
-                highlightWin(winResult);
-                return endRound('O');
-            }
-            if(state.board.every(c => c)) return endRound('draw');
-
-            state.currentPlayer = 'X';
-            statusEl.textContent = "Player X's Turn";
-        }
+        if(move !== -1) makeMove(move);
     }
 
-    function minimax(board, depth, isMaximizing) {
-        if(checkWin(board, 'O')) return 10 - depth;
-        if(checkWin(board, 'X')) return depth - 10;
+    function minimax(board, depth, isMax) {
+        if(checkWin(board, "O")) return 10 - depth;
+        if(checkWin(board, "X")) return depth - 10;
         if(board.every(c => c)) return 0;
-
-        if(isMaximizing) {
-            let best = -Infinity;
-            for(let i = 0; i < 9; i++) {
-                if(!board[i]) {
-                    board[i] = 'O';
-                    best = Math.max(best, minimax(board, depth + 1, false));
-                    board[i] = null;
-                }
-            }
-            return best;
+        if(isMax) {
+            let b = -Infinity;
+            for(let i=0; i<9; i++) { if(!board[i]) { board[i]="O"; b=Math.max(b, minimax(board, depth+1, false)); board[i]=null; } }
+            return b;
         } else {
-            let best = Infinity;
-            for(let i = 0; i < 9; i++) {
-                if(!board[i]) {
-                    board[i] = 'X';
-                    best = Math.min(best, minimax(board, depth + 1, true));
-                    board[i] = null;
-                }
-            }
-            return best;
+            let b = Infinity;
+            for(let i=0; i<9; i++) { if(!board[i]) { board[i]="X"; b=Math.min(b, minimax(board, depth+1, true)); board[i]=null; } }
+            return b;
         }
     }
 
-    function checkWin(board, player) {
-        const wins = [
-            [0,1,2], [3,4,5], [6,7,8], // Rows
-            [0,3,6], [1,4,7], [2,5,8], // Columns
-            [0,4,8], [2,4,6]            // Diagonals
-        ];
-        return wins.find(([a,b,c]) => board[a] === player && board[b] === player && board[c] === player);
+    function checkWin(b, p) {
+        const w = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+        return w.find(c => c.every(i => b[i] === p));
     }
 
-    function highlightWin(combo) {
-        state.winningCombo = combo;
-        renderBoard();
+    function updateUI() {
+        document.getElementById('disp-round').innerText = `R${state.round}/10`;
+        document.getElementById('disp-score-x').innerText = `X: ${state.scores.X}`;
+        document.getElementById('disp-score-o').innerText = `O: ${state.scores.O}`;
+        document.getElementById('disp-draws').innerText = `🤝 ${state.scores.draws}`;
     }
 
-    // 🏁 End Single Round
     function endRound(winner) {
         state.gameActive = false;
-
-        if(winner === 'draw') {
-            state.scores.draws++;
-            statusEl.textContent = "🤝 Round Draw!";
-            showToast("🤝 Draw!", 'info');
-        } else {
-            state.scores[winner]++;
-            const winnerText = winner === 'X' ? 'Player X' : (state.mode === 'pvc' ? '🤖 AI' : 'Player O');
-            statusEl.textContent = `🏆 ${winnerText} Wins!`;
-            showToast(`🏆 ${winnerText} wins round!`, 'success');
-        }
-
-        updateScoreUI();
-
-        // Check session end conditions
-        if(state.round >= state.maxRounds) {
-            setTimeout(endSession, 1200);
-        } else {
-            setTimeout(() => {
-                if(state.sessionActive) {
-                    state.round++;
-                    resetRound();
-                    updateRoundDisplay();
-                }
-            }, 1500);
-        }
+        if (winner === 'draw') state.scores.draws++; else state.scores[winner]++;
+        playSound('win'); updateUI();
+        const modal = document.getElementById('modal-end');
+        const title = document.getElementById('modal-title');
+        const msg = document.getElementById('modal-msg');
+        const action = document.getElementById('btn-modal-action');
+        if (state.round < state.maxRounds) {
+            title.innerText = winner === 'draw' ? "🤝 Draw!" : `🏆 ${winner} Wins!`;
+            msg.innerText = `Get ready for round ${state.round + 1}`;
+            action.innerText = "Next Round";
+            action.onclick = () => { modal.classList.remove('active'); state.round++; newRound(); };
+        } else { endSession(); }
+        modal.classList.add('active');
     }
 
-    // 🏆 End 10-Round Session
     function endSession() {
-        state.sessionActive = false;
         state.gameActive = false;
-
-        let title, message, winnerName, points;
-
-        if(state.mode === 'pvc') {
-            // PvC: Computer wins session if it has more wins
-            if(state.scores.O > state.scores.X) {
-                title = "🤖 Computer Wins Session!";
-                message = `AI: ${state.scores.O} | You: ${state.scores.X} | Draws: ${state.scores.draws}`;
-                winnerName = "Computer AI";
-                points = Math.max(10, state.scores.O * 10);
-            } else if(state.scores.X > state.scores.O) {
-                title = "🎉 You Win the Session!";
-                message = `You: ${state.scores.X} | AI: ${state.scores.O} | Draws: ${state.scores.draws}`;
-                winnerName = state.player;
-                points = Math.max(10, state.scores.X * 10);
-            } else {
-                title = "🤝 Session Tied!";
-                message = `You: ${state.scores.X} | AI: ${state.scores.O} | Draws: ${state.scores.draws}`;
-                winnerName = state.player;
-                points = Math.max(10, state.scores.draws * 5 + 20);
-            }
-        } else {
-            // PvP: Higher score wins
-            if(state.scores.X > state.scores.O) {
-                title = "🏆 Player X Wins!";
-                message = `X: ${state.scores.X} | O: ${state.scores.O} | Draws: ${state.scores.draws}`;
-                winnerName = state.player;
-                points = Math.max(10, state.scores.X * 10);
-            } else if(state.scores.O > state.scores.X) {
-                title = "🏆 Player O Wins!";
-                message = `O: ${state.scores.O} | X: ${state.scores.X} | Draws: ${state.scores.draws}`;
-                winnerName = "Player 2";
-                points = Math.max(10, state.scores.O * 10);
-            } else {
-                title = "🤝 Session Tied!";
-                message = `X: ${state.scores.X} | O: ${state.scores.O} | Draws: ${state.scores.draws}`;
-                winnerName = state.player;
-                points = Math.max(10, state.scores.draws * 5 + 20);
-            }
-        }
-
-        document.getElementById('result-title').textContent = title;
-        document.getElementById('result-message').textContent = message;
-        document.getElementById('winner-name').value = winnerName;
-        document.getElementById('score-value').value = points;
-
-        showScreen('gameover');
-        showToast("🏁 Session complete! Submit score below 👇", 'success');
+        const modal = document.getElementById('modal-end');
+        document.getElementById('modal-title').innerText = "🏁 Complete";
+        let res = state.scores.X > state.scores.O ? "Player X Wins!" : (state.scores.O > state.scores.X ? "Player O Wins!" : "It's a Draw!");
+        document.getElementById('modal-msg').innerText = res;
+        document.getElementById('final-stats').style.display = 'block';
+        document.getElementById('stat-x').innerText = `Player X: ${state.scores.X}`;
+        document.getElementById('stat-o').innerText = `Player O: ${state.scores.O}`;
+        document.getElementById('stat-draw').innerText = `Draws: ${state.scores.draws}`;
+        const action = document.getElementById('btn-modal-action');
+        action.innerText = "Return Menu";
+        action.onclick = () => { modal.classList.remove('active'); navTo('screen-welcome'); };
+        saveToDB();
+        modal.classList.add('active');
     }
 
-    function populateFinalScores() {
-        document.getElementById('final-x').textContent = state.scores.X;
-        document.getElementById('final-o').textContent = state.scores.O;
-        document.getElementById('final-draw').textContent = state.scores.draws;
+    function saveToDB() {
+        const score = (state.scores.X * 10) + (state.scores.draws * 5);
+        if (score > 0) db.ref('scores_tictactoe').push({ name: state.name, score, mode: state.mode, timestamp: firebase.database.ServerValue.TIMESTAMP });
     }
 
-    function updateScoreUI() {
-        document.getElementById('score-x').textContent = state.scores.X;
-        document.getElementById('score-o').textContent = state.scores.O;
-        document.getElementById('score-draw').textContent = state.scores.draws;
+    function showLeaderboard(mode) {
+        navTo('screen-leaderboard');
+        const body = document.getElementById('leaderboardBody');
+        body.innerHTML = '<tr><td colspan="3">Syncing...</td></tr>';
+        document.getElementById('tab-top').classList.toggle('active', mode === 'top');
+        document.getElementById('tab-recent').classList.toggle('active', mode === 'recent');
+        let ref = db.ref('scores_tictactoe');
+        if (mode === 'top') ref = ref.orderByChild('score').limitToLast(15);
+        else ref = ref.limitToLast(60);
+        ref.once('value', s => {
+            let d = []; s.forEach(c => d.push(c.val()));
+            if (mode === 'top') d.sort((a,b) => b.score - a.score);
+            else d.sort((a,b) => b.timestamp - a.timestamp);
+            body.innerHTML = d.map(i => `<tr><td><b>${i.name}</b><br><small>${i.mode}</small></td><td style="color:var(--accent); font-weight:bold;">${i.score}</td><td>${new Date(i.timestamp).toLocaleDateString()}</td></tr>`).join('') || '<tr><td colspan="3">No records</td></tr>';
+        });
     }
 
-    // 💾 Submit Score to Firebase
-    document.getElementById('btn-submit').addEventListener('click', async () => {
-        const name = document.getElementById('winner-name').value.trim() || state.player;
-        const score = parseInt(document.getElementById('score-value').value) || 10;
+    function resetRound() { if(confirm("Reset Round?")) newRound(); }
 
-        if(!name) return showToast('⚠️ Enter a name to save', 'error');
-        if(name.length > 15) return showToast('⚠️ Name max 15 chars', 'error');
-        if(score < 10 || score > 100) return showToast('⚠️ Score must be 10-100', 'error');
-
-        if(!db) {
-            showToast('⚠️ Firebase not connected. Try again later.', 'error');
-            return;
-        }
-
-        const btn = document.getElementById('btn-submit');
-        btn.disabled = true;
-        btn.textContent = "⏳ Saving...";
-
-        try {
-            await push(ref(db, "tictactoe_leaderboard"), {
-                name: name,
-                score: score,
-                mode: state.mode,
-                date: new Date().toISOString(),
-                timestamp: Date.now()
-            });
-            showToast("✅ Score submitted successfully!", 'success');
-            btn.textContent = "✅ Saved!";
-            setTimeout(() => {
-                btn.disabled = false;
-                btn.textContent = "💾 Submit to Leaderboard";
-            }, 2000);
-        } catch(err) {
-            console.error("Save error:", err);
-            showToast("❌ Failed: " + err.message, 'error');
-            btn.disabled = false;
-            btn.textContent = "💾 Submit to Leaderboard";
-        }
-    });
-
-    // 📊 Load Leaderboard from Firebase
-    async function loadLeaderboard() {
-        const tbody = document.getElementById('leaderboard-body');
-        tbody.innerHTML = '<tr><td colspan="3">⏳ Loading...</td></tr>';
-
-        if(!db) {
-            tbody.innerHTML = '<tr><td colspan="3">🔌 Firebase not configured</td></tr>';
-            return;
-        }
-
-        try {
-            // Fetch entire node to avoid indexing issues with small datasets
-            const snap = await get(ref(db, "tictactoe_leaderboard"));
-
-            if(!snap.exists()) {
-                tbody.innerHTML = '<tr><td colspan="3">📭 No scores yet - Be first!</td></tr>';
-                return;
-            }
-
-            const data = [];
-            snap.forEach(child => {
-                const val = child.val();
-                if (val) data.push(val);
-            });
-
-            // Sort by score descending (handle potential string scores)
-            data.sort((a, b) => (parseInt(b.score) || 0) - (parseInt(a.score) || 0));
-
-            tbody.innerHTML = '';
-            // Display top 15
-            data.slice(0, 15).forEach((d, i) => {
-                const isMe = d.name === state.player;
-                tbody.innerHTML += `
-                    <tr style="${isMe ? 'background:rgba(59,130,246,0.15); font-weight:600;' : ''}">
-                        <td>${i+1}</td>
-                        <td>${d.name || 'Anonymous'}${isMe ? ' ⭐' : ''}</td>
-                        <td style="color:var(--primary); font-weight:700;">${d.score || 0}</td>
-                    </tr>`;
-            });
-        } catch(err) {
-            console.error("Load error:", err);
-            tbody.innerHTML = `<tr><td colspan="3">⚠️ ${err.message}</td></tr>`;
-        }
-    }
-
-    // 🎯 Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-        renderBoard();
-        // Set default player name
-        const savedName = localStorage.getItem('ttt_player');
-        if(savedName) document.getElementById('playerName').value = savedName;
-    });
-
-    // Save player name on change
-    document.getElementById('playerName').addEventListener('change', (e) => {
-        localStorage.setItem('ttt_player', e.target.value.trim());
-    });
-
-    // Prevent accidental page refresh
-    window.addEventListener('beforeunload', (e) => {
-        if(state.sessionActive && state.round > 1) {
-            e.preventDefault();
-            e.returnValue = '';
-        }
-    });
+    window.onload = () => {
+        const n = localStorage.getItem('eka_player_name'); if(n) document.getElementById('playerName').value = n;
+        setTheme(localStorage.getItem('eka_wordguess_theme') || '3d-glass');
+        db.ref('.info/connected').on('value', s => { document.getElementById('firebaseStatus').innerText = s.val() ? '✅ Online' : '❌ Offline'; });
+    };
 </script>
 </body>
 </html>
