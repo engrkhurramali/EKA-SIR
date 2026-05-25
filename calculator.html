@@ -2,904 +2,773 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>EKA-Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Casio Scientific Calculator - Navigable Cursor</title>
     <style>
         :root {
-            --sky-blue: #87CEEB;
-            --mint-green: #98FF98;
-            --glass: rgba(255, 255, 255, 0.25);
-            --glass-border: rgba(255, 255, 255, 0.45);
-            --text-dark: #1a5f7a;
-            --casio-body: rgba(255, 255, 255, 0.2);
-            --casio-dark: rgba(255, 255, 255, 0.1);
-            --casio-light: rgba(255, 255, 255, 0.3);
-            --casio-green: #26a69a;
-            --casio-green-dark: #00897b;
+            --calculator-bg: #3a3d40;
+            --calculator-border: #282a2b;
+            --screen-bg: #c3ccb5;
+            --screen-text: #1d201a;
+            --btn-dark-bg: #2d2f31;
+            --btn-light-bg: #ebebeb;
+            --btn-green-bg: #8cb82b;
+            --text-white: #ffffff;
+            --text-dark: #111111;
+            --lbl-shift: #e5a93b;
+            --lbl-alpha: #ce5a70;
+            --lbl-blue: #4a90e2;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
 
         body {
-            background: linear-gradient(135deg, var(--sky-blue), var(--mint-green));
-            height: 100vh; width: 100vw;
-            display: flex; justify-content: center; align-items: center;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            overflow: hidden;
-            color: var(--text-dark);
-            touch-action: manipulation;
-        }
-
-        #app-container {
-            width: 100%; max-width: 480px; height: 100%;
-            background: var(--glass);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 2px solid var(--glass-border);
-            border-radius: 24px;
-            display: flex; flex-direction: column;
-            position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-        }
-
-        .back-link {
-            position: absolute;
-            left: 15px;
-            top: 15px;
-            text-decoration: none;
-            background: rgba(255, 255, 255, 0.4);
-            border: 1px solid var(--glass-border);
-            width: 36px;
-            height: 36px;
+            background: linear-gradient(135deg, #4f5459 0%, #232526 100%);
+            height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
-            border-radius: 12px;
-            color: var(--text-dark);
-            font-size: 1.2rem;
-            transition: all 0.2s;
-            z-index: 100;
-        }
-        .back-link:active { transform: scale(0.9); background: rgba(255,255,255,0.6); }
-
-        nav {
-            height: 70px;
-            background: rgba(255, 255, 255, 0.35);
-            display: flex; justify-content: space-around; align-items: center;
-            border-top: 2px solid var(--glass-border);
-            border-radius: 0 0 22px 22px;
+            align-items: center;
+            padding: 5px;
+            overflow: hidden;
         }
 
-        .nav-item {
-            text-align: center;
-            font-size: 12px;
-            font-weight: 700;
-            opacity: 0.5;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            padding: 6px 10px;
-            border-radius: 14px;
-            color: var(--text-dark);
-        }
-
-        .nav-item:active { transform: scale(0.95); background: rgba(255,255,255,0.5); }
-        .nav-item.active {
-            opacity: 1;
-            transform: scale(1.05);
-            color: #000;
-            background: rgba(255,255,255,0.6);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        .nav-icon { font-size: 1.6rem; display: block; margin-bottom: 2px; }
-
-        .screen {
-            flex: 1;
-            padding: 12px;
-            display: none;
-            flex-direction: column;
-            animation: slideUp 0.35s ease;
-        }
-
-        .screen.active { display: flex; }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* SCIENTIFIC CALCULATOR STYLES */
-        .sci-calc {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+        .casio-body {
+            background: var(--calculator-bg);
+            width: 100%;
+            max-width: 390px;
+            height: 98vh;
+            max-height: calc(100vw * 16 / 9);
             border-radius: 24px;
-            padding: 18px 15px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.05);
-            border: 2px solid var(--glass-border);
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .sci-brand {
-            text-align: center;
-            color: var(--text-dark);
-            font-size: 1.2rem;
-            font-weight: 800;
-            letter-spacing: 3px;
-            margin-bottom: 5px;
-            text-shadow: 0 2px 4px rgba(255,255,255,0.5);
-        }
-
-        .sci-display {
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 10px;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
-            border: 2px solid var(--glass-border);
-            min-height: 110px;
+            padding: 12px 14px 14px 14px;
+            box-shadow: inset 0 3px 5px rgba(255,255,255,0.2),
+                        inset 0 -3px 5px rgba(0,0,0,0.4),
+                        0 15px 30px rgba(0,0,0,0.5);
+            border: 3px solid var(--calculator-border);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+        }
+
+        /* BRANDING */
+        .brand-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 4px;
+            margin-bottom: 4px;
+        }
+        .brand {
+            color: var(--text-white);
+            font-size: 1.1rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            font-style: italic;
+        }
+        .model-num {
+            color: #888;
+            font-size: 0.65rem;
+            font-weight: bold;
+        }
+
+        /* SCREEN STYLING */
+        .screen-container {
+            background: var(--screen-bg);
+            border-radius: 8px;
+            padding: 6px 10px;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
+            border: 2px solid #222;
+            height: 18%;
+            min-height: 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .indicators {
+            display: flex;
+            gap: 12px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            color: var(--screen-text);
+            opacity: 0.8;
+            height: 12px;
+        }
+
+        .indicator {
+            visibility: hidden;
+        }
+        .indicator.active {
+            visibility: visible;
+        }
+
+        .math-input-line {
+            font-family: 'Courier New', monospace;
+            font-size: 1.25rem;
+            color: var(--screen-text);
+            text-align: left;
+            word-wrap: break-word;
+            overflow-y: auto;
+            max-height: 45px;
+            line-height: 1.2;
+            font-weight: bold;
+            white-space: pre-wrap;
             position: relative;
         }
 
-        .sci-indicators {
+        .math-input-line sup {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #000;
+        }
+
+        /* BLINKING CURSOR IMPLEMENTATION */
+        @keyframes casioBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .custom-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.2rem;
+            background-color: var(--screen-text);
+            vertical-align: middle;
+            animation: casioBlink 0.8s step-end infinite;
+            margin: 0 1px;
+        }
+        sup .custom-cursor {
+            height: 0.8rem;
+            width: 2px;
+        }
+
+        .math-output-line {
+            font-family: 'Courier New', monospace;
+            font-size: 1.8rem;
+            color: var(--screen-text);
+            text-align: right;
+            font-weight: bold;
+            height: 30px;
+            line-height: 30px;
+        }
+
+        /* MODIFIER AND D-PAD COMPACT ROW */
+        .row-top-modifiers {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.2fr 1fr 1fr;
+            gap: 5px;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        /* D-PAD DESIGN */
+        .dpad-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            width: 65px;
+            height: 52px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .dpad-btn {
+            background: #222;
+            border: 1px solid #444;
             position: absolute;
-            top: 5px;
-            left: 10px;
-            right: 10px;
+            cursor: pointer;
+        }
+        .dpad-btn:active {
+            background: #333;
+        }
+        .dpad-up { top: 0; left: 19px; width: 27px; height: 18px; border-radius: 6px 6px 0 0; }
+        .dpad-down { bottom: 0; left: 19px; width: 27px; height: 18px; border-radius: 0 0 6px 6px; }
+        .dpad-left { left: 0; top: 14px; width: 22px; height: 24px; border-radius: 6px 0 0 6px; }
+        .dpad-right { right: 0; top: 14px; width: 22px; height: 24px; border-radius: 0 6px 6px 0; }
+        .dpad-center { top: 14px; left: 19px; width: 27px; height: 24px; background: #151515; border: none; pointer-events: none; }
+
+        .btn-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            padding-top: 11px;
+        }
+
+        .sub-labels {
+            position: absolute;
+            top: 0;
+            width: 100%;
             display: flex;
             justify-content: space-between;
-            font-size: 0.7rem;
-            color: var(--text-dark);
-            font-weight: 700;
-            opacity: 0.8;
+            font-size: 0.58rem;
+            font-weight: bold;
+            padding: 0 2px;
+        }
+        .lbl-s { color: var(--lbl-shift); }
+        .lbl-a { color: var(--lbl-alpha); }
+
+        .casio-btn {
+            width: 100%;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            box-shadow: 0 2px 0 #151617;
+            transition: all 0.05s ease;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .casio-btn:active {
+            transform: translateY(2px);
+            box-shadow: none;
         }
 
-        #sci-input {
-            font-family: 'Courier New', monospace;
-            font-size: 1.4rem;
-            color: var(--text-dark);
-            text-align: right;
-            min-height: 28px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-weight: 600;
-            margin-top: 15px;
+        .btn-oval {
+            height: 24px;
+            border-radius: 12px;
+            font-size: 0.75rem;
         }
 
-        #sci-result {
-            font-family: 'Courier New', monospace;
-            font-size: 2.4rem;
-            color: #000;
-            text-align: right;
-            font-weight: 800;
-            min-height: 40px;
+        .btn-rect {
+            height: 26px;
+            border-radius: 4px;
+            font-size: 0.75rem;
         }
 
-        .sci-keypad {
+        .grid-scientific {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px 5px;
+            margin-bottom: 6px;
+        }
+
+        .grid-base-pad {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-            flex: 1;
+            gap: 6px 6px;
         }
 
-        .sc-btn {
-            border: 2px solid var(--glass-border);
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.4);
+        .key-dark {
+            background: var(--btn-dark-bg);
+            color: var(--text-white);
+        }
+        .key-light {
+            background: var(--btn-light-bg);
             color: var(--text-dark);
-            min-height: 45px;
-            user-select: none;
-            position: relative;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            box-shadow: 0 2px 0 #bcbcbc;
+            font-size: 1.05rem;
+            border-radius: 5px;
+            height: 33px;
         }
-
-        .sc-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 1px 0 rgba(0,0,0,0.05);
-            background: rgba(255, 255, 255, 0.6);
-        }
-
-        .sc-btn.top-row {
-            background: rgba(255, 255, 255, 0.6);
-            font-size: 0.75rem;
-            min-height: 38px;
-        }
-
-        .sc-btn.sci-fn {
-            background: rgba(255, 255, 255, 0.3);
+        .key-green {
+            background: var(--btn-green-bg);
+            color: var(--text-white);
+            box-shadow: 0 2px 0 #5d7c19;
             font-size: 0.85rem;
+            border-radius: 5px;
+            height: 33px;
         }
 
-        .sc-btn.num {
-            background: rgba(255, 255, 255, 0.8);
-            font-size: 1.2rem;
-        }
-
-        .sc-btn.green {
-            background: linear-gradient(135deg, var(--casio-green), var(--casio-green-dark));
-            color: #fff;
-            border: none;
-        }
-
-        .sc-btn.equals {
-            background: linear-gradient(135deg, var(--casio-green), var(--casio-green-dark));
-            color: #fff;
-            font-size: 1.4rem;
-            grid-row: span 2;
-            min-height: 98px;
-            border: none;
-        }
-
-        .sc-btn.zero {
-            grid-column: span 2;
-        }
-
-        .btn-label {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1px;
-        }
-
-        .btn-shift {
-            font-size: 0.6rem;
-            color: #d97706;
-            font-weight: 800;
-        }
-
-        .btn-alpha {
-            font-size: 0.6rem;
-            color: #be185d;
-            font-weight: 800;
-        }
-
-        .btn-main {
-            font-size: 1rem;
-        }
-
-        /* HISTORY STYLES */
-        #scr-hist h3 {
-            font-size: 1.8rem;
-            margin-bottom: 12px;
-            text-align: center;
-            font-weight: 700;
-        }
-
-        .list-item {
-            background: var(--glass);
-            padding: 14px 16px;
-            border-radius: 14px;
-            margin-bottom: 10px;
-            border: 2px solid var(--glass-border);
-            font-size: 1.4rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
-
-        #clear-hist {
-            background: rgba(255, 100, 100, 0.3);
-            color: var(--text-dark);
-            font-size: 1.3rem;
-            padding: 10px;
-            border-radius: 14px;
-            border: 2px solid var(--glass-border);
-            margin: 8px 0;
-            font-weight: 600;
-        }
-
-        @media (max-height: 720px) {
-            .sc-btn { min-height: 36px; }
-            .sci-display { min-height: 80px; }
-        }
-
-        @media (max-height: 650px) {
-            .sc-btn { min-height: 32px; font-size: 0.75rem; }
-            .sci-display { min-height: 70px; }
-            #sci-result { font-size: 1.9rem; }
-            #sci-input { font-size: 1.1rem; }
-        }
+        .span-2 { grid-column: span 2; }
     </style>
 </head>
 <body>
 
-<div id="app-container">
-    <a href="index.html" class="back-link">⬅</a>
+<div class="casio-body">
+    <div class="brand-row">
+        <div class="brand">EKA-CALC</div>
+        <div class="model-num">STEM</div>
+    </div>
 
-    <!-- ==================== -->
-    <!-- SCIENTIFIC CALCULATOR-->
-    <!-- ==================== -->
-    <div id="scr-sci" class="screen active">
-        <div class="sci-calc">
-            <div class="sci-brand">EKA-CALC</div>
+    <div class="screen-container">
+        <div class="indicators">
+            <span id="ind-shift" class="indicator">S</span>
+            <span id="ind-alpha" class="indicator">A</span>
+            <span id="ind-deg" class="indicator active">D</span>
+            <span style="margin-left: auto;" class="indicator active">Math</span>
+        </div>
+        <div id="display-input" class="math-input-line"></div>
+        <div id="display-output" class="math-output-line">0</div>
+    </div>
 
-            <!-- Two-row display: Input + Result -->
-            <div class="sci-display">
-                <div class="sci-indicators">
-                    <span id="sd-mode">MATH</span>
-                    <span id="sd-angle">DEG</span>
-                    <span id="sd-shift" style="color:#444">SHIFT</span>
-                </div>
-                <div id="sci-input">0</div>
-                <div id="sci-result">0</div>
-            </div>
+    <div class="row-top-modifiers">
+        <div class="btn-wrapper">
+            <button class="casio-btn btn-oval key-dark" style="background:#444; color:var(--lbl-shift);" onclick="pressShift()">SHIFT</button>
+        </div>
+        <div class="btn-wrapper">
+            <button class="casio-btn btn-oval key-dark" style="background:#444; color:var(--lbl-alpha);" onclick="pressAlpha()">ALPHA</button>
+        </div>
 
-            <!-- Scientific Keypad -->
-            <div class="sci-keypad">
-                <!-- Row 1: Top functions -->
-                <button class="sc-btn top-row" onclick="toggleShift()">SHIFT</button>
-                <button class="sc-btn top-row" onclick="toggleAlpha()">ALPHA</button>
-                <button class="sc-btn top-row" onclick="toggleMode()">MODE</button>
-                <button class="sc-btn top-row" onclick="toggleAngle()">DRG►</button>
-                <button class="sc-btn top-row" onclick="powerOn()">ON</button>
+        <div class="dpad-container">
+            <button class="dpad-btn dpad-up" onclick="moveCursor('up')"></button>
+            <button class="dpad-btn dpad-left" onclick="moveCursor('left')"></button>
+            <button class="dpad-btn dpad-center"></button>
+            <button class="dpad-btn dpad-right" onclick="moveCursor('right')"></button>
+            <button class="dpad-btn dpad-down" onclick="moveCursor('down')"></button>
+        </div>
 
-                <!-- Row 2: x³, ∛, xʸ, 10ˣ, log -->
-                <button class="sc-btn sci-fn" id="btn-pow3" onclick="handlePow3()">
-                    <div class="btn-label"><span class="btn-shift">x!</span><span class="btn-main">x³</span></div>
-                </button>
-                <button class="sc-btn sci-fn" id="btn-root3" onclick="handleRoot3()">
-                    <div class="btn-label"><span class="btn-shift">ˣ√</span><span class="btn-main">∛</span></div>
-                </button>
-                <button class="sc-btn sci-fn" id="btn-pow" onclick="handlePow()">
-                    <div class="btn-label"><span class="btn-shift">ˣ√</span><span class="btn-main">xʸ</span></div>
-                </button>
-                <button class="sc-btn sci-fn" id="btn-pow10" onclick="handlePow10()">
-                    <div class="btn-label"><span class="btn-shift">eˣ</span><span class="btn-main">10ˣ</span></div>
-                </button>
-                <button class="sc-btn sci-fn" id="btn-log" onclick="handleLog()">
-                    <div class="btn-label"><span class="btn-shift">10ˣ</span><span class="btn-main">log</span></div>
-                </button>
-
-                <!-- Row 3: sin, cos, tan, (, ) -->
-                <button class="sc-btn sci-fn" id="btn-sin" onclick="handleSin()">
-                    <div class="btn-label"><span class="btn-shift">sin⁻¹</span><span class="btn-main">sin</span></div>
-                </button>
-                <button class="sc-btn sci-fn" id="btn-cos" onclick="handleCos()">
-                    <div class="btn-label"><span class="btn-shift">cos⁻¹</span><span class="btn-main">cos</span></div>
-                </button>
-                <button class="sc-btn sci-fn" id="btn-tan" onclick="handleTan()">
-                    <div class="btn-label"><span class="btn-shift">tan⁻¹</span><span class="btn-main">tan</span></div>
-                </button>
-                <button class="sc-btn sci-fn" onclick="inp('(')">(</button>
-                <button class="sc-btn sci-fn" onclick="inp(')')">)</button>
-
-                <!-- Row 4: , π, e, DEL, AC -->
-                <button class="sc-btn sci-fn" onclick="inp(',')">,</button>
-                <button class="sc-btn sci-fn" id="btn-pi" onclick="handlePi()">
-                    <div class="btn-label"><span class="btn-alpha">A</span><span class="btn-main">π</span></div>
-                </button>
-                <button class="sc-btn sci-fn" id="btn-e" onclick="handleE()">
-                    <div class="btn-label"><span class="btn-alpha">B</span><span class="btn-main">e</span></div>
-                </button>
-                <button class="sc-btn green" onclick="del()">DEL</button>
-                <button class="sc-btn green" onclick="cls()">AC</button>
-
-                <!-- Row 5: 7, 8, 9, ÷, × -->
-                <button class="sc-btn num" onclick="inp('7')">7</button>
-                <button class="sc-btn num" onclick="inp('8')">8</button>
-                <button class="sc-btn num" onclick="inp('9')">9</button>
-                <button class="sc-btn sci-fn" onclick="inp('/')"><span class="btn-main">÷</span></button>
-                <button class="sc-btn sci-fn" id="btn-ln" onclick="handleLn()">
-                    <div class="btn-label"><span class="btn-shift">eˣ</span><span class="btn-main">ln</span></div>
-                </button>
-
-
-                <!-- Row 6: 4, 5, 6, +, − -->
-                <button class="sc-btn num" onclick="inp('4')">4</button>
-                <button class="sc-btn num" onclick="inp('5')">5</button>
-                <button class="sc-btn num" onclick="inp('6')">6</button>
-                <button class="sc-btn sci-fn" onclick="inp('*')"><span class="btn-main">×</span></button>
-                <button class="sc-btn sci-fn" id="btn-sqrt" onclick="handleSqrt()">
-                    <div class="btn-label"><span class="btn-shift">³√</span><span class="btn-main">√</span></div>
-                </button>
-
-
-                <!-- Row 7: 1, 2, 3, ln, √ -->
-                <button class="sc-btn num" onclick="inp('1')">1</button>
-                <button class="sc-btn num" onclick="inp('2')">2</button>
-                <button class="sc-btn num" onclick="inp('3')">3</button>
-                <button class="sc-btn sci-fn" onclick="inp('-')"><span class="btn-main">−</span></button>
-
-                <button class="sc-btn sci-fn" id="btn-sq" onclick="handleSq()">
-                    <div class="btn-label"><span class="btn-shift">ˣ√</span><span class="btn-main">x²</span></div>
-                </button>
-
-
-                <!-- Row 8: 0, ., x², = -->
-                <button class="sc-btn num zero" onclick="inp('0')">0</button>
-                <button class="sc-btn num" onclick="inp('.')">.</button>
-                <button class="sc-btn sci-fn" onclick="inp('+')"><span class="btn-main">+</span></button>
-                <button class="sc-btn green" onclick="s_run()">=</button>
-            </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">SETUP</span></div>
+            <button class="casio-btn btn-oval key-dark" style="font-size:0.65rem;" onclick="pressMode()">MODE</button>
+        </div>
+        <div class="btn-wrapper">
+            <button class="casio-btn btn-oval key-dark" style="background:#993333;" onclick="powerOn()">ON</button>
         </div>
     </div>
 
-    <!-- HISTORY SCREEN -->
-    <div id="scr-hist" class="screen">
-        <h3>📜 History</h3>
-        <button id="clear-hist" onclick="HistoryManager.clear()">🗑️ Clear All</button>
-        <div id="hist-content" style="overflow-y:auto; flex:1;"></div>
+    <div class="grid-scientific">
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">SOLVE</span><span class="lbl-a">=</span></div>
+            <button class="casio-btn btn-rect key-dark" onclick="handleSciKey('calc')">CALC</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">d/dx</span></div>
+            <button class="casio-btn btn-rect key-dark" onclick="handleSciKey('integral')">∫dx</button>
+        </div>
+
+        <div class="span-2"></div>
+
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">x!</span></div>
+            <button class="casio-btn btn-rect key-dark" onclick="handleSciKey('inv')">x⁻¹</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">∑</span></div>
+            <button class="casio-btn btn-rect key-dark" style="font-size:0.65rem;" onclick="handleSciKey('logbase')">log◽◽</button>
+        </div>
+
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">◽/◽</span></div>
+            <button class="casio-btn btn-rect key-dark" style="font-size:0.65rem;" onclick="handleSciKey('fraction')">Inline/</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">∛</span></div>
+            <button class="casio-btn btn-rect key-dark" onclick="handleSciKey('sqrt')">√◽</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">x³</span></div>
+            <button class="casio-btn btn-rect key-dark" onclick="handleSciKey('square')">x²</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">ˣ√</span></div>
+            <button class="casio-btn btn-rect key-dark" onclick="handleSciKey('power')">x^◽</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">10ˣ</span></div>
+            <button class="casio-btn btn-rect key-dark" onclick="handleSciKey('log')">log</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">eˣ</span></div>
+            <button class="casio-btn btn-rect key-dark" onclick="handleSciKey('ln')">ln</button>
+        </div>
+
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">∠</span><span class="lbl-a">A</span></div>
+            <button class="casio-btn btn-rect key-dark" onclick="handleSciKey('neg')">(-)</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">←</span><span class="lbl-a">B</span></div>
+            <button class="casio-btn btn-rect key-dark" style="font-size:0.65rem;" onclick="handleSciKey('deg')">° ' "</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">Abs</span><span class="lbl-a">C</span></div>
+            <button class="casio-btn btn-rect key-dark" onclick="handleSciKey('hyp')">hyp</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">sin⁻¹</span><span class="lbl-a">D</span></div>
+            <button class="casio-btn btn-rect key-dark" onclick="handleSciKey('sin')">sin</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">cos⁻¹</span><span class="lbl-a">E</span></div>
+            <button class="casio-btn btn-rect key-dark" onclick="handleSciKey('cos')">cos</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">tan⁻¹</span><span class="lbl-a">F</span></div>
+            <button class="casio-btn btn-rect key-dark" onclick="handleSciKey('tan')">tan</button>
+        </div>
+
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">STO</span></div>
+            <button class="casio-btn btn-rect key-dark" onclick="handleSciKey('rcl')">RCL</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">← i</span></div>
+            <button class="casio-btn btn-rect key-dark" onclick="handleSciKey('eng')">ENG</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">%</span></div>
+            <button class="casio-btn btn-rect key-dark" onclick="handleSciKey('bracket-open')">(</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">,</span><span class="lbl-a">X</span></div>
+            <button class="casio-btn btn-rect key-dark" onclick="handleSciKey('bracket-close')">)</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">a b/c</span><span class="lbl-a">Y</span></div>
+            <button class="casio-btn btn-rect key-dark" style="font-size:0.65rem;" onclick="handleSciKey('sd')">S⇔D</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">M-</span><span class="lbl-a">M</span></div>
+            <button class="casio-btn btn-rect key-dark" onclick="handleSciKey('mplus')">M+</button>
+        </div>
     </div>
 
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-item active" onclick="Navigation.go('sci', this)"><span class="nav-icon">🧪</span>Scientific</div>
-        <div class="nav-item" onclick="Navigation.go('hist', this)"><span class="nav-icon">📜</span>History</div>
-    </nav>
+    <div class="grid-base-pad">
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">CONST</span></div>
+            <button class="casio-btn key-light" onclick="pressNum('7')">7</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">CONV</span></div>
+            <button class="casio-btn key-light" onclick="pressNum('8')">8</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">CLR</span></div>
+            <button class="casio-btn key-light" onclick="pressNum('9')">9</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">INS</span></div>
+            <button class="casio-btn key-green" onclick="pressDelete()">DEL</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">OFF</span></div>
+            <button class="casio-btn key-green" onclick="pressAC()">AC</button>
+        </div>
+
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s" style="font-size:0.5rem;">[MAT]</span></div>
+            <button class="casio-btn key-light" onclick="pressNum('4')">4</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s" style="font-size:0.5rem;">[VCT]</span></div>
+            <button class="casio-btn key-light" onclick="pressNum('5')">5</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"></div>
+            <button class="casio-btn key-light" onclick="pressNum('6')">6</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">nPr</span></div>
+            <button class="casio-btn key-light" onclick="pressOp('*')">×</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">nCr</span></div>
+            <button class="casio-btn key-light" onclick="pressOp('/')">÷</button>
+        </div>
+
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s" style="font-size:0.5rem;">[STAT]</span></div>
+            <button class="casio-btn key-light" onclick="pressNum('1')">1</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s" style="font-size:0.5rem;">[CMPLX]</span></div>
+            <button class="casio-btn key-light" onclick="pressNum('2')">2</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s" style="font-size:0.5rem;">[BASE]</span></div>
+            <button class="casio-btn key-light" onclick="pressNum('3')">3</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">Pol</span></div>
+            <button class="casio-btn key-light" onclick="pressOp('+')">+</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">Rec</span></div>
+            <button class="casio-btn key-light" onclick="pressOp('-')">−</button>
+        </div>
+
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">Rnd</span></div>
+            <button class="casio-btn key-light" onclick="pressNum('0')">0</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">Ran#</span></div>
+            <button class="casio-btn key-light" onclick="pressNum('.')">.</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">π</span><span class="lbl-a">e</span></div>
+            <button class="casio-btn key-light" style="font-size:0.75rem;" onclick="handleSciKey('exp10')">×10ˣ</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"><span class="lbl-s">DRG</span></div>
+            <button class="casio-btn key-light" style="font-size:0.8rem;" onclick="pressAns()">Ans</button>
+        </div>
+        <div class="btn-wrapper">
+            <div class="sub-labels"></div>
+            <button class="casio-btn key-light" onclick="calculateResult()">=</button>
+        </div>
+    </div>
 </div>
 
 <script>
-    /**
-     * ==========================================
-     * SCIENTIFIC CALCULATOR - IIFE MODULE
-     * ==========================================
-     */
-    const SciCalc = (function() {
-        let expression = "0";
-        let shiftMode = false;
-        let alphaMode = false;
-        let mode = 'MATH';
-        let angleMode = 'DEG';
+    /* COMPACT ADVANCED ARBITRARY CURSOR CALCULATOR ENGINE */
+    let tokens = [];
+    let cursorIndex = 0; // Tracking active input index position
+    let shiftActive = false;
+    let alphaActive = false;
+    let lastAnswer = 0;
+    let isPowerInputMode = false;
 
-        function updateDisplay() {
-            const clean = expression.replace(/Math\./g, '').replace(/\*\*/g, '^');
-            document.getElementById('sci-input').innerText = clean === '0' ? '0' : clean;
+    function pressShift() {
+        shiftActive = !shiftActive;
+        document.getElementById('ind-shift').className = shiftActive ? 'indicator active' : 'indicator';
+        alphaActive = false;
+        document.getElementById('ind-alpha').className = 'indicator';
+    }
 
-            if (expression !== "0" && !['+','-','*','/','**','Math.'].some(op => expression.endsWith(op))) {
-                try {
-                    let res = Function('"use strict"; return (' + expression + ')')();
-                    if (isFinite(res) && !isNaN(res)) {
-                        document.getElementById('sci-result').innerText = formatResult(res);
-                    } else {
-                        document.getElementById('sci-result').innerText = '';
-                    }
-                } catch(e) {
-                    document.getElementById('sci-result').innerText = '';
-                }
-            } else {
-                document.getElementById('sci-result').innerText = '0';
+    function pressAlpha() {
+        alphaActive = !alphaActive;
+        document.getElementById('ind-alpha').className = alphaActive ? 'indicator active' : 'indicator';
+        shiftActive = false;
+        document.getElementById('ind-shift').className = 'indicator';
+    }
+
+    function powerOn() {
+        pressAC();
+    }
+
+    function pressAC() {
+        tokens = [];
+        cursorIndex = 0;
+        isPowerInputMode = false;
+        clearModifiers();
+        renderInput();
+        document.getElementById('display-output').innerText = "0";
+    }
+
+    // Interactive targeted deletion at specific cursor position
+    function pressDelete() {
+        if (cursorIndex > 0) {
+            tokens.splice(cursorIndex - 1, 1);
+            cursorIndex--;
+            updateContextFromCursor();
+            renderInput();
+        }
+    }
+
+    function clearModifiers() {
+        shiftActive = false;
+        alphaActive = false;
+        document.getElementById('ind-shift').className = 'indicator';
+        document.getElementById('ind-alpha').className = 'indicator';
+    }
+
+    // Helper to generic slice-insert tokens seamlessly at cursor
+    function insertTokenAtCursor(type, val, display) {
+        tokens.splice(cursorIndex, 0, { type: type, val: val, display: display });
+        cursorIndex++;
+    }
+
+    function pressNum(num) {
+        if (shiftActive && num === '9') { pressAC(); return; }
+
+        let type = isPowerInputMode ? 'powernum' : 'num';
+        insertTokenAtCursor(type, num, num);
+        clearModifiers();
+        renderInput();
+    }
+
+    function pressOp(op) {
+        isPowerInputMode = false;
+        let dsp = op;
+        if(op === '*') dsp = '×';
+        if(op === '/') dsp = '÷';
+        insertTokenAtCursor('op', op, dsp);
+        clearModifiers();
+        renderInput();
+    }
+
+    function pressAns() {
+        insertTokenAtCursor('num', lastAnswer.toString(), 'Ans');
+        renderInput();
+    }
+
+    function handleSciKey(keyType) {
+        if (shiftActive) {
+            switch(keyType) {
+                case 'square':
+                    insertTokenAtCursor('pow', '**3', '³');
+                    break;
+                case 'sqrt':
+                    insertTokenAtCursor('fn', 'Math.cbrt(', '³√(');
+                    break;
+                case 'sin':
+                    insertTokenAtCursor('fn', 'Math.asin(', 'sin⁻¹(');
+                    break;
+                case 'cos':
+                    insertTokenAtCursor('fn', 'Math.acos(', 'cos⁻¹(');
+                    break;
+                case 'tan':
+                    insertTokenAtCursor('fn', 'Math.atan(', 'tan⁻¹(');
+                    break;
+                case 'exp10':
+                    insertTokenAtCursor('num', 'Math.PI', 'π');
+                    break;
+                default:
+                    break;
             }
-
-            document.getElementById('sd-mode').innerText = mode;
-            document.getElementById('sd-angle').innerText = angleMode;
-            document.getElementById('sd-shift').style.color = shiftMode ? '#ffd700' : '#444';
+            clearModifiers();
+            renderInput();
+            return;
         }
 
-        function formatResult(val) {
-            if (typeof val === 'string') return val;
-            if (!isFinite(val)) return 'Error';
-            if (Number.isInteger(val) && Math.abs(val) < 1e12) return val.toString();
-            return parseFloat(val.toPrecision(10)).toString();
-        }
-
-        function getAngle(val) {
-            if (angleMode === 'RAD') return val;
-            if (angleMode === 'GRAD') return val * Math.PI / 200;
-            return val * Math.PI / 180;
-        }
-
-        function fromAngle(val) {
-            if (angleMode === 'RAD') return val;
-            if (angleMode === 'GRAD') return val * 200 / Math.PI;
-            return val * 180 / Math.PI;
-        }
-
-        function applyFunction(fn) {
-            try {
-                let val = Function('"use strict"; return (' + expression + ')')();
-                if (isNaN(val) || !isFinite(val)) throw "Invalid";
-
-                let res = fn(val);
-                if (!isFinite(res)) throw "Domain Error";
-
-                expression = formatResult(res);
-                updateDisplay();
-                haptic(20);
-            } catch(e) {
-                expression = "Error";
-                updateDisplay();
-                setTimeout(clear, 1500);
+        if (alphaActive) {
+            switch(keyType) {
+                case 'exp10':
+                    insertTokenAtCursor('num', 'Math.E', 'e');
+                    break;
+                default:
+                    break;
             }
+            clearModifiers();
+            renderInput();
+            return;
         }
 
-        function haptic(ms = 10) {
-            if (navigator.vibrate) navigator.vibrate(ms);
+        switch(keyType) {
+            case 'square':
+                insertTokenAtCursor('pow', '**2', '²');
+                break;
+            case 'power':
+                isPowerInputMode = true;
+                insertTokenAtCursor('pow-start', '**', '^');
+                break;
+            case 'sqrt':
+                insertTokenAtCursor('fn', 'Math.sqrt(', '√(');
+                break;
+            case 'sin':
+                insertTokenAtCursor('fn', 'Math.sin(', 'sin(');
+                break;
+            case 'cos':
+                insertTokenAtCursor('fn', 'Math.cos(', 'cos(');
+                break;
+            case 'tan':
+                insertTokenAtCursor('fn', 'Math.tan(', 'tan(');
+                break;
+            case 'log':
+                insertTokenAtCursor('fn', 'Math.log10(', 'log(');
+                break;
+            case 'ln':
+                insertTokenAtCursor('fn', 'Math.log(', 'ln(');
+                break;
+            case 'bracket-open':
+                insertTokenAtCursor('num', '(', '(');
+                break;
+            case 'bracket-close':
+                insertTokenAtCursor('num', ')', ')');
+                break;
+            case 'neg':
+                insertTokenAtCursor('num', '-', '-');
+                break;
+            case 'fraction':
+                insertTokenAtCursor('op', '/', '˩');
+                break;
+            case 'inv':
+                insertTokenAtCursor('pow', '**(-1)', '⁻¹');
+                break;
+            case 'exp10':
+                insertTokenAtCursor('op', '*10**', '×10^');
+                isPowerInputMode = true;
+                break;
+            default:
+                break;
         }
+        renderInput();
+    }
 
-        return {
-            input: function(value) {
-                if (expression === "0" && value !== '.' && !['+','-','*','/','**','Math.'].includes(value)) {
-                    expression = value;
-                } else if (expression === "Error") {
-                    expression = value;
-                } else {
-                    expression += value;
-                }
-                updateDisplay();
-                haptic();
-            },
+    // Move structural position points along multi-line formulas
+    function moveCursor(dir) {
+        if (dir === 'left') {
+            if (cursorIndex > 0) cursorIndex--;
+        } else if (dir === 'right') {
+            if (cursorIndex < tokens.length) cursorIndex++;
+        }
+        updateContextFromCursor();
+        renderInput();
+    }
 
-            clear: function() {
-                expression = "0";
-                updateDisplay();
-                haptic();
-            },
-
-            del: function() {
-                if (expression === "Error") {
-                    this.clear();
-                    return;
-                }
-                expression = expression.length > 1 ? expression.slice(0, -1) : "0";
-                updateDisplay();
-                haptic();
-            },
-
-            calculate: function() {
-                try {
-                    if (expression === "Error") {
-                        this.clear();
-                        return;
-                    }
-
-                    let res = Function('"use strict"; return (' + expression.replace(/Math\./g, 'Math.') + ')')();
-                    if (!isFinite(res) || isNaN(res)) throw "Invalid";
-
-                    let formatted = formatResult(res);
-                    const cleanExpr = expression.replace(/Math\./g, '').replace(/\*\*/g, '^');
-                    HistoryManager.add(cleanExpr, formatted);
-
-                    expression = formatted;
-                    updateDisplay();
-                    haptic(40);
-                } catch(e) {
-                    expression = "Error";
-                    updateDisplay();
-                    setTimeout(() => this.clear(), 1500);
-                }
-            },
-
-            toggleShift: function() {
-                shiftMode = !shiftMode;
-                alphaMode = false;
-                haptic(15);
-                updateDisplay();
-            },
-
-            toggleAlpha: function() {
-                alphaMode = !alphaMode;
-                shiftMode = false;
-                haptic(15);
-                updateDisplay();
-            },
-
-            toggleMode: function() {
-                const modes = ['MATH', 'COMP', 'STAT'];
-                mode = modes[(modes.indexOf(mode) + 1) % modes.length];
-                haptic(15);
-                updateDisplay();
-            },
-
-            toggleAngle: function() {
-                const angles = ['DEG', 'RAD', 'GRAD'];
-                angleMode = angles[(angles.indexOf(angleMode) + 1) % angles.length];
-                haptic(15);
-                updateDisplay();
-            },
-
-            powerOn: function() {
-                this.clear();
-                haptic(30);
-            },
-
-            handleSin: function() {
-                if (shiftMode) {
-                    applyFunction(v => fromAngle(Math.asin(v)));
-                    shiftMode = false;
-                } else {
-                    applyFunction(v => Math.sin(getAngle(v)));
-                }
-                updateDisplay();
-            },
-
-            handleCos: function() {
-                if (shiftMode) {
-                    applyFunction(v => fromAngle(Math.acos(v)));
-                    shiftMode = false;
-                } else {
-                    applyFunction(v => Math.cos(getAngle(v)));
-                }
-                updateDisplay();
-            },
-
-            handleTan: function() {
-                if (shiftMode) {
-                    applyFunction(v => fromAngle(Math.atan(v)));
-                    shiftMode = false;
-                } else {
-                    applyFunction(v => Math.tan(getAngle(v)));
-                }
-                updateDisplay();
-            },
-
-            handleLog: function() {
-                if (shiftMode) {
-                    applyFunction(v => Math.pow(10, v));
-                    shiftMode = false;
-                } else {
-                    applyFunction(v => {
-                        if (v <= 0) throw "Domain Error";
-                        return Math.log10(v);
-                    });
-                }
-                updateDisplay();
-            },
-
-            handleLn: function() {
-                if (shiftMode) {
-                    applyFunction(v => Math.exp(v));
-                    shiftMode = false;
-                } else {
-                    applyFunction(v => {
-                        if (v <= 0) throw "Domain Error";
-                        return Math.log(v);
-                    });
-                }
-                updateDisplay();
-            },
-
-            handleSqrt: function() {
-                if (shiftMode) {
-                    applyFunction(v => Math.cbrt(v));
-                    shiftMode = false;
-                } else {
-                    applyFunction(v => {
-                        if (v < 0) throw "Domain Error";
-                        return Math.sqrt(v);
-                    });
-                }
-                updateDisplay();
-            },
-
-            handleSq: function() {
-                if (shiftMode) {
-                    this.input('**(1/');
-                    shiftMode = false;
-                } else {
-                    applyFunction(v => v * v);
-                }
-                updateDisplay();
-            },
-
-            handlePow3: function() {
-                if (shiftMode) {
-                    applyFunction(v => {
-                        if (v < 0 || !Number.isInteger(v) || v > 170) throw "Invalid";
-                        let f = 1;
-                        for (let i = 2; i <= v; i++) f *= i;
-                        return f;
-                    });
-                    shiftMode = false;
-                } else {
-                    applyFunction(v => v * v * v);
-                }
-                updateDisplay();
-            },
-
-            handleRoot3: function() {
-                if (shiftMode) {
-                    this.input('**(1/');
-                    shiftMode = false;
-                } else {
-                    applyFunction(v => Math.cbrt(v));
-                }
-                updateDisplay();
-            },
-
-            handlePow: function() {
-                if (shiftMode) {
-                    this.input('**(1/');
-                    shiftMode = false;
-                } else {
-                    this.input('**');
-                }
-                updateDisplay();
-            },
-
-            handlePow10: function() {
-                if (shiftMode) {
-                    applyFunction(v => Math.exp(v));
-                    shiftMode = false;
-                } else {
-                    applyFunction(v => Math.pow(10, v));
-                }
-                updateDisplay();
-            },
-
-            handlePi: function() {
-                if (alphaMode) {
-                    this.input('A');
-                    alphaMode = false;
-                } else {
-                    this.input('Math.PI');
-                }
-                updateDisplay();
-            },
-
-            handleE: function() {
-                if (alphaMode) {
-                    this.input('B');
-                    alphaMode = false;
-                } else {
-                    this.input('Math.E');
-                }
-                updateDisplay();
-            },
-
-            getExpression: function() { return expression; },
-            setExpression: function(val) { expression = val; updateDisplay(); }
-        };
-    })();
-
-    /**
-     * ==========================================
-     * GLOBAL WRAPPER FUNCTIONS (for HTML onclick)
-     * ==========================================
-     */
-    function inp(v) { SciCalc.input(v); }
-    function cls() { SciCalc.clear(); }
-    function del() { SciCalc.del(); }
-    function s_run() { SciCalc.calculate(); }
-    function toggleShift() { SciCalc.toggleShift(); }
-    function toggleAlpha() { SciCalc.toggleAlpha(); }
-    function toggleMode() { SciCalc.toggleMode(); }
-    function toggleAngle() { SciCalc.toggleAngle(); }
-    function powerOn() { SciCalc.powerOn(); }
-    function handleSin() { SciCalc.handleSin(); }
-    function handleCos() { SciCalc.handleCos(); }
-    function handleTan() { SciCalc.handleTan(); }
-    function handleLog() { SciCalc.handleLog(); }
-    function handleLn() { SciCalc.handleLn(); }
-    function handleSqrt() { SciCalc.handleSqrt(); }
-    function handleSq() { SciCalc.handleSq(); }
-    function handlePow3() { SciCalc.handlePow3(); }
-    function handleRoot3() { SciCalc.handleRoot3(); }
-    function handlePow() { SciCalc.handlePow(); }
-    function handlePow10() { SciCalc.handlePow10(); }
-    function handlePi() { SciCalc.handlePi(); }
-    function handleE() { SciCalc.handleE(); }
-
-    /**
-     * ==========================================
-     * HISTORY MANAGER - IIFE MODULE
-     * ==========================================
-     */
-    const HistoryManager = (function() {
-        let history = [];
-        const MAX_HISTORY = 50;
-
-        function render() {
-            const container = document.getElementById('hist-content');
-            if (history.length === 0) {
-                container.innerHTML = '<div style="text-align:center; padding:30px; font-size:1.4rem; opacity:0.7">No calculations yet</div>';
+    // Adapts input modes dynamically depending on layout locations
+    function updateContextFromCursor() {
+        if (cursorIndex > 0) {
+            let prevTok = tokens[cursorIndex - 1];
+            if (prevTok.type === 'powernum' || prevTok.type === 'pow-start') {
+                isPowerInputMode = true;
                 return;
             }
-
-            container.innerHTML = history.map(item => `
-                <div class="list-item" onclick="loadHistoryItem('${item.expr.replace(/'/g, "\\'")}')">
-                    <span style="opacity:0.8;">${item.expr}</span> = <b>${item.result}</b>
-                </div>
-            `).join('');
         }
-
-        return {
-            add: function(expression, result) {
-                history.unshift({ expr: expression, result: result });
-                if (history.length > MAX_HISTORY) history.pop();
-                render();
-            },
-
-            clear: function() {
-                if (confirm('Clear history?')) {
-                    history = [];
-                    render();
-                    if (navigator.vibrate) navigator.vibrate(10);
-                }
-            },
-
-            load: function(expr) {
-                return expr.replace(/\^/g, '**');
-            },
-
-            init: function() {
-                render();
-            }
-        };
-    })();
-
-    /**
-     * ==========================================
-     * NAVIGATION - IIFE MODULE
-     * ==========================================
-     */
-    const Navigation = (function() {
-        return {
-            go: function(screenId, element) {
-                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-                document.getElementById('scr-' + screenId).classList.add('active');
-
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                element.classList.add('active');
-
-                if (screenId === 'hist') {
-                    HistoryManager.init();
-                }
-            }
-        };
-    })();
-
-    /**
-     * ==========================================
-     * GLOBAL HELPER FUNCTIONS
-     * ==========================================
-     */
-    function loadHistoryItem(expr) {
-        const processed = HistoryManager.load(expr);
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById('scr-sci').classList.add('active');
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.querySelectorAll('.nav-item')[0].classList.add('active');
-        SciCalc.setExpression(processed);
+        isPowerInputMode = false;
     }
 
-    function haptic(ms = 10) {
-        if (navigator.vibrate) navigator.vibrate(ms);
-    }
+    // Interweaves visual responsive cursor inside regular expression flow
+    function renderInput() {
+        const displayBox = document.getElementById('display-input');
 
-    /**
-     * ==========================================
-     * KEYBOARD SUPPORT
-     * ==========================================
-     */
-    document.addEventListener('keydown', function(e) {
-        const activeSci = document.getElementById('scr-sci').classList.contains('active');
+        let htmlString = "";
+        for (let i = 0; i <= tokens.length; i++) {
+            if (i === cursorIndex) {
+                let insideSup = false;
+                if (i > 0 && (tokens[i - 1].type === 'powernum' || tokens[i - 1].type === 'pow-start')) {
+                    insideSup = true;
+                }
+                if (insideSup) {
+                    htmlString += `<sup><span class="custom-cursor"></span></sup>`;
+                } else {
+                    htmlString += `<span class="custom-cursor"></span>`;
+                }
+            }
 
-        if (activeSci) {
-            const key = e.key;
-            if (/[0-9.]/.test(key)) {
-                SciCalc.input(key);
-            } else if (['+', '-', '*', '/'].includes(key)) {
-                SciCalc.input(key);
-            } else if (key === 'Enter' || key === '=') {
-                SciCalc.calculate();
-                e.preventDefault();
-            } else if (key === 'Backspace') {
-                SciCalc.del();
-            } else if (key === 'Escape') {
-                SciCalc.clear();
+            if (i < tokens.length) {
+                let tok = tokens[i];
+                if (tok.type === 'powernum') {
+                    htmlString += `<sup>${tok.display}</sup>`;
+                } else {
+                    htmlString += tok.display;
+                }
             }
         }
-    });
+        displayBox.innerHTML = htmlString;
+    }
 
-    /**
-     * ==========================================
-     * INITIALIZATION
-     * ==========================================
-     */
-    window.addEventListener('load', function() {
-        HistoryManager.init();
-    });
+    function calculateResult() {
+        if(tokens.length === 0) return;
+
+        let evalString = "";
+        tokens.forEach(tok => {
+            evalString += tok.val;
+        });
+
+        let openCount = (evalString.match(/\(/g) || []).length;
+        let closeCount = (evalString.match(/\)/g) || []).length;
+        while(openCount > closeCount) {
+            evalString += ')';
+            openCount--;
+        }
+
+        try {
+            let result = Function('"use strict"; return (' + evalString + ')')();
+            if (isNaN(result) || !isFinite(result)) {
+                document.getElementById('display-output').innerText = "Math ERROR";
+            } else {
+                if (!Number.isInteger(result)) {
+                    result = parseFloat(result.toFixed(9));
+                }
+                document.getElementById('display-output').innerText = result;
+                lastAnswer = result;
+            }
+        } catch (e) {
+            document.getElementById('display-output').innerText = "Syntax ERROR";
+        }
+    }
+
+    // Init display cursor
+    renderInput();
 </script>
 </body>
 </html>
