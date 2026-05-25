@@ -115,6 +115,8 @@
         .preview-snap { background: linear-gradient(135deg, #64b5f6 0%, #1e88e5 100%); }
         .preview-scrabble { background: #d7ccc8; border-bottom: 3px solid #8d6e63; }
         .preview-tictactoe { background: #eceff1; }
+        .preview-snake { background: linear-gradient(135deg, #10b981 0%, #064e3b 100%); color: white; }
+        .preview-snake-anim { animation: snakeWiggle 3s infinite ease-in-out; }
 
         /* EKA ARROW Eliminator */
         .preview-arrow { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); position: relative; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
@@ -150,6 +152,10 @@
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
         @keyframes tileFloat { 0%, 100% { transform: rotate(-3deg) translateY(0); } 50% { transform: rotate(3deg) translateY(-4px); } }
         @keyframes tttBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        @keyframes snakeWiggle {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
 
         .game-info {
             padding: 8px 4px;
@@ -278,6 +284,16 @@
             <div class="game-info">
                 <h3>CLICK CLOCK</h3>
                 <p>Precision Time</p>
+            </div>
+        </a>
+
+        <!-- Snake Swipe -->
+        <a href="game_snake.html" class="game-card">
+            <span class="tag-new">NEW</span>
+            <div class="game-preview preview-snake preview-snake-anim">🐍</div>
+            <div class="game-info">
+                <h3>SNAKE SWIPE</h3>
+                <p>Eat & Grow</p>
             </div>
         </a>
 

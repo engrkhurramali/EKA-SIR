@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="3d-glass">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#a8edea">
+    <title>EKA Snake Swipe</title>
+    <style>
+        /* ========== THEME VARIABLES ========== */
+        :root, [data-theme="3d-glass"] {
+            --bg-grad: linear-gradient(160deg, #e0e7ff 0%, #dbeafe 100%);
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.7);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            --text-main: #1e293b;
+            --text-sub: #475569;
+            --accent: #3b82f6;
+            --accent-light: #60a5fa;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --game-bg: #1e293b;
+            --snake-head: #3b82f6;
+            --snake-body: #10b981;
+        }
+
+        [data-theme="modern-2x2"] {
+            --bg-grad: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            --glass-bg: rgba(255, 255, 255, 0.5);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --text-main: #44403c;
+            --text-sub: #78716c;
+            --accent: #fb923c;
+            --accent-light: #fdba74;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --game-bg: #44403c;
+            --snake-head: #fb923c;
+            --snake-body: #22c55e;
+        }
+
+        [data-theme="dark-neon"] {
+            --bg-grad: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(148, 163, 184, 0.2);
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --accent: #60a5fa;
+            --accent-light: #93c5fd;
+            --danger: #f43f5e;
+            --success: #34d399;
+            --warning: #f59e0b;
+            --game-bg: #0f172a;
+            --snake-head: #60a5fa;
+            --snake-body: #34d399;
+        }
+
+        [data-theme="midnight-dark"] {
+            --bg-grad: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+            --glass-bg: rgba(15, 23, 42, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --accent: #38bdf8;
+            --accent-light: #7dd3fc;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --game-bg: #020617;
+            --snake-head: #38bdf8;
+            --snake-body: #22c55e;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body {
+          font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+          background: var(--bg-grad);
+          background-size: 100% 200%;
+          animation: bgFloat 20s ease infinite;
+          color: var(--text-main);
+          height: 100vh; height: 100dvh;
+          width: 100vw;
+          display: flex; justify-content: center; align-items: center;
+          overflow: hidden; touch-action: none;
+          padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
+        }
+
+        @keyframes bgFloat {
+          0% { background-position: 0% 0%; }
+          50% { background-position: 0% 100%; }
+          100% { background-position: 0% 0%; }
+        }
+
+        /* === 9:16 PORTRAIT CONTAINER === */
+        .app-container {
+          width: 100vw; max-width: 480px;
+          height: 100vh; height: 100dvh;
+          margin: 0 auto;
+          overflow: hidden; display: flex; flex-direction: column;
+          background: rgba(255,255,255,0.05);
+          backdrop-filter: blur(20px);
+          border-radius: 16px;
+          box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+          border: 1px solid var(--glass-border);
+          position: relative;
+        }
+
+        /* Header */
+        header {
+          padding: 10px 12px; text-align: center; flex-shrink: 0;
+          background: linear-gradient(to bottom, rgba(255,255,255,0.1), transparent);
+          border-bottom: 1px solid var(--glass-border);
+          position: relative;
+        }
+        header h1 { font-size: 1.2rem; font-weight: 800; color: var(--accent); letter-spacing: 1px; }
+
+        .back-btn {
+            position: absolute; left: 10px; top: 10px;
+            text-decoration: none; background: rgba(255,255,255,0.2);
+            width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; color: var(--text-main); font-weight: bold; border: 1px solid var(--glass-border);
+        }
+
+        .stats-row {
+          display: flex; justify-content: space-between; align-items: center;
+          margin-top: 6px; font-size: 0.85rem; font-weight: 700; color: var(--text-main);
+          width: 100%;
+        }
+        .stat-badge { background: var(--glass-bg); padding: 4px 10px; border-radius: 20px; border: 1px solid var(--glass-border); white-space: nowrap; }
+
+        .timer-container {
+          flex: 1; height: 8px; background: rgba(0,0,0,0.1);
+          border-radius: 4px; margin: 0 10px; overflow: hidden;
+        }
+        #timer-bar { height: 100%; width: 0%; background: var(--success); transition: width 0.2s linear; }
+
+        /* Screens & Navigation */
+        .screens-wrapper { flex: 1; position: relative; overflow: hidden; display: flex; width: 100%; }
+        .screen {
+          position: absolute; inset: 0; padding: 15px;
+          display: none; flex-direction: column; gap: 15px;
+          animation: slideIn 0.3s ease forwards;
+          overflow-y: auto; align-items: center;
+          width: 100%;
+        }
+        .screen.active { display: flex; position: relative; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Bottom Nav */
+        .bottom-nav {
+          height: 60px; display: flex; justify-content: space-around; align-items: center;
+          background: rgba(255,255,255,0.1); backdrop-filter: blur(12px);
+          border-top: 1px solid var(--glass-border); flex-shrink: 0;
+        }
+        .nav-btn {
+          flex: 1; background: none; border: none; padding: 6px 4px;
+          font-size: 0.75rem; font-weight: 700; color: var(--text-sub);
+          cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px;
+        }
+        .nav-btn.active { color: var(--accent); }
+
+        /* Glassmorphism Components */
+        .glass-card {
+          background: var(--glass-bg); border: 1px solid var(--glass-border);
+          border-radius: 20px; padding: 15px;
+          box-shadow: var(--glass-shadow);
+          display: flex; flex-direction: column; align-items: center; gap: 15px;
+          width: 100%;
+        }
+        .btn {
+          min-height: 50px; width: 100%; padding: 0 20px;
+          font-size: 1rem; font-weight: 700; border: none; border-radius: 12px;
+          background: rgba(255,255,255,0.3); color: var(--text-main);
+          cursor: pointer; transition: all 0.2s;
+          display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+          border: 1px solid rgba(255,255,255,0.2);
+        }
+        .btn.primary { background: var(--accent); color: white; }
+        .btn.danger { background: var(--danger); color: white; }
+        .btn.secondary { background: var(--warning); color: #000; }
+        .btn:active { transform: scale(0.96); }
+
+        .input-glass {
+            width: 100%; padding: 14px; border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.2);
+            color: var(--text-main); font-size: 1rem;
+            outline: none; text-align: center; font-weight: 600;
+        }
+
+        .input-field {
+            width: 100%; padding: 12px; border-radius: 12px;
+            border: 1px solid var(--glass-border); background: rgba(255,255,255,0.2);
+            color: var(--text-main); font-weight: 700; font-size: 1rem;
+            text-align: center;
+        }
+
+        /* === GAME CANVAS ADAPTIVE AREA === */
+        .game-wrapper {
+            width: 100%;
+            max-width: 360px;
+            aspect-ratio: 1 / 1;
+            position: relative;
+            border: 4px solid var(--glass-border);
+            background-color: var(--game-bg);
+            border-radius: 12px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        canvas { width: 100%; height: 100%; display: block; }
+
+        /* Modal styling */
+        .modal-overlay {
+          position: absolute; inset: 0; background: rgba(0,0,0,0.75);
+          display: none; justify-content: center; align-items: center;
+          z-index: 50; backdrop-filter: blur(5px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+          background: rgba(31, 41, 55, 0.95); padding: 22px; border-radius: var(--radius);
+          text-align: center; max-width: 85%; box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+          border: 1px solid var(--glass-border);
+          transform: translateY(20px); opacity: 0; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        .modal-overlay.active .modal-box { transform: translateY(0); opacity: 1; }
+        .modal-title { font-size: 1.5rem; font-weight: 900; margin-bottom: 8px; color: var(--accent); }
+        .modal-msg { margin-bottom: 14px; color: var(--text-main); font-size: 0.95rem; }
+
+        /* Utility elements */
+        h2 { margin: 4px 0 8px; font-size: 1.15rem; font-weight: 800; }
+        .status-msg { font-size: 1rem; font-weight: 700; min-height: 1.5em; color: var(--accent); text-align: center; }
+        .instruction-tag { font-size: 0.8rem; color: #9ca3af; text-align: center; line-height: 1.4; }
+
+        /* Leaderboard Table configuration */
+        .leaderboard {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 15px;
+            margin-top: 15px;
+            width: 100%;
+            max-height: 250px;
+            overflow-y: auto;
+            color: var(--text-main);
+            border: 1px solid var(--glass-border);
+        }
+        .leaderboard table { width: 100%; border-collapse: collapse; }
+        .leaderboard th, .leaderboard td {
+            padding: 8px; text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.8rem;
+        }
+        .leaderboard th { color: var(--accent); font-size: 0.7rem; text-transform: uppercase; }
+
+        .firebase-status {
+            font-size: 10px; color: var(--accent);
+            text-align: center; font-weight: bold; margin-bottom: 5px;
+        }
+
+        .game-controls {
+            display: flex; gap: 8px; width: 100%; margin-top: 2px;
+        }
+        .game-controls .btn { flex: 1; min-height: 44px; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <header>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="games.html" class="back-btn">⬅</a>
+            <h1 id="game-title">EKA Snake Swipe</h1>
+            <div style="width:34px;"></div>
+        </div>
+        <div id="game-stats-container" style="display:none;">
+            <div class="stats-row">
+                <span class="stat-badge" id="disp-level">LVL: 1</span>
+                <div class="timer-container"><div id="timer-bar"></div></div>
+                <span class="stat-badge" id="disp-age">Age 12-16</span>
+                <span class="stat-badge" id="disp-score">🍎 0</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="screens-wrapper">
+        <section id="screen-levels" class="screen active">
+            <div style="font-size: 2.2rem; font-weight: 900; color: var(--accent); text-align: center; margin: 20px 0; text-transform: uppercase; letter-spacing: 2px;">SNAKE</div>
+            <div class="glass-card">
+                <input type="text" id="playerName" class="input-glass" placeholder="Enter Your Name" maxlength="12">
+
+                <select id="age-selector" class="input-field">
+                    <option value="Age < 8">Age &lt; 8 (Easy)</option>
+                    <option value="Age 8-12">Age 8-12 (Normal)</option>
+                    <option value="Age 12-16" selected>Age 12-16 (Pro)</option>
+                    <option value="Age 16-20">Age 16-20 (Expert)</option>
+                    <option value="Age 20+">Age 20+ (Insane)</option>
+                </select>
+
+                <select id="theme-select" class="input-field" onchange="setTheme(this.value)">
+                    <option value="3d-glass">🎨 3D Glass</option>
+                    <option value="modern-2x2">🎨 Modern Orange</option>
+                    <option value="dark-neon">🎨 Dark Neon</option>
+                    <option value="midnight-dark">🎨 Midnight</option>
+                </select>
+
+                <button id="btn-start" class="btn primary">▶ START GAME</button>
+                <button class="btn" onclick="showLeaderboard('top')">🏆 LEADERBOARD</button>
+            </div>
+            <div id="firebaseStatus" class="firebase-status" style="margin-top: 10px;">Connecting...</div>
+        </section>
+
+        <section id="screen-game" class="screen">
+            <div class="glass-card">
+                <div class="status-msg" id="status-msg">Swipe screen to navigate!</div>
+                
+                <div class="game-wrapper">
+                    <canvas id="gameCanvas" width="400" height="400"></canvas>
+                </div>
+
+                <div class="instruction-tag">
+                    📱 Swipe anywhere or use 💻 Arrow keys. Eat 10 apples to level up.
+                </div>
+
+                <div class="game-controls">
+                    <button id="btn-pause" class="btn danger" style="flex:1;">⏸️ Pause</button>
+                    <button id="btn-restart-mid" class="btn secondary" style="flex:1;">🔄 Reset</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="screen-leaderboard" class="screen">
+            <h2 style="margin: 10px 0; color: var(--accent);">🏆 Global Rankings</h2>
+            <div style="display: flex; gap: 8px; margin-bottom: 10px; width: 98%;">
+                <button class="btn" style="flex: 1; min-height: 40px; font-size: 0.8rem;" id="btnTop15" onclick="showLeaderboard('top')">Top 15</button>
+                <button class="btn" style="flex: 1; min-height: 40px; font-size: 0.8rem; opacity: 0.6;" id="btnRecent60" onclick="showLeaderboard('recent')">Recent 60</button>
+            </div>
+            <div class="leaderboard" style="max-height: 55vh;">
+                <table>
+                    <thead><tr><th>Player</th><th>Score</th><th>Date</th></tr></thead>
+                    <tbody id="leaderboardBody"></tbody>
+                </table>
+            </div>
+            <button class="btn primary" style="margin-top: 15px;" onclick="navTo('screen-levels')">Back to Menu</button>
+        </section>
+    </div>
+
+    <nav class="bottom-nav">
+        <button class="nav-btn" data-target="screen-levels">⚙️ Levels</button>
+        <button class="nav-btn active" data-target="screen-game">🎮 Play</button>
+        <button class="nav-btn" onclick="window.open('https://example.com/help','_blank')">📖 Guide</button>
+    </nav>
+
+    <div class="modal-overlay" id="modal-end">
+        <div class="modal-box">
+            <div class="modal-title" id="modal-title">Game Over!</div>
+            <div class="modal-msg" id="modal-msg">Final Score: 0</div>
+            <button class="btn primary" style="width:100%; margin-bottom:10px; background: #6c5ce7; display:none;" id="btn-save-score">💾 Save to Global</button>
+            <button class="btn primary" style="width:100%;" id="btn-play-again">🔄 Play Again</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
+<script>
+    // === FIREBASE ARCHITECTURE ENGINE ===
+    const firebaseConfig = {
+        apiKey: "AIzaSyAEcPKE7n33wNUGxYpyqm5UWFjwXTT_x_c",
+        authDomain: "eka-sir.firebaseapp.com",
+        databaseURL: "https://eka-sir-default-rtdb.firebaseio.com",
+        projectId: "eka-sir",
+        storageBucket: "eka-sir.firebasestorage.app",
+        messagingSenderId: "1022804634776",
+        appId: "1:1022804634776:web:4c547efa80d625885734ed",
+        measurementId: "G-5P543VP1EZ"
+    };
+
+    let firebaseDB = null;
+    let firebaseInitialized = false;
+
+    function initFirebase() {
+        try {
+            if (typeof firebase !== 'undefined') {
+                firebase.initializeApp(firebaseConfig);
+                firebaseDB = firebase.database();
+                firebaseInitialized = true;
+                UI.firebaseStatus.textContent = '✅ Global Online';
+            }
+        } catch (e) {
+            console.error("Firebase database setup failed:", e);
+            UI.firebaseStatus.textContent = '❌ Offline Mode';
+        }
+    }
+
+    // === COMPILED SCORE LEDGER ACTIONS ===
+    function showLeaderboard(mode = 'top') {
+        navTo('screen-leaderboard');
+        const body = document.getElementById('leaderboardBody');
+        const btnTop = document.getElementById('btnTop15');
+        const btnRecent = document.getElementById('btnRecent60');
+
+        if (mode === 'top') {
+            btnTop.style.opacity = '1'; btnRecent.style.opacity = '0.6';
+        } else {
+            btnTop.style.opacity = '0.6'; btnRecent.style.opacity = '1';
+        }
+
+        body.innerHTML = '<tr><td colspan="3">Syncing...</td></tr>';
+        if (!firebaseInitialized || !firebaseDB) return;
+
+        let q = firebaseDB.ref('scores_snake');
+        if (mode === 'top') {
+            q = q.orderByChild('score').limitToLast(15);
+        } else {
+            q = q.limitToLast(60);
+        }
+
+        q.once('value', snapshot => {
+            let list = [];
+            snapshot.forEach(child => {
+                let data = child.val();
+                list.push(data);
+            });
+
+            if (mode === 'top') {
+                list.sort((a, b) => b.score - a.score);
+            } else {
+                list.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            }
+
+            body.innerHTML = list.length ? list.map((item, i) => {
+                const date = item.timestamp ? new Date(item.timestamp).toLocaleDateString() : 'N/A';
+                return `
+                <tr>
+                    <td><b>${item.name || 'Anonymous'}</b><br><small>${item.age || 'Standard'}</small></td>
+                    <td style="font-weight:bold;color:var(--accent)">${item.score}</td>
+                    <td style="font-size: 0.7rem; opacity: 0.7;">${date}</td>
+                </tr>`;
+            }).join('') : '<tr><td colspan="3">No records yet.</td></tr>';
+        });
+    }
+
+    async function saveScoreToFirebase() {
+        if (!firebaseInitialized || !firebaseDB) return;
+        const name = UI.playerName.value.trim() || "Anonymous";
+        UI.btnSave.disabled = true;
+        UI.btnSave.textContent = "⏳ Saving...";
+
+        try {
+            await firebaseDB.ref('scores_snake').push().set({
+                name: name,
+                score: state.score,
+                age: state.age,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            });
+            UI.btnSave.textContent = "✅ Saved!";
+            setTimeout(() => {
+                UI.modal.classList.remove('active');
+                showLeaderboard('recent');
+            }, 1000);
+        } catch (e) {
+            UI.btnSave.textContent = "❌ Error";
+            UI.btnSave.disabled = false;
+        }
+    }
+</script>
+
+<script>
+    // === DOM NODE CACHE MAP ===
+    const UI = {
+      level: document.getElementById('disp-level'),
+      timerBar: document.getElementById('timer-bar'),
+      ageBadge: document.getElementById('disp-age'),
+      score: document.getElementById('disp-score'),
+      msg: document.getElementById('status-msg'),
+      btnPause: document.getElementById('btn-pause'),
+      btnResetMid: document.getElementById('btn-restart-mid'),
+      btnStart: document.getElementById('btn-start'),
+      modal: document.getElementById('modal-end'),
+      mTitle: document.getElementById('modal-title'),
+      mMsg: document.getElementById('modal-msg'),
+      btnAgain: document.getElementById('btn-play-again'),
+      ageSelector: document.getElementById('age-selector'),
+      playerName: document.getElementById('playerName'),
+      btnSave: document.getElementById('btn-save-score'),
+      firebaseStatus: document.getElementById('firebaseStatus'),
+      canvas: document.getElementById("gameCanvas")
+    };
+
+    const ctx = UI.canvas.getContext("2d");
+
+    // === GAME CORE PARAMETERS ===
+    const gridSize = 20;
+    const tileCount = UI.canvas.width / gridSize;
+
+    let state = {
+      age: "Age 12-16",
+      score: 0,
+      level: 1,
+      applesEatenThisLevel: 0,
+      isPlaying: false,
+      isPaused: false,
+      speed: 180,
+      snake: [],
+      food: { x: 5, y: 5 },
+      dx: 1,
+      dy: 0,
+      loopId: null
+    };
+
+    // === SPEED AGE CONSTRAINTS ===
+    const ageSpeedMap = {
+        "Age < 8": 240,
+        "Age 8-12": 200,
+        "Age 12-16": 160,
+        "Age 16-20": 120,
+        "Age 20+": 90
+    };
+
+    // === SYSTEM SETUP ===
+    function init() {
+      setupEvents();
+      initFirebase();
+      const savedName = localStorage.getItem('eka_player_name');
+      if (savedName) UI.playerName.value = savedName;
+
+      const savedTheme = localStorage.getItem('eka_wordguess_theme') || '3d-glass';
+      setTheme(savedTheme);
+      document.getElementById('theme-select').value = savedTheme;
+    }
+
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('eka_wordguess_theme', theme);
+    }
+
+    function setupEvents() {
+      // Screen Navigation Engine
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('pointerdown', e => {
+        e.preventDefault();
+        if (btn.dataset.target) {
+            if (btn.dataset.target !== 'screen-game' && state.isPlaying) {
+                pauseGame();
+            }
+            navTo(btn.dataset.target);
+        }
+      }));
+
+      UI.btnStart.addEventListener('pointerdown', e => {
+        e.preventDefault();
+        state.age = UI.ageSelector.value;
+        UI.ageBadge.textContent = state.age;
+        if (UI.playerName.value.trim()) {
+            localStorage.setItem('eka_player_name', UI.playerName.value.trim());
+        }
+        startGame();
+      });
+
+      UI.btnPause.addEventListener('pointerdown', e => {
+          e.preventDefault();
+          togglePause();
+      });
+
+      UI.btnResetMid.addEventListener('pointerdown', e => {
+          e.preventDefault();
+          if(confirm("Restart running match?")) startGame();
+      });
+
+      UI.btnAgain.addEventListener('pointerdown', e => {
+          e.preventDefault();
+          UI.modal.classList.remove('active');
+          startGame();
+      });
+
+      UI.btnSave.addEventListener('pointerdown', e => {
+          e.preventDefault();
+          saveScoreToFirebase();
+      });
+
+      // --- MOBILE SWIPE RECOGNITION INTERFACES ---
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      window.addEventListener("touchstart", (e) => {
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+      }, { passive: true });
+
+      window.addEventListener("touchend", (e) => {
+          if (!touchStartX || !touchStartY || !state.isPlaying || state.isPaused) return;
+
+          let diffX = e.changedTouches[0].clientX - touchStartX;
+          let diffY = e.changedTouches[0].clientY - touchStartY;
+
+          if (Math.abs(diffX) > Math.abs(diffY)) {
+              if (Math.abs(diffX) > 30) {
+                  if (diffX > 0) goRight(); else goLeft();
+              }
+          } else {
+              if (Math.abs(diffY) > 30) {
+                  if (diffY > 0) goDown(); else goUp();
+              }
+          }
+          touchStartX = 0; touchStartY = 0;
+      }, { passive: true });
+
+      // PC Desktop Keyboard Triggers
+      window.addEventListener("keydown", e => {
+        if (!state.isPlaying || state.isPaused) return;
+        if (e.key === "ArrowUp") goUp();
+        if (e.key === "ArrowDown") goDown();
+        if (e.key === "ArrowLeft") goLeft();
+        if (e.key === "ArrowRight") goRight();
+        if (e.key === "Escape") togglePause();
+        if (["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key)) e.preventDefault();
+      });
+    }
+
+    // === NAVIGATION CONTROLLER ===
+    function navTo(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.target === id));
+
+      document.getElementById('game-stats-container').style.display = (id === 'screen-game') ? 'block' : 'none';
+      document.getElementById('game-title').style.display = (id === 'screen-game') ? 'none' : 'block';
+    }
+
+    // === ORIENTATION LOGIC ENGINE ===
+    function startGame() {
+      if(state.loopId) clearInterval(state.loopId);
+      
+      state.score = 0;
+      state.level = 1;
+      state.applesEatenThisLevel = 0;
+      state.isPlaying = true;
+      state.isPaused = false;
+      state.speed = ageSpeedMap[state.age] || 160;
+      state.snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];
+      state.dx = 1;
+      state.dy = 0;
+
+      UI.btnPause.textContent = "⏸️ Pause";
+      UI.msg.textContent = "Navigate to secure targets!";
+      UI.msg.style.color = "var(--accent)";
+
+      placeFood();
+      updateUI();
+      navTo('screen-game');
+      
+      state.loopId = setInterval(gameTick, state.speed);
+    }
+
+    function gameTick() {
+        if (state.isPaused) return;
+
+        // Advance coordinate arrays
+        const head = { x: state.snake[0].x + state.dx, y: state.snake[0].y + state.dy };
+        state.snake.unshift(head);
+
+        // Food collision matrix check
+        if (head.x === state.food.x && head.y === state.food.y) {
+            state.applesEatenThisLevel++;
+            state.score += (state.level * 10);
+            playSound('win');
+            
+            if (state.applesEatenThisLevel >= 10) {
+                levelUp();
+            } else {
+                placeFood();
+            }
+            updateUI();
+        } else {
+            state.snake.pop();
+        }
+
+        // Boundary collision detection system
+        if (checkGameOverCondition()) {
+            playSound('fail');
+            clearInterval(state.loopId);
+            state.isPlaying = false;
+            endGame();
+            return;
+        }
+
+        renderCanvas();
+    }
+
+    function levelUp() {
+        state.level++;
+        state.applesEatenThisLevel = 0;
+        state.speed = Math.max(50, state.speed - 15);
+        
+        UI.msg.textContent = `🚀 Level ${state.level} Initiated!`;
+        UI.msg.style.color = "var(--warning)";
+
+        clearInterval(state.loopId);
+        state.loopId = setInterval(gameTick, state.speed);
+    }
+
+    function checkGameOverCondition() {
+        const head = state.snake[0];
+        if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) return true;
+        for (let i = 1; i < state.snake.length; i++) {
+            if (head.x === state.snake[i].x && head.y === state.snake[i].y) return true;
+        }
+        return false;
+    }
+
+    function placeFood() {
+        state.food.x = Math.floor(Math.random() * tileCount);
+        state.food.y = Math.floor(Math.random() * tileCount);
+        for (let cell of state.snake) {
+            if (cell.x === state.food.x && cell.y === state.food.y) {
+                placeFood();
+                break;
+            }
+        }
+    }
+
+    function togglePause() {
+        if (!state.isPlaying) return;
+        state.isPaused = !state.isPaused;
+        UI.btnPause.textContent = state.isPaused ? "▶️ Resume" : "⏸️ Pause";
+        UI.msg.textContent = state.isPaused ? "Game Paused" : "Swipe to navigate!";
+        UI.msg.style.color = state.isPaused ? "var(--warning)" : "var(--accent)";
+    }
+
+    function pauseGame() {
+        if (!state.isPlaying || state.isPaused) return;
+        state.isPaused = true;
+        UI.btnPause.textContent = "▶️ Resume";
+    }
+
+    function updateUI() {
+        UI.score.textContent = `🍎 ${state.score}`;
+        UI.level.textContent = `LVL: ${state.level}`;
+        
+        const pct = (state.applesEatenThisLevel / 10) * 100;
+        UI.timerBar.style.width = `${pct}%`;
+        UI.timerBar.style.background = 'var(--accent)';
+    }
+
+    function renderCanvas() {
+        // Clear background matrix
+        const style = getComputedStyle(document.documentElement);
+        ctx.fillStyle = style.getPropertyValue('--game-bg').trim();
+        ctx.fillRect(0, 0, UI.canvas.width, UI.canvas.height);
+
+        // Draw structural Grid Background lines seamlessly
+        ctx.strokeStyle = "rgba(255,255,255,0.05)";
+        ctx.lineWidth = 1;
+        for(let i=0; i<tileCount; i++) {
+            ctx.beginPath(); ctx.moveTo(i*gridSize, 0); ctx.lineTo(i*gridSize, UI.canvas.height); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(0, i*gridSize); ctx.lineTo(UI.canvas.width, i*gridSize); ctx.stroke();
+        }
+
+        // Render Snake Vector Array
+        state.snake.forEach((cell, index) => {
+            let centerX = cell.x * gridSize + gridSize / 2;
+            let centerY = cell.y * gridSize + gridSize / 2;
+            
+            ctx.fillStyle = index === 0 ? style.getPropertyValue('--snake-head').trim() : style.getPropertyValue('--snake-body').trim();
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, gridSize / 2 - 1, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Contrast stroke for visibility
+            ctx.strokeStyle = "rgba(255,255,255,0.3)";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            // Render navigation metrics tracking eyes
+            if (index === 0) {
+                ctx.fillStyle = "#fff";
+                let eyeOffset = 4;
+                if (state.dx === 1 || state.dx === -1) {
+                    ctx.fillRect(centerX + (state.dx * 2) - 1, centerY - eyeOffset, 3, 3);
+                    ctx.fillRect(centerX + (state.dx * 2) - 1, centerY + eyeOffset - 2, 3, 3);
+                } else if (state.dy === 1 || state.dy === -1) {
+                    ctx.fillRect(centerX - eyeOffset, centerY + (state.dy * 2) - 1, 3, 3);
+                    ctx.fillRect(centerX + eyeOffset - 2, centerY + (state.dy * 2) - 1, 3, 3);
+                }
+            }
+        });
+
+        // Render Active Target Objective (Apple Vector)
+        ctx.fillStyle = style.getPropertyValue('--danger').trim();
+        ctx.beginPath();
+        ctx.arc(state.food.x * gridSize + gridSize / 2, state.food.y * gridSize + gridSize / 2, gridSize / 2 - 2, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // Contrast stroke for apple
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Dynamic target gleam
+        ctx.fillStyle = "#fff";
+        ctx.beginPath();
+        ctx.arc(state.food.x * gridSize + gridSize / 2 - 2, state.food.y * gridSize + gridSize / 2 - 2, 1.5, 0, 2 * Math.PI);
+        ctx.fill();
+    }
+
+    function endGame() {
+        UI.mTitle.textContent = state.score >= 150 ? '🎉 High Rank Profile!' : '💥 Collision Critical!';
+        UI.mMsg.textContent = `Total Score: ${state.score} points reached inside level ${state.level}.`;
+
+        if (firebaseInitialized && state.score > 0) {
+            UI.btnSave.style.display = 'block';
+            UI.btnSave.disabled = false;
+            UI.btnSave.textContent = "💾 Save to Global";
+        } else {
+            UI.btnSave.style.display = 'none';
+        }
+        UI.modal.classList.add('active');
+    }
+
+    // Direction manipulation bounds checking
+    function goUp()    { if (state.dy !== 1)  { state.dx = 0;  state.dy = -1; } }
+    function goDown()  { if (state.dy !== -1) { state.dx = 0;  state.dy = 1;  } }
+    function goLeft()  { if (state.dx !== 1)  { state.dx = -1; state.dy = 0;  } }
+    function goRight() { if (state.dx !== -1) { state.dx = 1;  state.dy = 0;  } }
+
+    // === HAPTIC AUDIO ENGINE ===
+    function playSound(type) {
+      try {
+        const ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctxAudio.createOscillator(); const gain = ctxAudio.createGain();
+        osc.connect(gain); gain.connect(ctxAudio.destination);
+        const now = ctxAudio.currentTime;
+        
+        if (type === 'win') { 
+            [440, 554, 659].forEach((f,i) => osc.frequency.setValueAtTime(f, now + i * 0.08)); 
+            gain.gain.setValueAtTime(0.1, now);
+        } else { 
+            osc.frequency.setValueAtTime(180, now); 
+            osc.frequency.exponentialRampToValueAtTime(60, now + 0.25); 
+            gain.gain.setValueAtTime(0.3, now);
+        }
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+        osc.start(now); osc.stop(now + 0.3);
+      } catch(e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('touchstart', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+</script>
+</body>
+</html>
