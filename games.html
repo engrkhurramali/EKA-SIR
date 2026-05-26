@@ -118,6 +118,10 @@
         .preview-snake { background: linear-gradient(135deg, #10b981 0%, #064e3b 100%); color: white; }
         .preview-snake-anim { animation: snakeWiggle 3s infinite ease-in-out; }
 
+        /* Bubble Pop */
+        .preview-bubble { background: linear-gradient(135deg, #a8edea 0%, #88d8c0 100%); }
+        .preview-bubble-anim { animation: float 4s infinite ease-in-out; }
+
         /* Verbal Memory */
         .preview-memory { background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%); color: white; }
         .preview-memory-anim { animation: pulse 3s infinite ease-in-out; }
@@ -159,6 +163,10 @@
         @keyframes snakeWiggle {
             0%, 100% { transform: scale(1) rotate(0deg); }
             50% { transform: scale(1.1) rotate(5deg); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
 
         .game-info {
@@ -307,6 +315,16 @@
             <div class="game-info">
                 <h3>VERBAL MEMORY</h3>
                 <p>Recall & Focus</p>
+            </div>
+        </a>
+
+        <!-- Bubble Pop -->
+        <a href="game_bubble_shooter.html" class="game-card">
+            <span class="tag-new">NEW</span>
+            <div class="game-preview preview-bubble preview-bubble-anim">🔵</div>
+            <div class="game-info">
+                <h3>BUBBLE POP</h3>
+                <p>Aim & Blast</p>
             </div>
         </a>
 
