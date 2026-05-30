@@ -88,8 +88,11 @@
             z-index: 10;
         }
 
-        .stats-row { display: flex; justify-content: space-between; margin-top: 8px; font-weight: 700; align-items: center; width: 100%; gap: 8px; }
-        .stat-badge { background: var(--glass-bg); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; border: 1px solid var(--glass-border); flex: 1; text-align: center; }
+        .stats-row { display: flex; justify-content: space-between; margin-top: 8px; font-weight: 700; align-items: center; width: 100%; gap: 6px; }
+        .stat-badge { background: var(--glass-bg); padding: 4px 8px; border-radius: 20px; font-size: 0.75rem; border: 1px solid var(--glass-border); flex: 1; text-align: center; white-space: nowrap; }
+
+        .timer-container { flex: 2; height: 8px; background: rgba(0,0,0,0.1); border-radius: 4px; overflow: hidden; margin: 0 2px; }
+        #timer-bar { height: 100%; width: 100%; background: var(--success); transition: width 1s linear; }
 
         .screens-wrapper { flex: 1; position: relative; overflow: hidden; }
         .screen {
@@ -190,12 +193,14 @@
         </div>
         <div id="game-stats-container" style="display:none; width: 100%; margin-top: 6px;">
             <div class="stats-row">
-                <span class="stat-badge" id="level-indicator">LVL 1</span>
+                <span class="stat-badge" id="disp-timer" style="flex: 0 0 auto; min-width: 50px;">⏱️ 240s</span>
+                <div class="timer-container"><div id="timer-bar"></div></div>
+                <span class="stat-badge" id="level-indicator">LV1</span>
                 <span class="stat-badge" id="ammo-indicator" style="color:var(--danger)">🔵 100</span>
                 <span class="stat-badge" id="score">🌟 0</span>
-                <div style="display:flex; gap:5px; flex-shrink:0;">
-                    <button id="btn-restart-game" class="btn secondary" style="min-height: 32px; width: 36px; padding: 0; font-size: 0.85rem; border-radius: 10px;">🔄</button>
-                    <button id="btn-pause-game" class="btn" style="min-height: 32px; width: 36px; padding: 0; font-size: 0.85rem; border-radius: 10px;">⏸️</button>
+                <div style="display:flex; gap:4px; flex-shrink:0;">
+                    <button id="btn-restart-game" class="btn secondary" style="min-height: 30px; width: 32px; padding: 0; font-size: 0.8rem; border-radius: 8px;">🔄</button>
+                    <button id="btn-pause-game" class="btn" style="min-height: 30px; width: 32px; padding: 0; font-size: 0.8rem; border-radius: 8px;">⏸️</button>
                 </div>
             </div>
         </div>
@@ -312,7 +317,9 @@
         firebaseStatus: document.getElementById("firebaseStatus"),
         statsContainer: document.getElementById("game-stats-container"),
         gameTitle: document.getElementById("game-title"),
-        modal: document.getElementById("modal-end")
+        modal: document.getElementById("modal-end"),
+        timerDisp: document.getElementById("disp-timer"),
+        timerBar: document.getElementById("timer-bar")
     };
 
     const ctx = UI.canvas.getContext("2d");
@@ -396,6 +403,26 @@
 
     function setTheme(t) { document.documentElement.setAttribute('data-theme', t); localStorage.setItem('eka_wordguess_theme', t); }
 
+    // Timer logic
+    let timeLeft = 240, maxTime = 240, timerInterval = null;
+
+    function updateTimerUI() {
+        UI.timerDisp.textContent = `⏱️ ${timeLeft}s`;
+        const pct = (timeLeft / maxTime) * 100;
+        UI.timerBar.style.width = pct + '%';
+        UI.timerBar.style.background = pct < 25 ? 'var(--danger)' : 'var(--success)';
+    }
+
+    function startTimer() {
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            if (!gameActive || isLevelTransitioning) return;
+            timeLeft--;
+            updateTimerUI();
+            if (timeLeft <= 0) endGame("TIME'S UP! ⏰");
+        }, 1000);
+    }
+
     // Game Core
     const BUBBLE_RADIUS = 20;
     const NUM_COLS = 10;
@@ -415,11 +442,13 @@
     };
 
     function startGame() {
-        score = 0; currentLevel = 1; ammoLeft = 100;
+        score = 0; currentLevel = 1; ammoLeft = 100; timeLeft = 240;
         UI.score.innerText = "🌟 0";
+        updateTimerUI();
         loadLevel(1);
         navTo('screen-game');
         gameActive = true;
+        startTimer();
     }
 
     function loadLevel(num) {
@@ -430,6 +459,8 @@
         UI.level.innerText = "LVL " + num;
         ammoLeft = 100;
         UI.ammo.innerText = "🔴 " + ammoLeft;
+        timeLeft = 240;
+        updateTimerUI();
         for (let r=0; r<data.length; r++) for(let c=0; c<NUM_COLS; c++) if(data[r][c]>0) grid[r][c] = COLORS[data[r][c]];
         currentTileColor = getActiveColors()[0];
         isLevelTransitioning = false; UI.banner.style.display = "none";
@@ -546,6 +577,7 @@
 
     function endGame(m) {
         gameActive = false;
+        clearInterval(timerInterval);
         document.getElementById("modal-title").innerText = m;
         document.getElementById("modal-msg").innerText = "Final Score: " + score;
         UI.btnSave.disabled = false; UI.btnSave.textContent = '💾 Save to Leaderboard';
