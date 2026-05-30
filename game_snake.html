@@ -140,12 +140,13 @@
         /* Screens & Navigation */
         .screens-wrapper { flex: 1; position: relative; overflow: hidden; display: flex; width: 100%; }
         .screen {
-          position: absolute; inset: 0; padding: 15px;
-          display: none; flex-direction: column; gap: 15px;
+          position: absolute; inset: 0; padding: 10px;
+          display: none; flex-direction: column; gap: 5px;
           animation: slideIn 0.3s ease forwards;
           overflow-y: auto; align-items: center;
           width: 100%;
         }
+        #screen-game { overflow: hidden; justify-content: center; }
         .screen.active { display: flex; position: relative; }
         @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -165,9 +166,9 @@
         /* Glassmorphism Components */
         .glass-card {
           background: var(--glass-bg); border: 1px solid var(--glass-border);
-          border-radius: 20px; padding: 15px;
+          border-radius: 20px; padding: 10px;
           box-shadow: var(--glass-shadow);
-          display: flex; flex-direction: column; align-items: center; gap: 15px;
+          display: flex; flex-direction: column; align-items: center; gap: 5px;
           width: 100%;
         }
         .btn {
@@ -202,7 +203,7 @@
         /* === GAME CANVAS ADAPTIVE AREA === */
         .game-wrapper {
             width: 100%;
-            max-width: 360px;
+            max-width: 280px;
             aspect-ratio: 1 / 1;
             position: relative;
             border: 4px solid var(--glass-border);
@@ -210,6 +211,7 @@
             border-radius: 12px;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
             overflow: hidden;
+            flex-shrink: 1;
         }
         canvas { width: 100%; height: 100%; display: block; }
 
@@ -263,7 +265,40 @@
         .game-controls {
             display: flex; gap: 8px; width: 100%; margin-top: 2px;
         }
-        .game-controls .btn { flex: 1; min-height: 44px; font-size: 0.85rem; }
+        .game-controls .btn { flex: 1; min-height: 40px; font-size: 0.8rem; }
+
+        /* D-PAD Navigation */
+        .dpad-container {
+            width: 110px; height: 110px;
+            position: relative;
+            margin: 2px auto;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            border: 2px solid var(--glass-border);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            opacity: 0.5; /* 50% Transparent as requested */
+            transition: opacity 0.3s;
+        }
+        .dpad-container:active { opacity: 0.8; }
+        .dpad-btn {
+            position: absolute;
+            width: 34px; height: 34px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%; /* Circular buttons too */
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+            color: var(--text-main);
+            touch-action: none;
+            user-select: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .dpad-btn:active { background: var(--accent); color: white; transform: scale(0.9); }
+        .dpad-up { top: 5px; }
+        .dpad-down { bottom: 5px; }
+        .dpad-left { left: 5px; }
+        .dpad-right { right: 5px; }
     </style>
 </head>
 <body>
@@ -320,7 +355,14 @@
                 </div>
 
                 <div class="instruction-tag">
-                    📱 Swipe anywhere or use 💻 Arrow keys. Eat 10 apples to level up.
+                    📱 Swipe, ⌨️ Arrows, or 🎮 D-Pad to move.
+                </div>
+
+                <div class="dpad-container" id="dpad">
+                    <div class="dpad-btn dpad-up" id="dpad-up">🔼</div>
+                    <div class="dpad-btn dpad-left" id="dpad-left">◀️</div>
+                    <div class="dpad-btn dpad-right" id="dpad-right">▶️</div>
+                    <div class="dpad-btn dpad-down" id="dpad-down">🔽</div>
                 </div>
 
                 <div class="game-controls">
@@ -578,6 +620,24 @@
       UI.btnSave.addEventListener('pointerdown', e => {
           e.preventDefault();
           saveScoreToFirebase();
+      });
+
+      // --- D-PAD NAVIGATION ENGINE ---
+      const dpadEvents = {
+          'dpad-up': goUp,
+          'dpad-down': goDown,
+          'dpad-left': goLeft,
+          'dpad-right': goRight
+      };
+
+      Object.entries(dpadEvents).forEach(([id, action]) => {
+          const btn = document.getElementById(id);
+          if (btn) {
+              btn.addEventListener('pointerdown', e => {
+                  e.preventDefault();
+                  if (state.isPlaying && !state.isPaused) action();
+              });
+          }
       });
 
       // --- MOBILE SWIPE RECOGNITION INTERFACES ---
