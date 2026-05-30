@@ -149,10 +149,10 @@
         @keyframes popIn { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
 
         /* Leaderboard */
-        .leaderboard { width: 100%; max-height: 40vh; overflow-y: auto; border-radius: 16px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.1); }
+        .leaderboard { width: 100%; max-height: 50vh; overflow-y: auto; border-radius: 16px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.1); -webkit-overflow-scrolling: touch; }
         .leaderboard table { width: 100%; border-collapse: collapse; }
-        .leaderboard th, .leaderboard td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 0.85rem; }
-        .leaderboard th { font-weight: 800; color: var(--accent); text-transform: uppercase; font-size: 0.7rem; }
+        .leaderboard th, .leaderboard td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; }
+        .leaderboard th { font-weight: 800; color: var(--accent); text-transform: uppercase; font-size: 0.7rem; background: rgba(255,255,255,0.05); }
 
         .bottom-nav {
           height: 65px; display: flex; background: rgba(255,255,255,0.7);
@@ -224,7 +224,7 @@
 
                 <button id="btn-start" class="btn primary">🚀 START MISSION</button>
                 <div style="display: flex; gap: 8px; width: 100%;">
-                    <button class="btn" style="flex: 1;" onclick="navTo('screen-stats')">🏆 RANK</button>
+                    <button class="btn" style="flex: 1;" onclick="showLeaderboard('top')">🏆 LEADERBOARD</button>
                     <button class="btn" style="flex: 1;" onclick="navTo('screen-help')">📖 HELP</button>
                 </div>
             </div>
@@ -238,15 +238,19 @@
             </div>
         </section>
 
-        <section id="screen-stats" class="screen">
-            <h2 style="margin: 10px 0;">🏆 Global Leaders</h2>
+        <section id="screen-leaderboard" class="screen">
+            <h2 style="margin: 10px 0;">🏆 Global Rankings</h2>
+            <div style="display: flex; gap: 8px; margin-bottom: 10px; width: 98%;">
+                <button class="btn" style="flex: 1; min-height: 40px; font-size: 0.8rem;" id="btnTop15" onclick="showLeaderboard('top')">Top 15</button>
+                <button class="btn" style="flex: 1; min-height: 40px; font-size: 0.8rem; opacity: 0.6;" id="btnRecent60" onclick="showLeaderboard('recent')">Recent 60</button>
+            </div>
             <div class="leaderboard">
                 <table>
                     <thead>
                     <tr>
-                        <th style="width: 20%">Rank</th>
+                        <th style="width: 40%">Player</th>
                         <th style="width: 30%">Score</th>
-                        <th style="width: 50%">Name</th>
+                        <th style="width: 30%">Date</th>
                     </tr>
                     </thead>
                     <tbody id="leaderboardBody">
@@ -274,7 +278,7 @@
     <nav class="bottom-nav">
         <button class="nav-btn active" data-target="screen-welcome">🏠 Menu</button>
         <button class="nav-btn" data-target="screen-game">🎮 Play</button>
-        <button class="nav-btn" data-target="screen-stats">🏆 Rank</button>
+        <button class="nav-btn" data-target="screen-leaderboard">🏆 Rank</button>
     </nav>
 
     <div class="modal-overlay" id="modal-end">
@@ -334,7 +338,6 @@
             firebaseDB = firebase.database();
             firebaseInitialized = true;
             UI.firebaseStatus.textContent = '✅ Global Server Ready';
-            loadScores();
         } catch (e) {
             UI.firebaseStatus.textContent = '❌ Offline Mode';
         }
@@ -352,21 +355,42 @@
                 name, score, age: UI.ageSelector.value, timestamp: firebase.database.ServerValue.TIMESTAMP
             });
             UI.btnSave.textContent = '✅ SAVED!';
-            loadScores();
-            setTimeout(() => { UI.modal.classList.remove('active'); navTo('screen-stats'); }, 1000);
+            setTimeout(() => {
+                UI.modal.classList.remove('active');
+                showLeaderboard('top');
+            }, 1000);
         } catch (e) {
             UI.btnSave.disabled = false;
             UI.btnSave.textContent = '❌ FAILED';
         }
     }
 
-    function loadScores() {
+    function showLeaderboard(mode = 'top') {
+        navTo('screen-leaderboard');
+        const body = UI.leaderboardBody;
+        const btnTop = document.getElementById('btnTop15');
+        const btnRecent = document.getElementById('btnRecent60');
+
+        if (btnTop) btnTop.style.opacity = (mode === 'top') ? '1' : '0.6';
+        if (btnRecent) btnRecent.style.opacity = (mode === 'recent') ? '1' : '0.6';
+
+        body.innerHTML = '<tr><td colspan="3" style="text-align:center">Syncing...</td></tr>';
         if (!firebaseInitialized) return;
-        firebaseDB.ref('scores_bubble').orderByChild('score').limitToLast(10).once('value').then(snap => {
-            const list = [];
-            snap.forEach(c => list.push(c.val()));
-            list.sort((a,b) => b.score - a.score);
-            UI.leaderboardBody.innerHTML = list.map((s,i) => `<tr><td>${i+1}</td><td>${s.score}</td><td>${s.name}</td></tr>`).join('') || '<tr><td colspan="3">No scores yet</td></tr>';
+
+        let q = firebaseDB.ref('scores_bubble');
+        if (mode === 'top') q = q.orderByChild('score').limitToLast(15);
+        else q = q.limitToLast(60);
+
+        q.once('value').then(snap => {
+            let list = [];
+            snap.forEach(c => { let d = c.val(); d.key = c.key; list.push(d); });
+            if (mode === 'top') list.sort((a,b) => b.score - a.score);
+            else list.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+            body.innerHTML = list.length ? list.map(item => {
+                const date = item.timestamp ? new Date(item.timestamp).toLocaleDateString() : 'N/A';
+                return `<tr><td><b>${item.name || 'Anon'}</b><br><small>${item.age || ''}</small></td><td style="font-weight:bold;color:var(--accent)">${item.score}</td><td style="font-size: 0.7rem; opacity: 0.7;">${date}</td></tr>`;
+            }).join('') : '<tr><td colspan="3">No records.</td></tr>';
         });
     }
 
@@ -572,7 +596,10 @@
         gameActive = !gameActive;
         this.innerHTML = gameActive ? '⏸️' : '▶️';
     });
-    document.querySelectorAll('.nav-btn').forEach(b => b.onclick = () => navTo(b.dataset.target));
+    document.querySelectorAll('.nav-btn').forEach(b => b.onclick = () => {
+        if(b.dataset.target === 'screen-leaderboard') showLeaderboard('top');
+        else navTo(b.dataset.target);
+    });
 
     initFirebase();
     loadLevel(1);
