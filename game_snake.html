@@ -272,33 +272,35 @@
             width: 110px; height: 110px;
             position: relative;
             margin: 2px auto;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             border: 2px solid var(--glass-border);
-            display: flex; align-items: center; justify-content: center;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            transform: rotate(45deg);
+            overflow: hidden;
             flex-shrink: 0;
             opacity: 0.5; /* 50% Transparent as requested */
             transition: opacity 0.3s;
         }
         .dpad-container:active { opacity: 0.8; }
         .dpad-btn {
-            position: absolute;
-            width: 34px; height: 34px;
-            background: rgba(255, 255, 255, 0.3);
-            border: 1px solid var(--glass-border);
-            border-radius: 50%; /* Circular buttons too */
+            background: rgba(255, 255, 255, 0.2);
+            border: 0.5px solid var(--glass-border);
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--text-main);
             touch-action: none;
             user-select: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: background 0.2s;
         }
-        .dpad-btn:active { background: var(--accent); color: white; transform: scale(0.9); }
-        .dpad-up { top: 5px; }
-        .dpad-down { bottom: 5px; }
-        .dpad-left { left: 5px; }
-        .dpad-right { right: 5px; }
+        .dpad-btn:active { background: var(--accent); color: white; }
+        .dpad-btn span { transform: rotate(-45deg); display: block; }
+        .dpad-up    { grid-area: 1 / 1; }
+        .dpad-right { grid-area: 1 / 2; }
+        .dpad-left  { grid-area: 2 / 1; }
+        .dpad-down  { grid-area: 2 / 2; }
     </style>
 </head>
 <body>
@@ -359,10 +361,10 @@
                 </div>
 
                 <div class="dpad-container" id="dpad">
-                    <div class="dpad-btn dpad-up" id="dpad-up">🔼</div>
-                    <div class="dpad-btn dpad-left" id="dpad-left">◀️</div>
-                    <div class="dpad-btn dpad-right" id="dpad-right">▶️</div>
-                    <div class="dpad-btn dpad-down" id="dpad-down">🔽</div>
+                    <div class="dpad-btn dpad-up" id="dpad-up"><span>🔼</span></div>
+                    <div class="dpad-btn dpad-left" id="dpad-left"><span>◀️</span></div>
+                    <div class="dpad-btn dpad-right" id="dpad-right"><span>▶️</span></div>
+                    <div class="dpad-btn dpad-down" id="dpad-down"><span>🔽</span></div>
                 </div>
 
                 <div class="game-controls">
