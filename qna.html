@@ -19,8 +19,10 @@
         .ask-box, .search-box { display: flex; gap: 0.4rem; }
         .ask-box input, .ask-box textarea, .search-box input { flex: 1; padding: 0.5rem; border-radius: var(--radius); background: var(--card); color: var(--text); border: 1px solid var(--border); font-family: var(--font); font-size: 0.9rem; }
         .ask-box textarea { resize: none; min-height: 40px; }
-        .btn { padding: 0.5rem 0.8rem; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+        .btn { padding: 0.5rem 0.8rem; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); cursor: pointer; font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-danger { background: var(--danger); }
+        .btn-warning { background: var(--warning); color: #000; }
 
         .qa-list { flex: 1; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 0.4rem; }
         .qa-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.6rem; position: relative; }
@@ -86,7 +88,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyAEcPKE7n33wNUGxYpyqm5UWFjwXTT_x_c",
@@ -110,6 +112,7 @@ measurementId: "G-5P543VP1EZ"
     let isAdmin = false;
     let qaData = [];
     let votes = JSON.parse(localStorage.getItem('eka_qna_votes') || '{}');
+    let myQuestions = JSON.parse(localStorage.getItem('eka_my_questions') || '[]');
 
     const EXPLICIT_PATTERNS = [/https?:\/\/[^\s]+/i, /\b(sex|porn|fuck|shit|damn|hate|kill|drug|casino|bet|gamble|nude|xxx|abuse)\b/gi];
     function isExplicit(text) { return EXPLICIT_PATTERNS.some(p => p.test(text)); }
@@ -135,7 +138,7 @@ measurementId: "G-5P543VP1EZ"
         document.getElementById('search-input').oninput = debounce(renderList, 300);
         adminBtn.onclick = () => isAdmin ? toggleAdmin(false) : adminModal.style.display = 'flex';
         document.getElementById('pin-confirm').onclick = () => {
-            if(document.getElementById('admin-pin').value === 'ekasir') toggleAdmin(true);
+            if(document.getElementById('admin-pin').value === 'ekasir09') toggleAdmin(true);
             else alert('Wrong PIN');
             adminModal.style.display = 'none';
         };
@@ -173,9 +176,10 @@ measurementId: "G-5P543VP1EZ"
 
         try {
             if(db) {
-                await push(ref(db, 'qna'), payload);
+                const newRef = await push(ref(db, 'qna'), payload);
+                myQuestions.push(newRef.key);
+                localStorage.setItem('eka_my_questions', JSON.stringify(myQuestions));
                 document.getElementById('q-text').value = '';
-                // Real-time listener will auto-update
             }
         } catch(err) {
             console.error("Push Error:", err);
@@ -235,15 +239,17 @@ measurementId: "G-5P543VP1EZ"
             const isHidden = q.hidden === true;
             const cardClass = `qa-card ${isHidden ? 'hidden-question' : ''} ${q.autoFlagged ? 'auto-flagged' : ''}`;
             const hideLabel = isHidden ? 'Hidden' : 'Visible';
+            const isMine = myQuestions.includes(q.refKey);
+            const canEditDelete = isAdmin || (isMine && !q.answered);
 
             return `
             <div class="${cardClass}" data-key="${q.refKey}">
                 <div class="qa-header">
                     <span class="qa-id">${q.id} ${q.autoFlagged ? '<span class="flag-badge">FLAGGED</span>' : ''}</span>
-                    <span class="qa-user">@${escapeHtml(q.username)}</span>
+                    <span class="qa-user">@${escapeHtml(q.username)} ${isMine ? '<small>(You)</small>' : ''}</span>
                 </div>
                 <div class="qa-time">${new Date(q.timestamp).toLocaleString()}</div>
-                <div class="qa-q">${escapeHtml(q.question)}</div>
+                <div class="qa-q" id="q-text-${q.refKey}">${escapeHtml(q.question)}</div>
                 ${isHidden ? '<div class="hidden-notice">⚠️ This question is hidden from public view</div>' : ''}
                 ${q.answered ? `<div class="qa-a"><div class="qa-a-label">✅ Answered</div>${escapeHtml(q.answer)}</div>` : ''}
                 <div class="qa-actions">
@@ -256,15 +262,53 @@ measurementId: "G-5P543VP1EZ"
                             ${hideLabel}
                         </label>
                     ` : ''}
-                    ${isAdmin && !q.answered ? `<button class="btn mini-btn" onclick="window.showReply('${q.id}')">💬 Reply</button>` : ''}
+                    ${canEditDelete ? `
+                        <button class="btn mini-btn btn-warning" onclick="window.editQuestion('${q.refKey}')">✏️</button>
+                        <button class="btn mini-btn btn-danger" onclick="window.deleteQuestion('${q.refKey}')">🗑️</button>
+                    ` : ''}
+                    ${isAdmin ? `<button class="btn mini-btn" onclick="window.showReply('${q.refKey}')">💬 ${q.answered ? 'Edit Ans' : 'Reply'}</button>` : ''}
                 </div>
-                <div class="admin-reply-box" id="rep-${q.id}">
-                    <textarea placeholder="Type answer..."></textarea>
-                    <button class="btn mini-btn" onclick="window.postAnswer('${q.id}')">Post Answer</button>
+                <div class="admin-reply-box" id="rep-${q.refKey}">
+                    <textarea placeholder="Type answer...">${q.answered ? q.answer : ''}</textarea>
+                    <button class="btn mini-btn" id="btn-ans-${q.refKey}" onclick="window.postAnswer('${q.refKey}')">${q.answered ? 'Update Answer' : 'Post Answer'}</button>
+                </div>
+                <div class="admin-reply-box" id="edit-box-${q.refKey}">
+                    <textarea id="edit-text-${q.refKey}">${escapeHtml(q.question)}</textarea>
+                    <div style="display:flex; gap:5px;">
+                        <button class="btn mini-btn" style="flex:1" onclick="window.saveEdit('${q.refKey}')">Save</button>
+                        <button class="btn mini-btn" style="flex:1; background:var(--card)" onclick="window.cancelEdit('${q.refKey}')">Cancel</button>
+                    </div>
                 </div>
             </div>`;
         }).join('');
     }
+
+    window.editQuestion = key => {
+        document.getElementById(`edit-box-${key}`).style.display = 'block';
+    };
+
+    window.cancelEdit = key => {
+        document.getElementById(`edit-box-${key}`).style.display = 'none';
+    };
+
+    window.saveEdit = async key => {
+        const txt = document.getElementById(`edit-text-${key}`).value.trim();
+        if(!txt) return;
+        try {
+            if(db) {
+                await update(ref(db, `qna/${key}`), { question: txt });
+            }
+        } catch(e) { alert('Save failed'); }
+    };
+
+    window.deleteQuestion = async key => {
+        if(!confirm('Delete this question?')) return;
+        try {
+            if(db) {
+                await remove(ref(db, `qna/${key}`));
+            }
+        } catch(e) { alert('Delete failed'); }
+    };
 
     window.toggleHide = async (key, shouldBeVisible) => {
         try {
@@ -279,24 +323,38 @@ measurementId: "G-5P543VP1EZ"
         }
     };
 
-    window.showReply = id => {
-        const replyBox = document.getElementById(`rep-${id}`);
-        if(replyBox) replyBox.style.display = 'block';
+    window.showReply = key => {
+        const replyBox = document.getElementById(`rep-${key}`);
+        if(replyBox) {
+            const isVisible = replyBox.style.display === 'block';
+            replyBox.style.display = isVisible ? 'none' : 'block';
+        }
     };
 
-    window.postAnswer = async id => {
-        const textarea = document.querySelector(`#rep-${id} textarea`);
-        const txt = textarea ? textarea.value.trim() : '';
+    window.postAnswer = async key => {
+        const replyBox = document.getElementById(`rep-${key}`);
+        const textarea = replyBox ? replyBox.querySelector('textarea') : null;
+        const btn = document.getElementById(`btn-ans-${key}`);
+
+        if(!textarea) return;
+        const txt = textarea.value.trim();
         if(!txt) { alert('Please enter an answer'); return; }
 
         try {
             if(db) {
-                await update(ref(db, `qna/${id}`), { answer: txt, answered: true });
-                // Listener will auto-update
+                if(btn) { btn.disabled = true; btn.textContent = '⏳...'; }
+
+                await update(ref(db, `qna/${key}`), {
+                    answer: txt,
+                    answered: true
+                });
+                if(replyBox) replyBox.style.display = 'none';
             }
         } catch(err) {
             console.error("Post answer error:", err);
-            alert('Failed to post answer');
+            alert('❌ Failed to post answer: ' + err.message);
+        } finally {
+            if(btn) { btn.disabled = false; btn.textContent = 'Update Answer'; }
         }
     };
 
